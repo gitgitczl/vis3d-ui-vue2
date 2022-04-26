@@ -3,6 +3,15 @@
     <div id="mapContainer"></div>
     <!-- 侧边工具栏 -->
     <Sidebar></Sidebar>
+    <!-- 帮助说明 -->
+    <Help
+      :plotEntityObjId="plotEntityObjId"
+      v-if="baseTools['help'].show"
+      :title="baseTools['help'].name"
+      :position="baseTools['help'].position"
+      :size="baseTools['help'].size"
+      @close="close"
+    />
     <!-- 图上标绘 -->
     <Plot
       @plotEntityObjId="setPlotEntityObjId"
@@ -187,8 +196,9 @@
   </div>
 </template>
 <script>
+import Help from "@/views/easy3d/baseTools/help/Index.vue";
 
-import Sidebar from "@/views/easy3d/baseTools/sidebar/Index.vue"
+import Sidebar from "@/views/easy3d/baseTools/sidebar/Index.vue";
 import Plot from "@/views/easy3d/baseTools/plot/Index.vue";
 import PlotStyle from "@/views/easy3d/baseTools/plotStyle/Index.vue";
 import Layers from "@/views/easy3d/baseTools/layers/Index.vue";
@@ -216,6 +226,7 @@ let overviewMap = null;
 export default {
   name: "Map",
   components: {
+    Help,
     Plot,
     Measure,
     Analysis,
@@ -231,11 +242,12 @@ export default {
     RoamStyle,
     LayerSplit,
     Monomer,
-    Sidebar
+    Sidebar,
   },
   data() {
     return {
       baseTools: {
+        help: {},
         plot: {},
         plotStyle: {},
         measure: {},

@@ -73,6 +73,7 @@ export default {
           icon: "icon-bangzhushuoming",
           type: "help",
           name: "帮助说明",
+          toolName: "help",
         },
       ], // 基础设置
 

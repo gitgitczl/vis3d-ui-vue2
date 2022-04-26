@@ -65,6 +65,21 @@ window.workConfig = {
             "openDisableAnothers": false
         },
         {
+            "name": "帮助说明",
+            "show": false,
+            "workName": "help",
+            "position": {
+                "top": 200,
+                "left": 20
+            },
+            "size": {
+                "width": 350,
+                "height": 200
+            },
+            "closeDisableSelf": false,
+            "openDisableAnothers": false
+        },
+        {
             "name": "图层管理",
             "show": false,
             "workName": "layers",
