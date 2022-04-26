@@ -1,0 +1,442 @@
+<template>
+  <Card
+    :width="450"
+    :height="600"
+    @close="close"
+    :title="title"
+    :position="position"
+    titleIcon="icon-youlan"
+  >
+    <p class="roam-toolip">提示：导入的文件支持.json文件</p>
+    <div class="roam-operate">
+      <span class="basic-btn" @click="startDraw">新增线路</span>
+      <span class="basic-btn">导入</span>
+      <span class="basic-btn">导出</span>
+    </div>
+
+    <div class="split-line"></div>
+
+    <!-- 漫游列表 -->
+    <div class="reset-table roam-tabel">
+      <el-table
+        v-show="isShowList"
+        :data="roamList"
+        height="60%"
+        style="width: 100%"
+      >
+        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column label="名称" prop="name"></el-table-column>
+        <el-table-column label="类型" prop="type"></el-table-column>
+        <el-table-column label="备注" prop="mark"></el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <span
+              title="开始漫游"
+              class="el-icon-s-promotion operate-btn-icon"
+              @click="startRoam(scope.row)"
+            ></span>
+            <span
+              title="编辑"
+              class="el-icon-edit operate-btn-icon"
+              @click="roamEdit(scope.row)"
+            ></span>
+            <span
+              title="删除"
+              class="el-icon-delete operate-btn-icon"
+              @click="roamDelete(scope.row)"
+            ></span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 漫游属性设置 -->
+    <div class="roam-attr" v-show="!isShowList">
+      <el-row class="roatm-attr-item basic-text-input">
+        <el-col :span="6">名称：</el-col>
+        <el-col :span="18">
+          <el-input
+            placeholder="请输入名称"
+            v-model="nowRoamAttr.name"
+          ></el-input>
+        </el-col>
+      </el-row>
+      <!-- 固定时长 or 固定速度漫游 -->
+      <el-row class="roatm-attr-item reset-radio">
+        <el-col :span="6">漫游设置：</el-col>
+        <el-col :span="18">
+          <el-radio-group v-model="nowRoamAttr.roamFixtype">
+            <el-radio label="fixtimes">固定时长</el-radio>
+            <el-radio label="fixspeed">固定速度</el-radio>
+          </el-radio-group>
+        </el-col>
+      </el-row>
+      <el-row
+        class="roatm-attr-item basic-text-input"
+        v-if="nowRoamAttr.roamFixtype == 'fixtimes'"
+      >
+        <el-col :span="6">漫游时长：</el-col>
+        <el-col :span="18">
+          <el-input
+            placeholder="请输入时长"
+            v-model="nowRoamAttr.alltimes"
+          ></el-input>
+        </el-col>
+      </el-row>
+      <el-row
+        class="roatm-attr-item basic-text-input"
+        v-if="nowRoamAttr.roamFixtype == 'fixspeed'"
+      >
+        <el-col :span="6">漫游速度(m/s)：</el-col>
+        <el-col :span="18">
+          <el-input
+            placeholder="请输入速度"
+            v-model="nowRoamAttr.speed"
+          ></el-input>
+        </el-col>
+      </el-row>
+      <!-- 其它配置 -->
+      <el-row class="roatm-attr-item reset-select basic-select">
+        <el-col :span="6">漫游类型：</el-col>
+        <el-col :span="18">
+          <el-select v-model="nowRoamAttr.roamType" placeholder="请选择">
+            <el-option label="普通" value="0"> </el-option>
+            <el-option label="飞行漫游" value="1"> </el-option>
+            <el-option label="贴地漫游" value="2"> </el-option>
+            <el-option label="贴模型漫游" value="3"> </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+
+      <el-row
+        v-if="nowRoamAttr.roamType === '1'"
+        class="roatm-attr-item basic-text-input"
+      >
+        <el-col :span="6">飞行高度：</el-col>
+        <el-col :span="18">
+          <el-input
+            placeholder="请输入高度"
+            v-model="nowRoamAttr.height"
+          ></el-input>
+        </el-col>
+      </el-row>
+      <el-row class="roatm-attr-item reset-select basic-select">
+        <el-col :span="6">视角选择：</el-col>
+        <el-col :span="18">
+          <el-select v-model="nowRoamAttr.viewType" placeholder="请选择">
+            <el-option label="无" value="no"></el-option>
+            <el-option label="第一视角" value="dy"> </el-option>
+            <el-option label="上帝视角" value="sd"></el-option>
+            <el-option label="跟随视角" value="gs"></el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row class="roatm-attr-item basic-text-input">
+        <el-col :span="6">备注：</el-col>
+        <el-col :span="18">
+          <el-input
+            placeholder="请输入名称"
+            v-model="nowRoamAttr.mark"
+          ></el-input>
+        </el-col>
+      </el-row>
+
+      <div class="roam-add-btn">
+        <span class="basic-btn" @click="confirmEdit">确定</span>
+        <span class="basic-clear-btn" @click="resetEdit">取消</span>
+      </div>
+    </div>
+  </Card>
+</template>
+
+<script>
+// 飞行漫游
+import Card from "@/views/easy3d/components/card/Card.vue";
+let roamDraw = null;
+let roamList = [];
+let roamTool = null;
+let nowEditEntityObj = null;
+
+window.nowRoam = null;
+export default {
+  name: "roam",
+
+  props: {
+    title: "",
+    position: {},
+  },
+
+  components: {
+    Card,
+  },
+
+  data() {
+    return {
+      isShowList: true,
+      roamList: [],
+      nowRoamAttr: {
+        name: "",
+        roamType: "0",
+        viewType: "no",
+        roamFixtype: "fixtimes",
+        alltimes: 60,
+        mark: "",
+        height: "",
+      },
+    };
+  },
+  mounted() {
+    let that = this;
+
+    if (!roamTool) {
+      roamTool = new this.easy3d.RoamTool(window.viewer);
+      roamTool.on("startRoam", function () {
+        // 开始漫游时 显示漫游面板
+        that.$emit("nowStartRoamAttr", roamTool.getNowroamAttr());
+      });
+      roamTool.on("endRoam", function () {
+        // 结束漫游时 显示漫游列表
+        that.$emit("nowStartRoamAttr", {});
+      });
+      roamTool.on("roaming", function () {
+        // 每秒回调一次
+        that.$emit("nowStartRoamAttr", roamTool.getNowroamAttr());
+      });
+      roamTool.on("stopRoam", function () {
+        that.$emit("nowStartRoamAttr", {});
+      });
+      roamTool.on("goonRoam", function () {
+        that.$emit("nowStartRoamAttr", roamTool.getNowroamAttr());
+      });
+    }
+
+    if (!roamDraw) {
+      roamDraw = new this.easy3d.DrawTool(window.viewer, {
+        hasEdit: true,
+      });
+      roamDraw.on("startEdit", function (entObj, ent) {
+        nowEditEntityObj = entObj;
+        roamTool.endRoam();
+        window.nowRoam = null;
+        that.isShowList = false;
+        let roams = roamTool.getRoamByField("plotId", entObj.objId);
+        if (!roams[0]) return;
+        let roamAttr = roams[0].roam.getAttr();
+        // 表单赋值
+        that.nowRoamAttr.name = roamAttr.name;
+        that.nowRoamAttr.roamType = roamAttr.roamType;
+        that.nowRoamAttr.viewType = roamAttr.viewType;
+        that.nowRoamAttr.mark = roamAttr.mark;
+        that.nowRoamAttr.roamFixtype = roamAttr.times ? "fixtimes" : "fixspeed";
+        that.nowRoamAttr.alltimes = roamAttr.alltimes;
+        that.nowRoamAttr.speed = roamAttr.speed;
+      });
+      roamDraw.on("endEdit", function (entObj, ent) {
+       
+        that.isShowList = true;
+        if (!roamTool) return;
+        // ======== 当前表单信息 ==========
+        let roamTypeNmae = "普通";
+        if (that.nowRoamAttr.roamType == 0) {
+          roamTypeNmae = "普通";
+        } else if (that.nowRoamAttr.roamType == 1) {
+          roamTypeNmae = "飞行漫游";
+        } else if (that.nowRoamAttr.roamType == 2) {
+          roamTypeNmae = "贴地漫游";
+        } else {
+          roamTypeNmae = "贴模型漫游";
+        }
+
+        that.nowRoamAttr.name =
+          that.nowRoamAttr.name || "未命名" + new Date().getSeconds();
+        let roamform = {
+          name: that.nowRoamAttr.name,
+          mark: that.nowRoamAttr.mark || "无",
+          type: roamTypeNmae,
+          plotId: entObj.objId,
+        };
+        let roams = roamTool.getRoamByField("plotId", entObj.objId);
+        if (roams[0]) {
+          // ====== 编辑 ======
+          // 同步漫游列表中数据
+          let plotId = roams[0].roam.attr.plotId;
+          for (let i = 0; i < that.roamList.length; i++) {
+            if (that.roamList[i].plotId == plotId) {
+              that.roamList.splice(i, 1, roamform);
+              break;
+            }
+          }
+          // 编辑时 先删除原来的漫游对象 下面重新创建
+          roamTool.removeRoam(roams[0].roam);
+        } else {
+          // ====== 新增 ======
+          that.roamList.push(roamform);
+        }
+        // 创建新的漫游对象
+        let attr = {};
+        let positions = entObj.getPositions(false);
+        attr.positions = positions;
+        attr.plotId = entObj.objId; // 和标绘关联
+        let roamAttr = Object.assign(attr, that.nowRoamAttr);
+        roamTool.create(roamAttr);
+
+        // 编辑完后重置表单
+        that.nowRoamAttr = {
+          name: "",
+          roamType: "0",
+          viewType: "no",
+          roamFixtype: "fixtimes",
+          mark: "",
+          height: "",
+        };
+      });
+    }
+  },
+  methods: {
+    close() {
+      this.$emit("close", "roam");
+    },
+    startDraw() {
+      if (!roamDraw) return;
+      roamDraw.start({
+        type: "polyline",
+        style: {
+          material: Cesium.Color.RED.withAlpha(0.6),
+          width: 3,
+        },
+      });
+    },
+    getRoamById(id) {
+      if (!id) return;
+      let obj = {};
+      for (let i = 0; i < roamList.length; i++) {
+        let roam = roamList[i];
+        if (roam.id == id) {
+          obj.roam = roam;
+          obj.index = i;
+          break;
+        }
+      }
+      return obj;
+    },
+    startRoam(attr) {
+      let roams = roamTool.getRoamByField("plotId", attr.plotId);
+      if (roams[0]) {
+        window.nowRoam = roams[0].roam;
+        roamTool.startRoam(roams[0].roam);
+      }
+      // 隐藏对应线
+      let eo = roamDraw.getEntityObjById(attr.plotId);
+      if (eo.entityObj) eo.entityObj.setVisible(false);
+    },
+    roamEdit(attr) {
+      // 开始编辑 当前所有漫游
+      roamTool.endRoam();
+      window.nowRoam = null;
+      // 隐藏对应线
+      let eo = roamDraw.getEntityObjById(attr.plotId);
+      if (eo.entityObj) {
+        roamDraw.startEditOne(eo.entityObj);
+      }
+    },
+    roamDelete(attr) {
+      let roams = roamTool.getRoamByField("plotId", attr.plotId);
+      if (roams[0]) {
+        roamTool.removeRoam(roams[0].roam);
+      }
+      roamDraw.removeById(attr.plotId);
+
+      for (let i = 0; i < this.roamList.length; i++) {
+        if (this.roamList[i].plotId == attr.plotId) {
+          this.roamList.splice(i, 1);
+          break;
+        }
+      }
+    },
+
+    // 提交当前编辑
+    confirmEdit() {
+      if (!roamDraw) return;
+      roamDraw.endEdit();
+    },
+    // 取消当前编辑
+    resetEdit() {
+      // 移除当前编辑对象
+      if (!roamDraw) return;
+      roamDraw.endEdit();
+      debugger
+      if (nowEditEntityObj)
+        this.roamDelete({
+          plotId: nowEditEntityObj.entity.objId,
+        });
+    },
+  },
+  watch: {
+    "$store.state.map3d.nowRoamViewType": function (data) {
+      this.nowRoamAttr.viewType = data;
+    },
+  },
+};
+</script>
+
+<style lang="less">
+.roam-tabel {
+  margin: 10px 0;
+}
+.roam-operate {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  span {
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:nth-child(2) {
+      margin: 0 20px;
+    }
+  }
+}
+.roam-oper-btn {
+  font-size: 16px;
+}
+
+.split-line {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed gray;
+}
+
+.roam-attr {
+  margin: 10px 0;
+}
+.roatm-attr-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.roam-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  span {
+    height: 40px;
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+</style>

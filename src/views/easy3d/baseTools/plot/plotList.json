@@ -1,0 +1,66 @@
+{
+    "基础标绘": [
+        {
+            "name": "点",
+            "type": "point",
+            "iconImg": "./easy3d/images/plot/point.png",
+            "styleType": "point"
+        },
+        {
+            "name": "线",
+            "type": "polyline",
+            "iconImg": "./easy3d/images/plot/polyline.png",
+            "styleType": "polyline"
+        },
+        {
+            "name": "面",
+            "type": "polygon",
+            "iconImg": "./easy3d/images/plot/polygon.png",
+            "styleType": "polygon",
+            "style": {
+                "color": "#0000ff"
+            }
+        },
+        {
+            "name": "图标",
+            "type": "billboard",
+            "iconImg": "./easy3d/images/plot/billboard.png",
+            "style": {
+                "image": "./easy3d/images/plot/start.png"
+            },
+            "styleType": "billboard"
+        }
+    ],
+    "军事标绘": [
+        {
+            "name": "攻击箭头",
+            "icon": "",
+            "arrowType": 1,
+            "styleType": "polygon"
+        },
+        {
+            "name": "攻击箭头(平尾)",
+            "icon": "",
+            "arrowType": 2,
+            "styleType": "polygon"
+        },
+        {
+            "name": "攻击箭头(燕尾)",
+            "icon": "",
+            "arrowType": 3,
+            "styleType": "polygon"
+        },
+        {
+            "name": "钳击箭头",
+            "icon": "",
+            "arrowType": 5,
+            "styleType": "polygon"
+        },
+        {
+            "name": "单尖直箭头",
+            "icon": "",
+            "arrowType": 6,
+            "styleType": "polygon"
+        }
+    ]
+}
