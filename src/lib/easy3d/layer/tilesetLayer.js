@@ -25,7 +25,6 @@ class TilesetLayer extends BaseLayer{
         );
 
         test.readyPromise.then(function (tileset) {
-            debugger
             that._layer = tileset;
             that._layer.attr = that.opt; // 保存配置信息
             that._layer.initBoundingSphere = tileset.boundingSphere.clone();// 初始化中心
