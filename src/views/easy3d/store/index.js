@@ -10,6 +10,7 @@ const easy3dStore = {
     isOpenOverviewMap: false, // 是否打开鹰眼图.
     nowPlotStyleAttr: {},
     nowRoamViewType: -1, // 飞行漫游属性
+    isPrintMap: false, // 是否打印地图
     isToolOpen: true // 工具栏是否打开
   },
   mutations: {
@@ -35,6 +36,10 @@ const easy3dStore = {
 
     setNowRoamViewType: (state, nowRoamViewType) => {
       state.nowRoamViewType = nowRoamViewType
+    },
+
+    setIsPrintMap:(state, isPrintMap) => {
+      state.isPrintMap = isPrintMap
     },
 
     SET_ISTOOLOPEN: (state, isToolOpen) => {
