@@ -1,5 +1,5 @@
 <template>
-  <div class="map-box">
+  <div class="map-box" ref="mapbox">
     <div id="mapContainer"></div>
     <!-- 侧边工具栏 -->
     <Sidebar></Sidebar>
@@ -187,8 +187,7 @@
   </div>
 </template>
 <script>
-
-import Sidebar from "@/views/easy3d/baseTools/sidebar/Index.vue"
+import Sidebar from "@/views/easy3d/baseTools/sidebar/Index.vue";
 import Plot from "@/views/easy3d/baseTools/plot/Index.vue";
 import PlotStyle from "@/views/easy3d/baseTools/plotStyle/Index.vue";
 import Layers from "@/views/easy3d/baseTools/layers/Index.vue";
@@ -207,6 +206,9 @@ import Roam from "@/views/easy3d/baseTools/roam/Index.vue";
 import RoamStyle from "@/views/easy3d/baseTools/roamStyle/Index.vue";
 import LayerSplit from "@/views/easy3d/baseTools/layerSplit/Index.vue";
 import Monomer from "@/views/easy3d/baseTools/monomer/Index.vue";
+
+import html2canvas from "html2canvas";
+import printJS from "print-js";
 
 window.viewer = null;
 window.mapViewer = null;
@@ -231,7 +233,7 @@ export default {
     RoamStyle,
     LayerSplit,
     Monomer,
-    Sidebar
+    Sidebar,
   },
   data() {
     return {
@@ -370,6 +372,24 @@ export default {
         this.openToolByName("roamStyle");
       }
     },
+
+    // 地图打印
+    printMap() {
+      window.viewer.scene.render();
+      html2canvas(this.$refs.mapbox, {
+        backgroundColor: null,
+        useCORS: true,
+        windowHeight: document.body.scrollHeight,
+      }).then((canvas) => {
+        const url = canvas.toDataURL();
+        this.img = url;
+        printJS({
+          printable: url,
+          type: "image",
+          documentTitle: "地图输出",
+        });
+      });
+    },
   },
   watch: {
     // 监听工具面板的开启
@@ -381,7 +401,7 @@ export default {
           // 关闭某个模块
           this.closeToolByName(name);
         } else {
-          this.openToolByName(name);
+          if (name == "") this.openToolByName(name);
         }
       },
       deep: true,
@@ -418,6 +438,14 @@ export default {
           overviewMap.destroy();
           overviewMap = null;
         }
+      }
+    },
+
+    // 监听 是否打印
+    "$store.state.map3d.isPrintMap": function (res) {
+      if (res) {
+        this.printMap();
+        this.$store.commit("setIsPrintMap", false);
       }
     },
   },

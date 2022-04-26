@@ -38,6 +38,20 @@
         <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
       </el-tooltip>
     </ul>
+
+    <!-- <div class="basic-dialog" v-show="isHelp">
+      <el-dialog
+        title="帮助说明"
+        width="300px"
+        :close-on-click-modal="false"
+        @close="isHelp = false"
+      >
+        <p>1、点击鼠标左键不放可进行地图平移。</p>
+        <p>2、点击右键不放，向左进行地图放大，向右进行地图缩小。</p>
+        <p>3、点击滚轮不放，旋转鼠标可进行视角旋转。</p>
+        <p>4、ctrl+鼠标左键可进行视角旋转。</p>
+      </el-dialog>
+    </div> -->
   </div>
 </template>
 
@@ -180,6 +194,7 @@ export default {
         // },
       ],
       isFullScreen: false, // 是否全屏
+      isHelp: false,
       isOpenOverviewMap: false,
     };
   },
@@ -216,15 +231,6 @@ export default {
 
     // 打开某个工具
     opentoolName(item) {
-      /*  
-      if (item.toolName != undefined ) {
-        this.$message({
-          message: "功能正在开发中",
-          type: "warning",
-        });
-        return;
-      }
-      */
       if (item.toolName)
         this.$store.commit("setOperateTool", {
           toolName: item.toolName,
@@ -249,7 +255,7 @@ export default {
 
       // 帮助说明
       if (item.type === "help") {
-        this.$emit("help");
+        this.isHelp = true;
       }
 
       // 鹰眼图
@@ -258,9 +264,8 @@ export default {
         this.$store.commit("setIsOpenOverviewMap", this.isOpenOverviewMap);
       }
 
-      // 地图输出
       if (item.type === "print") {
-        this.$emit("print");
+        this.$store.commit("setIsPrintMap", true);
       }
     },
   },
@@ -294,4 +299,12 @@ export default {
     margin: 32px 0;
   }
 }
+
+/* .basic-dialog{
+  z-index: 999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% -50%);
+} */
 </style>
