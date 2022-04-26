@@ -197,7 +197,6 @@
 </template>
 <script>
 import Help from "@/views/easy3d/baseTools/help/Index.vue";
-
 import Sidebar from "@/views/easy3d/baseTools/sidebar/Index.vue";
 import Plot from "@/views/easy3d/baseTools/plot/Index.vue";
 import PlotStyle from "@/views/easy3d/baseTools/plotStyle/Index.vue";

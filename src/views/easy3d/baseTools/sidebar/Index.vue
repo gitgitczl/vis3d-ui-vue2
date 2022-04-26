@@ -254,11 +254,6 @@ export default {
         this.screen();
       }
 
-      // 帮助说明
-      if (item.type === "help") {
-        this.isHelp = true;
-      }
-
       // 鹰眼图
       if (item.type === "overviewMap") {
         this.isOpenOverviewMap = !this.isOpenOverviewMap;
