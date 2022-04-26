@@ -2,7 +2,6 @@
   <Card
     :title="title"
     :size="size"
-    :offset="offset"
     titleIcon="icon-bangzhushuoming"
     @close="close"
   >

@@ -5,8 +5,12 @@
     <Sidebar></Sidebar>
     <!-- 帮助说明 -->
     <Help
-      :plotEntityObjId="plotEntityObjId"
       v-if="baseTools['help'].show"
+      v-show="
+        baseTools['help'].domShow == undefined
+          ? true
+          : baseTools['help'].domShow
+      "
       :title="baseTools['help'].name"
       :position="baseTools['help'].position"
       :size="baseTools['help'].size"
@@ -309,6 +313,7 @@ export default {
 
     // 工具关闭
     close(name) {
+      debugger
       if (!this.baseTools[name]) return;
       this.$store.commit("setOperateTool", {
         toolName: name,
@@ -317,6 +322,7 @@ export default {
     },
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {
+      debugger
       let toolAttr = this.baseTools[name];
 
       // 是否能被其他模块释放 默认为true  与closeDisableExcept互斥
@@ -413,7 +419,7 @@ export default {
           // 关闭某个模块
           this.closeToolByName(name);
         } else {
-          if (name == "") this.openToolByName(name);
+          this.openToolByName(name);
         }
       },
       deep: true,
@@ -452,7 +458,6 @@ export default {
         }
       }
     },
-
     // 监听 是否打印
     "$store.state.map3d.isPrintMap": function (res) {
       if (res) {
