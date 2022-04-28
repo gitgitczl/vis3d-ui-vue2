@@ -11,7 +11,7 @@
         :default-checked-keys="checkedKeys"
         node-key="id"
         @node-click="nodeClick"
-        @check="checkLayer"
+        @check="nodeCheck"
       >
         <div class="custom-tree-node" slot-scope="{ data }">
           <span>{{ data.name }}</span>
@@ -67,6 +67,22 @@ export default {
   mounted() {
     let mapConfig = window.viewer.mapConfig || {};
     this.$set(this, "operateLayers", mapConfig.operateLayers);
+
+    let operateLayerTool = window.mapViewer.operateLayerTool;
+    // 根据属性 看哪些打开
+    operateLayerTool._layerObjs.forEach((element) => {
+      if (element.open) this.expandedKeys.push(element.id);
+    });
+    this.operateLayers.forEach((element) => {
+      if (element.open && element.type == "group") {
+        this.expandedKeys.push(element.id);
+      }
+    });
+    // 根据属性 看哪些选中
+    let showslayer = operateLayerTool.getAllshow();
+    showslayer.forEach((lyr) => {
+      this.checkedKeys.push(lyr.id);
+    });
   },
 
   destroyed() {},
@@ -78,7 +94,7 @@ export default {
       let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(data.id);
       if (layerOpt) layerOpt.layer.setAlpha(data.alpha);
     },
-    checkLayer(data, state) {
+    nodeCheck(data, state) {
       this.checkedKeys = state.checkedKeys;
       let allshowLayers = window.mapViewer.operateLayerTool.getAllshow();
       let allhideLayers = window.mapViewer.operateLayerTool.getAllhide();
@@ -115,27 +131,39 @@ export default {
         this.clickTimes = 0;
       }, 300);
     },
+
+    // 选中某个某个节点并打开对应图层
+    checkOne(attr) {
+      attr = attr || {};
+      if (this.checkedKeys.indexOf(attr.id) != -1) return;
+      this.checkedKeys.push(attr.id);
+      window.mapViewer.operateLayerTool.setVisible(attr.id, true);
+    },
+    // 取消选中
+    uncheckOne(attr) {
+      attr = attr || {};
+      if (this.checkedKeys.indexOf(attr.id) == -1) return;
+      for (let i = this.checkedKeys.length - 1; i >= 0; i--) {
+        if (this.checkedKeys[i] == attr.id) {
+          this.checkedKeys.splice(i, 1);
+          break;
+        }
+      }
+      window.mapViewer.operateLayerTool.setVisible(attr.id, false);
+    },
   },
 
   // 监听内部数据变化  保持和树统一
   watch: {
-    operateLayers: {
-      handler(data) {
-        let operateLayerTool = window.mapViewer.operateLayerTool;
-        // 根据属性 看哪些打开
-        operateLayerTool._layerObjs.forEach((element) => {
-          if (element.open) this.expandedKeys.push(element.id);
-        });
-        data.forEach((element) => {
-          if (element.open && element.type == "group") {
-            this.expandedKeys.push(element.id);
-          }
-        });
-        // 根据属性 看哪些选中
-        let showslayer = operateLayerTool.getAllshow();
-        showslayer.forEach((lyr) => {
-          this.checkedKeys.push(lyr.id);
-        });
+    "$store.state.map3d.checkLayerAttr": {
+      handler(attr) {
+        this.checkOne(attr);
+      },
+      deep: true,
+    },
+    "$store.state.map3d.uncheckLayerAttr": {
+      handler(attr) {
+        this.uncheckOne(attr);
       },
       deep: true,
     },

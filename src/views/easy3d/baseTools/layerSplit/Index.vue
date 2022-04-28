@@ -22,7 +22,6 @@
 import Card from "@/views/easy3d/components/card/Card.vue";
 import MapSplit from "@/lib/easy3d/layerSplit/layerSplit.js";
 let layerSplit = null;
-let nowLyr = null;
 export default {
   name: "LayerSplit",
   components: {
@@ -36,13 +35,14 @@ export default {
   data() {
     return {
       nowSelectId: "",
+      lastLayerAttr: {},
       layerList: [],
     };
   },
 
   mounted() {
     // 构建卷帘对比单选框
-   
+    let allSplitLayers = [];
     let blys = window.mapViewer.baseLayerTool.getLayerObjByField(
       "layerSplit",
       true
@@ -51,7 +51,7 @@ export default {
       "layerSplit",
       true
     );
-    let allSplitLayers = blys.concat(olys);
+    allSplitLayers = blys.concat(olys);
 
     allSplitLayers.forEach((layer) => {
       this.layerList.push({
@@ -61,9 +61,10 @@ export default {
     });
 
     this.nowSelectId = this.layerList[0].id;
+    this.lastLayerAttr = this.layerList[0];
+    debugger
+    this.$store.commit("setCheckLayerAttr", this.layerList[0]);
     let lyr = this.getLayerObjById(this.nowSelectId);
-    lyr.setVisible(true);
-    nowLyr = lyr;
     if (!layerSplit) {
       layerSplit = new MapSplit(window.viewer, {
         layer: lyr._layer,
@@ -81,12 +82,16 @@ export default {
       if (!id) return null;
       let layer = null;
       layer = window.mapViewer.baseLayerTool.getLayerObjById(id).layer;
-      if(!layer) layer = window.mapViewer.operateLayerTool.getLayerObjById(id).layer;
+      if (!layer)
+        layer = window.mapViewer.operateLayerTool.getLayerObjById(id).layer;
       return layer;
     },
 
-    changeLayer() {
-      let lyr = this.getLayerObjById(this.nowSelectId);
+    changeLayer(attr) {
+      this.$store.commit("setUncheckLayerAttr", this.lastLayerAttr);
+      this.$store.commit("setCheckLayerAttr", attr);
+      this.lastLayerAttr = attr;
+      let lyr = this.getLayerObjById(attr.id);
       if (!lyr) return;
       lyr.setVisible(true);
       nowLyr = lyr;

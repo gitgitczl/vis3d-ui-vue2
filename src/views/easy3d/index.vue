@@ -313,7 +313,6 @@ export default {
 
     // 工具关闭
     close(name) {
-      debugger
       if (!this.baseTools[name]) return;
       this.$store.commit("setOperateTool", {
         toolName: name,
@@ -322,9 +321,7 @@ export default {
     },
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {
-      debugger
       let toolAttr = this.baseTools[name];
-
       // 是否能被其他模块释放 默认为true  与closeDisableExcept互斥
       if (dutoName) {
         toolAttr.disableByOthers =

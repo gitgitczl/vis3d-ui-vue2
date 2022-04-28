@@ -11,7 +11,9 @@ const easy3dStore = {
     nowPlotStyleAttr: {},
     nowRoamViewType: -1, // 飞行漫游属性
     isPrintMap: false, // 是否打印地图
-    isToolOpen: true // 工具栏是否打开
+    isToolOpen: true, // 工具栏是否打开
+    checkLayerAttr: {}, // 选中的图层属性
+    uncheckLayerAttr: {} // 取消选中的图层属性
   },
   mutations: {
     setOperateTool: (state, operateTool) => {
@@ -38,8 +40,16 @@ const easy3dStore = {
       state.nowRoamViewType = nowRoamViewType
     },
 
-    setIsPrintMap:(state, isPrintMap) => {
+    setIsPrintMap: (state, isPrintMap) => {
       state.isPrintMap = isPrintMap
+    },
+
+    setCheckLayerAttr: (state, checkLayerAttr) => {
+      state.checkLayerAttr = checkLayerAttr
+    },
+
+    setUncheckLayerAttr: (state, uncheckLayerAttr) => {
+      state.uncheckLayerAttr = uncheckLayerAttr
     },
 
     SET_ISTOOLOPEN: (state, isToolOpen) => {
