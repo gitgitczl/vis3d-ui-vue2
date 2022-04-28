@@ -66,24 +66,7 @@ export default {
 
   mounted() {
     let mapConfig = window.viewer.mapConfig || {};
-    let { operateLayers } = mapConfig;
-    this.$set(this, "operateLayers", operateLayers);
-    let operateLayerTool = window.mapViewer.operateLayerTool;
-
-    // 根据属性 看哪些打开
-    operateLayerTool._layers.forEach((element) => {
-      if (element.open) this.expandedKeys.push(element.id);
-    });
-    operateLayers.forEach((element) => {
-      if (element.open && element.type == "group") {
-        this.expandedKeys.push(element.id);
-      }
-    });
-
-    let showslayer = operateLayerTool.getAllshowLayers();
-    showslayer.forEach((lyr) => {
-      this.checkedKeys.push(lyr.id);
-    });
+    this.$set(this, "operateLayers", mapConfig.operateLayers);
   },
 
   destroyed() {},
@@ -92,7 +75,7 @@ export default {
       this.$emit("close", "layers");
     },
     setLayeralpha(data) {
-      let layerOpt = window.mapViewer.operateLayerTool.getLayerById(data.id);
+      let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(data.id);
       if (layerOpt) layerOpt.layer.setAlpha(data.alpha);
     },
     checkLayer(data, state) {
@@ -122,7 +105,7 @@ export default {
         if (this.clickTimes == 2) {
           // 双击节点
           if (data.type == "group") return;
-          let layerOpt = window.mapViewer.operateLayerTool.getLayerById(
+          let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(
             data.id
           );
           if (layerOpt && layerOpt.layer && layerOpt.layer.show)
@@ -138,7 +121,21 @@ export default {
   watch: {
     operateLayers: {
       handler(data) {
-
+        let operateLayerTool = window.mapViewer.operateLayerTool;
+        // 根据属性 看哪些打开
+        operateLayerTool._layerObjs.forEach((element) => {
+          if (element.open) this.expandedKeys.push(element.id);
+        });
+        data.forEach((element) => {
+          if (element.open && element.type == "group") {
+            this.expandedKeys.push(element.id);
+          }
+        });
+        // 根据属性 看哪些选中
+        let showslayer = operateLayerTool.getAllshowLayers();
+        showslayer.forEach((lyr) => {
+          this.checkedKeys.push(lyr.id);
+        });
       },
       deep: true,
     },

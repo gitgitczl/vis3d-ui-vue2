@@ -52,6 +52,7 @@ export default {
       true
     );
     let allSplitLayers = blys.concat(olys);
+
     allSplitLayers.forEach((layer) => {
       this.layerList.push({
         id: layer.id,
@@ -60,7 +61,7 @@ export default {
     });
 
     this.nowSelectId = this.layerList[0].id;
-    let lyr = this.getLayerById(this.nowSelectId);
+    let lyr = this.getLayerObjById(this.nowSelectId);
     lyr.setVisible(true);
     nowLyr = lyr;
     if (!layerSplit) {
@@ -76,16 +77,16 @@ export default {
     }
   },
   methods: {
-    getLayerById(id) {
+    getLayerObjById(id) {
       if (!id) return null;
       let layer = null;
-      layer = window.mapViewer.baseLayerTool.getLayerById(id).layer;
-      if(!layer) layer = window.mapViewer.operateLayerTool.getLayerById(id).layer;
+      layer = window.mapViewer.baseLayerTool.getLayerObjById(id).layer;
+      if(!layer) layer = window.mapViewer.operateLayerTool.getLayerObjById(id).layer;
       return layer;
     },
 
     changeLayer() {
-      let lyr = this.getLayerById(this.nowSelectId);
+      let lyr = this.getLayerObjById(this.nowSelectId);
       if (!lyr) return;
       lyr.setVisible(true);
       nowLyr = lyr;

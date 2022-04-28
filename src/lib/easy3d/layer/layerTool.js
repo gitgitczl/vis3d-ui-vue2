@@ -10,91 +10,92 @@ import TilesetLayer from "./tilesetLayer";
 class LayerTool {
     constructor(viewer) {
         this.viewer = viewer;
-        this._layers = [];
+        this._layerObjs = [];
     }
     get layers() {
-        return this._layers;
+        return this._layerObjs;
     }
     add(opt) {
-        let layer = null;
+        let layerObj = null;
         let type = opt.type;
         switch (type) {
             case "xyz": //xyz格式切片
-                layer = new XYZLayer(this.viewer, opt);
+                layerObj = new XYZLayer(this.viewer, opt);
                 break;
             case "wfs": // wfs服务
             case "geojson": // geojson格式数据
-                layer = new GeojsonLayer(this.viewer, opt);
+                layerObj = new GeojsonLayer(this.viewer, opt);
                 break;
             case "mapserver": // arcgis标准mapserver服务
-                layer = new MapserverLayer(this.viewer, opt);
+                layerObj = new MapserverLayer(this.viewer, opt);
                 break;
             case "arcgiscache": // arcmap标注wgs84切片
-                layer = new ArcgiscacheLayer(this.viewer, opt);
+                layerObj = new ArcgiscacheLayer(this.viewer, opt);
                 break;
             case "tdt": // 天地图图层
-                layer = new TDTLayer(this.viewer, opt);
+                layerObj = new TDTLayer(this.viewer, opt);
                 break;
             case "singleImage":// 单张图片  
-                layer = new SingleImageLayer(this.viewer, opt);
+                layerObj = new SingleImageLayer(this.viewer, opt);
                 break;
             case "tms":// 标准tms类型
-                layer = new TMSLayer(this.viewer, opt);
+                layerObj = new TMSLayer(this.viewer, opt);
                 break;
             case "3dtiles":// 模型
-                layer = new TilesetLayer(this.viewer, opt);
+                layerObj = new TilesetLayer(this.viewer, opt);
                 break;
             case "grid":// 网格图层
-                layer = new GridLayer(this.viewer, opt);
+                layerObj = new GridLayer(this.viewer, opt);
                 break;
             default:
                 break;
         }
-        if (!layer) return;
-        if (layer.type == "3dtiles") {
-            layer.load(function () {
-                layer.setAlpha(opt.alpha);
-                layer.setVisible(opt.show);
+        if (!layerObj) return;
+        if (layerObj.type == "3dtiles") {
+            layerObj.load(function () {
+                layerObj.setAlpha(opt.alpha);
+                layerObj.setVisible(opt.show);
             });
         } else {
-            layer.load();
-            layer.setAlpha(opt.alpha);
-            layer.setVisible(opt.show);
+            layerObj.load();
+            layerObj.setAlpha(opt.alpha);
+            layerObj.setVisible(opt.show);
         }
-        this._layers.push(layer);
+        this._layerObjs.push(layerObj);
         opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         opt.alpha = opt.alpha == undefined ? 1 : opt.alpha;
-        layer.id = opt.id;
-        layer.attr = opt; // 绑定属性文件
 
-        return layer;
+        layerObj.id = opt.id;
+        layerObj.attr = opt; // 绑定属性文件
+
+        return layerObj;
     }
-    removeLayer(layer){
-        if(!layer) return ;
-        this.removeLayerById(layer.id);
+    removeLayerObj(layerObj) {
+        if (!layerObj) return;
+        this.removeLayerObjById(layerObj.id);
     }
-    removeLayerById(id) {
+    removeLayerObjById(id) {
         if (!id) return;
-        let lyropt = this.getLayerById(id);
+        let lyropt = this.getLayerObjById(id);
         if (lyropt && lyropt.layer) {
             lyropt.layer.remove();
-            this._layers.splice(lyropt.index, 1);
+            this._layerObjs.splice(lyropt.index, 1);
         }
     }
     removeAll() {
-        for (let i = 0; i < this._layers.length; i++) {
-            this._layers[i].remove();
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            this._layerObjs[i].remove();
         }
-        this._layers = [];
+        this._layerObjs = [];
     }
     destroy() {
         this.removeAll();
-        this._layers = [];
-        delete this._layers
+        this._layerObjs = [];
+        delete this._layerObjs
     }
     hideById(id) {
         if (!id) return;
-        let layerOpt = this.getLayerById(id);
+        let layerOpt = this.getLayerObjById(id);
         if (layerOpt && layerOpt.layer) {
             layerOpt.layer.hide();
             layerOpt.layer.attr.show = false;
@@ -102,19 +103,19 @@ class LayerTool {
     }
     showById(id) {
         if (!id) return;
-        let layerOpt = this.getLayerById(id);
+        let layerOpt = this.getLayerObjById(id);
         if (layerOpt && layerOpt.layer) {
             layerOpt.layer.show();
             layerOpt.layer.attr.show = true;
         }
     }
-    getLayerById(id) {
+    getLayerObjById(id) {
         if (!id) return;
         let obj = {};
-        for (let i = 0; i < this._layers.length; i++) {
-            if (this._layers[i].id == id) {
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (this._layerObjs[i].id == id) {
                 obj = {
-                    layer: this._layers[i],
+                    layer: this._layerObjs[i],
                     index: i
                 }
                 break;
@@ -133,31 +134,31 @@ class LayerTool {
     // 缩放到某个
     zoomTo(id) {
         if (!id) return;
-        let layobj = this.getLayerById(id) || {};
+        let layobj = this.getLayerObjById(id) || {};
         if (layobj && layobj.layer)
             layobj.layer.zoomTo();
     }
     hideAll() {
-        for (let i = 0; i < this._layers.length; i++) {
-            this._layers[i].hide();
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            this._layerObjs[i].hide();
         }
     }
 
     // 获取当前所有显示的图层
     getAllshowLayers() {
         let arr = [];
-        for (let i = 0; i < this._layers.length; i++) {
-            if (this._layers[i].attr.show) {
-                arr.push(this._layers[i]);
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (this._layerObjs[i].attr.show) {
+                arr.push(this._layerObjs[i]);
             }
         }
         return arr;
     }
     getAllhideLayers() {
         let arr = [];
-        for (let i = 0; i < this._layers.length; i++) {
-            if (!this._layers[i].attr.show) {
-                arr.push(this._layers[i]);
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (!this._layerObjs[i].attr.show) {
+                arr.push(this._layerObjs[i]);
             }
         }
         return arr;
@@ -166,9 +167,9 @@ class LayerTool {
     getLayerByField(field, val) {
         if (!field) return;
         let returnData = [];
-        for (let i = 0; i < this._layers.length; i++) {
-            if (this._layers[i].attr[field] == val) {
-                returnData.push(this._layers[i]);
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (this._layerObjs[i].attr[field] == val) {
+                returnData.push(this._layerObjs[i]);
             }
         }
         return returnData;

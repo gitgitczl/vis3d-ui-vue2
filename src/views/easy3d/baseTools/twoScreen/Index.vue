@@ -104,7 +104,7 @@ export default {
 
     // 构建图层树
     let operateLayerTool = window.mapViewer2.operateLayerTool;
-    operateLayerTool._layers.forEach((element) => {
+    operateLayerTool._layerObjs.forEach((element) => {
       if (element.open) this.expandedKeys.push(element.id);
     });
     operateLayers.forEach((element) => {
@@ -174,7 +174,7 @@ export default {
       this.$emit("close", "twoScreen");
     },
     setLayeralpha(data) {
-      let layerOpt = window.mapViewer2.operateLayerTool.getLayerById(data.id);
+      let layerOpt = window.mapViewer2.operateLayerTool.getLayerObjById(data.id);
       if (layerOpt && layerOpt.layer) layerOpt.layer.setAlpha(data.alpha);
     },
     checkLayer(data, state) {
