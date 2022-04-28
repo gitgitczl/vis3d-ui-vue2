@@ -145,7 +145,7 @@ class LayerTool {
     }
 
     // 获取当前所有显示的图层
-    getAllshowLayers() {
+    getAllshow() {
         let arr = [];
         for (let i = 0; i < this._layerObjs.length; i++) {
             if (this._layerObjs[i].attr.show) {
@@ -154,7 +154,7 @@ class LayerTool {
         }
         return arr;
     }
-    getAllhideLayers() {
+    getAllhide() {
         let arr = [];
         for (let i = 0; i < this._layerObjs.length; i++) {
             if (!this._layerObjs[i].attr.show) {
@@ -164,7 +164,7 @@ class LayerTool {
         return arr;
     }
     // 根据字段来进行查询
-    getLayerByField(field, val) {
+    getLayerObjByField(field, val) {
         if (!field) return;
         let returnData = [];
         for (let i = 0; i < this._layerObjs.length; i++) {

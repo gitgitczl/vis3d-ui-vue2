@@ -112,7 +112,7 @@ export default {
         this.expandedKeys.push(element.id);
       }
     });
-    let showslayer = operateLayerTool.getAllshowLayers();
+    let showslayer = operateLayerTool.getAllshow();
     showslayer.forEach((lyr) => {
       this.checkedKeys.push(lyr.id);
     });
@@ -179,8 +179,8 @@ export default {
     },
     checkLayer(data, state) {
       this.checkedKeys = state.checkedKeys;
-      let allshowLayers = window.mapViewer2.operateLayerTool.getAllshowLayers();
-      let allhideLayers = window.mapViewer2.operateLayerTool.getAllhideLayers();
+      let allshowLayers = window.mapViewer2.operateLayerTool.getAllshow();
+      let allhideLayers = window.mapViewer2.operateLayerTool.getAllhide();
       for (let i = 0; i < allshowLayers.length; i++) {
         let layer = allshowLayers[i].layer;
         if (state.checkedKeys.indexOf(layer.attr.id) == -1) {

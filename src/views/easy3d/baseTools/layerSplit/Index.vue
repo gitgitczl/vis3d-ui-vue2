@@ -43,11 +43,11 @@ export default {
   mounted() {
     // 构建卷帘对比单选框
    
-    let blys = window.mapViewer.baseLayerTool.getLayerByField(
+    let blys = window.mapViewer.baseLayerTool.getLayerObjByField(
       "layerSplit",
       true
     );
-    let olys = window.mapViewer.operateLayerTool.getLayerByField(
+    let olys = window.mapViewer.operateLayerTool.getLayerObjByField(
       "layerSplit",
       true
     );

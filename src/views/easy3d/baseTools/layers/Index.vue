@@ -80,8 +80,8 @@ export default {
     },
     checkLayer(data, state) {
       this.checkedKeys = state.checkedKeys;
-      let allshowLayers = window.mapViewer.operateLayerTool.getAllshowLayers();
-      let allhideLayers = window.mapViewer.operateLayerTool.getAllhideLayers();
+      let allshowLayers = window.mapViewer.operateLayerTool.getAllshow();
+      let allhideLayers = window.mapViewer.operateLayerTool.getAllhide();
       for (let i = 0; i < allshowLayers.length; i++) {
         let layer = allshowLayers[i].layer;
         if (layer && state.checkedKeys.indexOf(layer.attr.id) == -1) {
@@ -132,7 +132,7 @@ export default {
           }
         });
         // 根据属性 看哪些选中
-        let showslayer = operateLayerTool.getAllshowLayers();
+        let showslayer = operateLayerTool.getAllshow();
         showslayer.forEach((lyr) => {
           this.checkedKeys.push(lyr.id);
         });
