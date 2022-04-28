@@ -14,15 +14,17 @@ class SituationTool {
     this.lastSelectEntity = null;
     // 属性编辑设置
     this.editAttr = null;
-    if (this.hasEdit) {
-      this.bindEdit();
-    }
-
+    this.bindEdit();
+    this.bindRemove();
+    this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;; // 是否可以编辑
     this.endCreateFun = null; // 结束创建
     this.startEditFun = null; // 开始编辑
     this.endEditFun = null; // 结束编辑
-
+    this.intoEdit = null;
+    this.deletePrompt = null;
+    this.deleteEntityObj = null;
   }
+
 
   // 事件绑定
   on(type, fun) {
@@ -56,18 +58,25 @@ class SituationTool {
       console.warn("前一次标绘未结束！");
       return;
     }
-
+    this.intoEdit = opt.intoEdit == undefined ? true : opt.intoEdit; // 绘制完成后 是否直接进入编辑（能否进入编辑 还得看 canEdit属性）
     let arrow = new SituationPlot(this.viewer, {
       situationType: opt.type,
       style: opt.style
     });
-
-    if (opt.success) opt.success(arrow); // 绘制成功后
     let that = this;
     arrow.start(function (ent) {
+      if (opt.success) opt.success(arrow); // 绘制成功后
       if (that.endCreateFun) that.endCreateFun(arrow, ent)
+      if(that.canEdit && that.intoEdit){
+        arrow.startEdit(); 
+      }
       that.toolArr.push(arrow);
+      
     });
+  }
+
+  canEdit(isOpen) {
+    this.canEdit = isOpen;
   }
   // 获取当前标记的内容 供保存到本地
   getAllData() {
@@ -125,8 +134,9 @@ class SituationTool {
       this.handler.destroy();
       this.handler = null;
     }
-
   }
+
+  // 绑定编辑
   bindEdit() {
     var that = this;
     this.handler.setInputAction(function (evt) { //单机开始绘制
@@ -154,6 +164,78 @@ class SituationTool {
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
+  // 绑定移除
+  bindRemove() {
+    let that = this;
+    function remove(px) {
+      // 构建右键删除鼠标提示
+      if (that.deletePrompt) {
+        that.deletePrompt.destroy();
+        that.deletePrompt = null;
+      }
+      that.deletePrompt = new Prompt(viewer, {
+        content: "<span id='deleteEntity' style='cursor: pointer;'>删除</span>",
+        show: true,
+        offset: {
+          x: 60,
+          y: 60,
+        },
+      });
+      let deleteDom = document.getElementById("deleteEntity");
+      that.deletePrompt.update(px);
+      deleteDom.addEventListener("click", function () {
+        // 删除当前对象前 结束之前的编辑
+        that.endEdit();
+        // 删除事件
+        that.deletePrompt.destroy();
+        if (!that.deleteEntityObj || that.deleteEntityObj == {}) return;
+        let entObj = that.deleteEntityObj.entityObj;
+        if (that.removeFun) {
+          that.removeFun(entObj, entObj.getEntity());
+        }
+        entObj.destroy();
+        that.toolArr.splice(that.deleteEntityObj.index, 1);
+      });
+    }
+
+    this.removeHandler.setInputAction(function (evt) {
+      //右键取消上一步
+      if (!that.canEdit) return;
+      // 右键点击当前目标外 销毁提示框
+      if (that.deletePrompt) {
+        that.deletePrompt.destroy();
+        that.deletePrompt = null;
+      }
+      let pick = that.viewer.scene.pick(evt.position);
+      if (Cesium.defined(pick) && pick.id) {
+        // 选中实体
+        for (let i = 0; i < that.toolArr.length; i++) {
+          if (
+            pick.id.objId == that.toolArr[i].objId &&
+            (that.toolArr[i].state == "endCreate" ||
+              that.toolArr[i].state == "startEdit" ||
+              that.toolArr[i].state == "endEdit")
+          ) {
+            // 结束编辑或结束构建才给删
+            that.deleteEntityObj = {
+              entityObj: that.toolArr[i],
+              index: i,
+            };
+            remove(evt.position);
+            break;
+          }
+        }
+      }
+    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+    this.removeHandler.setInputAction(function (evt) {
+      //右键取消上一步
+      if (that.deletePrompt) {
+        that.deletePrompt.destroy();
+        that.deletePrompt = null;
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  }
+
   unbindEdit() {
     for (var i = 0; i < this.toolArr.length; i++) {
       this.toolArr[i].endEdit();
@@ -171,7 +253,6 @@ class SituationTool {
     }
     if (index != -1) this.toolArr.splice(index, 1)
   }
-
 }
 
 export default SituationTool;

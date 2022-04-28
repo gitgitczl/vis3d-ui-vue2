@@ -62,7 +62,6 @@ export default {
 
     this.nowSelectId = this.layerList[0].id;
     this.lastLayerAttr = this.layerList[0];
-    debugger
     this.$store.commit("setCheckLayerAttr", this.layerList[0]);
     let lyr = this.getLayerObjById(this.nowSelectId);
     if (!layerSplit) {
