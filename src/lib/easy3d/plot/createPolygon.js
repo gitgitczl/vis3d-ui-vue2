@@ -58,7 +58,6 @@ class CreatePolygon extends BasePlot {
 				if (that.positions.length == 3) {
 					if (!Cesium.defined(that.entity)) {
 						that.entity = that.createPolygon(that.style);
-						that.entity.isFilter = true;
 						that.entity.objId = that.objId;
 						if (that.polyline) that.polyline.show = false;
 					}
@@ -126,7 +125,6 @@ class CreatePolygon extends BasePlot {
 				newP = Cesium.Cartographic.toCartesian(ctgc);
 			}
 			let point = this.createPoint(newP);
-			point.isFilter = true;
 			point.ctgc = ctgc;
 			point.wz = this.controlPoints.length;
 			this.controlPoints.push(point);
@@ -237,8 +235,8 @@ class CreatePolygon extends BasePlot {
 					return that.positions
 				}, false),
 				clampToGround: Boolean(this.style.clampToGround),
-				material: Cesium.Color.RED,
-				width: 3
+				material: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1),
+				width: this.style.outlineWidth || 1
 			}
 		});
 	}

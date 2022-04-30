@@ -10,8 +10,6 @@
     :h="size.height"
     :x="position.left"
     :y="position.top"
-    :parentW="parentWidth"
-    :parentH="parentHeight"
     :parentLimitation="true"
     @resizing="onResizing"
     @resizestop="onResizstop"

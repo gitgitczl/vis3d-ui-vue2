@@ -12,6 +12,7 @@ import CreatePoint from './createPoint.js'
 import CreatePolygon from './createPolygon.js'
 import CreateRectangle from './createRectangle'
 import CreatePolyline from './createPolyline.js'
+import CreateArrow from "./createArrow";
 import cUtil from '../cUtil.js'
 class DrawTool {
   constructor(viewer, obj) {
@@ -521,21 +522,19 @@ class DrawTool {
       name = "文字_";
     }
 
-    if (opt.type == "situation") {
+
+    if (opt.type == "arrow") {
       /**
       * situationType值及对应的类型：
       *  	1-攻击箭头 2-攻击箭头（平尾）3-攻击箭头（燕尾）4-闭合曲面 5-钳击箭头 
       * 		6-单尖直箭头 7-粗单尖直箭头(带燕尾) 8-集结地 9-弓形面 10-直箭头 
       * 		11-矩形旗 12-扇形 13-三角旗 14-矩形波浪旗 17-多边形 18-圆形
       */
-      if (!opt.situationType) {
+      if (!opt.arrowType) {
         console.log("缺少军事标绘类型");
         return;
       }
-      entityObj = new CreateSituationPlot(this.viewer, {
-        situationType: opt.situationType,
-        style: opt.style
-      });
+      entityObj = new CreateArrow(this.viewer, opt.arrowType, opt.style);
     }
 
     if (entityObj) entityObj.name = name + new Date().getTime();

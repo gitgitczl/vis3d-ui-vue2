@@ -13,6 +13,7 @@ class BasePlot {
         this.controlPoints = []; // 控制点
         this.modifyPoint = null;
         this.entity = null;
+        this.pointStyle = opt.point || {};
     }
 
     // 坐标拾取
@@ -155,13 +156,22 @@ class BasePlot {
     // 构建控制点
     createPoint(position) {
         if (!position) return;
+        this.pointStyle.color = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
+        this.pointStyle.outlineColor = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
+
+        let color = this.pointStyle.color instanceof Cesium.Color ? this.pointStyle.color : Cesium.Color.fromCssColorString(this.pointStyle.color);
+        color = color.withAlpha(this.pointStyle.colorAlpha || 0.8);
+
+        let outlineColor = this.pointStyle.outlineColor instanceof Cesium.Color ? this.pointStyle.outlineColor : Cesium.Color.fromCssColorString(this.pointStyle.outlineColor);
+        outlineColor = outlineColor.withAlpha(this.pointStyle.outlineColorAlpha || 0.8);
+
         return this.viewer.entities.add({
             position: position,
             point: {
-                pixelSize: 10,
-                color: Cesium.Color.CORNFLOWERBLUE.withAlpha(.8),
-               /*  outlineWidth: 2,
-                outlineColor: Cesium.Color.DARKRED, */
+                pixelSize: this.pointStyle.property || 10,
+                color: color,
+                outlineWidth: this.pointStyle.outlineWidth || 0,
+                outlineColor: outlineColor,
                 disableDepthTestDistance: Number.POSITIVE_INFINITY
             },
             show: false
