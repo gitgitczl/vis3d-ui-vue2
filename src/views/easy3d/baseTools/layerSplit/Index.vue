@@ -22,6 +22,7 @@
 import Card from "@/views/easy3d/components/card/Card.vue";
 import MapSplit from "@/lib/easy3d/layerSplit/layerSplit.js";
 let layerSplit = null;
+let nowLayerAttr = {};
 export default {
   name: "LayerSplit",
   components: {
@@ -35,13 +36,13 @@ export default {
   data() {
     return {
       nowSelectId: "",
-      lastLayerAttr: {},
       layerList: [],
     };
   },
 
   mounted() {
     // 构建卷帘对比单选框
+    debugger
     let allSplitLayers = [];
     let blys = window.mapViewer.baseLayerTool.getLayerObjByField(
       "layerSplit",
@@ -61,16 +62,26 @@ export default {
     });
 
     this.nowSelectId = this.layerList[0].id;
-    this.lastLayerAttr = this.layerList[0];
-    this.$store.commit("setCheckLayerAttr", this.layerList[0]);
     let lyr = this.getLayerObjById(this.nowSelectId);
+    nowLayerAttr = {
+      oldVisible: lyr._layer.show,
+    };
+    nowLayerAttr = JSON.parse(JSON.stringify(nowLayerAttr));
+    nowLayerAttr.layerObj = lyr;
+    nowLayerAttr.layer = lyr._layer;
+    // 默认选中第一个展示
     if (!layerSplit) {
       layerSplit = new MapSplit(window.viewer, {
         layer: lyr._layer,
       });
     }
+    if (!lyr._layer.show) {
+      this.$store.commit("setCheckLayerAttr", this.layerList[0]);
+      nowLayerAttr.newVisible = true;
+    }
   },
   destroyed() {
+    this.resetLastlyr();
     if (layerSplit) {
       layerSplit.destroy();
       layerSplit = null;
@@ -87,17 +98,34 @@ export default {
     },
 
     changeLayer(attr) {
-      this.$store.commit("setUncheckLayerAttr", this.lastLayerAttr);
-      this.$store.commit("setCheckLayerAttr", attr);
-      this.lastLayerAttr = attr;
       let lyr = this.getLayerObjById(attr.id);
       if (!lyr) return;
-      lyr.setVisible(true);
-      nowLyr = lyr;
       if (layerSplit) layerSplit.setLayer(lyr);
+      // 还原上一个选中的对象
+      this.resetLastlyr();
+      nowLayerAttr = {
+        oldVisible: lyr._layer.show,
+      };
+      nowLayerAttr = JSON.parse(JSON.stringify(nowLayerAttr));
+      nowLayerAttr.layerObj = lyr;
+      nowLayerAttr.layer = lyr._layer;
+      nowLayerAttr.newVisible = true;
+      this.$store.commit("setCheckLayerAttr", attr);
     },
     close() {
       this.$emit("close", "layerSplit");
+    },
+    // 还原上一个选中的状态
+    resetLastlyr() {
+      debugger
+      if (nowLayerAttr.layer) {
+        if (!nowLayerAttr.oldVisible) {
+          this.$store.commit("setUncheckLayerAttr", nowLayerAttr.layerObj.attr);
+        } else {
+          this.$store.commit("setUncheckLayerAttr", nowLayerAttr.layerObj.attr);
+        }
+        nowLayerAttr = {};
+      }
     },
   },
 };

@@ -70,6 +70,7 @@
       :title="baseTools['layers'].name"
       :position="baseTools['layers'].position"
       :size="baseTools['layers'].size"
+      :mapConfig="mapConfig"
       @close="close"
     />
     <!-- 底图 -->
@@ -269,6 +270,7 @@ export default {
         roamStyle: {},
         layerSplit: {},
         monomer: {},
+        mapConfig: {}, // 监听配置文件的mapConfig
       },
       plotEntityObjId: null,
       nowStartRoamAttr: null, // 当前漫游的数据
@@ -282,9 +284,10 @@ export default {
 
   mounted() {
     // 构建基础地图
+    this.mapConfig = window.mapConfig;
     let mapViewer = (window.mapViewer = new this.easy3d.MapViewer(
       "mapContainer",
-      window.mapConfig
+      this.mapConfig
     ));
     window.viewer = mapViewer._viewer;
 
@@ -405,6 +408,12 @@ export default {
         });
       });
     },
+
+    // =================== 监听图层的开启关闭 =======================
+    setLayerVisible(attr, visible) {
+      attr = attr || {};
+      window.mapViewer.operateLayerTool.setVisible(attr.id, visible);
+    },
   },
   watch: {
     // 监听工具面板的开启
@@ -461,6 +470,27 @@ export default {
         this.printMap();
         this.$store.commit("setIsPrintMap", false);
       }
+    },
+
+    /**
+     * layer/index.vue中也同样监听了，
+     * 此处监听为了防止layer/index.vue未打开监听不到
+     */
+    "$store.state.map3d.checkLayerAttr": {
+      handler(attr) {
+        if (!attr.id) return;
+        this.setLayerVisible(attr, true);
+        this.$store.commit("setCheckLayerAttr", {});
+      },
+      deep: true,
+    },
+    "$store.state.map3d.uncheckLayerAttr": {
+      handler(attr) {
+        if (!attr.id) return;
+        this.setLayerVisible(attr, false);
+        this.$store.commit("setUncheckLayerAttr", {});
+      },
+      deep: true,
     },
   },
 };

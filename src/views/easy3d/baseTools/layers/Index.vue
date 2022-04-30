@@ -47,6 +47,7 @@ export default {
     title: "",
     position: {},
     size: {},
+    mapConfig: {},
   },
   data() {
     return {
@@ -65,8 +66,7 @@ export default {
   },
 
   mounted() {
-    let mapConfig = window.viewer.mapConfig || {};
-    this.$set(this, "operateLayers", mapConfig.operateLayers);
+    this.$set(this, "operateLayers", this.mapConfig.operateLayers);
 
     let operateLayerTool = window.mapViewer.operateLayerTool;
     // 根据属性 看哪些打开
@@ -85,7 +85,9 @@ export default {
     });
   },
 
-  destroyed() {},
+  destroyed() {
+
+  },
   methods: {
     close() {
       this.$emit("close", "layers");
@@ -137,7 +139,7 @@ export default {
       attr = attr || {};
       if (this.checkedKeys.indexOf(attr.id) != -1) return;
       this.checkedKeys.push(attr.id);
-      window.mapViewer.operateLayerTool.setVisible(attr.id, true);
+      /* window.mapViewer.operateLayerTool.setVisible(attr.id, true); */ // baseTools/index.vue中已监听打开
     },
     // 取消选中
     uncheckOne(attr) {
@@ -149,7 +151,7 @@ export default {
           break;
         }
       }
-      window.mapViewer.operateLayerTool.setVisible(attr.id, false);
+      /* window.mapViewer.operateLayerTool.setVisible(attr.id, false); */ // baseTools/index.vue中已监听打开
     },
   },
 
@@ -157,13 +159,17 @@ export default {
   watch: {
     "$store.state.map3d.checkLayerAttr": {
       handler(attr) {
-        this.checkOne(attr);
+        if (!attr.id) return;
+        this.setLayerVisible(attr, true);
+        this.$store.commit("setCheckLayerAttr", {});
       },
       deep: true,
     },
     "$store.state.map3d.uncheckLayerAttr": {
       handler(attr) {
-        this.uncheckOne(attr);
+        if (!attr.id) return;
+        this.setLayerVisible(attr, false);
+        this.$store.commit("setUncheckLayerAttr", {});
       },
       deep: true,
     },
