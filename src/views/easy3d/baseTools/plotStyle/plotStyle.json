@@ -174,5 +174,31 @@
             "minVal": 0,
             "maxVal": 99999999
         }
+    },
+    "arrow": {
+        "heightReference": {
+            "name": "是否贴地",
+            "value": true,
+            "type": "radio"
+        },
+        "fill": {
+            "name": "是否填充",
+            "value": true,
+            "type": "radio"
+        },
+        "color": {
+            "name": "颜色",
+            "value": "#ffffff",
+            "type": "color-picker"
+        },
+        "colorAlpha": {
+            "name": "透明度",
+            "value": 1,
+            "type": "slider",
+            "min": 0,
+            "max": 1,
+            "step": 0.01
+        }
+       
     }
 }

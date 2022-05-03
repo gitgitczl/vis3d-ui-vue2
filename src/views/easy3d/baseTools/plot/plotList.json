@@ -18,7 +18,10 @@
             "iconImg": "./easy3d/images/plot/polygon.png",
             "styleType": "polygon",
             "style": {
-                "color": "#0000ff"
+                "color": "#0000ff",
+                "outline": true,
+                "outlineColor": "#ff0000",
+                "heightReference": 1
             }
         },
         {
@@ -35,52 +38,52 @@
         {
             "name": "攻击箭头",
             "icon": "",
-            "type":"arrow",
+            "type": "arrow",
             "arrowType": 1,
             "style": {
                 "color": "#0000ff"
             },
-            "styleType": "polygon"
+            "styleType": "arrow"
         },
         {
             "name": "攻击箭头(平尾)",
             "icon": "",
-            "type":"arrow",
+            "type": "arrow",
             "arrowType": 2,
             "style": {
                 "color": "#0000ff"
             },
-            "styleType": "polygon"
+            "styleType": "arrow"
         },
         {
             "name": "攻击箭头(燕尾)",
             "icon": "",
-            "type":"arrow",
+            "type": "arrow",
             "arrowType": 3,
             "style": {
                 "color": "#0000ff"
             },
-            "styleType": "polygon"
+            "styleType": "arrow"
         },
         {
             "name": "钳击箭头",
             "icon": "",
-            "type":"arrow",
+            "type": "arrow",
             "arrowType": 5,
             "style": {
                 "color": "#0000ff"
             },
-            "styleType": "polygon"
+            "styleType": "arrow"
         },
         {
             "name": "单尖直箭头",
             "icon": "",
-            "type":"arrow",
+            "type": "arrow",
             "arrowType": 6,
             "style": {
                 "color": "#0000ff"
             },
-            "styleType": "polygon"
+            "styleType": "arrow"
         }
     ]
 }

@@ -59,7 +59,6 @@ class CreatePolygon extends BasePlot {
 					if (!Cesium.defined(that.entity)) {
 						that.entity = that.createPolygon(that.style);
 						that.entity.objId = that.objId;
-						if (that.polyline) that.polyline.show = false;
 					}
 				}
 			}
@@ -148,16 +147,14 @@ class CreatePolygon extends BasePlot {
 		}
 
 		obj.fill = polygon.fill ? polygon.fill.getValue() : false;
-
 		if (polygon.heightReference) {
 			let heightReference = polygon.heightReference.getValue();
 			obj.heightReference = Boolean(heightReference);
 		}
 
 		/* obj.heightReference = isNaN(polygon.heightReference.getValue()) ? false : polygon.heightReference.getValue(); */
-
-		let outline = this.entity.polyline;
-		if (outline && outline.show.getValue()) {
+		let outline = this.polyline.polyline;
+		if (outline && this.polyline.show) {
 			obj.outlineWidth = outline.width.getValue();
 			obj.outline = "show";
 			let oColor = outline.material.color.getValue();
@@ -173,22 +170,18 @@ class CreatePolygon extends BasePlot {
 	setStyle(style) {
 		if (!style) return;
 		// 由于官方api中的outline限制太多 此处outline为重新构建的polyline
-		if (style.outline == "show") {
-			this.entity.polyline.show = true;
-			this.entity.polyline.width = style.outlineWidth;
-			this.entity.polyline.clampToGround = Boolean(style.heightReference);
-			let outlineColor = (style.outlineColor instanceof Cesium.Color) ? style.outlineColor : Cesium.Color.fromCssColorString(style.outlineColor);
-			let outlineMaterial = outlineColor.withAlpha(style.outlineColorAlpha || 1);
-			this.entity.polyline.material = outlineMaterial;
-		} else {
-			this.entity.polyline.show = false;
-		}
-
+		this.polyline.show = style.outline.show == "show" ? true : false;
+		let outline = this.polyline.polyline;
+		this.polyline.show = true;
+		outline.width = style.outlineWidth;
+		this.polyline.clampToGround = Boolean(style.heightReference);
+		let outlineColor = (style.outlineColor instanceof Cesium.Color) ? style.outlineColor : Cesium.Color.fromCssColorString(style.outlineColor);
+		let outlineMaterial = outlineColor.withAlpha(style.outlineColorAlpha || 1);
+		outline.material = outlineMaterial;
 		if (style.heightReference != undefined) this.entity.polygon.heightReference = Number(style.heightReference);
 		let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
 		let material = color.withAlpha(style.colorAlpha || 1);
 		this.entity.polygon.material = material;
-
 		if (style.fill != undefined) this.entity.polygon.fill = style.fill;
 		this.style = Object.assign(this.style, style);
 	}
@@ -209,18 +202,6 @@ class CreatePolygon extends BasePlot {
 			}
 		}
 
-		if (this.style.outline) {
-			polygonObj.polyline = {
-				positions: new Cesium.CallbackProperty(function () {
-					return that.positions.concat([that.positions[0]])
-				}, false),
-				clampToGround: Boolean(this.style.heightReference),
-				material: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1),
-				width: this.style.outlineWidth || 1,
-				show: true
-			}
-		}
-
 		if (!this.style.heightReference) {
 			polygonObj.polygon.height = 0; // 不贴地 必设
 			polygonObj.polygon.perPositionHeight = true; // 启用点的真实高度
@@ -232,9 +213,10 @@ class CreatePolygon extends BasePlot {
 		return this.viewer.entities.add({
 			polyline: {
 				positions: new Cesium.CallbackProperty(function () {
-					return that.positions
+					let newPositions = that.positions.concat(that.positions[0]);
+					return newPositions
 				}, false),
-				clampToGround: Boolean(this.style.clampToGround),
+				clampToGround: Boolean(this.style.heightReference),
 				material: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1),
 				width: this.style.outlineWidth || 1
 			}

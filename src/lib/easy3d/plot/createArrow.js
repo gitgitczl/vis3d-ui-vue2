@@ -48,7 +48,7 @@ class CreateArrow extends BasePlot {
 		this.handler.setInputAction(function (evt) { //单机开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
-			if (that.positions.length >= that.maxPointNum + 1) return;
+			if (that.positions.length > that.maxPointNum) return;
 			if (that.movePush) {
 				that.positions.pop();
 				that.movePush = false;
@@ -81,13 +81,13 @@ class CreateArrow extends BasePlot {
 				that.positions[that.positions.length - 1] = cartesian;
 			}
 
-			if (that.positions.length > 1 && !Cesium.defined(that.polyline)) that.polyline = that.createPolyline();
+			if (that.positions.length >= 2 && !Cesium.defined(that.polyline)) that.polyline = that.createPolyline();
 
 			if (that.positions.length >= that.minPointNum) {
 				if (!Cesium.defined(that.entity)) {
 					that.entity = that.createPolygon();
 					that.entity.objId = that.objId;
-					if (that.polyline) that.polyline.show = false;
+					that.polyline.show = false;
 				}
 			}
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -144,34 +144,15 @@ class CreateArrow extends BasePlot {
 		if (!this.entity) return;
 		let obj = {};
 		let polygon = this.entity.polygon;
-		if (polygon.material instanceof Cesium.ColorMaterialProperty) {
-			obj.material = "common";
-			let color = polygon.material.color.getValue();
-			obj.colorAlpha = color.alpha;
-			obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
-		} else {
-
-		}
-
+		let color = polygon.material.color.getValue();
+		obj.colorAlpha = color.alpha;
+		obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
 		obj.fill = polygon.fill ? polygon.fill.getValue() : false;
-
 		if (polygon.heightReference) {
 			let heightReference = polygon.heightReference.getValue();
 			obj.heightReference = Boolean(heightReference);
 		}
 
-		/* obj.heightReference = isNaN(polygon.heightReference.getValue()) ? false : polygon.heightReference.getValue(); */
-
-		let outline = this.entity.polyline;
-		if (outline && outline.show.getValue()) {
-			obj.outlineWidth = outline.width.getValue();
-			obj.outline = "show";
-			let oColor = outline.material.color.getValue();
-			obj.outlineColorAlpha = oColor.alpha;
-			obj.outlineColor = new Cesium.Color(oColor.red, oColor.green, oColor.blue, 1).toCssHexString();
-		} else {
-			obj.outline = "hide";
-		}
 		return obj;
 
 	}
@@ -179,22 +160,10 @@ class CreateArrow extends BasePlot {
 	setStyle(style) {
 		if (!style) return;
 		// 由于官方api中的outline限制太多 此处outline为重新构建的polyline
-		if (style.outline == "show") {
-			this.entity.polyline.show = true;
-			this.entity.polyline.width = style.outlineWidth;
-			this.entity.polyline.clampToGround = Boolean(style.heightReference);
-			let outlineColor = (style.outlineColor instanceof Cesium.Color) ? style.outlineColor : Cesium.Color.fromCssColorString(style.outlineColor);
-			let outlineMaterial = outlineColor.withAlpha(style.outlineColorAlpha || 1);
-			this.entity.polyline.material = outlineMaterial;
-		} else {
-			this.entity.polyline.show = false;
-		}
-
 		if (style.heightReference != undefined) this.entity.polygon.heightReference = Number(style.heightReference);
 		let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
 		let material = color.withAlpha(style.colorAlpha || 1);
 		this.entity.polygon.material = material;
-
 		if (style.fill != undefined) this.entity.polygon.fill = style.fill;
 		this.style = Object.assign(this.style, style);
 	}
@@ -208,7 +177,7 @@ class CreateArrow extends BasePlot {
 			polygon: {
 				hierarchy: new Cesium.CallbackProperty(function () {
 					let newPosition = that.arrowPlot.startCompute(that.positions);
-					if (that.arrowPlot.spliceWZ !== null) {
+					if (that.arrowPlot.spliceWZ != undefined) {
 						newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
 					}
 					return new Cesium.PolygonHierarchy(newPosition)
@@ -217,27 +186,6 @@ class CreateArrow extends BasePlot {
 				show: true,
 				fill: this.style.fill || true,
 				material: this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1)
-			}
-		}
-
-		if (this.style.outline) {
-			polygonObj.polyline = {
-				positions: new Cesium.CallbackProperty(function () {
-					let newPosition = that.arrowPlot.startCompute(that.positions);
-					if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
-						let arr = [];
-						for (let i = 0; i < that.arrowPlot.lineWZ.length; i++) {
-							arr.push(newPosition[that.arrowPlot.lineWZ[i] - 1]);
-						}
-						return arr;
-					} else {
-						return newPosition;
-					}
-				}, false),
-				clampToGround: Boolean(this.style.heightReference),
-				material: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1),
-				width: this.style.outlineWidth || 1,
-				show: true
 			}
 		}
 
@@ -255,7 +203,7 @@ class CreateArrow extends BasePlot {
 					return that.positions
 				}, false),
 				clampToGround: Boolean(this.style.clampToGround),
-				material:  this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1),
+				material: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1),
 				width: this.style.outlineWidth || 1,
 			}
 		});

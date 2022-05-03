@@ -3,6 +3,7 @@ import cUtil from "../cUtil";
 class BasePlot {
     constructor(viewer, opt) {
         this.viewer = viewer;
+        opt = opt || {};
         this.style = opt || {};
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -13,7 +14,7 @@ class BasePlot {
         this.controlPoints = []; // 控制点
         this.modifyPoint = null;
         this.entity = null;
-        this.pointStyle = opt.point || {};
+        this.pointStyle =  {};
     }
 
     // 坐标拾取
@@ -174,7 +175,7 @@ class BasePlot {
                 outlineColor: outlineColor,
                 disableDepthTestDistance: Number.POSITIVE_INFINITY
             },
-            show: false
+            show: true
         });
     }
 

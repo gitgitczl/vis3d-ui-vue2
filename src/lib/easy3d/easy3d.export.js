@@ -52,6 +52,7 @@ class MapViewer {
         let cesiumCredit = this.opt.map.cesiumCredit == undefined ? false : this.opt.map.cesiumCredit;
         if (!cesiumCredit) this._viewer._cesiumWidget._creditContainer.style.display = "none";
         this._viewer.mapConfig = this.opt;
+        this._viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     }
     // 构建图层
     loadbaseLayers() {
