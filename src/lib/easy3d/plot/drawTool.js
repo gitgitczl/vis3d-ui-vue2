@@ -42,7 +42,7 @@ class DrawTool {
     this.deletePrompt = null;
     this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;; // 是否可以编辑
     this.intoEdit = null;
-    this.lastSelectEntity = null;
+    this.lastEntityObj = null;
     this.lastStartEntityObj = null;
   }
   // 相关事件绑定
@@ -92,7 +92,7 @@ class DrawTool {
       if (that.canEdit && that.intoEdit) {
         entityObj.startEdit();
         if (that.startEditFun) that.startEditFun(entityObj, entity);
-        that.lastSelectEntity = entityObj;
+        that.lastEntityObj = entityObj;
       }
       entityObj.attr = opt || {};
       that.toolArr.push(entityObj);
@@ -119,19 +119,19 @@ class DrawTool {
   startEditOne(entityObj) {
     if (!this.canEdit) return;
 
-    if (this.lastSelectEntity) {
+    if (this.lastEntityObj) {
       // 结束除当前选中实体的所有编辑操作
-      this.lastSelectEntity.endEdit();
+      this.lastEntityObj.endEdit();
       if (this.endEditFun) {
-        this.endEditFun(this.lastSelectEntity, this.lastSelectEntity.getEntity()); // 结束事件
+        this.endEditFun(this.lastEntityObj, this.lastEntityObj.getEntity()); // 结束事件
       }
-      this.lastSelectEntity = null;
+      this.lastEntityObj = null;
     }
     if (entityObj) {
       entityObj.startEdit();
       if (this.startEditFun)
         this.startEditFun(entityObj, entityObj.getEntity());
-      this.lastSelectEntity = entityObj;
+      this.lastEntityObj = entityObj;
     }
   }
   // 修改某个的样式
@@ -159,7 +159,7 @@ class DrawTool {
       if (that.canEdit && that.intoEdit) {
         entityObj.startEdit();
         if (that.startEditFun) that.startEditFun(entityObj, entity);
-        that.lastSelectEntity = entityObj;
+        that.lastEntityObj = entityObj;
       }
     });
     this.toolArr.push(entityObj);
@@ -353,53 +353,52 @@ class DrawTool {
               that.toolArr[i].state != "creating" ||
               that.toolArr[i].state != "endEdit")
           ) {
-            if (that.lastSelectEntity) {
+            if (that.lastEntityObj) {
               // 结束除当前选中实体的所有编辑操作
-              that.lastSelectEntity.endEdit();
+              that.lastEntityObj.endEdit();
               if (that.endEditFun) {
                 that.endEditFun(
-                  that.lastSelectEntity,
-                  that.lastSelectEntity.getEntity()
+                  that.lastEntityObj,
+                  that.lastEntityObj.getEntity()
                 ); // 结束事件
               }
-              that.lastSelectEntity = null;
+              that.lastEntityObj = null;
             }
             // 开始编辑
             that.toolArr[i].startEdit();
             that.nowEditObj = that.toolArr[i];
             if (that.startEditFun) that.startEditFun(that.nowEditObj, pick.id); // 开始编辑
-            that.lastSelectEntity = that.toolArr[i];
+            that.lastEntityObj = that.toolArr[i];
             break;
           }
         }
       } else {
         // 未选中实体 则结束全部绘制
-        if (that.lastSelectEntity) {
-          that.lastSelectEntity.endEdit();
+        if (that.lastEntityObj) {
+          that.lastEntityObj.endEdit();
           if (that.endEditFun) {
             that.endEditFun(
-              that.lastSelectEntity,
-              that.lastSelectEntity.getEntity()
+              that.lastEntityObj,
+              that.lastEntityObj.getEntity()
             ); // 结束事件
           }
-          that.lastSelectEntity = null;
+          that.lastEntityObj = null;
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
   }
 
   endEdit() {
-    if (this.lastSelectEntity) {
+    if (this.lastEntityObj) {
       // 结束除当前选中实体的所有编辑操作
-      this.lastSelectEntity.endEdit();
+      this.lastEntityObj.endEdit();
       if (this.endEditFun) {
         this.endEditFun(
-          this.lastSelectEntity,
-          this.lastSelectEntity.getEntity()
+          this.lastEntityObj,
+          this.lastEntityObj.getEntity()
         ); // 结束事件
       }
-      this.lastSelectEntity = null;
+      this.lastEntityObj = null;
     }
     for (let i = 0; i < this.toolArr.length; i++) {
       this.toolArr[i].endEdit();

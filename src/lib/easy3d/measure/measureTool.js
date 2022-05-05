@@ -16,8 +16,8 @@ class MeasureTool {
 		}
 		this.viewer = viewer;
 		this.nowMeasureObj = null; // 当前测量对象
-		this.measureLnglatArr = [];
-	
+		this.toolArr = [];
+		this.lastMeasureObj = null;
 	}
 
 	// 事件绑定
@@ -85,14 +85,78 @@ class MeasureTool {
 				if (opt.success) opt.success(ms, res)
 				if (that.endMeasureFun) that.endMeasureFun(ms, res);
 			});
-			this.measureLnglatArr.push(ms);
+			this.toolArr.push(ms);
 		}
 	}
-	clear() {
-		for (var i = 0; i < this.measureLnglatArr.length; i++) {
-			if (this.measureLnglatArr[i]) this.measureLnglatArr[i].destroy();
+
+	// 绑定编辑
+	bindEdit() {
+		let that = this;
+		// 如果是线 面 则需要先选中
+		this.handler.setInputAction(function (evt) {
+			//单击开始绘制
+			if (!that.canEdit) return;
+			let pick = that.viewer.scene.pick(evt.position);
+			if (Cesium.defined(pick) && pick.id) {
+				// 选中实体
+				for (let i = 0; i < that.toolArr.length; i++) {
+					if (
+						pick.id.objId == that.toolArr[i].objId &&
+						(that.toolArr[i].state != "startCreate" ||
+							that.toolArr[i].state != "creating" ||
+							that.toolArr[i].state != "endEdit")
+					) {
+						if (that.lastMeasureObj) {
+							// 结束除当前选中实体的所有编辑操作
+							that.lastMeasureObj.endEdit();
+							if (that.endEditFun) {
+								that.endEditFun(that.lastMeasureObj);
+							}
+							that.lastMeasureObj = null;
+						}
+						// 开始编辑
+						that.toolArr[i].startEdit();
+						that.nowEditObj = that.toolArr[i];
+						if (that.startEditFun) that.startEditFun(that.nowEditObj); // 开始编辑
+						that.lastMeasureObj = that.toolArr[i];
+						break;
+					}
+				}
+			} else {
+				// 未选中实体 则结束全部绘制
+				if (that.lastMeasureObj) {
+					that.lastMeasureObj.endEdit();
+					if (that.endEditFun) {
+						that.endEditFun(that.lastMeasureObj); // 结束事件
+					}
+					that.lastMeasureObj = null;
+				}
+			}
+		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+	}
+
+	endEdit() {
+		if (this.lastMeasureObj) {
+			// 结束除当前选中实体的所有编辑操作
+			this.lastMeasureObj.endEdit();
+			if (this.endEditFun) {
+				this.endEditFun(
+					this.lastMeasureObj,
+					this.lastMeasureObj.getEntity()
+				); // 结束事件
+			}
+			this.lastMeasureObj = null;
 		}
-		this.measureLnglatArr = [];
+		for (let i = 0; i < this.toolArr.length; i++) {
+			this.toolArr[i].endEdit();
+		}
+	}
+
+	clear() {
+		for (var i = 0; i < this.toolArr.length; i++) {
+			if (this.toolArr[i]) this.toolArr[i].destroy();
+		}
+		this.toolArr = [];
 		this.nowMeasureObj = null; // 当前编辑对象
 	}
 	destroy() {

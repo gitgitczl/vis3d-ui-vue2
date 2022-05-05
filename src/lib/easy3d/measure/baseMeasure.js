@@ -6,10 +6,12 @@ class BaseMeasure {
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         this.state = null;  // 标识当前状态 no startCreate creating endCreate startEdit endEdit editing
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+        this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.floatLable = null;
         this.unit = opt.unit;
-        this.points = [];
-        this.pointStyle =  {};
+        this.controlPoints = [];
+        this.pointStyle = {};
+        this.modifyPoint = null;
     }
 
     createLine(positions, clampToGround) {
@@ -26,7 +28,7 @@ class BaseMeasure {
             }
         });
     }
-    
+
     createLabel(c, text) {
         if (!c) return;
         return this.viewer.entities.add({
@@ -45,7 +47,7 @@ class BaseMeasure {
     }
 
     setUnit(unit) {
-        if(!unit) return ;
+        if (!unit) return;
         this.unit = unit;
     }
 
