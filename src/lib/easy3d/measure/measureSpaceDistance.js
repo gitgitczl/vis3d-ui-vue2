@@ -143,7 +143,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 
 	// 开始编辑
 	startEdit(callback) {
-		if ((this.state == "endCrerate" || this.state == "endEdit") && this.polyline) return;
+		if ((this.state == "endCrerate" || this.state == "endEdit") && !this.polyline) return;
 		this.state = "startEdit";;
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		let that = this;
@@ -177,6 +177,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 
 			if (!cartesian) return;
 			that.modifyPoint.position.setValue(cartesian);
+
 			let wz = that.modifyPoint.wz;
 			that.positions[wz] = cartesian.clone();
 			that.state = "editing";
@@ -199,8 +200,10 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 		this.modifyHandler.setInputAction(function (evt) {
 			if (!that.modifyPoint) return;
 			that.modifyPoint = null;
+			that.lastPosition = null;
+			that.nextPosition = null;
 			that.forbidDrawWorld(false);
-			if(callback) callback();
+			if (callback) callback();
 			that.state = "endEdit";
 		}, Cesium.ScreenSpaceEventType.LEFT_UP);
 	}
