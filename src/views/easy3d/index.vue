@@ -409,7 +409,7 @@ export default {
       });
     },
 
-    // =================== 监听图层的开启关闭 =======================
+    // =================== 监听操作图层的开启关闭 =======================
     setLayerVisible(attr, visible) {
       attr = attr || {};
       window.mapViewer.operateLayerTool.setVisible(attr.id, visible);
@@ -473,22 +473,13 @@ export default {
     },
 
     /**
-     * layer/index.vue中也同样监听了，
-     * 此处监听为了防止layer/index.vue未打开监听不到
+     * 监听当前operateLayer的显示隐藏
      */
-    "$store.state.map3d.checkLayerAttr": {
-      handler(attr) {
+    "$store.state.map3d.operateLayerVisible": {
+      handler(data) {
         if (!attr.id) return;
-        this.setLayerVisible(attr, true);
-        this.$store.commit("setCheckLayerAttr", {});
-      },
-      deep: true,
-    },
-    "$store.state.map3d.uncheckLayerAttr": {
-      handler(attr) {
-        if (!attr.id) return;
-        this.setLayerVisible(attr, false);
-        this.$store.commit("setUncheckLayerAttr", {});
+        this.setLayerVisible(data.attr, data.visible);
+        this.$store.commit("setLayerCheckState", data);
       },
       deep: true,
     },

@@ -4,6 +4,7 @@ class BaseLayer {
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.opt = opt || {};
+        this.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         if (!opt.url && opt.type != "tdt" && opt.type != "grid") {
             console.log("缺少服务地址！", opt);
             return;

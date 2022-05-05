@@ -41,19 +41,12 @@ export default {
   },
 
   mounted() {
-    // 构建卷帘对比单选框
-    debugger
-    let allSplitLayers = [];
-    let blys = window.mapViewer.baseLayerTool.getLayerObjByField(
+    // 构建卷帘对比单选框 目前仅支持在operateLayer中配置
+    let allSplitLayers = window.mapViewer.operateLayerTool.getLayerObjByField(
       "layerSplit",
       true
     );
-    let olys = window.mapViewer.operateLayerTool.getLayerObjByField(
-      "layerSplit",
-      true
-    );
-    allSplitLayers = blys.concat(olys);
-
+    // 构件下拉选择框
     allSplitLayers.forEach((layer) => {
       this.layerList.push({
         id: layer.id,
@@ -61,22 +54,27 @@ export default {
       });
     });
 
+    // 默认选中第一个展示
     this.nowSelectId = this.layerList[0].id;
     let lyr = this.getLayerObjById(this.nowSelectId);
     nowLayerAttr = {
-      oldVisible: lyr._layer.show,
+      oldVisible: lyr._layer.show, // 记录开始的状态
     };
     nowLayerAttr = JSON.parse(JSON.stringify(nowLayerAttr));
     nowLayerAttr.layerObj = lyr;
     nowLayerAttr.layer = lyr._layer;
-    // 默认选中第一个展示
+
     if (!layerSplit) {
       layerSplit = new MapSplit(window.viewer, {
         layer: lyr._layer,
       });
     }
+    // 加载图层 & 图层管理模块中选中对应的节点
     if (!lyr._layer.show) {
-      this.$store.commit("setCheckLayerAttr", this.layerList[0]);
+      this.$store.commit("setOperateLayerVisible", {
+        attr: lyr.attr,
+        visible: true,
+      });
       nowLayerAttr.newVisible = true;
     }
   },
@@ -110,20 +108,22 @@ export default {
       nowLayerAttr.layerObj = lyr;
       nowLayerAttr.layer = lyr._layer;
       nowLayerAttr.newVisible = true;
-      this.$store.commit("setCheckLayerAttr", attr);
+      // 控制对应图层的显示隐藏
+      this.$store.commit("setOperateLayerVisible", {
+        attr: attr,
+        visible: true,
+      });
     },
     close() {
       this.$emit("close", "layerSplit");
     },
     // 还原上一个选中的状态
     resetLastlyr() {
-      debugger
       if (nowLayerAttr.layer) {
-        if (!nowLayerAttr.oldVisible) {
-          this.$store.commit("setUncheckLayerAttr", nowLayerAttr.layerObj.attr);
-        } else {
-          this.$store.commit("setUncheckLayerAttr", nowLayerAttr.layerObj.attr);
-        }
+        this.$store.commit("setOperateLayerVisible", {
+          attr: nowLayerAttr.layerObj.attr,
+          visible: nowLayerAttr.oldVisible,
+        });
         nowLayerAttr = {};
       }
     },

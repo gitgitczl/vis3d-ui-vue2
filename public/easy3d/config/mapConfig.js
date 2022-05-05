@@ -38,17 +38,10 @@ window.mapConfig = {
     },
     "baseLayers": [
         {
-            "name": "arcgis底图",
-            "type": "mapserver",
-            "iconImg": "./easy3d/images/baseMap/arcgis.png",
-            "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-            "show": true
-        },
-        {
             "name": "天地图",
             "type": "tdt",
             "layerName": "img",
-            "show": false,
+            "show": true,
             "iconImg": "./easy3d/images/baseMap/tdt.png",
             "key": "a217b99b7be68b98104548d78e9a679a"
         }

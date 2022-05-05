@@ -12,8 +12,8 @@ const easy3dStore = {
     nowRoamViewType: -1, // 飞行漫游属性
     isPrintMap: false, // 是否打印地图
     isToolOpen: true, // 工具栏是否打开
-    checkLayerAttr: {}, // 选中的图层属性
-    uncheckLayerAttr: {} // 取消选中的图层属性
+    operateLayerVisible: {}, // 图层的显示隐藏
+    layerCheckState : {} , // 当前图层的选中状态
   },
   mutations: {
     setOperateTool: (state, operateTool) => {
@@ -44,12 +44,12 @@ const easy3dStore = {
       state.isPrintMap = isPrintMap
     },
 
-    setCheckLayerAttr: (state, checkLayerAttr) => {
-      state.checkLayerAttr = checkLayerAttr
+    setOperateLayerVisible: (state, operateLayerVisible) => {
+      state.operateLayerVisible = operateLayerVisible
     },
 
-    setUncheckLayerAttr: (state, uncheckLayerAttr) => {
-      state.uncheckLayerAttr = uncheckLayerAttr
+    setLayerCheckState: (state, layerCheckState) => {
+      state.layerCheckState = layerCheckState
     },
 
     SET_ISTOOLOPEN: (state, isToolOpen) => {

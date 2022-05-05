@@ -85,9 +85,7 @@ export default {
     });
   },
 
-  destroyed() {
-
-  },
+  destroyed() {},
   methods: {
     close() {
       this.$emit("close", "layers");
@@ -157,19 +155,12 @@ export default {
 
   // 监听内部数据变化  保持和树统一
   watch: {
-    "$store.state.map3d.checkLayerAttr": {
-      handler(attr) {
+    "$store.state.map3d.layerCheckState": {
+      handler(data) {
+        let { attr, visible } = data;
         if (!attr.id) return;
-        this.setLayerVisible(attr, true);
-        this.$store.commit("setCheckLayerAttr", {});
-      },
-      deep: true,
-    },
-    "$store.state.map3d.uncheckLayerAttr": {
-      handler(attr) {
-        if (!attr.id) return;
-        this.setLayerVisible(attr, false);
-        this.$store.commit("setUncheckLayerAttr", {});
+        if (visible) this.checkOne(attr);
+        else this.uncheckOne(attr);
       },
       deep: true,
     },
