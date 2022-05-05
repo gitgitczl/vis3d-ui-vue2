@@ -83,6 +83,7 @@ export default {
     showslayer.forEach((lyr) => {
       this.checkedKeys.push(lyr.id);
     });
+
   },
 
   destroyed() {},
@@ -98,6 +99,7 @@ export default {
       this.checkedKeys = state.checkedKeys;
       let allshowLayers = window.mapViewer.operateLayerTool.getAllshow();
       let allhideLayers = window.mapViewer.operateLayerTool.getAllhide();
+
       for (let i = 0; i < allshowLayers.length; i++) {
         let layer = allshowLayers[i].layer;
         if (layer && state.checkedKeys.indexOf(layer.attr.id) == -1) {
@@ -142,6 +144,7 @@ export default {
     // 取消选中
     uncheckOne(attr) {
       attr = attr || {};
+      alert("uncheckOne")
       if (this.checkedKeys.indexOf(attr.id) == -1) return;
       for (let i = this.checkedKeys.length - 1; i >= 0; i--) {
         if (this.checkedKeys[i] == attr.id) {

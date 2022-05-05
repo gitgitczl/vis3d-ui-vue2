@@ -477,8 +477,9 @@ export default {
      */
     "$store.state.map3d.operateLayerVisible": {
       handler(data) {
+        let { attr, visible } = data || {};
         if (!attr.id) return;
-        this.setLayerVisible(data.attr, data.visible);
+        this.setLayerVisible(attr, visible);
         this.$store.commit("setLayerCheckState", data);
       },
       deep: true,
