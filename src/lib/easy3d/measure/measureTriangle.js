@@ -30,7 +30,7 @@ class MeasureTriangle extends BaseMeasure {
     start() {
         if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
         var that = this;
-        this.status = 1;
+        this.state = 1;
         this.handler.setInputAction(function (evt) { //单击开始绘制
             var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
             if (!cartesian) return;
@@ -55,11 +55,11 @@ class MeasureTriangle extends BaseMeasure {
                     that.prompt.destroy();
                     that.prompt = null;
                 }
-                that.status = "endCreate";
+                that.state = "endCreate";
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {
-            that.status = "creating";
+            that.state = "creating";
             if (that.firstPoint < 1) {
                 that.prompt.update(evt.endPosition, "单击开始测量");
                 return;
@@ -139,7 +139,7 @@ class MeasureTriangle extends BaseMeasure {
     }
     //清除测量结果
     destroy() {
-        this.status = "no";
+        this.state = "no";
         if (this.heightLine) {
             this.viewer.entities.remove(this.heightLine);
             this.heightLine = null;

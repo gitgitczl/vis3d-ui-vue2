@@ -12,17 +12,17 @@ class MeasureSlope extends BaseMeasure{
 
     //开始测量
     start() {
-        this.status = "startCreate";
+        this.state = "startCreate";
         var that = this;
         this.handler.setInputAction(function (evt) { //单击开始绘制
             if (that.handler) {
                 that.handler.destroy();
                 that.handler = null;
-                that.status = "endCreate";
+                that.state = "endCreate";
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {
-            that.status = "creating";
+            that.state = "creating";
             var cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
             if (!cartesian) return;
             if (!that.point) {
@@ -38,7 +38,7 @@ class MeasureSlope extends BaseMeasure{
     }
     //清除测量结果
     destroy() {
-        this.status = "no";
+        this.state = "no";
         if (this.label) {
             this.viewer.entities.remove(this.label);
             this.label = null;

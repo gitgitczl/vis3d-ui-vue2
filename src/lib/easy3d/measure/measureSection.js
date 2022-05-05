@@ -14,14 +14,14 @@ class MeasureSection extends BaseMeasure {
 		this.prompt;
 		this.isStart = false;
 		this.firstPosition = null;
-		this.status = "no";
+		this.state = "no";
 	}
 
 	//开始测量
 	start(callback) {
 		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
 		var that = this;
-		that.status = "startCreate";
+		that.state = "startCreate";
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
@@ -42,12 +42,12 @@ class MeasureSection extends BaseMeasure {
 				that.getHeight(that.positions, function (data) {
 					callback(data);
 				});
-				that.status = "endCreate";
+				that.state = "endCreate";
 			}
 
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //移动时绘制线
-			that.status = "creating";
+			that.state = "creating";
 			if (!that.isStart) {
 				that.prompt.update(evt.endPosition, "单击开始");
 				return;
@@ -88,7 +88,7 @@ class MeasureSection extends BaseMeasure {
 		this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 		this.viewer.trackedEntity = undefined;
 		
-		this.status = "no";
+		this.state = "no";
 
 	}
 

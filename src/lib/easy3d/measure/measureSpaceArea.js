@@ -22,9 +22,9 @@ class MeasureSpaceArea extends BaseMeasure {
 	start(callBack) {
 		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
 		var that = this;
-		this.status = "startCreate";
+		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) {
-			that.status = "creating";
+			that.state = "creating";
 			var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
 			if (that.movePush) {
@@ -34,7 +34,7 @@ class MeasureSpaceArea extends BaseMeasure {
 			that.positions.push(cartesian);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) {
-			that.status = "creating";
+			that.state = "creating";
 			if (that.positions.length < 1) {
 				that.prompt.update(evt.endPosition, "单击开始绘制");
 				return;
@@ -76,7 +76,7 @@ class MeasureSpaceArea extends BaseMeasure {
 			}
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 		this.handler.setInputAction(function (evt) {
-			that.status = "creating";
+			that.state = "creating";
 			if (!that.polyline && !that.polygon) return;
 			that.positions.splice(that.positions.length - 2, 1);
 			if (that.positions.length == 2) {
@@ -133,13 +133,13 @@ class MeasureSpaceArea extends BaseMeasure {
 				that.prompt.destroy();
 				that.prompt = null;
 			}
-			that.status = "endCreate";
+			that.state = "endCreate";
 			if (callBack) callBack(that.polyline);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 	//清除测量结果
 	destroy() {
-		this.status = "no";
+		this.state = "no";
 		if (this.polyline) {
 			this.viewer.entities.remove(this.polyline);
 			this.polyline = null;

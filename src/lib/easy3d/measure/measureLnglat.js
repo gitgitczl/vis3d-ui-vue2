@@ -8,14 +8,14 @@ class MeasureLnglat extends BaseMeasure{
         this.style = opt.style || {};
         this.point = null;
         this.position = null;
-        this.status = 0;
+        this.state = 0;
     }
 
     start () {
-        this.status = "startCreate";
+        this.state = "startCreate";
         var that = this;
         this.handler.setInputAction(function (evt) { //单击开始绘制
-            that.status = "endCreate";
+            that.state = "endCreate";
             var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
             if (!cartesian) return;
             that.position = cartesian;
@@ -26,7 +26,7 @@ class MeasureLnglat extends BaseMeasure{
             
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {
-            that.status = "creating";
+            that.state = "creating";
             var cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
             if (!cartesian) return;
             that.position = cartesian.clone();
@@ -38,7 +38,7 @@ class MeasureLnglat extends BaseMeasure{
     }
     //清除测量结果
     destroy () {
-        this.status = "no";
+        this.state = "no";
         if (this.point) {
             this.viewer.entities.remove(this.point);
             this.point = null;

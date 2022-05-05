@@ -25,9 +25,9 @@ class MeasureGroundDistance extends BaseMeasure {
 	start(fun) {
 		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
 		let that = this;
-		this.status = "startCreate";
+		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) { //单击开始绘制
-			that.status = "creating";
+			that.state = "creating";
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
 			let label;
@@ -55,7 +55,7 @@ class MeasureGroundDistance extends BaseMeasure {
 			that.lastCartesian = cartesian;
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) {
-			that.status = "creating";
+			that.state = "creating";
 			if (that.positions.length < 1) {
 				that.prompt.update(evt.endPosition, "单击开始测量");
 				return;
@@ -86,7 +86,7 @@ class MeasureGroundDistance extends BaseMeasure {
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 		this.handler.setInputAction(function (evt) {
-			that.status = "creating";
+			that.state = "creating";
 			if (!that.polyline) return;
 			that.positions.splice(that.positions.length - 2, 1);
 			that.viewer.entities.remove(that.labels.pop());
@@ -138,7 +138,7 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.prompt.destroy();
 				that.prompt = null;
 			}
-			that.status = "endCreate";
+			that.state = "endCreate";
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 	//清除测量结果
@@ -166,7 +166,7 @@ class MeasureGroundDistance extends BaseMeasure {
 		}
 		this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 		this.viewer.trackedEntity = undefined;
-		this.status = "no";
+		this.state = "no";
 	}
 
 	// 设置单位

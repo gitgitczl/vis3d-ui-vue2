@@ -18,10 +18,10 @@ class MeasureHeight extends BaseMeasure {
   //开始测量
   start() {
     if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
-    this.status = "startCreate";
+    this.state = "startCreate";
     let that = this;
     this.handler.setInputAction(function (evt) { //单击开始绘制
-      that.status = "creating"
+      that.state = "creating"
       var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (!cartesian) return;
 
@@ -36,7 +36,7 @@ class MeasureHeight extends BaseMeasure {
           that.prompt.destroy();
           that.prompt = null;
         }
-        that.status = "endCreate";
+        that.state = "endCreate";
       }
 
       that.positions.push(cartesian);
@@ -46,7 +46,7 @@ class MeasureHeight extends BaseMeasure {
       let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
       if (!cartesian) return;
 
-      that.status = "creating"
+      that.state = "creating"
       if (that.positions.length < 1) {
         that.prompt.update(evt.endPosition, "单击开始测量");
         return;
@@ -87,7 +87,7 @@ class MeasureHeight extends BaseMeasure {
       this.handler = null;
     }
 
-    this.status = "no";
+    this.state = "no";
   }
   getHeightAndCenter(p1, p2) {
     if (!p1 || !p2) return;

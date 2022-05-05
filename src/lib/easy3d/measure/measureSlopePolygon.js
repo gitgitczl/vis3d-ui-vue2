@@ -105,7 +105,7 @@ MeasureSlopePolygon.prototype = {
 				that.prompt.destroy();
 				that.prompt = null;
 			}
-			that.status = "endCreate";
+			that.state = "endCreate";
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	},
 	//清除测量结果

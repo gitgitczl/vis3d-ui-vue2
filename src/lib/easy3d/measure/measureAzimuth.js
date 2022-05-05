@@ -17,7 +17,7 @@ class MeasureAzimutht extends BaseMeasure {
   //开始测量
   start(fun) {
     let that = this;
-    this.status = "startCreate";
+    this.state = "startCreate";
     if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
     this.handler.setInputAction(function (evt) { //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
@@ -27,7 +27,7 @@ class MeasureAzimutht extends BaseMeasure {
         if (that.handler) {
           that.handler.destroy();
           that.handler = null;
-          that.status = "endCreate";
+          that.state = "endCreate";
         }
       }
 
@@ -51,7 +51,7 @@ class MeasureAzimutht extends BaseMeasure {
         return;
       }
       that.prompt.update(evt.endPosition, "单击结束");
-      that.status = "creating";
+      that.state = "creating";
       let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
       if (!cartesian) return;
 
@@ -85,7 +85,7 @@ class MeasureAzimutht extends BaseMeasure {
       this.handler.destroy();
       this.handler = null;
     }
-    this.status = "no";
+    this.state = "no";
     if (this.prompt) {
       this.prompt.destroy();
       this.prompt = null;

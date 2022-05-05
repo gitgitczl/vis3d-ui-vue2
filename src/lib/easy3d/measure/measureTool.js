@@ -90,6 +90,7 @@ class MeasureTool {
 				if (that.intoEdit) {
 					ms.startEdit();
 					if (that.startEditFun) that.startEditFun(ms);
+					that.lastMeasureObj = ms;
 				}
 				if (opt.success) opt.success(ms, res)
 				if (that.endMeasureFun) that.endMeasureFun(ms, res);
