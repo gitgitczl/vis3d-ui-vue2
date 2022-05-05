@@ -40,15 +40,18 @@
 import Card from "@/views/easy3d/components/card/Card.vue";
 export default {
   name: "Layers",
+
   components: {
     Card,
   },
+
   props: {
     title: "",
     position: {},
     size: {},
     mapConfig: {},
   },
+
   data() {
     return {
       operateLayers: [],
@@ -140,6 +143,7 @@ export default {
       if (this.checkedKeys.indexOf(attr.id) != -1) return;
       this.checkedKeys.push(attr.id);
       /* window.mapViewer.operateLayerTool.setVisible(attr.id, true); */ // baseTools/index.vue中已监听打开
+      this.$refs.layerTree.setCheckedKeys(this.checkedKeys)
     },
     // 取消选中
     uncheckOne(attr) {
@@ -160,6 +164,7 @@ export default {
   watch: {
     "$store.state.map3d.layerCheckState": {
       handler(data) {
+        debugger
         let { attr, visible } = data;
         if (!attr.id) return;
         if (visible) this.checkOne(attr);
