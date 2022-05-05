@@ -16,7 +16,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 	}
 
 	//开始测量
-	start() {
+	start(callBack) {
 		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
 		let that = this;
 		this.status = "startCreate";
@@ -24,16 +24,16 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			that.status = "creating";
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
+			if (that.movePush) {
+				that.positions.pop();
+				that.movePush = false;
+			}
 			let label;
 			if (that.positions.length == 0) {
 				label = that.createLabel(cartesian, "起点");
 				that.floatLable = that.createLabel(cartesian, "");
 				that.floatLable.wz = 0;
 				that.floatLable.show = false;
-				if (that.movePush) {
-					that.positions.pop();
-					that.movePush = false;
-				}
 			} else {
 				let distance = that.getLength(cartesian, that.lastCartesian);
 				that.lastDistance = distance;
@@ -46,8 +46,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			that.labels.push(label);
 			let point = that.createPoint(cartesian.clone());
 			point.wz = that.positions.length; // 和坐标点关联
-
-			that.controlPoints.push(point);
+			that.controlPoints.push(point);	
 			that.positions.push(cartesian);
 			that.lastCartesian = cartesian.clone();
 
@@ -114,6 +113,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 		this.handler.setInputAction(function (evt) { //双击结束绘制
 
 			if (!that.polyline) return;
+
 			that.floatLable.show = false;
 			that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 			that.viewer.trackedEntity = undefined;
@@ -125,26 +125,25 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
 			that.labels[that.labels.length - 1].distance = that.allDistance;
 
-			if (that.handler) {
-				that.handler.destroy();
-				that.handler = null;
-			}
-
 			that.movePush = false;
 			if (that.prompt) {
 				that.prompt.destroy();
 				that.prompt = null;
 			}
 
+			if (that.handler) {
+				that.handler.destroy();
+				that.handler = null;
+			}
 			that.status = "endCreate";
-
+			if (callBack) callBack();
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 
 
 	// 开始编辑
 	startEdit(callback) {
-		if (this.state == "startEdit" || this.state == "editing" || !this.polyline) return;
+		if ((this.state == "endCrerate" || this.state == "endEdit") && this.polyline) return;
 		this.state = "startEdit";;
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		let that = this;
@@ -152,22 +151,20 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			let point = that.controlPoints[i];
 			if (point) point.show = true;
 		}
-
 		this.modifyHandler.setInputAction(function (evt) {
-			if (!that.entity) return;
 			let pick = that.viewer.scene.pick(evt.position);
 			if (Cesium.defined(pick) && pick.id) {
 				if (!pick.id.objId)
 					that.modifyPoint = pick.id;
 				that.forbidDrawWorld(true);
-
 				let wz = that.modifyPoint.wz;
+				debugger
 				// 重新计算左右距离
 				let nextIndex = wz + 1;
 				let lastIndex = wz - 1;
 				that.nowLabel = that.labels[wz];
 				if (lastIndex >= 0) {
-					this.lastPosition = that.positions[lastIndex];
+					that.lastPosition = that.positions[lastIndex];
 				}
 				if (nextIndex <= that.positions.length - 1) {
 					that.nextPosition = that.positions[nextIndex];

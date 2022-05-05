@@ -14,10 +14,15 @@ class MeasureTool {
 			console.warn("缺少必要参数！--viewer");
 			return;
 		}
+		obj = obj || {};
 		this.viewer = viewer;
 		this.nowMeasureObj = null; // 当前测量对象
 		this.toolArr = [];
 		this.lastMeasureObj = null;
+		this.handler = null;
+		this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;
+		this.intoEdit = obj.intoEdit == undefined ? true : obj.intoEdit;
+		this.bindEdit();
 	}
 
 	// 事件绑定
@@ -82,6 +87,10 @@ class MeasureTool {
 		let that = this;
 		if (ms) {
 			ms.start(function (res) {
+				if (that.intoEdit) {
+					ms.startEdit();
+					if (that.startEditFun) that.startEditFun(ms);
+				}
 				if (opt.success) opt.success(ms, res)
 				if (that.endMeasureFun) that.endMeasureFun(ms, res);
 			});
@@ -93,18 +102,18 @@ class MeasureTool {
 	bindEdit() {
 		let that = this;
 		// 如果是线 面 则需要先选中
+		if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		this.handler.setInputAction(function (evt) {
 			//单击开始绘制
 			if (!that.canEdit) return;
 			let pick = that.viewer.scene.pick(evt.position);
-			if (Cesium.defined(pick) && pick.id) {
+			if (Cesium.defined(pick) && pick.id && pick.id.objId) {
 				// 选中实体
 				for (let i = 0; i < that.toolArr.length; i++) {
 					if (
 						pick.id.objId == that.toolArr[i].objId &&
-						(that.toolArr[i].state != "startCreate" ||
-							that.toolArr[i].state != "creating" ||
-							that.toolArr[i].state != "endEdit")
+						(that.toolArr[i].state == "endCreate" ||
+							that.toolArr[i].state == "endEdit")
 					) {
 						if (that.lastMeasureObj) {
 							// 结束除当前选中实体的所有编辑操作
@@ -161,6 +170,11 @@ class MeasureTool {
 	}
 	destroy() {
 		this.clear();
+		if (this.handler) {
+			this.handler.destroy();
+			this.handler = null;
+		}
+
 	}
 
 	// 设置单位

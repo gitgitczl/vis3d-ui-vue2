@@ -16,7 +16,7 @@ class BaseMeasure {
 
     createLine(positions, clampToGround) {
         if (!positions) return;
-        return this.viewer.entities.add({
+        let ent = this.viewer.entities.add({
             polyline: {
                 positions: new Cesium.CallbackProperty(function () {
                     return positions
@@ -27,8 +27,19 @@ class BaseMeasure {
                 clampToGround: clampToGround
             }
         });
+
+        ent.objId = this.objId;
+        return ent;
     }
 
+     // 操作控制
+     forbidDrawWorld(isForbid) {
+        this.viewer.scene.screenSpaceCameraController.enableRotate = !isForbid;
+        this.viewer.scene.screenSpaceCameraController.enableTilt = !isForbid;
+        this.viewer.scene.screenSpaceCameraController.enableTranslate = !isForbid;
+        this.viewer.scene.screenSpaceCameraController.enableInputs = !isForbid;
+    }
+    
     createLabel(c, text) {
         if (!c) return;
         return this.viewer.entities.add({
@@ -76,7 +87,6 @@ class BaseMeasure {
     }
 
     formateLength(val, dw) {
-        debugger
         if (val == undefined) return;
         dw = dw || "m";
         let dwStr = '';
@@ -265,7 +275,7 @@ class BaseMeasure {
                 outlineColor: outlineColor,
                 disableDepthTestDistance: Number.POSITIVE_INFINITY
             },
-            show: true
+            show: false
         });
     }
 

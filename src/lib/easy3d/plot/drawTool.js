@@ -23,7 +23,7 @@ class DrawTool {
     obj = obj || {};
     this.viewer = viewer;
     this.toolArr = [];
-    this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+    this.handler = null;
     this.removeHandler = new Cesium.ScreenSpaceEventHandler(
       this.viewer.scene.canvas
     );
@@ -340,6 +340,7 @@ class DrawTool {
   bindEdit() {
     let that = this;
     // 如果是线 面 则需要先选中
+    if(!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       if (!that.canEdit) return;

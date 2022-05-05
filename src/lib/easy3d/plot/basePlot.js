@@ -161,10 +161,10 @@ class BasePlot {
         this.pointStyle.outlineColor = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
 
         let color = this.pointStyle.color instanceof Cesium.Color ? this.pointStyle.color : Cesium.Color.fromCssColorString(this.pointStyle.color);
-        color = color.withAlpha(this.pointStyle.colorAlpha || 0.8);
+        color = color.withAlpha(this.pointStyle.colorAlpha || 1);
 
         let outlineColor = this.pointStyle.outlineColor instanceof Cesium.Color ? this.pointStyle.outlineColor : Cesium.Color.fromCssColorString(this.pointStyle.outlineColor);
-        outlineColor = outlineColor.withAlpha(this.pointStyle.outlineColorAlpha || 0.8);
+        outlineColor = outlineColor.withAlpha(this.pointStyle.outlineColorAlpha || 1);
 
         return this.viewer.entities.add({
             position: position,
@@ -175,7 +175,7 @@ class BasePlot {
                 outlineColor: outlineColor,
                 disableDepthTestDistance: Number.POSITIVE_INFINITY
             },
-            show: true
+            show: false
         });
     }
 
