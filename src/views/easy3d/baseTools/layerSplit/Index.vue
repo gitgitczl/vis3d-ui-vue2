@@ -69,10 +69,10 @@ export default {
         layer: lyr._layer,
       });
     }
-    // 加载图层 & 图层管理模块中选中对应的节点
+    // 加载图层
     if (!lyr._layer.show) {
       this.$store.commit("setOperateLayerVisible", {
-        attr: lyr.attr,
+        attr: JSON.parse(JSON.stringify(lyr.attr)),
         visible: true,
       });
       nowLayerAttr.newVisible = true;
@@ -110,7 +110,7 @@ export default {
       nowLayerAttr.newVisible = true;
       // 控制对应图层的显示隐藏
       this.$store.commit("setOperateLayerVisible", {
-        attr: attr,
+        attr: JSON.parse(JSON.stringify(attr)),
         visible: true,
       });
     },
@@ -121,7 +121,7 @@ export default {
     resetLastlyr() {
       if (nowLayerAttr.layer) {
         this.$store.commit("setOperateLayerVisible", {
-          attr: nowLayerAttr.layerObj.attr,
+          attr: JSON.parse(JSON.stringify(nowLayerAttr.layerObj.attr)),
           visible: nowLayerAttr.oldVisible,
         });
         nowLayerAttr = {};

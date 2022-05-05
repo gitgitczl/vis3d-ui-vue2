@@ -148,7 +148,6 @@ export default {
     // 取消选中
     uncheckOne(attr) {
       attr = attr || {};
-      alert("uncheckOne")
       if (this.checkedKeys.indexOf(attr.id) == -1) return;
       for (let i = this.checkedKeys.length - 1; i >= 0; i--) {
         if (this.checkedKeys[i] == attr.id) {
@@ -156,6 +155,7 @@ export default {
           break;
         }
       }
+      this.$refs.layerTree.setCheckedKeys(this.checkedKeys)
       /* window.mapViewer.operateLayerTool.setVisible(attr.id, false); */ // baseTools/index.vue中已监听打开
     },
   },
@@ -164,7 +164,6 @@ export default {
   watch: {
     "$store.state.map3d.layerCheckState": {
       handler(data) {
-        debugger
         let { attr, visible } = data;
         if (!attr.id) return;
         if (visible) this.checkOne(attr);

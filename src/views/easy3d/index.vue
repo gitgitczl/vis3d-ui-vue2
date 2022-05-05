@@ -480,7 +480,7 @@ export default {
         let { attr, visible } = data || {};
         if (!attr.id) return;
         this.setLayerVisible(attr, visible);
-        this.$store.commit("setLayerCheckState", data);
+        this.$store.commit("setLayerCheckState", JSON.parse(JSON.stringify(data)));
       },
       deep: true,
     },

@@ -45,7 +45,7 @@ class BaseLayer {
             show: this.opt.show == undefined ? true : this.opt.show
         });
         this.viewer.imageryLayers.add(this._layer, this.opt.index);
-        this._layer.attr = this.opt; // 保存配置信息
+        this._layer.attr = JSON.parse(JSON.stringify(this.opt || {})); // 保存配置信息
     }
 
     getLayer() {

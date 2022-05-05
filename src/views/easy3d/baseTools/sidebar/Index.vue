@@ -93,16 +93,16 @@ export default {
 
       mapLayer: [
         {
-          icon: "icon-cengshu",
-          type: "layers",
-          name: "图层",
-          toolName: "layers",
-        },
-        {
           icon: "icon-ditufuwu",
           type: "baseMap",
           name: "底图",
           toolName: "baseMap",
+        },
+        {
+          icon: "icon-cengshu",
+          type: "layers",
+          name: "图层",
+          toolName: "layers",
         },
       ],
 
@@ -113,12 +113,12 @@ export default {
           name: "图上量算",
           toolName: "measure",
         },
-        /*   {
+        {
           icon: "icon-fenxikongjian",
           type: "",
           name: "空间分析",
           toolName: "analysis",
-        }, */
+        },
         {
           icon: "icon-zuobiaodingwei",
           type: "",

@@ -17,6 +17,7 @@ class LayerTool {
     }
     add(opt) {
         let layerObj = null;
+        opt = opt || {};
         let type = opt.type;
         switch (type) {
             case "xyz": //xyz格式切片
@@ -64,8 +65,7 @@ class LayerTool {
         this._layerObjs.push(layerObj);
         opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         opt.alpha = opt.alpha == undefined ? 1 : opt.alpha;
-
-        layerObj.attr = opt; // 绑定属性文件
+        layerObj.attr = JSON.parse(JSON.stringify(opt)); // 绑定属性文件
 
         return layerObj;
     }
@@ -97,7 +97,10 @@ class LayerTool {
         let layerOpt = this.getLayerObjById(id);
         if (layerOpt && layerOpt.layer) {
             layerOpt.layer.hide();
-            layerOpt.layer.attr.show = false;
+            // 数据隔离
+            let newAttr = JSON.parse(JSON.stringify(layerOpt.layer.attr || {}));
+            newAttr.show = false;
+            layerOpt.layer.attr = newAttr;
         }
     }
     showById(id) {
@@ -105,7 +108,9 @@ class LayerTool {
         let layerOpt = this.getLayerObjById(id);
         if (layerOpt && layerOpt.layer) {
             layerOpt.layer.show();
-            layerOpt.layer.attr.show = true;
+            let newAttr = JSON.parse(JSON.stringify(layerOpt.layer.attr || {}));
+            newAttr.show = true;
+            layerOpt.layer.attr = newAttr;
         }
     }
     getLayerObjById(id) {
