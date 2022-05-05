@@ -8,6 +8,8 @@ class BaseMeasure {
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.floatLable = null;
         this.unit = opt.unit;
+        this.points = [];
+        this.pointStyle =  {};
     }
 
     createLine(positions, clampToGround) {
@@ -167,6 +169,8 @@ class BaseMeasure {
 
     }
 
+
+
     // 坡度量算
     getSlope(position, callback) {
         if (!position) return;
@@ -236,6 +240,31 @@ class BaseMeasure {
             area: area,
             center: Cesium.Cartesian3.fromDegrees(center[0], center[1])
         };
+    }
+
+    // 构建控制点
+    createPoint(position) {
+        if (!position) return;
+        this.pointStyle.color = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
+        this.pointStyle.outlineColor = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
+
+        let color = this.pointStyle.color instanceof Cesium.Color ? this.pointStyle.color : Cesium.Color.fromCssColorString(this.pointStyle.color);
+        color = color.withAlpha(this.pointStyle.colorAlpha || 0.8);
+
+        let outlineColor = this.pointStyle.outlineColor instanceof Cesium.Color ? this.pointStyle.outlineColor : Cesium.Color.fromCssColorString(this.pointStyle.outlineColor);
+        outlineColor = outlineColor.withAlpha(this.pointStyle.outlineColorAlpha || 0.8);
+
+        return this.viewer.entities.add({
+            position: position,
+            point: {
+                pixelSize: this.pointStyle.property || 10,
+                color: color,
+                outlineWidth: this.pointStyle.outlineWidth || 0,
+                outlineColor: outlineColor,
+                disableDepthTestDistance: Number.POSITIVE_INFINITY
+            },
+            show: true
+        });
     }
 
 }

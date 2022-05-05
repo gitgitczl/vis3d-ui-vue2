@@ -9,6 +9,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 		this.type = "spaceDistance"
 		this.allDistance = 0;
 		this.labels = [];
+
 	}
 
 	//开始测量
@@ -38,9 +39,14 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 				label.length = distance;
 			}
 			that.labels.push(label);
+			let point = that.createPoint(cartesian.clone());
+			that.points.push(point);	
 			that.positions.push(cartesian);
 			that.lastCartesian = cartesian.clone();
+
+
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
 		this.handler.setInputAction(function (evt) {
 			let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
 			if (!cartesian) return;

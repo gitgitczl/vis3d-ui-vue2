@@ -17,14 +17,23 @@ class MeasureTool {
 		this.viewer = viewer;
 		this.nowMeasureObj = null; // 当前测量对象
 		this.measureLnglatArr = [];
-		this.measureEndFun = null;
+	
 	}
 
 	// 事件绑定
 	on(type, fun) {
-		if (type == "measureEnd") {
-			this.measureEndFun = fun;
+		if (type == "endMeasure") {
+			this.endMeasureFun = fun;
 		}
+
+		if (type == "startEdit") {
+			this.startEditFun = fun;
+		}
+
+		if (type == "endEdit") {
+			this.endEditFun = fun;
+		}
+
 	}
 
 	start(opt) {
@@ -74,7 +83,7 @@ class MeasureTool {
 		if (ms) {
 			ms.start(function (res) {
 				if (opt.success) opt.success(ms, res)
-				if (that.measureEndFun) that.measureEndFun(ms, res);
+				if (that.endMeasureFun) that.endMeasureFun(ms, res);
 			});
 			this.measureLnglatArr.push(ms);
 		}
@@ -88,10 +97,6 @@ class MeasureTool {
 	}
 	destroy() {
 		this.clear();
-	}
-
-	getRes() {
-
 	}
 
 	// 设置单位
