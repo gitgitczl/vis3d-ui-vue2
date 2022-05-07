@@ -146,7 +146,9 @@ export default {
       if (!measureTool) return;
       if (
         measureTool.nowMeasureObj &&
-        measureTool.nowMeasureObj.status != "endCreate"
+        measureTool.nowMeasureObj.state != "endCreate" &&
+        measureTool.nowMeasureObj.state != "endEdit" &&
+        measureTool.nowMeasureObj.state != "no"
       ) {
         this.$message({
           message: "请结束上一次量算！",

@@ -45,7 +45,10 @@ class MeasureTool {
 		opt = opt || {};
 		if (!opt.type) return;
 		let ms;
-		if (this.nowMeasureObj && this.nowMeasureObj.status != "endCreate") this.nowMeasureObj.destroy(); // 结束上一次的绘制
+		if (this.nowMeasureObj && (
+			this.nowMeasureObj.state != "endCreate" &&
+			this.nowMeasureObj.state != "endEdit") &&
+			measureTool.nowMeasureObj.state != "no") return;
 		switch (Number(opt.type)) {
 			case 1: // 空间距离测量
 				ms = new MeasureSpaceDistance(this.viewer, opt);

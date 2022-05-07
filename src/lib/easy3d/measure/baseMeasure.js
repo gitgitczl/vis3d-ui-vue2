@@ -32,14 +32,14 @@ class BaseMeasure {
         return ent;
     }
 
-     // 操作控制
-     forbidDrawWorld(isForbid) {
+    // 操作控制
+    forbidDrawWorld(isForbid) {
         this.viewer.scene.screenSpaceCameraController.enableRotate = !isForbid;
         this.viewer.scene.screenSpaceCameraController.enableTilt = !isForbid;
         this.viewer.scene.screenSpaceCameraController.enableTranslate = !isForbid;
         this.viewer.scene.screenSpaceCameraController.enableInputs = !isForbid;
     }
-    
+
     createLabel(c, text) {
         if (!c) return;
         return this.viewer.entities.add({
@@ -140,13 +140,25 @@ class BaseMeasure {
     getGroundLength(positions, callback) {
         var that = this;
         var ellipsoid = this.viewer.scene.globe.ellipsoid;
-
+        let len = this.getLength(positions[0], positions[1]);
         if (!this.viewer.terrainProvider.availability) {
             console.log("缺少地形数据，或地形加载失败！");
-            let len = this.getLength(positions[0], positions[1]);
             if (callback) callback(len);
             return;
         }
+
+        let granularity = 0.00001;
+
+        if (len > 10000) {
+            granularity = granularity * 10;
+        } else if (len > 50000) {
+            granularity = granularity * 100;
+        } else if (len > 100000) {
+            granularity = granularity * 5000;
+        } else {
+            granularity = granularity * 10000;
+        }
+
         var surfacePositions = Cesium.PolylinePipeline.generateArc({
             positions: positions,
             granularity: 0.00001

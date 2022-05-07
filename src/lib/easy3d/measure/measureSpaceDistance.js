@@ -111,7 +111,6 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 		}, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
 		this.handler.setInputAction(function (evt) { //双击结束绘制
-
 			if (!that.polyline) return;
 
 			that.floatLable.show = false;
@@ -139,7 +138,6 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			if (callBack) callBack();
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
-
 
 	// 开始编辑
 	startEdit(callback) {
@@ -182,19 +180,32 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			that.positions[wz] = cartesian.clone();
 			that.state = "editing";
 			that.nowLabel.position.setValue(cartesian.clone());
+
+			let changeDis1 = 0;
 			if (that.nowLabel && that.lastPosition) {
 				let distance = that.getLength(cartesian.clone(), that.lastPosition.clone());
 				let labelStr = (wz == that.positions.length - 1) ? "总长：" : "";
 				that.nowLabel.label.text = labelStr + that.formateLength(distance, that.unit);
+				changeDis1 = distance - that.nowLabel.distance;
 				that.nowLabel.distance = distance;
 			}
+
+			let changeDis2 = 0;
 			if (that.nextPosition && that.nextlabel) {
 				let distance = that.getLength(cartesian.clone(), that.nextPosition.clone());
 				let dis = that.formateLength(distance, that.unit);
 				let labelStr = (wz == that.positions.length - 2) ? "总长：" : "";
 				that.nextlabel.label.text = labelStr + dis;
+				changeDis2 = distance - that.nextlabel.distance;
 				that.nextlabel.distance = distance;
 			}
+
+			// 计算总长
+			that.allDistance = that.allDistance + changeDis1 + changeDis2;
+			let allDistance = that.formateLength(that.allDistance, that.unit);
+			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
+			that.labels[that.labels.length - 1].distance = that.allDistance;
+
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 		this.modifyHandler.setInputAction(function (evt) {
@@ -221,6 +232,44 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 		}
 	}
 
+	//清除测量结果
+	destroy() {
+		if (this.polyline) {
+			this.viewer.entities.remove(this.polyline);
+			this.polyline = null;
+		}
+		for (let i = 0; i < this.labels.length; i++) {
+			this.viewer.entities.remove(this.labels[i]);
+		}
+		this.labels = [];
+		for (let ind = 0; ind < this.controlPoints.length; ind++) {
+			this.viewer.entities.remove(this.controlPoints[ind]);
+		}
+		this.controlPoints = [];
+		this.modifyPoint = null;
+		if (this.floatLable) {
+			this.viewer.entities.remove(this.floatLable);
+			this.floatLable = null;
+		}
+		this.floatLable = null;
+
+		if (this.prompt) {
+			this.prompt.destroy();
+			this.prompt = null;
+		}
+		if (this.handler) {
+			this.handler.destroy();
+			this.handler = null;
+		}
+		if (this.modifyHandler) {
+			this.modifyHandler.destroy();
+			this.modifyHandler = null;
+		}
+		this.movePush = false;
+		this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+		this.viewer.trackedEntity = undefined;
+		this.state = "no";
+	}
 
 	// 设置单位
 	setUnit(unit) {
