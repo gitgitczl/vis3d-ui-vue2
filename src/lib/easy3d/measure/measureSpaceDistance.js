@@ -122,7 +122,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
 			let allDistance = that.formateLength(that.allDistance, that.unit);
 			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-			that.labels[that.labels.length - 1].distance = that.allDistance;
+			/* that.labels[that.labels.length - 1].distance = that.allDistance; */
 
 			that.movePush = false;
 			if (that.prompt) {
@@ -184,8 +184,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			let changeDis1 = 0;
 			if (that.nowLabel && that.lastPosition) {
 				let distance = that.getLength(cartesian.clone(), that.lastPosition.clone());
-				let labelStr = (wz == that.positions.length - 1) ? "总长：" : "";
-				that.nowLabel.label.text = labelStr + that.formateLength(distance, that.unit);
+				that.nowLabel.label.text = that.formateLength(distance, that.unit);
 				changeDis1 = distance - that.nowLabel.distance;
 				that.nowLabel.distance = distance;
 			}
@@ -193,9 +192,7 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			let changeDis2 = 0;
 			if (that.nextPosition && that.nextlabel) {
 				let distance = that.getLength(cartesian.clone(), that.nextPosition.clone());
-				let dis = that.formateLength(distance, that.unit);
-				let labelStr = (wz == that.positions.length - 2) ? "总长：" : "";
-				that.nextlabel.label.text = labelStr + dis;
+				that.nextlabel.label.text = that.formateLength(distance, that.unit);
 				changeDis2 = distance - that.nextlabel.distance;
 				that.nextlabel.distance = distance;
 			}
@@ -204,7 +201,6 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 			that.allDistance = that.allDistance + changeDis1 + changeDis2;
 			let allDistance = that.formateLength(that.allDistance, that.unit);
 			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-			that.labels[that.labels.length - 1].distance = that.allDistance;
 
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 

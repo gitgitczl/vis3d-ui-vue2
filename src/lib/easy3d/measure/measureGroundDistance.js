@@ -63,6 +63,7 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.allDistance += that.floatDistance;
 				let text = that.formateLength(that.floatDistance);
 				label.label.text = text;
+				label.distance = that.floatDistance;
 			}
 
 			that.positions.push(cartesian.clone());
@@ -141,7 +142,7 @@ class MeasureGroundDistance extends BaseMeasure {
 			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
 			let allDistance = that.formateLength(that.allDistance, that.unit);
 			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-			that.labels[that.labels.length - 1].distance = that.allDistance;
+			/* that.labels[that.labels.length - 1].distance = that.allDistance; */
 
 			if (that.handler) {
 				that.handler.destroy();
@@ -194,7 +195,6 @@ class MeasureGroundDistance extends BaseMeasure {
 			that.modifyPoint.position.setValue(cartesian);
 
 			let wz = that.modifyPoint.wz;
-			console.log("wz-->", wz);
 			that.positions[wz] = cartesian.clone();
 			that.state = "editing";
 			that.nowLabel.position.setValue(cartesian.clone());
@@ -202,31 +202,24 @@ class MeasureGroundDistance extends BaseMeasure {
 			let changeDis2 = 0;
 			if (that.nowLabel && that.lastPosition) {
 				that.getGroundLength([cartesian.clone(), that.lastPosition.clone()], function (distance) {
-					let labelStr = (wz == that.positions.length - 1) ? "总长：" : "";
-					console.log("that.nowLabel.distance ---->",that.nowLabel.distance);
-					that.nowLabel.label.text = labelStr + that.formateLength(distance, that.unit);
+					that.nowLabel.label.text = that.formateLength(distance, that.unit);
 					changeDis1 = distance - that.nowLabel.distance;
 					that.nowLabel.distance = distance;
 					// 计算总长
 					that.allDistance = that.allDistance + changeDis1 + changeDis2;
 					let allDistance = that.formateLength(that.allDistance, that.unit);
 					that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-					that.labels[that.labels.length - 1].distance = that.allDistance;
-
 				});
 			}
 			if (that.nextPosition && that.nextlabel) {
 				that.getGroundLength([cartesian.clone(), that.nextPosition.clone()], function (distance) {
-					let dis = that.formateLength(distance, that.unit);
-					let labelStr = (wz == that.positions.length - 2) ? "总长：" : "";
-					that.nextlabel.label.text = labelStr + dis;
+					that.nextlabel.label.text = that.formateLength(distance, that.unit);
 					changeDis2 = distance - that.nextlabel.distance;
 					that.nextlabel.distance = distance;
 					// 计算总长
 					that.allDistance = that.allDistance + changeDis1 + changeDis2;
 					let allDistance = that.formateLength(that.allDistance, that.unit);
 					that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-					that.labels[that.labels.length - 1].distance = that.allDistance;
 
 				});
 			}
