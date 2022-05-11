@@ -69,6 +69,21 @@ class LayerTool {
 
         return layerObj;
     }
+    getLayerObjById(id) {
+        if (!id) return;
+        let obj = {};
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (this._layerObjs[i].attr.id == id) {
+                obj = {
+                    layer: this._layerObjs[i],
+                    index: i
+                }
+                break;
+            }
+        }
+        return obj;
+    }
+
     removeLayerObj(layerObj) {
         if (!layerObj) return;
         this.removeLayerObjById(layerObj.id);
@@ -113,20 +128,7 @@ class LayerTool {
             layerOpt.layer.attr = newAttr;
         }
     }
-    getLayerObjById(id) {
-        if (!id) return;
-        let obj = {};
-        for (let i = 0; i < this._layerObjs.length; i++) {
-            if (this._layerObjs[i].id == id) {
-                obj = {
-                    layer: this._layerObjs[i],
-                    index: i
-                }
-                break;
-            }
-        }
-        return obj;
-    }
+  
     setVisible(id, isShow) {
         if (!id) return;
         if (isShow) {

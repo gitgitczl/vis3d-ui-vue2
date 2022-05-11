@@ -40,6 +40,7 @@ window.mapConfig = {
         {
             "name": "arcgis底图",
             "type": "mapserver",
+            "iconImg": "./easy3d/images/baseMap/arcgis.png",
             "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
             "show": true
         },
@@ -87,7 +88,28 @@ window.mapConfig = {
                         180,
                         90
                     ]
+                },
+                {
+                    "name": "成都",
+                    "type": "tms",
+                    "show": false,
+                    "url": "http://localhost/chengdu",
+                    "view": {
+                        heading: 356.9489794697967,
+                        pitch: -89.95112790469342,
+                        roll: 0,
+                        x: 104.09694378937657,
+                        y: 30.687244855842117,
+                        z: 171396.70780872242
+                    }
+                },
+                {
+                    "name": "成都（深色）",
+                    "type": "xyz",
+                    "show": false,
+                    "url": "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png"
                 }
+
             ]
         },
         {
