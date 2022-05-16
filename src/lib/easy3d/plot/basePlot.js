@@ -14,7 +14,14 @@ class BasePlot {
         this.controlPoints = []; // 控制点
         this.modifyPoint = null;
         this.entity = null;
-        this.pointStyle =  {};
+        this.pointStyle = {};
+        this.promptStyle = opt.prompt || {
+            show: true,
+            offset: {
+                x: 30,
+                y: 30
+            }
+        }
     }
 
     // 坐标拾取
@@ -30,11 +37,11 @@ class BasePlot {
             }
         }
         if (isOn3dtiles) {
-            cartesian = viewer.scene.pickPosition(px);
+            cartesian = this.viewer.scene.pickPosition(px);
         } else {
-            let ray = viewer.camera.getPickRay(px);
+            let ray = this.viewer.camera.getPickRay(px);
             if (!ray) return null;
-            cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+            cartesian = this.viewer.scene.globe.pick(ray, this.viewer.scene);
         }
         return cartesian;
     }
@@ -46,7 +53,7 @@ class BasePlot {
 
     // 获取坐标数组
     getPositions(isWgs84) {
-        return isWgs84 ? cUtil.cartesiansToLnglats(this.positions) : this.positions;
+        return isWgs84 ? cUtil.cartesiansToLnglats(this.positions,this.viewer) : this.positions;
     }
 
     // 移除

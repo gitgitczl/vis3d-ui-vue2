@@ -1,5 +1,5 @@
 import BaseLayer from './baseLayer';
-class TilesetLayer extends BaseLayer{
+class TilesetLayer extends BaseLayer {
     constructor(viewer, opt) {
         super(viewer, opt);
         this.opt = opt || {};
@@ -7,8 +7,14 @@ class TilesetLayer extends BaseLayer{
         if (!this.opt.url) {
             console.log("缺少服务地址！", opt);
         }
+        this._layer = undefined;
+
     }
 
+    // 获取当前图层
+    get layer() {
+        return this._layer;
+    }
     // 加载
     load(fun) {
         let that = this;
@@ -17,16 +23,16 @@ class TilesetLayer extends BaseLayer{
                 maximumScreenSpaceError: this.opt.maximumScreenSpaceError || 1,
                 url: this.opt.url,
                 maximumMemoryUsage: 1024,
-               /*  preloadWhenHidden: true, */
+                /*  preloadWhenHidden: true, */
                 /*  preferLeaves : true, */
-               /*  skipLevelOfDetail: true,
-                immediatelyLoadDesiredLevelOfDetail: true, */
+                /*  skipLevelOfDetail: true,
+                 immediatelyLoadDesiredLevelOfDetail: true, */
             })
         );
 
         test.readyPromise.then(function (tileset) {
             that._layer = tileset;
-            that._layer.attr = that.opt; // 保存配置信息
+            that._layer.layerConfig = that.opt; // 保存配置信息
             that._layer.initBoundingSphere = tileset.boundingSphere.clone();// 初始化中心
             that._layer.show = that.opt.show == undefined ? true : that.opt.show;
 
@@ -42,7 +48,7 @@ class TilesetLayer extends BaseLayer{
                 that.zoomTo();
             }
 
-            that.updateStyle(tileset, that.opt.style);
+            if (that.opt.style) that.updateStyle(tileset, that.opt.style);
 
             if (fun) fun(tileset);
 
@@ -57,21 +63,25 @@ class TilesetLayer extends BaseLayer{
     show() {
         if (this._layer) {
             this._layer.show = true;
-            this._layer.attr.show = true;
+            this._layer.layerConfig.show = true;
         }
     }
     hide() {
         if (this._layer) {
             this._layer.show = false;
-            this._layer.attr.show = false;
+            this._layer.layerConfig.show = false;
         }
     }
     zoomTo() {
         if (!this._layer) return;
-        if (this._layer.attr.view) {
-            cUtil.setCameraView(this._layer.attr.view);
+        if (this._layer.layerConfig.view) {
+            cUtil.setCameraView(this._layer.layerConfig.view);
         } else {
-            this.viewer.flyTo(this._layer, new Cesium.HeadingPitchRange(0.5, -0.2, this._layer.boundingSphere.radius * 0.005));
+            this.viewer.flyTo(this._layer, new Cesium.HeadingPitchRange(
+                Cesium.Math.toRadians(0),
+                Cesium.Math.toRadians(-60),
+                this._layer.boundingSphere.radius * 5)
+            );
         }
     }
     setCenter(opt) {
@@ -100,7 +110,7 @@ class TilesetLayer extends BaseLayer{
 
     updateStyle(tileset, style) {
         if (!tileset || !style) return;
-         tileset.style = new Cesium.Cesium3DTileStyle(style);
+        tileset.style = new Cesium.Cesium3DTileStyle(style);
     }
 
     setAlpha(alpha) {

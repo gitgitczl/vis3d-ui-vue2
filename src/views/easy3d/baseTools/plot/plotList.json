@@ -34,56 +34,66 @@
             "styleType": "billboard"
         }
     ],
-    "军事标绘": [
+    "模型标绘": [
         {
-            "name": "攻击箭头",
-            "icon": "",
-            "type": "arrow",
-            "arrowType": 1,
+            "name": "白浮船",
+            "type": "gltfModel",
+            "styleType": "gltfModel",
+            "iconImg": "./easy3d/images/plot/baifuchuan.png",
             "style": {
-                "color": "#0000ff"
-            },
-            "styleType": "arrow"
+                "heightReference": 1,
+                "uri": "http://123.60.20.254:9009/mapdata/gltf/baifu.glb",
+                "minimumPixelSize": 24,
+                "scale": 5,
+                "heading": 0,
+                "pitch": 0,
+                "roll": 0
+            }
         },
         {
-            "name": "攻击箭头(平尾)",
-            "icon": "",
-            "type": "arrow",
-            "arrowType": 2,
+            "name": "红灯船",
+            "type": "gltfModel",
+            "styleType": "gltfModel",
+            "iconImg": "./easy3d/images/plot/hongdengchuan.png",
             "style": {
-                "color": "#0000ff"
-            },
-            "styleType": "arrow"
+                "heightReference": 1,
+                "uri": "http://123.60.20.254:9009/mapdata/gltf/hongdengchuan.glb",
+                "minimumPixelSize": 24,
+                "scale": 1,
+                "heading": -30,
+                "pitch": 0,
+                "roll": 0
+            }
         },
         {
-            "name": "攻击箭头(燕尾)",
-            "icon": "",
-            "type": "arrow",
-            "arrowType": 3,
+            "name": "红浮船",
+            "type": "gltfModel",
+            "styleType": "gltfModel",
+            "iconImg": "./easy3d/images/plot/hongfugu.png",
             "style": {
-                "color": "#0000ff"
-            },
-            "styleType": "arrow"
+                "heightReference": 1,
+                "uri": "http://123.60.20.254:9009/mapdata/gltf/hongfu.glb",
+                "minimumPixelSize": 24,
+                "scale": 0.5,
+                "heading": 0,
+                "pitch": 0,
+                "roll": 0
+            }
         },
         {
-            "name": "钳击箭头",
-            "icon": "",
-            "type": "arrow",
-            "arrowType": 5,
+            "name": "左右通航",
+            "type": "gltfModel",
+            "styleType": "gltfModel",
+            "iconImg": "./easy3d/images/plot/zuoyoutonghang.png",
             "style": {
-                "color": "#0000ff"
-            },
-            "styleType": "arrow"
-        },
-        {
-            "name": "单尖直箭头",
-            "icon": "",
-            "type": "arrow",
-            "arrowType": 6,
-            "style": {
-                "color": "#0000ff"
-            },
-            "styleType": "arrow"
+                "heightReference": 1,
+                "uri": "http://123.60.20.254:9009/mapdata/gltf/zuoyouhonghang.glb",
+                "minimumPixelSize": 24,
+                "scale": 1,
+                "heading": 0,
+                "pitch": 0,
+                "roll": 0
+            }
         }
     ]
 }

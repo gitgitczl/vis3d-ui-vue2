@@ -86,7 +86,6 @@ export default {
      * @param {Array} list 选中压平数据
      */
     onChangeFlat(list) {
-      debugger;
     },
 
     /**

@@ -19,10 +19,9 @@ class BaseLayer {
                 Cesium.Math.toRadians(this.opt.rectangle[3]));
             this.providerAttr.rectangle = this.opt.rectangle; // 控制加载的范围
         }
-
         // 控制加载的层级
         if (this.opt.minimumLevel) this.providerAttr.minimumLevel = this.opt.minimumLevel;
-        if (this.opt.maximumLevel) this.providerAttr.minimumLevel = this.opt.maximumLevel;
+        if (this.opt.maximumLevel) this.providerAttr.maximumLevel = this.opt.maximumLevel;
         this.providerAttr.url = opt.url;
         this._layer = null;
         this._provider = {};
@@ -35,15 +34,16 @@ class BaseLayer {
     // 定义方法
     load() {
         if (!this._provider || this._provider == {}) return;
-        this._layer = new Cesium.ImageryLayer(this._provider, {
+        let options = {
             rectangle: this.opt.rectangle,
             /*  cutoutRectangle : this.opt.rectangle, */
             alpha: this.opt.alpha || 1, // 控制显示的层级
             brightness: this.opt.brightness || 1,
-            minimumTerrainLevel: this.opt.minimumTerrainLevel, // 控制显示的层级
-            maximumTerrainLevel: this.opt.maximumTerrainLevel, // 控制显示的层级
             show: this.opt.show == undefined ? true : this.opt.show
-        });
+        }
+        if(this.opt.minimumTerrainLevel) options.minimumTerrainLevel = this.opt.minimumTerrainLevel; // 控制显示的层级
+        if(this.opt.maximumTerrainLevel) options.maximumTerrainLevel = this.opt.maximumTerrainLevel;  // 控制显示的层级
+        this._layer = new Cesium.ImageryLayer(this._provider,options);
         this.viewer.imageryLayers.add(this._layer, this.opt.index);
         this._layer.attr = JSON.parse(JSON.stringify(this.opt || {})); // 保存配置信息
     }

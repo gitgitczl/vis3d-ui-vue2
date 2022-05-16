@@ -43,7 +43,7 @@ class CreateArrow extends BasePlot {
 
 	start(callBack) {
 		let that = this;
-		if (!this.prompt) this.prompt = new Prompt(this.viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) { //单机开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);

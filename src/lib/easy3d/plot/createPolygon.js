@@ -1,6 +1,7 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot'
+import cUtil from '../cUtil';
 class CreatePolygon extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
@@ -18,7 +19,8 @@ class CreatePolygon extends BasePlot {
 	}
 
 	start(callBack) {
-		if (!this.prompt) this.prompt = new Prompt(this.viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
+
 		this.state = "startCreate";
 		let that = this;
 		this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -58,6 +60,9 @@ class CreatePolygon extends BasePlot {
 				if (that.positions.length == 3) {
 					if (!Cesium.defined(that.entity)) {
 						that.entity = that.createPolygon(that.style);
+						if(!that.style.outline && that.polyline){ // 不需要创建轮廓 则后续删除
+							that.polyline.show = false;
+						}
 						that.entity.objId = that.objId;
 					}
 				}
@@ -65,7 +70,7 @@ class CreatePolygon extends BasePlot {
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 		this.handler.setInputAction(function (evt) {
-			if (!that.polyline && !that.entity) return;
+			if (!that.entity) return;
 			that.positions.splice(that.positions.length - 2, 1);
 			that.viewer.entities.remove(that.controlPoints.pop());
 			if (that.positions.length == 2) {
@@ -88,9 +93,7 @@ class CreatePolygon extends BasePlot {
 		}, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
 		this.handler.setInputAction(function (evt) { //双击结束绘制
-			if (!that.entity) {
-				return;
-			}
+			if (!that.entity) return;
 			that.state = "endCreate";
 			that.positions.pop();
 			that.viewer.entities.remove(that.controlPoints.pop());
@@ -115,11 +118,14 @@ class CreatePolygon extends BasePlot {
 		let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : cUtil.lnglatsToCartesians(lnglatArr);
 		if (!positions) return;
 		this.entity = this.createPolygon();
+		this.polyline = this.createPolyline();
+		this.polyline.show = this.style.outline;
+		
 		this.positions = positions;
 		for (let i = 0; i < positions.length; i++) {
 			let newP = positions[i];
+			let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
 			if (this.style.heightReference) {
-				let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
 				ctgc.height = this.viewer.scene.sampleHeight(ctgc);
 				newP = Cesium.Cartographic.toCartesian(ctgc);
 			}
@@ -156,12 +162,14 @@ class CreatePolygon extends BasePlot {
 		let outline = this.polyline.polyline;
 		if (outline && this.polyline.show) {
 			obj.outlineWidth = outline.width.getValue();
-			obj.outline = "show";
+			/* obj.outline = "show"; */
+			obj.outline = true;
 			let oColor = outline.material.color.getValue();
 			obj.outlineColorAlpha = oColor.alpha;
 			obj.outlineColor = new Cesium.Color(oColor.red, oColor.green, oColor.blue, 1).toCssHexString();
 		} else {
-			obj.outline = "hide";
+			/* obj.outline = "hide"; */
+			obj.outline = false;
 		}
 		return obj;
 
@@ -170,9 +178,9 @@ class CreatePolygon extends BasePlot {
 	setStyle(style) {
 		if (!style) return;
 		// 由于官方api中的outline限制太多 此处outline为重新构建的polyline
-		this.polyline.show = style.outline.show == "show" ? true : false;
+		/* this.polyline.show = style.outline.show == "show" ? true : false; */
+		this.polyline.show = style.outline;
 		let outline = this.polyline.polyline;
-		this.polyline.show = true;
 		outline.width = style.outlineWidth;
 		this.polyline.clampToGround = Boolean(style.heightReference);
 		let outlineColor = (style.outlineColor instanceof Cesium.Color) ? style.outlineColor : Cesium.Color.fromCssColorString(style.outlineColor);

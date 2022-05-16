@@ -1,12 +1,13 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
+import cUtil from '../cUtil';
 class CreateGltfModel extends BasePlot {
   constructor(viewer, style) {
-    super(viewer,style);
+    super(viewer, style);
     style = style || {};
     this.viewer = viewer;
-    if (!style.modelUri) {
+    if (!style.uri) {
       console.warn("请输入模型地址！");
       return;
     }
@@ -15,45 +16,45 @@ class CreateGltfModel extends BasePlot {
       heading: 0,
       pitch: 0,
       roll: 0,
-      minimumPixelSize: undefined,
-      maximumScale: undefined
+      minimumPixelSize: 24,
+      maximumScale: 120
     }
     this.style = Object.assign(defaultStyle, style || {});
 
-    this.modelUri = style.modelUri || "../gltf/weixin.gltf";
+    this.modelUri = style.uri;
     this.entity = null;
   }
 
   start(callBack) {
-    if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
+    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
 
     let that = this;
     this.handler.setInputAction(function (evt) { //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (cartesian) {
-        that.gltfModel.position = cartesian;
+        that.entity.position = cartesian;
         that.position = cartesian.clone();
       }
       that.state = "endCreate";
       if (that.handler) {
         that.handler.destroy();
         that.handler = null;
-    }
+      }
       if (that.prompt) {
         that.prompt.destroy();
         that.prompt = null;
       }
-      if (callBack) callBack(that.gltfModel);
+      if (callBack) callBack(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     this.handler.setInputAction(function (evt) { //单击开始绘制
       that.prompt.update(evt.endPosition, "单击新增");
-      let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer, [that.gltfModel]);
+      let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer, [that.entity]);
       if (!cartesian) return;
-      if (!that.gltfModel) {
+      if (!that.entity) {
         that.entity = that.createGltfModel(cartesian.clone());
       } else {
-        that.gltfModel.position = cartesian;
+        that.entity.position = cartesian;
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
@@ -66,7 +67,7 @@ class CreateGltfModel extends BasePlot {
       this.position = Cesium.Cartesian3.fromDegrees(lnglatArr[0], lnglatArr[1], lnglatArr[2]);
     }
     this.entity = this.createGltfModel(this.position);
-    callBack(this.gltfModel);
+    callBack(this.entity);
     this.state = "endCreate";
   }
   startEdit() {
@@ -84,10 +85,10 @@ class CreateGltfModel extends BasePlot {
     }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
     this.modifyHandler.setInputAction(function (evt) {
       if (!eidtModel) return;
-      let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer, [that.gltfModel]);
+      let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer, [that.entity]);
       if (!cartesian) return;
-      if (that.gltfModel) {
-        that.gltfModel.position.setValue(cartesian);
+      if (that.entity) {
+        that.entity.position.setValue(cartesian);
         that.position = cartesian.clone();
       }
       that.state = "editing";
@@ -107,7 +108,7 @@ class CreateGltfModel extends BasePlot {
     if (this.modifyHandler) {
       this.modifyHandler.destroy();
       this.modifyHandler = null;
-      if (callback) callback(this.gltfModel);
+      if (callback) callback(this.entity);
     }
     this.forbidDrawWorld(false);
     this.state = "endEdit";
@@ -119,7 +120,8 @@ class CreateGltfModel extends BasePlot {
     let roll = Cesium.Math.toRadians(this.style.roll);
     let hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
     let orientation = Cesium.Transforms.headingPitchRollQuaternion(cartesian, hpr);
-    let entity = viewer.entities.add({
+    
+    let entity = this.viewer.entities.add({
       position: cartesian,
       orientation: orientation,
       model: {
@@ -133,14 +135,15 @@ class CreateGltfModel extends BasePlot {
     return entity;
   }
   getPositions(isWgs84) {
-    return isWgs84 ? cUtil.cartesianToLnglat(this.position) : this.position
+    return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position
   }
   getStyle() {
     let obj = {};
-    let model = this.gltfModel.model;
-    obj.minimumPixelSize = model.minimumPixelSize.getValue();
-    let orientation = this.gltfModel.orientation.getValue();
-    let hpr = cUtil.oreatationToHpr(this.gltfModel.position.getValue(), orientation, true) || {};
+    let model = this.entity.model;
+     obj.minimumPixelSize = model.minimumPixelSize.getValue();
+    let orientation = this.entity.orientation.getValue();
+    let p = this.entity.position.getValue(this.viewer.clock.currentTime);
+    let hpr = cUtil.oreatationToHpr(p.clone(), orientation, true) || {};
     obj.heading = hpr.heading || 0;
     obj.pitch = hpr.pitch || 0;
     obj.roll = hpr.roll || 0;
@@ -150,19 +153,33 @@ class CreateGltfModel extends BasePlot {
   setStyle(style) {
     if (!style) return;
     this.setOrientation(style.heading, style.pitch, style.roll);
-    if (style.minimumPixelSize != undefined) this.gltfModel.model.image = style.minimumPixelSize;
-    if (style.minimumPixelSize != undefined) this.gltfModel.model.maximumScale = style.maximumScale;
-    if (style.minimumPixelSize != undefined) this.gltfModel.model.scale = style.scale;
+    this.entity.model.scale.setValue(style.scale == undefined ? 1 : style.scale);
     this.style = Object.assign(this.style, style);
   }
+  setOrientation(h, p, r) {
+    this.style.heading = h;
+    this.style.pitch = p;
+    this.style.roll = r;
+    var heading = Cesium.Math.toRadians(h || 0);
+    var pitch = Cesium.Math.toRadians(p || 0);
+    var roll = Cesium.Math.toRadians(r || 0);
+    var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
+    var position = this.entity.position._value;
+    var orientation = Cesium.Transforms.headingPitchRollQuaternion(
+      position,
+      hpr
+    );
+    if (this.entity) this.entity.orientation = orientation;
+  }
+
   remove() {
-    if (this.gltfModel) {
+    if (this.entity) {
       this.state = "no";
-      this.viewer.entities.remove(this.gltfModel);
+      this.viewer.entities.remove(this.entity);
       this.entity = null;
     }
   }
-  
+
   destroy() {
     if (this.handler) {
       this.handler.destroy();
@@ -172,8 +189,8 @@ class CreateGltfModel extends BasePlot {
       this.modifyHandler.destroy();
       this.modifyHandler = null;
     }
-    if (this.gltfModel) {
-      this.viewer.entities.remove(this.gltfModel);
+    if (this.entity) {
+      this.viewer.entities.remove(this.entity);
       this.entity = null;
     }
     this.style = null;

@@ -17,7 +17,7 @@ var MeasureSlopePolygon = function (viewer, opt) {
 MeasureSlopePolygon.prototype = {
 	//开始测量
 	start: function () {
-		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		var that = this;
 		this.handler.setInputAction(function (evt) {
 			var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);

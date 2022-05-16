@@ -1,6 +1,7 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
+import cUtil from "../cUtil"
 class CreatePoint extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
@@ -17,7 +18,7 @@ class CreatePoint extends BasePlot {
 	}
 
 	start(callBack) {
-		if (!this.prompt) this.prompt = new Prompt(this.viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
 		this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -89,7 +90,7 @@ class CreatePoint extends BasePlot {
 		return obj;
 	}
 	getPositions(isWgs84) {
-		return isWgs84 ? this.position : cUtil.cartesianToLnglat(this.position)
+		return isWgs84 ? cUtil.cartesianToLnglat(this.position) :this.position 
 	}
 	startEdit() {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;

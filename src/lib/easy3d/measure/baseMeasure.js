@@ -12,6 +12,13 @@ class BaseMeasure {
         this.controlPoints = [];
         this.pointStyle = {};
         this.modifyPoint = null;
+        this.promptStyle = opt.prompt || {
+            show: true,
+            offset: {
+                x: 30,
+                y: 30
+            }
+        }
     }
 
     createLine(positions, clampToGround) {

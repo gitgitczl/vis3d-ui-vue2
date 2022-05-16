@@ -18,7 +18,7 @@ class MeasureAzimutht extends BaseMeasure {
   start(fun) {
     let that = this;
     this.state = "startCreate";
-    if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
+    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
     this.handler.setInputAction(function (evt) { //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (!cartesian) return;

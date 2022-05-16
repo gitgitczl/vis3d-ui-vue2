@@ -364,7 +364,6 @@ export default {
       // 移除当前编辑对象
       if (!roamDraw) return;
       roamDraw.endEdit();
-      debugger
       if (nowEditEntityObj)
         this.roamDelete({
           plotId: nowEditEntityObj.entity.objId,

@@ -175,7 +175,7 @@ export default {
     },
     setLayeralpha(data) {
       let layerOpt = window.mapViewer2.operateLayerTool.getLayerObjById(data.id);
-      if (layerOpt && layerOpt.layer) layerOpt.layer.setAlpha(data.alpha);
+      if (layerOpt && layerOpt.layerObj) layerOpt.layerObj.setAlpha(data.alpha);
     },
     checkLayer(data, state) {
       this.checkedKeys = state.checkedKeys;

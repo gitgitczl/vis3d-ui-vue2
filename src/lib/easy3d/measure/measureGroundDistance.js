@@ -30,7 +30,7 @@ class MeasureGroundDistance extends BaseMeasure {
 
 	//开始测量
 	start(fun) {
-		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		let that = this;
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) { //单击开始绘制

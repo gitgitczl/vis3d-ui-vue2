@@ -20,7 +20,7 @@ class MeasureSpaceArea extends BaseMeasure {
 
 	//开始测量
 	start(callBack) {
-		if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		var that = this;
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) {

@@ -20,7 +20,7 @@ class CreateBillboard extends BasePlot {
 	}
 
 	start(callBack) {
-		if (!this.prompt) this.prompt = new Prompt(this.viewer, { offset: { x: 30, y: 30 } });
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
 		this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -49,7 +49,7 @@ class CreateBillboard extends BasePlot {
 		this.state = "startCreate";
 		let position = null;
 		if (lnglatArr instanceof Cesium.Cartesian3) {
-			position = p.clone();
+			position = lnglatArr.clone();
 		} else {
 			position = Cesium.Cartesian3.fromDegrees(Number(lnglatArr[0]), Number(lnglatArr[1]), Number(lnglatArr[2] || 0));
 		}
@@ -169,7 +169,7 @@ class CreateBillboard extends BasePlot {
 
 	// 方法重写
 	getPositions(isWgs84) {
-		return isWgs84 ? this.position : cUtil.cartesianToLnglat(this.position, this.viewer)
+		return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position ;
 	}
 
 	setPosition(p) {

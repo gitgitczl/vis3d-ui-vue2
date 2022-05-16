@@ -1,6 +1,7 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
+import cUtil from "../cUtil"
 class CreateLabel extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
@@ -15,8 +16,8 @@ class CreateLabel extends BasePlot {
 
 
   start(callBack) {
-    if (!this.prompt)
-      this.prompt = new Prompt(this.viewer, { offset: { x: 30, y: 30 } });
+    if (!this.prompt && this.promptStyle.show)
+      this.prompt = new Prompt(this.viewer,this.promptStyle);
     let that = this;
     this.state = "startCreate";
     this.handler.setInputAction(function (evt) {
@@ -159,7 +160,7 @@ class CreateLabel extends BasePlot {
     return obj;
   }
   getPositions(isWgs84) {
-    return isWgs84 ? this.position : cUtil.cartesianToLnglat(this.position);
+    return isWgs84 ? cUtil.cartesianToLnglat(this.position) :this.position ;
   }
 
   startEdit() {

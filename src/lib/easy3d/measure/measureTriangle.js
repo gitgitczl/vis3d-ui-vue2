@@ -28,7 +28,7 @@ class MeasureTriangle extends BaseMeasure {
 
     //开始测量
     start() {
-        if (!this.prompt) this.prompt = new Prompt(viewer, { offset: { x: 30, y: 30 } });
+        if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
         var that = this;
         this.state = 1;
         this.handler.setInputAction(function (evt) { //单击开始绘制

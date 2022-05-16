@@ -132,6 +132,20 @@ window.mapConfig = {
                         "duration": 2
                     },
                     "maximumScreenSpaceError": 8
+                },
+                {
+                    "name": "cesiumLab 测试模型",
+                    "type": "3dtiles",
+                    "url": "http://localhost:9000/model/f0f99540d28311ec949e4303dbfd4fc4/tileset.json",
+                    "show": false,
+                    "maximumScreenSpaceError": 8
+                },
+                {
+                    "name": "毕安格 测试模型",
+                    "type": "3dtiles",
+                    "url": "http://localhost:9000/model/f7241ad0d28311ec949e4303dbfd4fc4/tileset.json",
+                    "show": false,
+                    "maximumScreenSpaceError": 1
                 }
             ]
         }

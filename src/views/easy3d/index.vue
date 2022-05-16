@@ -1,6 +1,7 @@
 <template>
   <div class="map-box" ref="mapbox">
     <div id="mapContainer"></div>
+    <Head />
     <!-- 侧边工具栏 -->
     <Sidebar></Sidebar>
     <!-- 帮助说明 -->
@@ -201,8 +202,10 @@
   </div>
 </template>
 <script>
+import Head from '@/views/Head.vue'
 import Help from "@/views/easy3d/baseTools/help/Index.vue";
-import Sidebar from "@/views/easy3d/baseTools/sidebar/Index.vue";
+import Sidebar from "@/views/easy3d/sidebar.vue";
+
 import Plot from "@/views/easy3d/baseTools/plot/Index.vue";
 import PlotStyle from "@/views/easy3d/baseTools/plotStyle/Index.vue";
 import Layers from "@/views/easy3d/baseTools/layers/Index.vue";
@@ -233,6 +236,7 @@ let overviewMap = null;
 export default {
   name: "Map",
   components: {
+    Head,
     Help,
     Plot,
     Measure,

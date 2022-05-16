@@ -86,7 +86,6 @@ export default {
     showslayer.forEach((lyr) => {
       this.checkedKeys.push(lyr.id);
     });
-
   },
 
   destroyed() {},
@@ -96,24 +95,27 @@ export default {
     },
     setLayeralpha(data) {
       let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(data.id);
-      if (layerOpt) layerOpt.layer.setAlpha(data.alpha);
+      if (layerOpt) layerOpt.layerObj.setAlpha(data.alpha);
     },
     nodeCheck(data, state) {
       this.checkedKeys = state.checkedKeys;
       let allshowLayers = window.mapViewer.operateLayerTool.getAllshow();
       let allhideLayers = window.mapViewer.operateLayerTool.getAllhide();
-
-      for (let i = 0; i < allshowLayers.length; i++) {
-        let layer = allshowLayers[i].layer;
-        if (layer && state.checkedKeys.indexOf(layer.attr.id) == -1) {
+      let len = allshowLayers.length;
+      for (let i = 0; i < len; i++) {
+        let layer = allshowLayers[i];
+        if (layer == undefined) continue;
+        if (state.checkedKeys.indexOf(layer.attr.id) == -1) {
           window.mapViewer.operateLayerTool.setVisible(layer.attr.id, false);
         }
       }
 
-      for (let j = 0; j < allhideLayers.length; j++) {
-        let layer = allhideLayers[j].layer;
-        if (layer && state.checkedKeys.indexOf(layer.attr.id) != -1) {
-          window.mapViewer.operateLayerTool.setVisible(layer.attr.id, true);
+      let len2 = allhideLayers.length;
+      for (let j = 0; j < len2; j++) {
+        let layer2 = allhideLayers[j];
+        if (layer2 == undefined) continue;
+        if (state.checkedKeys.indexOf(layer2.attr.id) != -1) {
+          window.mapViewer.operateLayerTool.setVisible(layer2.attr.id, true);
         }
       }
     },
@@ -129,8 +131,8 @@ export default {
           let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(
             data.id
           );
-          if (layerOpt && layerOpt.layer && layerOpt.layer.show)
-            layerOpt.layer.zoomTo();
+          if (layerOpt && layerOpt.layerObj && layerOpt.layerObj.show)
+            layerOpt.layerObj.zoomTo();
         }
 
         this.clickTimes = 0;
@@ -143,7 +145,7 @@ export default {
       if (this.checkedKeys.indexOf(attr.id) != -1) return;
       this.checkedKeys.push(attr.id);
       /* window.mapViewer.operateLayerTool.setVisible(attr.id, true); */ // baseTools/index.vue中已监听打开
-      this.$refs.layerTree.setCheckedKeys(this.checkedKeys)
+      this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
     },
     // 取消选中
     uncheckOne(attr) {
@@ -155,7 +157,7 @@ export default {
           break;
         }
       }
-      this.$refs.layerTree.setCheckedKeys(this.checkedKeys)
+      this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
       /* window.mapViewer.operateLayerTool.setVisible(attr.id, false); */ // baseTools/index.vue中已监听打开
     },
   },

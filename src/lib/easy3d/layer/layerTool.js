@@ -75,7 +75,7 @@ class LayerTool {
         for (let i = 0; i < this._layerObjs.length; i++) {
             if (this._layerObjs[i].attr.id == id) {
                 obj = {
-                    layer: this._layerObjs[i],
+                    layerObj: this._layerObjs[i],
                     index: i
                 }
                 break;
@@ -91,8 +91,8 @@ class LayerTool {
     removeLayerObjById(id) {
         if (!id) return;
         let lyropt = this.getLayerObjById(id);
-        if (lyropt && lyropt.layer) {
-            lyropt.layer.remove();
+        if (lyropt && lyropt.layerObj) {
+            lyropt.layerObj.remove();
             this._layerObjs.splice(lyropt.index, 1);
         }
     }
@@ -110,22 +110,22 @@ class LayerTool {
     hideById(id) {
         if (!id) return;
         let layerOpt = this.getLayerObjById(id);
-        if (layerOpt && layerOpt.layer) {
-            layerOpt.layer.hide();
+        if (layerOpt && layerOpt.layerObj) {
+            layerOpt.layerObj.hide();
             // 数据隔离
-            let newAttr = JSON.parse(JSON.stringify(layerOpt.layer.attr || {}));
+            let newAttr = JSON.parse(JSON.stringify(layerOpt.layerObj.attr || {}));
             newAttr.show = false;
-            layerOpt.layer.attr = newAttr;
+            layerOpt.layerObj.attr = newAttr;
         }
     }
     showById(id) {
         if (!id) return;
         let layerOpt = this.getLayerObjById(id);
-        if (layerOpt && layerOpt.layer) {
-            layerOpt.layer.show();
-            let newAttr = JSON.parse(JSON.stringify(layerOpt.layer.attr || {}));
+        if (layerOpt && layerOpt.layerObj) {
+            layerOpt.layerObj.show();
+            let newAttr = JSON.parse(JSON.stringify(layerOpt.layerObj.attr || {}));
             newAttr.show = true;
-            layerOpt.layer.attr = newAttr;
+            layerOpt.layerObj.attr = newAttr;
         }
     }
   
@@ -141,8 +141,8 @@ class LayerTool {
     zoomTo(id) {
         if (!id) return;
         let layobj = this.getLayerObjById(id) || {};
-        if (layobj && layobj.layer)
-            layobj.layer.zoomTo();
+        if (layobj && layobj.layerObj)
+            layobj.layerObj.zoomTo();
     }
     hideAll() {
         for (let i = 0; i < this._layerObjs.length; i++) {

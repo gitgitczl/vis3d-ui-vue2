@@ -95,6 +95,25 @@ function setCameraView(obj, mapViewer) {
     });
 }
 
+function oreatationToHpr(position, orientation, isWgs84) {
+    
+    if (!position || !orientation) return;
+    let matrix3Scratch = new Cesium.Matrix3();
+    var mtx3 = Cesium.Matrix3.fromQuaternion(orientation, matrix3Scratch);
+    var mtx4 = Cesium.Matrix4.fromRotationTranslation(mtx3, position, new Cesium.Matrix4());
+    var hpr = Cesium.Transforms.fixedFrameToHeadingPitchRoll(mtx4, Cesium.Ellipsoid.WGS84, Cesium.Transforms.eastNorthUpToFixedFrame, new Cesium.HeadingPitchRoll());
+
+    let { heading, pitch, roll } = hpr;
+
+    if (isWgs84) { // 是否转化为度
+      heading = Cesium.Math.toDegrees(heading);
+      pitch = Cesium.Math.toDegrees(pitch);
+      roll = Cesium.Math.toDegrees(roll);
+    }
+
+    return { heading, pitch, roll }
+  }
+
 
 function setOverTime(time) {
     time = time || "1993/11/19 00:00:01"
@@ -171,6 +190,21 @@ function gcj2wgs(arrdata) {
 
 }
 
+function lerpPositions(positions) {
+    if (!positions || positions.length == 0) return;
+    var surfacePositions = Cesium.PolylinePipeline.generateArc({ //将线进行插值
+      positions: positions,
+      granularity: 0.00001
+    });
+    if (!surfacePositions) return;
+    var arr = [];
+    for (var i = 0; i < surfacePositions.length; i += 3) {
+      var cartesian = Cesium.Cartesian3.unpack(surfacePositions, i); //分组
+      arr.push(cartesian);
+    }
+    return arr;
+  }
+
 
 
 
@@ -183,7 +217,8 @@ export default {
     getCameraView: getCameraView,
     setCameraView: setCameraView,
     wgs2gcj : wgs2gcj,
-    gcj2wgs : gcj2wgs
-
+    gcj2wgs : gcj2wgs,
+    lerpPositions : lerpPositions,
+    oreatationToHpr : oreatationToHpr
 }
 

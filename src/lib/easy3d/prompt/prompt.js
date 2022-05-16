@@ -84,7 +84,7 @@ class Prompt {
         if (clsBtn) {
             clsBtn.addEventListener("click", (e) => {
                 that.hide();
-                if(that.close) that.close();
+                if (that.close) that.close();
             })
         }
         this.promptDom = window.document.getElementById(promptId);

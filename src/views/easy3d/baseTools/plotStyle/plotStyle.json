@@ -199,6 +199,43 @@
             "max": 1,
             "step": 0.01
         }
-       
+    },
+    "gltfModel": {
+        "heightReference": {
+            "name": "是否贴地",
+            "value": true,
+            "type": "radio"
+        },
+        "heading": {
+            "name": "偏转角",
+            "value": 0,
+            "type": "slider",
+            "min": 0,
+            "max": 360,
+            "step": 1
+        },
+        "pitch": {
+            "name": "仰俯角",
+            "value": 0,
+            "type": "slider",
+            "min": 0,
+            "max": 360,
+            "step": 1
+        },
+        "roll": {
+            "name": "翻滚角",
+            "value": 0,
+            "type": "slider",
+            "min": 0,
+            "max": 360,
+            "step": 1
+        },
+        "scale": {
+            "name": "缩放比例",
+            "value": 1,
+            "type": "input-number",
+            "minVal": 0,
+            "maxVal": 999999
+        }
     }
 }

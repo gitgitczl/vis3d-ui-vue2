@@ -14,7 +14,7 @@ class CreatePolyline extends BasePlot {
     }
 
     start(callBack) {
-        if (!this.prompt) this.prompt = new Prompt(this.viewer, { offset: { x: 30, y: 30 } });
+        if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
         this.state = "startCreate";
         let that = this;
         this.handler.setInputAction(function (evt) { //单击开始绘制

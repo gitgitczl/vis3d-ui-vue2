@@ -89,9 +89,9 @@ export default {
     getLayerObjById(id) {
       if (!id) return null;
       let layer = null;
-      layer = window.mapViewer.baseLayerTool.getLayerObjById(id).layer;
+      layer = window.mapViewer.baseLayerTool.getLayerObjById(id).layerObj;
       if (!layer)
-        layer = window.mapViewer.operateLayerTool.getLayerObjById(id).layer;
+        layer = window.mapViewer.operateLayerTool.getLayerObjById(id).layerObj;
       return layer;
     },
 
