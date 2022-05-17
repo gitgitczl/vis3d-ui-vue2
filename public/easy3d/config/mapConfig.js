@@ -1,20 +1,20 @@
 window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
-        "cesiumCredit": false,
         "cameraView": {
-            "heading": 1.7234487708310804,
-            "pitch": -46.19933951363875,
-            "roll": 359.9934306040618,
-            "x": 117.32016417871111,
-            "y": 29.77087956748227,
-            "z": 246214.16759452876,
+            "x": 109.75313062392108,
+            "y": 38.286860058887584,
+            "z": 1282.4330625195655,
+            "heading": 153.5263061244546,
+            "pitch": -20.06327590828312,
+            "roll": 359.9999555438242,
             "duration": 0
         },
         "worldAnimate": false,
         "navigation": true,
         "bottomLnglatTool": true,
-        "rightClickTool": true,
+        "rightTool": true,
+        "depthTestAgainstTerrain" : true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
             "baseLayerPicker": false,
@@ -29,7 +29,8 @@ window.mapConfig = {
             "scene3DOnly": true,
             "useDefaultRenderLoop": true,
             "showRenderLoopErrors": false,
-            "terrainExaggeration": 1
+            "terrainExaggeration": 1,
+           
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
@@ -60,13 +61,6 @@ window.mapConfig = {
             "open": true,
             "children": [
                 {
-                    "name": "arcgis底图",
-                    "type": "mapserver",
-                    "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-                    "show": false,
-                    "alpha": 0.5
-                },
-                {
                     "name": "天地图",
                     "type": "tdt",
                     "layerName": "img",
@@ -90,21 +84,7 @@ window.mapConfig = {
                     ]
                 },
                 {
-                    "name": "成都",
-                    "type": "tms",
-                    "show": false,
-                    "url": "http://localhost/chengdu",
-                    "view": {
-                        heading: 356.9489794697967,
-                        pitch: -89.95112790469342,
-                        roll: 0,
-                        x: 104.09694378937657,
-                        y: 30.687244855842117,
-                        z: 171396.70780872242
-                    }
-                },
-                {
-                    "name": "成都（深色）",
+                    "name": "全国地图（深色）",
                     "type": "xyz",
                     "show": false,
                     "url": "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png"
@@ -118,34 +98,14 @@ window.mapConfig = {
             "open": true,
             "children": [
                 {
-                    "name": "化工厂",
+                    "name": "城区模型",
                     "type": "3dtiles",
-                    "url": "http://localhost:9000/model/a21b1710c1f711ec8e1af93423d539a1/tileset.json",
+                    "url": "http://8.141.58.76:6814/data/3dtiles/tileset.json",
                     "show": true,
-                    "view": {
-                        "heading": 18.037134901725636,
-                        "pitch": -22.501592395868563,
-                        "roll": 0.00038618494202808594,
-                        "x": 117.33862298840332,
-                        "y": 33.23609010113041,
-                        "z": 163.56449255825012,
-                        "duration": 2
+                    "center": {
+                        "z": 50
                     },
                     "maximumScreenSpaceError": 8
-                },
-                {
-                    "name": "cesiumLab 测试模型",
-                    "type": "3dtiles",
-                    "url": "http://localhost:9000/model/f0f99540d28311ec949e4303dbfd4fc4/tileset.json",
-                    "show": false,
-                    "maximumScreenSpaceError": 8
-                },
-                {
-                    "name": "毕安格 测试模型",
-                    "type": "3dtiles",
-                    "url": "http://localhost:9000/model/f7241ad0d28311ec949e4303dbfd4fc4/tileset.json",
-                    "show": false,
-                    "maximumScreenSpaceError": 1
                 }
             ]
         }

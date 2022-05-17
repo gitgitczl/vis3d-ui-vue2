@@ -1,11 +1,10 @@
 .easy3d-right-tool {
     z-index: 999;
     padding: 10px 5px;
-    background: grey;
+    background: rgba(42,48,60,0.8);
     border-radius: 4px;
     position: absolute;
     display: none;
-
   }
 
   .easy3d-right-tool li {
@@ -18,7 +17,7 @@
   }
 
   .easy3d-right-tool li:hover {
-    background: #87CEFA;
+    color: #00FFFF;
   }
 
   /* 内容面板样式 */
@@ -42,11 +41,10 @@
     overflow: auto;
   }
 
-  .easy3d-right-content img {
-    width: 20px;
+  .right-content-close {
     position: absolute;
     top: 4px;
-    right: 4px;
+    right: 10px;
     cursor: pointer;
   }
 
@@ -56,9 +54,9 @@
     margin: 4px 10px;
   }
   .content-result-line{
-    width: 100%;
+    width: 96%;
     height: 1px;
-    background: #00FFFF;
+    background: grey;
     margin: 10px auto;
   }
   .content-result-info{
@@ -84,7 +82,6 @@
   
   /* 遮罩 */
   .easy3d-right-tool-shadow{
-
     width: 100%;
     height: 100%;
     z-index: 3;

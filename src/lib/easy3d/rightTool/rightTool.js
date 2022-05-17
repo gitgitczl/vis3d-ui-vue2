@@ -1,4 +1,5 @@
-class EasyRightTool {
+import $ from "jquery";
+class RightTool {
     constructor(viewer, opt) {
         
         opt = opt || {};
@@ -55,7 +56,7 @@ class EasyRightTool {
         let that = this;
         const html = `
           <li class="right-tool-lnglat" id="right-tool-lnglat-${this.randomId}">
-            <span>当前坐标</span>
+            <span style="font-weight:bold;">当前坐标</span>
           </li>
         `;
         $(`#easy3d-right-tool-${this.randomId} ul`).append(html);
@@ -90,10 +91,10 @@ class EasyRightTool {
             const lat = Cesium.Math.toDegrees(ctgc.latitude);
             const height = ctgc.height;
 
-            const title = "该点坐标：";
+            const title = "该点坐标";
 
-            const resultC3 = JSON.stringify(cartesian);
-            const resultJWD = `[${Number(lng).toFixed(6)},${Number(lat).toFixed(6)},${Number(height).toFixed(2)}]`
+            const resultC3 = `[${Number(cartesian.x)} , ${Number(cartesian.y)} , ${Number(cartesian.z)}]`
+            const resultJWD = `[${Number(lng).toFixed(6)} , ${Number(lat).toFixed(6)} , ${Number(height).toFixed(2)}]`
             const result = `
                 世界坐标：
                 <div>${resultC3}</div>
@@ -119,18 +120,44 @@ class EasyRightTool {
             var pitch = camera.pitch;
             var roll = camera.roll;
             var lnglat = Cesium.Cartographic.fromCartesian(position);
-            var cameraV = {
-                "x": Cesium.Math.toDegrees(lnglat.longitude),
-                "y": Cesium.Math.toDegrees(lnglat.latitude),
-                "z": lnglat.height,
-                "heading": Cesium.Math.toDegrees(heading),
-                "pitch": Cesium.Math.toDegrees(pitch),
-                "roll": Cesium.Math.toDegrees(roll)
-            };
-
+            let str = `
+                <div>{</div>              
+                <ul style="margin-left:10px;">
+                    <li>
+                        <span>
+                            "x" : ${Cesium.Math.toDegrees(lnglat.longitude)},
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                            "y" : ${Cesium.Math.toDegrees(lnglat.latitude)},
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                            "z" : ${lnglat.height},
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                            "heading" : ${Cesium.Math.toDegrees(heading)},
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                            "pitch" : ${Cesium.Math.toDegrees(pitch)},
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                        "roll" : ${Cesium.Math.toDegrees(roll)}
+                        </span>
+                    </li>
+                </ul>
+                <div>}</div> 
+            `;
             const title = "当前相机视角";
-            const result = JSON.stringify(cameraV)
-            that.crerateResultHtml(title, result);
+            that.crerateResultHtml(title, str);
         });
     }
     crateDepthTool() {
@@ -192,9 +219,9 @@ class EasyRightTool {
         this.createShadow();
         const html = `
             <div class="easy3d-right-content" class="easy3d-right-content-${this.randomId}">
-                <img calss="right-content-close" id="right-content-close-${this.randomId}" src="lib/easy3d/rightTool/close.png" alt="" title="点击关闭">
+                <span class="right-content-close" id="right-content-close-${this.randomId}" alt="" title="点击关闭">x</span>
                 <div class="right-content-result scrollbar">
-                <div class="content-result-title">${title}：</div>
+                <div class="content-result-title" style="font-weight:bold;">${title}：</div>
                 <div class="content-result-line"></div>
                 <div class="content-result-info">${result}</div>
                 </div>
@@ -218,3 +245,5 @@ class EasyRightTool {
         $(`#easy3d-right-tool-shadow-${this.randomId}`).show();
     }
 }
+
+export default RightTool;

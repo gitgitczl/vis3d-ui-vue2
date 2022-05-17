@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.15.6",
     "html2canvas": "^1.4.1",
+    "jquery": "^3.6.0",
     "leaflet": "^1.7.1",
     "print-js": "^1.6.0",
     "screenfull": "^4.2.1",

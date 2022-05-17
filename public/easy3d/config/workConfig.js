@@ -36,7 +36,7 @@ window.workConfig = {
         },
         {
             "name": "图上量算",
-            "show": true,
+            "show": false,
             "workName": "measure",
             "position": {
                 "top": 200,

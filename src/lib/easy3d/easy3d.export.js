@@ -28,15 +28,18 @@ class MapViewer {
         this._viewer = null;
         this.baseLayerTool = null;
         this.operateLayerTool = null;
+        this.rightTool = null;
+        this.bottomLnglatTool = null;
 
         this.createViewer();
         this.loadTerrain();
         this.loadbaseLayers();
         this.loadOperateLayers();
-        /* this.openNavigation(); */
+
 
         if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
+        if (this.opt.map.rightTool) this.openRightTool();
     }
 
     get viewer() {
@@ -49,10 +52,10 @@ class MapViewer {
         this._viewer = new window.Cesium.Viewer(this.domId, viewerConfig);
         this._viewer.imageryLayers.removeAll();
         // 是否展示cesium官方logo
-        let cesiumCredit = this.opt.map.cesiumCredit == undefined ? false : this.opt.map.cesiumCredit;
-        if (!cesiumCredit) this._viewer._cesiumWidget._creditContainer.style.display = "none";
+        this._viewer._cesiumWidget._creditContainer.style.display = "none";
         this._viewer.mapConfig = this.opt;
         this._viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+        this.viewer.scene.globe.depthTestAgainstTerrain = this.opt.map.depthTestAgainstTerrain;
     }
     // 构建图层
     loadbaseLayers() {
@@ -101,8 +104,16 @@ class MapViewer {
     }
 
     // 开启右键工具
-    openRightClickTool() {
-
+    openRightTool() {
+        if (!this.rightTool) {
+            this.rightTool = new RightTool(this.viewer, {})
+        }
+    }
+    closeRightTool() {
+        if (this.rightTool) {
+            this.rightTool.destroy();
+            this.rightTool = null;
+        }
     }
 
     // 开启地图坐标提示
@@ -121,6 +132,7 @@ class MapViewer {
     openWorldAnimate() {
 
     }
+
 
     // 构建指北针
     openNavigation() {
