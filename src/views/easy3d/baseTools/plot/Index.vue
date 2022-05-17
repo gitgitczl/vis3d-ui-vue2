@@ -153,9 +153,13 @@ export default {
         that.$emit("plotEntityObjId", entObj.objId);
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
-        // 创建完成后 打开控制面板
+        // 编辑完成后
         nowPlotEntObj = null;
         that.$emit("plotEntityObjId", "");
+
+        let lnglats = entObj.getPositions(true);
+        console.log("lnglats--->",lnglats);
+
       });
     }
   },

@@ -199,10 +199,12 @@
       :size="baseTools['monomer'].size"
       @close="close"
     ></Monomer>
+
+    <LoadData v-if="isloadData"></LoadData>
   </div>
 </template>
 <script>
-import Head from '@/views/Head.vue'
+import Head from "@/views/Head.vue";
 import Help from "@/views/easy3d/baseTools/help/Index.vue";
 import Sidebar from "@/views/easy3d/sidebar.vue";
 
@@ -227,6 +229,9 @@ import Monomer from "@/views/easy3d/baseTools/monomer/Index.vue";
 
 import html2canvas from "html2canvas";
 import printJS from "print-js";
+
+/* ======================= 业务模块 ======================= */
+import LoadData from "@/views/easy3d/workTools/loadData/Index.vue";
 
 window.viewer = null;
 window.mapViewer = null;
@@ -254,6 +259,7 @@ export default {
     LayerSplit,
     Monomer,
     Sidebar,
+    LoadData,
   },
   data() {
     return {
@@ -281,6 +287,8 @@ export default {
       toolsState: {
         // 记录模块状态 true 打开 / false 关闭
       },
+
+      isloadData: false,
     };
   },
 
@@ -308,6 +316,8 @@ export default {
     if (!zoomTool) {
       zoomTool = new ZoomTool(window.viewer);
     }
+
+    this.isloadData = true;
   },
   destroyed() {
     if (window.viewer) {
@@ -484,7 +494,10 @@ export default {
         let { attr, visible } = data || {};
         if (!attr.id) return;
         this.setLayerVisible(attr, visible);
-        this.$store.commit("setLayerCheckState", JSON.parse(JSON.stringify(data)));
+        this.$store.commit(
+          "setLayerCheckState",
+          JSON.parse(JSON.stringify(data))
+        );
       },
       deep: true,
     },

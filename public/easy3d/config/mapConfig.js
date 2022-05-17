@@ -2,19 +2,19 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            "x": 109.75313062392108,
-            "y": 38.286860058887584,
-            "z": 1282.4330625195655,
-            "heading": 153.5263061244546,
-            "pitch": -20.06327590828312,
-            "roll": 359.9999555438242,
+            "x": 109.76622427269002,
+            "y": 38.29735638720425,
+            "z": 2239.880835784429,
+            "heading": 212.59690251323107,
+            "pitch": -33.64527675694504,
+            "roll": 359.998529182336,
             "duration": 0
         },
         "worldAnimate": false,
         "navigation": true,
         "bottomLnglatTool": true,
         "rightTool": true,
-        "depthTestAgainstTerrain" : true,  // 是否开启深度监测
+        "depthTestAgainstTerrain": true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
             "baseLayerPicker": false,
@@ -30,7 +30,7 @@ window.mapConfig = {
             "useDefaultRenderLoop": true,
             "showRenderLoopErrors": false,
             "terrainExaggeration": 1,
-           
+
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
