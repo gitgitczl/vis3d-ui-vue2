@@ -10,6 +10,7 @@ class ZoomTool {
     }
     // 向前移动
     forward() {
+
         let amount;
         if (this.backwardAmount) {
             amount = this.backwardAmount;

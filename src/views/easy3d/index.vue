@@ -60,6 +60,11 @@ export default {
     this.easy3d.workControl.init(window.workConfig, function (list) {
       that.componentsArr = list;
     });
+
+    // 构建缩放按钮
+    if (!zoomTool) {
+      zoomTool = new this.easy3d.ZoomTool(window.viewer);
+    }
   },
   destroyed() {
     if (window.viewer) {
@@ -81,18 +86,18 @@ export default {
     setPlotEntityObjId(id) {
       if (id) {
         this.plotEntityObjId = id;
-        this.workControl.openToolByName("plotStyle");
+        this.easy3d.workControl.openToolByName("plotStyle");
       } else {
-        this.workControl.closeToolByName("plotStyle");
+        this.easy3d.workControl.closeToolByName("plotStyle");
       }
     },
 
     setNowStartRoamAttr(attr) {
       if (Object.keys(attr).length != 0) {
         this.nowStartRoamAttr = attr;
-        this.workControl.openToolByName("roamStyle");
+        this.easy3d.workControl.openToolByName("roamStyle");
       } else {
-        this.workControl.openToolByName("roamStyle");
+        this.easy3d.workControl.openToolByName("roamStyle");
       }
     },
 
@@ -128,9 +133,9 @@ export default {
         if (!name) return;
         if (!data.openState) {
           // 关闭某个模块
-          this.workControl.closeToolByName(name);
+          this.easy3d.workControl.closeToolByName(name);
         } else {
-          this.workControl.openToolByName(name);
+          this.easy3d.workControl.openToolByName(name);
         }
       },
       deep: true,
@@ -161,7 +166,7 @@ export default {
     // 监听 是否打开鹰眼图
     "$store.state.map3d.isOpenOverviewMap": function (res) {
       if (res) {
-        if (!overviewMap) overviewMap = new OverviewMap(window.viewer);
+        if (!overviewMap) overviewMap = new this.easy3d.OverviewMap(window.viewer);
       } else {
         if (overviewMap) {
           overviewMap.destroy();

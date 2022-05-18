@@ -18,6 +18,8 @@ import createCN from "./navigation/cesiumNavigation";
 import gadgets from "./gadgets/gadgets";
 
 import RoamTool from "./roam/roamTool";
+import ZoomTool from "./zoomTool/zoomTool"
+import OverviewMap from "./overviewMap/overviewMap"
 
 // 构建viewer
 class MapViewer {
@@ -325,5 +327,5 @@ let workControl = {
 
 
 export default {
-    cUtil, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl
+    cUtil, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap
 }
