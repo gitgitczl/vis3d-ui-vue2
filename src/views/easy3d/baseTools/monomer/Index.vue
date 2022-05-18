@@ -52,7 +52,7 @@ let lastHightlightEnt = null;
 let propmt = null;
 let drawTool = null;
 export default {
-  name: "Monomer",
+  name: "monomer",
   components: {
     Card,
   },

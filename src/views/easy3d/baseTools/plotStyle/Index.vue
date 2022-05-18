@@ -79,7 +79,7 @@ import plotStyle from "./plotStyle.json";
 import Detail from "@/views/easy3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {
-  name: "PlotStyle",
+  name: "plotStyle",
   components: {
     Card,
     Detail,

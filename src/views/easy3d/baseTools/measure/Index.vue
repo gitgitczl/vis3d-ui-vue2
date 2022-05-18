@@ -46,7 +46,7 @@
 import Card from "@/views/easy3d/components/card/Card.vue";
 let measureTool = null;
 export default {
-  name: "Measure",
+  name: "measure",
   components: {
     Card,
   },

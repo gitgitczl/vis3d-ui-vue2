@@ -39,7 +39,7 @@
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
 export default {
-  name: "Layers",
+  name: "layers",
 
   components: {
     Card,

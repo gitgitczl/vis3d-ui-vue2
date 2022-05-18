@@ -75,7 +75,7 @@ import Card from "@/views/easy3d/components/card/Card.vue";
 window.plotDrawTool = null;
 let nowPlotEntObj = null; //当前编辑的对象
 export default {
-  name: "Plot",
+  name: "plot",
   components: {
     Card,
   },

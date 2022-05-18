@@ -24,7 +24,7 @@ import MapSplit from "@/lib/easy3d/layerSplit/layerSplit.js";
 let layerSplit = null;
 let nowLayerAttr = {};
 export default {
-  name: "LayerSplit",
+  name: "layerSplit",
   components: {
     Card,
   },

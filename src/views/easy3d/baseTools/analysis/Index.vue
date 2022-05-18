@@ -59,7 +59,7 @@ import VisualField from "@/views/easy3d/baseTools/analysis/visualField.vue";
 import Volume from "@/views/easy3d/baseTools/analysis/volume.vue";
 import HeightLimit from "@/views/easy3d/baseTools/analysis/heightLimit.vue";
 export default {
-  name: "Analysis",
+  name: "analysis",
   components: {
     Card,
     Contour,

@@ -70,7 +70,7 @@ let endMarkerObj = null;
 let routes = [];
 let colors = [];
 export default {
-  name: "PathPlan",
+  name: "pathPlan",
 
   props: {
     title: "",

@@ -7,6 +7,7 @@ import axios from 'axios'
 import less from 'less'
 import easy3d from "@/lib/easy3d/easy3d.export.js"
 import cUtil from "@/lib/easy3d/cUtil";
+import workControl from "@/lib/easy3d/workControl.js";
 import store from './store';
 // 拖拽组件注册
 import VueDragResize from 'vue-drag-resize'
@@ -26,6 +27,8 @@ var widgets = require('cesium/Widgets/widgets.css');
 
 Vue.prototype.Cesium = window.Cesium = cesium;
 Vue.prototype.easy3d = window.easy3d = easy3d;
+Vue.prototype.workControl = workControl;
+
 Vue.prototype.widgets = widgets
 
 Vue.config.productionTip = false

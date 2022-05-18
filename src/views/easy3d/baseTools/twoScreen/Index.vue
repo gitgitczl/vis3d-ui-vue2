@@ -49,7 +49,7 @@
 /* 分屏对比 */
 import Card from "@/views/easy3d/components/card/Card.vue";
 export default {
-  name: "TwoScreen",
+  name: "twoScreen",
   props: {
     title: "",
     position: {},

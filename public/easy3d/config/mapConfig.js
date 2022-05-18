@@ -95,13 +95,13 @@ window.mapConfig = {
         {
             "name": "三维模型",
             "type": "group",
-            "open": true,
+            "open": false,
             "children": [
                 {
                     "name": "城区模型",
                     "type": "3dtiles",
                     "url": "http://8.141.58.76:6814/data/3dtiles/tileset.json",
-                    "show": true,
+                    "show": false,
                     "center": {
                         "z": 50
                     },
