@@ -56,12 +56,8 @@ export default {
       this.mapConfig
     ));
     window.viewer = mapViewer._viewer;
-    /* import("@/views/easy3d/baseTools/plot/Index.vue").then((module) => {
-      that.testCmpt = module.default;
-    }); */
     // 读取配置文件中配置 并构建相应组件标签
-    let { tools } = window.workConfig;
-    this.workControl.init(tools, function (list) {
+    this.easy3d.workControl.init(window.workConfig, function (list) {
       that.componentsArr = list;
     });
   },
@@ -75,7 +71,6 @@ export default {
     initWork() {},
     // 工具关闭
     close(name) {
-      if (!this.baseTools[name]) return;
       this.$store.commit("setOperateTool", {
         toolName: name,
         openState: false,
@@ -141,62 +136,62 @@ export default {
       deep: true,
     },
 
-    // // 监听底图坐标提示栏的开启关闭
-    // "$store.state.map3d.openBottomLnglatTool": function (isOpen) {
-    //   if (isOpen) {
-    //     if (window.mapViewer) window.mapViewer.openBottomLnglatTool();
-    //   } else {
-    //     if (window.mapViewer) window.mapViewer.closeBottomLnglatTool();
-    //   }
-    // },
-    // // 监听是否点击放大按钮
-    // "$store.state.map3d.isZoomIn": function (res) {
-    //   if (res && zoomTool) {
-    //     zoomTool.forward();
-    //     this.$store.commit("setIsZoomIn", false);
-    //   }
-    // },
-    // // 监听是否点击缩小按钮
-    // "$store.state.map3d.isZoomOut": function (res) {
-    //   if (res && zoomTool) {
-    //     zoomTool.backward();
-    //     this.$store.commit("setIsZoomOut", false);
-    //   }
-    // },
-    // // 监听 是否打开鹰眼图
-    // "$store.state.map3d.isOpenOverviewMap": function (res) {
-    //   if (res) {
-    //     if (!overviewMap) overviewMap = new OverviewMap(window.viewer);
-    //   } else {
-    //     if (overviewMap) {
-    //       overviewMap.destroy();
-    //       overviewMap = null;
-    //     }
-    //   }
-    // },
-    // // 监听 是否打印
-    // "$store.state.map3d.isPrintMap": function (res) {
-    //   if (res) {
-    //     this.printMap();
-    //     this.$store.commit("setIsPrintMap", false);
-    //   }
-    // },
+    // 监听底图坐标提示栏的开启关闭
+    "$store.state.map3d.openBottomLnglatTool": function (isOpen) {
+      if (isOpen) {
+        if (window.mapViewer) window.mapViewer.openBottomLnglatTool();
+      } else {
+        if (window.mapViewer) window.mapViewer.closeBottomLnglatTool();
+      }
+    },
+    // 监听是否点击放大按钮
+    "$store.state.map3d.isZoomIn": function (res) {
+      if (res && zoomTool) {
+        zoomTool.forward();
+        this.$store.commit("setIsZoomIn", false);
+      }
+    },
+    // 监听是否点击缩小按钮
+    "$store.state.map3d.isZoomOut": function (res) {
+      if (res && zoomTool) {
+        zoomTool.backward();
+        this.$store.commit("setIsZoomOut", false);
+      }
+    },
+    // 监听 是否打开鹰眼图
+    "$store.state.map3d.isOpenOverviewMap": function (res) {
+      if (res) {
+        if (!overviewMap) overviewMap = new OverviewMap(window.viewer);
+      } else {
+        if (overviewMap) {
+          overviewMap.destroy();
+          overviewMap = null;
+        }
+      }
+    },
+    // 监听 是否打印
+    "$store.state.map3d.isPrintMap": function (res) {
+      if (res) {
+        this.printMap();
+        this.$store.commit("setIsPrintMap", false);
+      }
+    },
 
-    // /**
-    //  * 监听当前operateLayer的显示隐藏
-    //  */
-    // "$store.state.map3d.operateLayerVisible": {
-    //   handler(data) {
-    //     let { attr, visible } = data || {};
-    //     if (!attr.id) return;
-    //     this.setLayerVisible(attr, visible);
-    //     this.$store.commit(
-    //       "setLayerCheckState",
-    //       JSON.parse(JSON.stringify(data))
-    //     );
-    //   },
-    //   deep: true,
-    // },
+    /**
+     * 监听当前operateLayer的显示隐藏
+     */
+    "$store.state.map3d.operateLayerVisible": {
+      handler(data) {
+        let { attr, visible } = data || {};
+        if (!attr.id) return;
+        this.setLayerVisible(attr, visible);
+        this.$store.commit(
+          "setLayerCheckState",
+          JSON.parse(JSON.stringify(data))
+        );
+      },
+      deep: true,
+    },
   },
 };
 </script>
