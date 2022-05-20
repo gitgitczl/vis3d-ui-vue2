@@ -93,7 +93,7 @@ export default {
     openTool(attr) {
 
       if(attr.name === '工具栏') {
-        this.$store.commit('SET_ISTOOLOPEN', attr.isOpen)
+        this.$store.commit('setIsToolOpen', attr.isOpen)
       }
 
 

@@ -73,7 +73,7 @@ window.mapConfig = {
                     "type": "singleImage",
                     "url": "./easy3d/images/layer/world.jpg",
                     "iconImg": "./easy3d/images/layer/world.jpg",
-                    "show": false,
+                    "show": true,
                     "layerSplit": true,
                     "alpha": 1,
                     "rectangle": [
@@ -95,7 +95,7 @@ window.mapConfig = {
         {
             "name": "三维模型",
             "type": "group",
-            "open": false,
+            "open": true,
             "children": [
                 {
                     "name": "城区模型",

@@ -34,17 +34,20 @@ export default {
   props: {
     title: "",
     position: {},
-    size: {},
+    size:{}
   },
   data() {
     return {
-      baseMapList: this.$store.state.map3d.baseLayers,
+      baseMapList: [],
       isShowMap: true,
-      nowShowLayerId: null,
+      nowShowLayerId: null
     };
   },
   mounted() {
-    let lys = this.baseMapList.filter((layer) => {
+    let mapConfig = window.viewer.mapConfig || {};
+    let { baseLayers } = mapConfig;
+    this.$set(this, "baseMapList", baseLayers);
+    let lys = baseLayers.filter((layer) => {
       return layer.show == true;
     });
     this.nowShowLayerId = lys[0].id;
@@ -58,7 +61,6 @@ export default {
     // 选中底图
     onChangeBaseMap(data) {
       if (data.id == this.nowShowLayerId) return; // 屏蔽重复点击
-
       let tempList = this.baseMapList.map((item) => {
         let temp = {};
         if (item.type === data.type) {
@@ -66,21 +68,15 @@ export default {
         } else {
           temp = Object.assign({}, item, { show: false });
         }
+
         return temp;
       });
       this.nowShowLayerId = data.id;
       this.$set(this, "baseMapList", tempList);
       window.mapViewer.baseLayerTool.hideAll();
       window.mapViewer.baseLayerTool.showById(data.id);
-    },
-  },
-  watch: {
-    "$store.state.map3d.baseLayers": {
-      handler(data) {
-        debugger;
-      },
-      deep: true,
-    },
+    }
+
   },
 };
 </script>

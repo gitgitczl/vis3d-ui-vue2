@@ -12,6 +12,7 @@
         node-key="id"
         @node-click="nodeClick"
         @check="nodeCheck"
+        @node-contextmenu="nodeRightClick"
       >
         <div class="custom-tree-node" slot-scope="{ data }">
           <span>{{ data.name }}</span>
@@ -54,7 +55,7 @@ export default {
 
   data() {
     return {
-      operateLayers: [],
+      operateLayers: this.$store.state.map3d.operateLayers,
       expandedKeys: [], // 默认打开节点
       checkedKeys: [], // 默认选中节点
       defaultProps: {
@@ -69,23 +70,20 @@ export default {
   },
 
   mounted() {
-    this.$set(this, "operateLayers", this.mapConfig.operateLayers);
-
-    let operateLayerTool = window.mapViewer.operateLayerTool;
-    // 根据属性 看哪些打开
-    operateLayerTool._layerObjs.forEach((element) => {
-      if (element.open) this.expandedKeys.push(element.id);
-    });
-    this.operateLayers.forEach((element) => {
-      if (element.open && element.type == "group") {
-        this.expandedKeys.push(element.id);
+    let data = this.getAllLayers(this.operateLayers);
+    let { layers, groups } = data || {};
+    for (let i = 0; i < layers.length; i++) {
+      let item = layers[i];
+      if (item.show == true) {
+        this.checkedKeys.push(item.id);
       }
-    });
-    // 根据属性 看哪些选中
-    let showslayer = operateLayerTool.getAllshow();
-    showslayer.forEach((lyr) => {
-      this.checkedKeys.push(lyr.id);
-    });
+    }
+    for (let ind = 0; ind < groups.length; ind++) {
+      let gp = groups[ind];
+      if (gp.open && gp.type == "group") {
+        this.expandedKeys.push(gp.id);
+      }
+    }
   },
 
   destroyed() {},
@@ -160,16 +158,48 @@ export default {
       this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
       /* window.mapViewer.operateLayerTool.setVisible(attr.id, false); */ // baseTools/index.vue中已监听打开
     },
+
+    // childeren转为线性
+    getAllLayers(lys) {
+      lys = lys || {};
+      lys = JSON.parse(JSON.stringify(lys));
+      let layers = [];
+      let groups = [];
+      function query(attr) {
+        if (!attr.children) {
+          layers.push(attr);
+        } else {
+          let newAttr = JSON.parse(JSON.stringify(attr));
+          delete newAttr.children;
+          groups.push(newAttr);
+
+          attr.children.forEach(function (item) {
+            query(item);
+          });
+        }
+      }
+
+      lys.forEach(element => {
+         query(element);
+      });
+     
+      return {
+        layers,
+        groups,
+      };
+    },
+
+    nodeRightClick(a,b,c,d){
+      
+    }
+   
   },
 
-  // 监听内部数据变化  保持和树统一
+  // 保持和树统一
   watch: {
-    "$store.state.map3d.layerCheckState": {
+    "$store.state.map3d.operateLayer": {
       handler(data) {
-        let { attr, visible } = data;
-        if (!attr.id) return;
-        if (visible) this.checkOne(attr);
-        else this.uncheckOne(attr);
+        debugger
       },
       deep: true,
     },

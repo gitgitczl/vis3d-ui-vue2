@@ -67,7 +67,6 @@ class MapViewer {
             let layer = baseLayers[i];
             if (layer.type != "group") this.baseLayerTool.add(layer);
         }
-
     }
     // 构建业务图层
     loadOperateLayers() {
@@ -228,13 +227,6 @@ let workControl = {
             case "coordinate":
                 this.components.push(import("@/views/easy3d/baseTools/coordinate/Index.vue"));
                 break;
-            /* 
-           case "zoomTool":
-               this.components.push(import("@/views/easy3d/baseTools/zoomTool/Index.vue"));
-               break;
-           case "overviewMap":
-               this.components.push(import("@/views/easy3d/baseTools/overviewMap/Index.vue"));
-               break; */
             case "twoScreen":
                 this.components.push(import("@/views/easy3d/baseTools/twoScreen/Index.vue"));
                 break;
@@ -279,7 +271,6 @@ let workControl = {
             toolAttr.closeDisableExcept.indexOf(dutoName) != -1
         )
             return;
-
         // 释放时 是否销毁自己
         if (
             toolAttr.closeDisableSelf == undefined ||

@@ -41,11 +41,11 @@ class BaseLayer {
             brightness: this.opt.brightness || 1,
             show: this.opt.show == undefined ? true : this.opt.show
         }
-        if(this.opt.minimumTerrainLevel) options.minimumTerrainLevel = this.opt.minimumTerrainLevel; // 控制显示的层级
-        if(this.opt.maximumTerrainLevel) options.maximumTerrainLevel = this.opt.maximumTerrainLevel;  // 控制显示的层级
-        this._layer = new Cesium.ImageryLayer(this._provider,options);
-        this.viewer.imageryLayers.add(this._layer, this.opt.index);
-        this._layer.attr = JSON.parse(JSON.stringify(this.opt || {})); // 保存配置信息
+        if (this.opt.minimumTerrainLevel) options.minimumTerrainLevel = this.opt.minimumTerrainLevel; // 控制显示的层级
+        if (this.opt.maximumTerrainLevel) options.maximumTerrainLevel = this.opt.maximumTerrainLevel;  // 控制显示的层级
+        this._layer = new Cesium.ImageryLayer(this._provider, options);
+        this.viewer.imageryLayers.add(this._layer, this.opt.zIndex);
+        this._layer.attr = this.opt; // 保存配置信息
     }
 
     getLayer() {
@@ -93,6 +93,20 @@ class BaseLayer {
         alpha = alpha == undefined ? 1 : alpha;
         this._layer.alpha = alpha;
     }
+
+    lowerLayer() {
+        if (this._layer) this.viewer.imageryLayers.lower(this._layer);
+    }
+    lowerLayerToBottom() {
+        if (this._layer) this.viewer.imageryLayers.lowerToBottom(this._layer);
+    }
+    raiseLayer() {
+        if (this._layer) this.viewer.imageryLayers.raise(this._layer);
+    }
+    raiselayerToTop() {
+        if (this._layer) this.viewer.imageryLayers.raiseToTop(this._layer);
+    }
+
 }
 
 export default BaseLayer;

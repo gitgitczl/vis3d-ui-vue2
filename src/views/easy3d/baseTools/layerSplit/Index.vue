@@ -41,42 +41,26 @@ export default {
   },
 
   mounted() {
-    // 构建卷帘对比单选框 目前仅支持在operateLayer中配置
-    let allSplitLayers = window.mapViewer.operateLayerTool.getLayerObjByField(
-      "layerSplit",
-      true
-    );
-    // 构件下拉选择框
-    allSplitLayers.forEach((layer) => {
-      this.layerList.push({
-        id: layer.id,
-        name: layer.attr.name,
-      });
-    });
-
     // 默认选中第一个展示
-    this.nowSelectId = this.layerList[0].id;
-    let lyr = this.getLayerObjById(this.nowSelectId);
-    nowLayerAttr = {
-      oldVisible: lyr._layer.show, // 记录开始的状态
-    };
-    nowLayerAttr = JSON.parse(JSON.stringify(nowLayerAttr));
-    nowLayerAttr.layerObj = lyr;
-    nowLayerAttr.layer = lyr._layer;
+    let { operateLayers } = window.mapConfig;
+    let res = this.getAllLayers(operateLayers);
 
-    if (!layerSplit) {
+    let allLayers = res.layers;
+    for (let i = 0; i < allLayers.length; i++) {
+      let item = allLayers[i];
+      if (item.layerSplit == true) {
+        this.layerList.push(item);
+      }
+    }
+
+    this.nowSelectId = this.layerList[0].id;
+    
+    let lyrObj = window.mapViewer.operateLayerTool.getLayerObjById(this.nowSelectId).layerObj;
+    lyrObj.setVisible(true);
+    if (!layerSplit)
       layerSplit = new MapSplit(window.viewer, {
-        layer: lyr._layer,
+        layer: lyrObj._layer,
       });
-    }
-    // 加载图层
-    if (!lyr._layer.show) {
-      this.$store.commit("setOperateLayerVisible", {
-        attr: JSON.parse(JSON.stringify(lyr.attr)),
-        visible: true,
-      });
-      nowLayerAttr.newVisible = true;
-    }
   },
   destroyed() {
     this.resetLastlyr();
@@ -86,15 +70,35 @@ export default {
     }
   },
   methods: {
-    getLayerObjById(id) {
-      if (!id) return null;
-      let layer = null;
-      layer = window.mapViewer.baseLayerTool.getLayerObjById(id).layerObj;
-      if (!layer)
-        layer = window.mapViewer.operateLayerTool.getLayerObjById(id).layerObj;
-      return layer;
-    },
+    // childeren转为线性
+    getAllLayers(lys) {
+      lys = lys || {};
+      lys = JSON.parse(JSON.stringify(lys));
+      let layers = [];
+      let groups = [];
+      function query(attr) {
+        if (!attr.children) {
+          layers.push(attr);
+        } else {
+          let newAttr = JSON.parse(JSON.stringify(attr));
+          delete newAttr.children;
+          groups.push(newAttr);
 
+          attr.children.forEach(function (item) {
+            query(item);
+          });
+        }
+      }
+
+      lys.forEach((element) => {
+        query(element);
+      });
+
+      return {
+        layers,
+        groups,
+      };
+    },
     changeLayer(attr) {
       let lyr = this.getLayerObjById(attr.id);
       if (!lyr) return;

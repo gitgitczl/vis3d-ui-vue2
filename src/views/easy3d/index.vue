@@ -50,12 +50,14 @@ export default {
   mounted() {
     // 构建基础地图
     let that = this;
-    this.mapConfig = window.mapConfig;
     let mapViewer = (window.mapViewer = new this.easy3d.MapViewer(
       "mapContainer",
-      this.mapConfig
+      window.mapConfig
     ));
     window.viewer = mapViewer._viewer;
+    this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
+    this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
+
     // 读取配置文件中配置 并构建相应组件标签
     this.easy3d.workControl.init(window.workConfig, function (list) {
       that.componentsArr = list;
@@ -166,7 +168,8 @@ export default {
     // 监听 是否打开鹰眼图
     "$store.state.map3d.isOpenOverviewMap": function (res) {
       if (res) {
-        if (!overviewMap) overviewMap = new this.easy3d.OverviewMap(window.viewer);
+        if (!overviewMap)
+          overviewMap = new this.easy3d.OverviewMap(window.viewer);
       } else {
         if (overviewMap) {
           overviewMap.destroy();

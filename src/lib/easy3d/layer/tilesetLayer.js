@@ -23,6 +23,7 @@ class TilesetLayer extends BaseLayer {
                 maximumScreenSpaceError: this.opt.maximumScreenSpaceError || 1,
                 url: this.opt.url,
                 maximumMemoryUsage: 1024,
+                /* debugShowBoundingVolume:true, */
                 /*  preloadWhenHidden: true, */
                 /*  preferLeaves : true, */
                 /*  skipLevelOfDetail: true,

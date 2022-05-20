@@ -63,10 +63,10 @@ class LayerTool {
             layerObj.setVisible(opt.show);
         }
         this._layerObjs.push(layerObj);
+
         opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         opt.alpha = opt.alpha == undefined ? 1 : opt.alpha;
-        layerObj.attr = JSON.parse(JSON.stringify(opt)); // 绑定属性文件
-
+        layerObj.attr = opt; // 绑定属性文件
         return layerObj;
     }
     getLayerObjById(id) {
@@ -82,6 +82,24 @@ class LayerTool {
             }
         }
         return obj;
+    }
+
+    /**
+     * 获取当前图层对象
+     * @param {Object} query 
+     */
+    getLayerObj(query) {
+        let { key, value } = query;
+        let obj = {};
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (this._layerObjs[i].attr[key] == value) {
+                obj = {
+                    layerObj: this._layerObjs[i],
+                    index: i
+                }
+                break;
+            }
+        }
     }
 
     removeLayerObj(layerObj) {
@@ -128,7 +146,7 @@ class LayerTool {
             layerOpt.layerObj.attr = newAttr;
         }
     }
-  
+
     setVisible(id, isShow) {
         if (!id) return;
         if (isShow) {
@@ -179,6 +197,50 @@ class LayerTool {
             }
         }
         return returnData;
+    }
+    lowerLayer(opt) {
+        if (!opt) return;
+        if (opt instanceof String) {
+            opt = {
+                key: "id",
+                value: opt
+            }
+        }
+        let obj = this.getLayerObj(opt);
+        if (obj && obj.layerObj) obj.layerObj.lowerLayer()
+    }
+    lowerLayerToBottom(opt) {
+        if (!opt) return;
+        if (opt instanceof String) {
+            opt = {
+                key: "id",
+                value: opt
+            }
+        }
+        let obj = this.getLayerObj(opt);
+        if (obj && obj.layerObj) obj.layerObj.lowerLayerToBottom()
+    }
+    raiseLayer() {
+        if (!opt) return;
+        if (opt instanceof String) {
+            opt = {
+                key: "id",
+                value: opt
+            }
+        }
+        let obj = this.getLayerObj(opt);
+        if (obj && obj.layerObj) obj.layerObj.raiseLayer()
+    }
+    raiselayerToTop() {
+        if (!opt) return;
+        if (opt instanceof String) {
+            opt = {
+                key: "id",
+                value: opt
+            }
+        }
+        let obj = this.getLayerObj(opt);
+        if (obj && obj.layerObj) obj.layerObj.raiselayerToTop()
     }
 }
 

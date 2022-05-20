@@ -13,7 +13,9 @@ const easy3dStore = {
     isPrintMap: false, // 是否打印地图
     isToolOpen: true, // 工具栏是否打开
     operateLayerVisible: {}, // 图层的显示隐藏
-    layerCheckState : {} , // 当前图层的选中状态
+    baseLayers : {}, // 监听底图
+    operateLayers :{} // 监听业务图层
+
   },
   mutations: {
     setOperateTool: (state, operateTool) => {
@@ -48,13 +50,16 @@ const easy3dStore = {
       state.operateLayerVisible = operateLayerVisible
     },
 
-    setLayerCheckState: (state, layerCheckState) => {
-      state.layerCheckState = layerCheckState
+    setIsToolOpen: (state, isToolOpen) => {
+      state.isToolOpen = isToolOpen
+    },
+    setBaseLayers : (state, baseLayers) => {
+      state.baseLayers = baseLayers
     },
 
-    SET_ISTOOLOPEN: (state, isToolOpen) => {
-      state.isToolOpen = isToolOpen
-    }
+    setOperateLayers : (state, operateLayers) => {
+      state.operateLayers = operateLayers
+    },
 
   },
   actions: {
