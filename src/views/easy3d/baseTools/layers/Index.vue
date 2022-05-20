@@ -78,6 +78,8 @@ export default {
         this.checkedKeys.push(item.id);
       }
     }
+    this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
+
     for (let ind = 0; ind < groups.length; ind++) {
       let gp = groups[ind];
       if (gp.open && gp.type == "group") {
@@ -142,7 +144,6 @@ export default {
       attr = attr || {};
       if (this.checkedKeys.indexOf(attr.id) != -1) return;
       this.checkedKeys.push(attr.id);
-      /* window.mapViewer.operateLayerTool.setVisible(attr.id, true); */ // baseTools/index.vue中已监听打开
       this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
     },
     // 取消选中
@@ -156,7 +157,6 @@ export default {
         }
       }
       this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
-      /* window.mapViewer.operateLayerTool.setVisible(attr.id, false); */ // baseTools/index.vue中已监听打开
     },
 
     // childeren转为线性
@@ -179,27 +179,32 @@ export default {
         }
       }
 
-      lys.forEach(element => {
-         query(element);
+      lys.forEach((element) => {
+        query(element);
       });
-     
+
       return {
         layers,
         groups,
       };
     },
 
-    nodeRightClick(a,b,c,d){
-      
-    }
-   
+    nodeRightClick(a, b, c, d) {},
   },
 
   // 保持和树统一
   watch: {
-    "$store.state.map3d.operateLayer": {
-      handler(data) {
-        debugger
+    "$store.state.map3d.operateLayers": {
+      handler(operateLayers) {
+        let data = this.getAllLayers(operateLayers);
+        let { layers } = data || {};
+        for (let i = 0; i < layers.length; i++) {
+          let item = layers[i];
+          if (item.show == true && this.checkedKeys.indexOf(item.id) == -1) {
+            this.checkedKeys.push(item.id);
+          }
+        }
+        this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
       },
       deep: true,
     },

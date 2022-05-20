@@ -42,7 +42,7 @@ export default {
 
   mounted() {
     // 默认选中第一个展示
-    let { operateLayers } = window.mapConfig;
+    let operateLayers = this.$store.state.map3d.operateLayers;
     let res = this.getAllLayers(operateLayers);
 
     let allLayers = res.layers;
@@ -54,9 +54,15 @@ export default {
     }
 
     this.nowSelectId = this.layerList[0].id;
-    
-    let lyrObj = window.mapViewer.operateLayerTool.getLayerObjById(this.nowSelectId).layerObj;
+
+    let lyrObj = window.mapViewer.operateLayerTool.getLayerObjById(
+      this.nowSelectId
+    ).layerObj;
+
+    console.log("前--->", JSON.parse(JSON.stringify(operateLayers)));
     lyrObj.setVisible(true);
+    console.log("后--->", JSON.parse(JSON.stringify(operateLayers)));
+
     if (!layerSplit)
       layerSplit = new MapSplit(window.viewer, {
         layer: lyrObj._layer,

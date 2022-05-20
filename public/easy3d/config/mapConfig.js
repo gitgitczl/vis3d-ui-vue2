@@ -73,7 +73,7 @@ window.mapConfig = {
                     "type": "singleImage",
                     "url": "./easy3d/images/layer/world.jpg",
                     "iconImg": "./easy3d/images/layer/world.jpg",
-                    "show": true,
+                    "show": false,
                     "layerSplit": true,
                     "alpha": 1,
                     "rectangle": [
