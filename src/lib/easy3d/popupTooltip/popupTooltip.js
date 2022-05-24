@@ -1,4 +1,6 @@
 // 绑定所有entity的气泡窗
+import Prompt from "../prompt/prompt"
+import "../prompt/prompt.css";
 class PopupTooltipTool {
     constructor(viewer, opt) {
         this.viewer = viewer;
@@ -69,7 +71,7 @@ class PopupTooltipTool {
             1、未拾取到对象
             2、拾取到的对象不是上一个对象 */
             if (!ent) {
-                if (that.lastTooltipPromptEnt) {
+                if (that.lastTooltipPromptEnt && that.lastTooltipPromptEnt.tooltipPrompt) {
                     that.lastTooltipPromptEnt.tooltipPrompt.destroy();
                     that.lastTooltipPromptEnt.tooltipPrompt = null;
                 }
@@ -82,10 +84,9 @@ class PopupTooltipTool {
             }
 
             if (ent.tooltip == undefined || ent.tooltip == "") return;
-
             // 修改位置    
             if (ent.tooltipPrompt) {
-                if (ent.position) ent.tooltipPrompt.update(evt.endPosition); // 除点状坐标外 点状坐标的锚点 为创建时的位置
+                ent.tooltipPrompt.update(evt.endPosition); // 除点状坐标外 点状坐标的锚点 为创建时的位置
             } else {// 重新构建
                 ent.tooltipPrompt = that.createPrompt(ent, ent.tooltip);
             }

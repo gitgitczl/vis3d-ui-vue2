@@ -43,7 +43,7 @@ class MapViewer {
         if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
-        if (this.opt.map.popupTooltip) this.openPopupTooltip();
+        if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
     }
 
     get viewer() {
@@ -123,6 +123,8 @@ class MapViewer {
     openPopupTooltip() {
         if (!this.popupTooltip) {
             this.popupTooltip = new PopupTooltipTool(this.viewer);
+            this.popupTooltip.autoBindTooltip();
+            this.popupTooltip.autoBindPopup();
         }
     }
 

@@ -13,6 +13,7 @@ window.mapConfig = {
         "navigation": true,
         "bottomLnglatTool": true,
         "rightTool": true,
+        "popupTooltipTool":true,
         "depthTestAgainstTerrain": true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
