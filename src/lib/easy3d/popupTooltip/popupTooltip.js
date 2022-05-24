@@ -140,7 +140,6 @@ class PopupTooltipTool {
     open() {
         this.toolOpen = true;
     }
-
 }
 
 export default PopupTooltipTool;

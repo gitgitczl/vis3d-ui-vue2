@@ -32,6 +32,7 @@ class MapViewer {
         this.operateLayerTool = null;
         this.rightTool = null;
         this.bottomLnglatTool = null;
+        this.popupTooltipTool = null;
 
         this.createViewer();
         this.loadTerrain();
@@ -42,6 +43,7 @@ class MapViewer {
         if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
+        if (this.opt.map.popupTooltip) this.openPopupTooltip();
     }
 
     get viewer() {
@@ -106,14 +108,21 @@ class MapViewer {
 
     // 开启右键工具
     openRightTool() {
-        if (!this.rightTool) {
-            this.rightTool = new RightTool(this.viewer, {})
+        if (!this.popupTooltipTool) {
+            this.popupTooltipTool = new RightTool(this.viewer, {})
         }
     }
     closeRightTool() {
         if (this.rightTool) {
             this.rightTool.destroy();
             this.rightTool = null;
+        }
+    }
+
+    // 打开实体鼠标提示
+    openPopupTooltip() {
+        if (!this.popupTooltip) {
+            this.popupTooltip = new PopupTooltipTool(this.viewer);
         }
     }
 

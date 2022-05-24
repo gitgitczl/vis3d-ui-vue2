@@ -88,6 +88,65 @@ window.mapConfig = {
                     "type": "xyz",
                     "show": false,
                     "url": "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png"
+                },
+                {
+                    "name": "行政区划（geojson）",
+                    "type": "geojson",
+                    "show": true,
+                    "url": "data/area.json",
+                    "style": {
+                        "point": {
+                            "color": "#00FFFF",
+                            /*  "color": {  // 支持多种方式赋值
+                                 "field": "name",
+                                 "conditions": [
+                                     ['${name} >= "东部战区"', '#000000'],
+                                     ['true', 'color("blue")']
+                                 ]
+                             }, */
+                            /*  "color": "random", */ // 随机
+                            "colorAlpha": 1,
+                            "outlineWidth": 1,
+                            "outlineColor": "#000000",
+                            "outlineColorAlpha": 1,
+                            "pixelSize": 20
+                        },
+                        "polyline": {
+                            "color": "#FFFF00",
+                            "colorAlpha": 1,
+                            "width": 3,
+                            "clampToGround": 1
+                        },
+                        "polygon": {
+                            "heightReference": 1,
+                            "fill": true,
+                            /* "color": "#00FFFF", */
+                            "color": {  // 支持多种方式赋值
+                                "field": "name",
+                                "conditions": [
+                                    ['${name} == "东部战区"', '#000000'],
+                                    ['${name} == "北部战区"', '#0000ff'],
+                                    ['true', 'color("blue")']
+                                ]
+                            },
+                            "colorAlpha": 1,
+                            "outline": true,
+                            "outlineWidth": 1,
+                            "outlineColor": "#FFFF00",
+                            "outlineColorAlpha": 1
+                        }
+                    },
+                    "tooltip": [
+                        {
+                            "field": "name",
+                            "fieldName": "名称"
+                        },
+                        {
+                            "field": "ADCODE99",
+                            "fieldName": "编号"
+                        }
+                    ]
+
                 }
 
             ]
