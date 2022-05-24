@@ -2,13 +2,12 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            "x": 109.76622427269002,
-            "y": 38.29735638720425,
-            "z": 2239.880835784429,
-            "heading": 212.59690251323107,
-            "pitch": -33.64527675694504,
-            "roll": 359.998529182336,
-            "duration": 0
+            "x": 120.23489052314471,
+            "y": 35.988737950087234,
+            "z": 6137.747059134269,
+            "heading": 351.34704629855594,
+            "pitch": -45.628475600570006,
+            "roll": 359.99253564205463
         },
         "worldAnimate": false,
         "navigation": true,
@@ -95,6 +94,7 @@ window.mapConfig = {
                     "show": true,
                     "url": "data/area.json",
                     "style": {
+
                         "point": {
                             "color": "#00FFFF",
                             /*  "color": {  // 支持多种方式赋值
@@ -126,7 +126,7 @@ window.mapConfig = {
                                 "conditions": [
                                     ['${name} == "东部战区"', '#000000'],
                                     ['${name} == "北部战区"', '#0000ff'],
-                                    ['true', 'color("blue")']
+                                    ['true', '#ff0000']
                                 ]
                             },
                             "colorAlpha": 1,

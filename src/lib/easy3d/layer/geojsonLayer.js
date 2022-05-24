@@ -21,10 +21,11 @@ class GeojsonLayer {
     // 加载
     load(fun) {
         var that = this;
-        let promise = Cesium.GeoJsonDataSource.load(this.url, this.style)
+        let promise = Cesium.GeoJsonDataSource.load(this.url,{
+            clampToGround : true
+        });
         promise.then(function (dataSource) {
-            debugger
-            that.layer = dataSource;
+            that._layer = dataSource;
             that.viewer.dataSources.add(dataSource);
             let entities = dataSource.entities.values;
             for (let i = 0; i < entities.length; i++) {
@@ -37,11 +38,8 @@ class GeojsonLayer {
                 } else {
                     entityType = "polyline";
                 }
-                let style = this.style[entityType];
+                let style = that.style[entityType];
                 that.changeStyle(entity, style);
-                if(this.opt.tooltip){
-
-                }
             }
             if (fun) fun(dataSource);
         })
@@ -94,34 +92,44 @@ class GeojsonLayer {
 
     changeStyle(entity, style) {
         let newStyle = {};
-        let properties = {};
+        let properties = entity.properties;
         for (let i in style) {
             if (style[i].conditions && style[i].conditions instanceof Array) {
-                let field = style.field;
+                let field = style[i].field;
                 let conditions = style[i].conditions;
-                newStyle[i] = this.getStyleValue(field + '', properties[field], conditions);
+                let val = properties[field].getValue();
+                newStyle[i] = this.getStyleValue(field + '', val, conditions);
             }
         }
         style = Object.assign(style, newStyle);
 
-        if (style.poiont) { // 修改点的样式
+        if (entity.poiont) { // 修改点的样式
             this.setPointStyle(entity, style);
         }
 
-        if (style.polyline) {
+        if (entity.polyline) {
             this.setPolylineStyle(entity, style);
         }
 
-        if (style.polygon) {
+        if (entity.polygon) {
             this.setPolygonStyle(entity, style);
         }
     }
 
     getStyleValue(key, value, conditions) {
         let styleValue = null;
+        // 获取默认值
+        for (let ind = 0; ind < conditions.length; ind++) {
+            if (conditions[ind][0] == "true") {
+                styleValue = conditions[ind][1];
+                break;
+            }
+        }
         for (let i = 0; i < conditions.length; i++) {
             let condition = conditions[i];
-            let str = condition[0].replace("${" + `${key}` + "}", value);
+            let replaceStr = "${" + key + "}";
+            let str = condition[0].replace(replaceStr, "\"" + value + "\"");
+            console.log("eval===>", str, eval(str));
             if (eval(str)) {
                 styleValue = condition[1];
                 break;
@@ -143,7 +151,7 @@ class GeojsonLayer {
             outlineColor = outlineColor.withAlpha(style.outlineColorAlpha)
             entity.point.outlineColor = outlineColor;
         }
-        entity.point.heightReference = Number(style.heightReference);
+        entity.point.heightReference = 1;
         entity.point.pixelSize = Number(style.pixelSize);
     }
 
@@ -160,19 +168,19 @@ class GeojsonLayer {
         }
 
         entity.polyline.material = material;
-        entity.polyline.clampToGround = Number(style.clampToGround);
+        entity.polyline.clampToGround = true;
         if (style.width) entity.polyline.width = style.width || 3;
         this.style = Object.assign(this.style, style);
     }
 
     setPolygonStyle(entity, style) {
         if (!style) return;
-        if (style.heightReference != undefined) entity.polygon.heightReference = Number(style.heightReference);
         let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
         let material = color.withAlpha(style.colorAlpha || 1);
         entity.polygon.material = material;
-        if (style.fill != undefined) entity.polygon.fill = style.fill;
-        if (style.extrudedHeight) entity.polygon.extrudedHeight = style.extrudedHeight;
+        /* if (style.extrudedHeight) entity.polygon.extrudedHeight = style.extrudedHeight; */
+        entity.polygon.height = undefined;
+        entity.polygon.heightReference = 1;
     }
 
 }

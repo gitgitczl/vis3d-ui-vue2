@@ -52,14 +52,14 @@ class LayerTool {
                 break;
         }
         if (!layerObj) return;
-        if (layerObj.type == "3dtiles") {
+        if (layerObj.type == "3dtiles" || layerObj.type=="geojson") {
             layerObj.load(function () {
-                layerObj.setAlpha(opt.alpha);
+                if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
                 layerObj.setVisible(opt.show);
             });
         } else {
             layerObj.load();
-            layerObj.setAlpha(opt.alpha);
+            if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
             layerObj.setVisible(opt.show);
         }
         this._layerObjs.push(layerObj);
