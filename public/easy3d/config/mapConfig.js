@@ -92,7 +92,7 @@ window.mapConfig = {
                 {
                     "name": "行政区划（geojson）",
                     "type": "geojson",
-                    "show": true,
+                    "show": false,
                     "url": "data/area.json",
                     "alpha": 0.5,
                     "style": {

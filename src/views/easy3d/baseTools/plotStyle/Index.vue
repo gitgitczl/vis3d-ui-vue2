@@ -16,7 +16,7 @@
       >
         <!-- 标签 -->
         <div :span="14" v-if="item.type === 'checkbox'">
-          <el-row style="margin-bottom: 10px;">
+          <el-row style="margin-bottom: 10px">
             <el-col :span="6" class="plot-type-name">{{ item.name }}：</el-col>
             <el-col :span="18" class="reset-radio">
               <el-radio-group v-model="item.value">
@@ -42,7 +42,9 @@
               @toChange="toChange"
               v-show="ind != 'name'"
             >
-              <el-col :span="6" class="plot-type-name">{{ detial.name }}：</el-col>
+              <el-col :span="6" class="plot-type-name"
+                >{{ detial.name }}：</el-col
+              >
             </Detail>
           </div>
         </div>
@@ -63,12 +65,13 @@
     </div>
 
     <div class="polt-style-btn basic-polt-style-btn">
-      <span 
-      v-for="(item, index) in plotStyleBtn" 
-      :key="index" 
-      :class="[plotActive === index ? 'polt-style-btn-active' : '']"
-      @click="onChangePlotStyle(index)"
-      >{{item}}</span>
+      <span
+        v-for="(item, index) in plotStyleBtn"
+        :key="index"
+        :class="[plotActive === index ? 'polt-style-btn-active' : '']"
+        @click="onChangePlotStyle(index)"
+        >{{ item }}</span
+      >
     </div>
   </Card>
 </template>
@@ -87,20 +90,20 @@ export default {
   props: {
     title: "",
     position: {},
-    size:{},
-    plotEntityObjId: "", // 当前编辑的对象
+    size: {}
   },
   data() {
     return {
       plotStyleAttr: {},
-      plotStyleBtn: ['标绘属性', '自有属性'],
+      plotStyleBtn: ["标绘属性", "自有属性"],
       plotActive: 0,
-      name: ''
+      name: "",
     };
   },
 
   mounted() {
-    this.setAttr(this.plotEntityObjId);
+    let plotEntityObjId = this.$store.state.map3d.plotEntityObjId;
+    this.setAttr(plotEntityObjId);
   },
 
   methods: {
@@ -109,8 +112,7 @@ export default {
     },
     setAttr(id) {
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
-      let nowPlotEntityObj =
-        window.plotDrawTool.getEntityObjById(id) || {};
+      let nowPlotEntityObj = window.plotDrawTool.getEntityObjById(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
       if (!entityObj) return;
       this.plotStyleAttr = plotStyle[entityObj.attr.styleType];
@@ -135,11 +137,12 @@ export default {
     },
 
     onChangePlotStyle(index) {
-      this.$set(this, 'plotActive', index)
-    }
+      this.$set(this, "plotActive", index);
+    },
   },
   watch: {
-    plotEntityObjId(newid, oldid) { // 防止当前页面未关闭 却传入了不同的id
+    "$store.state.map3d.plotEntityObjId": function (newid, oldid) {
+      // 防止当前页面未关闭 却传入了不同的id
       if (newid != oldid) {
         this.setAttr(newid);
       }
@@ -189,16 +192,16 @@ export default {
     }
   }
 }
-.plot-type-name{
+.plot-type-name {
   text-align: left;
 }
-.plot-type{
+.plot-type {
   margin-bottom: 10px;
-  &:last-child{
+  &:last-child {
     margin-bottom: 0;
   }
 }
-.polt-style-btn{
+.polt-style-btn {
   position: absolute;
   left: -30px;
   top: 0;
@@ -206,7 +209,7 @@ export default {
   height: 220px;
   display: flex;
   flex-direction: column;
-  span{
+  span {
     width: 100%;
     height: 100px;
     box-sizing: border-box;
@@ -221,7 +224,7 @@ export default {
 .plot-style-self {
   display: flex;
   align-items: center;
-  label{
+  label {
     width: 60px;
   }
 }

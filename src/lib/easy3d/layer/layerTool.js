@@ -54,7 +54,6 @@ class LayerTool {
         if (!layerObj) return;
         if (layerObj.type == "3dtiles" || layerObj.type=="geojson") {
             layerObj.load(function () {
-                debugger
                 if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
                 layerObj.setVisible(opt.show);
             });

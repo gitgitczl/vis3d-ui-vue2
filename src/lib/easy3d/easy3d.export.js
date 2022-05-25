@@ -267,6 +267,7 @@ let workControl = {
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {
         let toolAttr = this.getComponentByName(name);
+       /*  if(!toolAttr) return ; */
         // 是否能被其他模块释放 默认为true  与closeDisableExcept互斥
         if (dutoName) {
             toolAttr.disableByOthers =

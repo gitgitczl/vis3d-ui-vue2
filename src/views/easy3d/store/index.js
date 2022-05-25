@@ -14,7 +14,8 @@ const easy3dStore = {
     isToolOpen: true, // 工具栏是否打开
     operateLayerVisible: {}, // 图层的显示隐藏
     baseLayers : {}, // 监听底图
-    operateLayers :{} // 监听业务图层
+    operateLayers :{}, // 监听业务图层
+    plotEntityObjId : "", // 当前编辑的对象id
 
   },
   mutations: {
@@ -59,6 +60,10 @@ const easy3dStore = {
 
     setOperateLayers : (state, operateLayers) => {
       state.operateLayers = operateLayers
+    },
+
+    setPlotEntityObjId : (state, plotEntityObjId) => {
+      state.plotEntityObjId = plotEntityObjId
     },
 
   },

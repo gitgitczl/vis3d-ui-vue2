@@ -144,18 +144,18 @@ export default {
       window.plotDrawTool.on("endCreate", function (entObj, ent) {
         // 创建完成后 打开控制面板
         nowPlotEntObj = entObj;
-        that.$emit("plotEntityObjId", entObj.objId);
+        that.$store.commit("setPlotEntityObjId", entObj.objId);
         that.isPlotActive = -1;
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑
         nowPlotEntObj = entObj;
-        that.$emit("plotEntityObjId", entObj.objId);
+        that.$store.commit("setPlotEntityObjId", entObj.objId);
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
         nowPlotEntObj = null;
-        that.$emit("plotEntityObjId", "");
+        that.$store.commit("setPlotEntityObjId", "");
 
         let lnglats = entObj.getPositions(true);
         console.log("lnglats--->",lnglats);
@@ -188,7 +188,7 @@ export default {
     },
 
     close() {
-      this.$emit("close", "plot");
+      this.$store.commit("close", "plot");
     },
 
     // 将style对象转为线性的
