@@ -13,7 +13,7 @@ window.mapConfig = {
         "navigation": true,
         "bottomLnglatTool": true,
         "rightTool": true,
-        "popupTooltipTool":true,
+        "popupTooltipTool": true,
         "depthTestAgainstTerrain": true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
@@ -94,8 +94,8 @@ window.mapConfig = {
                     "type": "geojson",
                     "show": true,
                     "url": "data/area.json",
+                    "alpha": 0.5,
                     "style": {
-
                         "point": {
                             "color": "#00FFFF",
                             /*  "color": {  // 支持多种方式赋值
@@ -105,7 +105,11 @@ window.mapConfig = {
                                      ['true', 'color("blue")']
                                  ]
                              }, */
-                            /*  "color": "random", */ // 随机
+                            /* "color":{
+                                "field" : "name",
+                                "conditions" : "random" , // 可不填 
+                                "type" : "Number" // 随机数返回值类型 Number / Color(16进制颜色)
+                            }, */
                             "colorAlpha": 1,
                             "outlineWidth": 1,
                             "outlineColor": "#000000",
@@ -122,13 +126,17 @@ window.mapConfig = {
                             "heightReference": 1,
                             "fill": true,
                             /* "color": "#00FFFF", */
-                            "color": {  // 支持多种方式赋值
+                            /* "color": {  // 支持多种方式赋值
                                 "field": "name",
                                 "conditions": [
                                     ['${name} == "东部战区"', '#000000'],
                                     ['${name} == "北部战区"', '#0000ff'],
                                     ['true', '#ff0000']
                                 ]
+                            }, */
+                            "color": {
+                                "conditions": "random",
+                                "type": "color" // 随机数返回值类型 number / color(16进制颜色)
                             },
                             "colorAlpha": 1,
                             "outline": true,
@@ -137,6 +145,7 @@ window.mapConfig = {
                             "outlineColorAlpha": 1
                         }
                     },
+                    
                     "tooltip": [
                         {
                             "field": "name",

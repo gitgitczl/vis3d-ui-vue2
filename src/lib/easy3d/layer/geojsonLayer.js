@@ -1,7 +1,9 @@
 // wfs geojson 格式 均可使用此类
 import cUtil from "../cUtil"
-class GeojsonLayer {
+import BaseLayer from './baseLayer';
+class GeojsonLayer extends BaseLayer{
     constructor(viewer, opt) {
+        super(viewer, opt);
         this.type = "geojson";
         this.viewer = viewer;
         this.opt = opt || {};
@@ -112,29 +114,9 @@ class GeojsonLayer {
                         ;
                 }
             }
+
+            if(fun) fun();
         })
-        /* let promise = Cesium.GeoJsonDataSource.load(this.url,{
-            clampToGround : true
-        });
-        promise.then(function (dataSource) {
-            that._layer = dataSource;
-            that.viewer.dataSources.add(dataSource);
-            let entities = dataSource.entities.values;
-            for (let i = 0; i < entities.length; i++) {
-                let entity = entities[i];
-                let entityType = '';
-                if (entity.point) {
-                    entityType = "point";
-                } else if (entity.polygon) {
-                    entityType = "polygon";
-                } else {
-                    entityType = "polyline";
-                }
-                let style = that.style[entityType];
-                that.changeStyle(entity, style);
-            }
-            if (fun) fun(dataSource);
-        }) */
     }
     zoomTo() {
         if (!this._layer) return;
@@ -206,105 +188,48 @@ class GeojsonLayer {
         return styleValue;
     }
 
-    /*  
-    
-    changeStyle(entity, style) {
-        let newStyle = {};
-        let properties = entity.properties;
-        for (let i in style) {
-            if (style[i].conditions && style[i].conditions instanceof Array) {
-                let field = style[i].field;
-                let conditions = style[i].conditions;
-                let val = properties[field];
-                newStyle[i] = this.getStyleValue(field + '', val, conditions);
+    setAlpha(alpha) {
+        let entities = this._layer.entities.values;
+        entities.forEach(function (entity) {
+            let style = entity.style;
+            let color = null;
+            color = Cesium.Color.fromCssColorString(style.color);
+            color = color.withAlpha(alpha || 1);
+            let outlineColor = null;
+            outlineColor = Cesium.Color.fromCssColorString(style.outlineColor);
+            outlineColor = outlineColor.withAlpha(alpha || 1);
+
+            if (entity.point) {
+                entity.point.color = color;
+                entity.point.outlineColor = outlineColor;
             }
-        }
-        style = Object.assign(style, newStyle);
 
-        if (entity.poiont) { // 修改点的样式
-            this.setPointStyle(entity, style);
-        }
+            if (entity.polygon) {
+                entity.polygon.material = color;
+            }
 
-        if (entity.polyline) {
-            this.setPolylineStyle(entity, style);
-        }
-
-        if (entity.polygon) {
-            this.setPolygonStyle(entity, style);
-        }
+            if (entity.polyline) {
+                entity.polyline.material = outlineColor;
+            }
+        });
     }
 
-    setPointStyle(entity, style) {
-         if (!style) return;
-         if (style.color) {
-             let color = Cesium.Color.fromCssColorString(style.color || "#ffff00");
-             color = color.withAlpha(style.colorAlpha);
-             entity.point.color = color;
-         }
-         entity.point.outlineWidth = Number(style.outlineWidth);
-         if (style.outlineColor) {
-             let outlineColor = Cesium.Color.fromCssColorString(style.outlineColor || "#000000");
-             outlineColor = outlineColor.withAlpha(style.outlineColorAlpha)
-             entity.point.outlineColor = outlineColor;
-         }
-         entity.point.heightReference = 1;
-         entity.point.pixelSize = Number(style.pixelSize);
-     }
- 
-     setPolylineStyle(entity, style) {
-         if (!style) return;
-         let material = undefined;
-         if (style.lineType) {
-             material = this.getMaterial(style.lineType, style);
-         } else {
-             let color = Cesium.Color.fromCssColorString(style.color || "#000000");
-             if (style.colorAlpha) {
-                 material = color.withAlpha(style.colorAlpha);
-             }
-         }
- 
-         entity.polyline.material = material;
-         entity.polyline.clampToGround = true;
-         if (style.width) entity.polyline.width = style.width || 3;
-         this.style = Object.assign(this.style, style);
-     }
- 
-     setPolygonStyle(entity, style) {
-         if (!style) return;
-         let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
-         let material = color.withAlpha(style.colorAlpha || 1);
-         entity.polygon.material = material;
-         entity.polygon.height = undefined;
-         entity.polygon.heightReference = 1;
-     } */
-
     createPoint(position, style, properties) {
-        let newStyle = {};
-        if (properties) {
-            for (let i in style) {
-                if (style[i].conditions && style[i].conditions instanceof Array) {
-                    let field = style[i].field;
-                    let conditions = style[i].conditions;
-                    let val = properties[field];
-                    newStyle[i] = this.getStyleValue(field + '', val, conditions);
-                }
-            }
-        }
-
-        style = Object.assign(style, newStyle);
-
+        style = this.getNewStyle(style, properties);
         let color = null;
-        if (style.color) {
-            color = Cesium.Color.fromCssColorString(style.color || "#ffff00");
-            color = color.withAlpha(style.colorAlpha);
-        }
-        let outlineColor = null;
-        if (style.outlineColor) {
-            outlineColor = Cesium.Color.fromCssColorString(style.outlineColor || "#000000");
-            outlineColor = outlineColor.withAlpha(style.outlineColorAlpha)
-        }
 
-        return this._layer.entities.add({
+        style.color = style.color || "#ffff00";
+        style.colorAlpha = style.colorAlpha || 1;
+        color = Cesium.Color.fromCssColorString(style.color);
+        color = color.withAlpha(style.colorAlpha);
+
+        let outlineColor = null;
+        style.outlineColor = style.outlineColor || "#000000"
+        style.outlineColorAlpha = style.outlineColorAlpha || 1;
+        outlineColor = Cesium.Color.fromCssColorString(style.outlineColor);
+        outlineColor = outlineColor.withAlpha(style.outlineColorAlpha);
+
+        let ent = this._layer.entities.add({
             position: position,
             point: {
                 color: color,
@@ -314,31 +239,23 @@ class GeojsonLayer {
                 heightReference: 1
             }
         });
+        ent.style = style;
+        return ent;
     }
     createPolygon(positions, style, properties) {
-        let newStyle = {};
-        if (properties) {
-            for (let i in style) {
-                if (style[i].conditions && style[i].conditions instanceof Array) {
-                    let field = style[i].field;
-                    let conditions = style[i].conditions;
-                    let val = properties[field];
-                    newStyle[i] = this.getStyleValue(field + '', val, conditions);
-                }
-            }
-        }
-        style = Object.assign(style, newStyle);
-
+        style = this.getNewStyle(style, properties);
+        console.log(111);
         let color = null;
-        if (style.color) {
-            color = Cesium.Color.fromCssColorString(style.color || "#ffff00");
-            color = color.withAlpha(style.colorAlpha);
-        }
+        style.color = style.color || "#ffff00";
+        style.colorAlpha = style.colorAlpha || 1;
+        color = Cesium.Color.fromCssColorString(style.color);
+        color = color.withAlpha(style.colorAlpha);
+
         let outlineColor = null;
-        if (style.outlineColor) {
-            outlineColor = Cesium.Color.fromCssColorString(style.outlineColor || "#000000");
-            outlineColor = outlineColor.withAlpha(style.outlineColorAlpha)
-        }
+        style.outlineColor = style.outlineColor || "#000000"
+        style.outlineColorAlpha = style.outlineColorAlpha || 1;
+        outlineColor = Cesium.Color.fromCssColorString(style.outlineColor);
+        outlineColor = outlineColor.withAlpha(style.outlineColorAlpha)
 
         let grapicOpt = {};
         grapicOpt.polygon = {
@@ -357,28 +274,20 @@ class GeojsonLayer {
             }
         }
 
-        return this._layer.entities.add(grapicOpt)
+        let ent = this._layer.entities.add(grapicOpt);
+        ent.style = style;
+        return ent;
     }
     createPolyline(positions, style, properties) {
-        let newStyle = {};
-        if (properties) {
-            for (let i in style) {
-                if (style[i].conditions && style[i].conditions instanceof Array) {
-                    let field = style[i].field;
-                    let conditions = style[i].conditions;
-                    let val = properties[field];
-                    newStyle[i] = this.getStyleValue(field + '', val, conditions);
-                }
-            }
-        }
-        style = Object.assign(style, newStyle);
+        style = this.getNewStyle(style, properties);
         let color = null;
-        if (style.color) {
-            color = Cesium.Color.fromCssColorString(style.color || "#ffff00");
-            color = color.withAlpha(style.colorAlpha);
-        }
 
-        return this._layer.entities.add({
+        style.color = style.color || "#ffff00";
+        style.colorAlpha = style.colorAlpha || 1;
+        color = Cesium.Color.fromCssColorString(style.color);
+        color = color.withAlpha(style.colorAlpha);
+
+        let ent = this._layer.entities.add({
             polyline: {
                 positions: positions,
                 material: color,
@@ -386,8 +295,45 @@ class GeojsonLayer {
                 clampToGround: true
             }
         })
+        ent.style = style;
+        return ent;
     }
 
+    getRandomColor() {
+        var color = "#";
+        var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+        for (var i = 0; i < 6; i++) {
+            var num = parseInt(Math.random() * 16);
+            color += arr[num];
+        }
+        return color;
+    }
+
+    getNewStyle(style, properties) {
+        style = JSON.parse(JSON.stringify(style || {}));
+        let newStyle = {};
+        if (!properties) return style;
+        for (let i in style) {
+            if (style[i].conditions && style[i].conditions instanceof Array) {
+                let field = style[i].field;
+                let conditions = style[i].conditions;
+                let val = properties[field];
+                newStyle[i] = this.getStyleValue(field + '', val, conditions);
+            } else if (style[i] instanceof String) {
+                newStyle[i] = style[i];
+            } else if (style[i].conditions == "random") { // 标识根据字段设置随机值
+
+                if (style[i].type == "color") {
+                    newStyle[i] = this.getRandomColor();
+                }
+                if (style[i].type == "number") {
+                    newStyle[i] = Math.random() * 100;
+                }
+            }
+        }
+        style = Object.assign(style, newStyle);
+        return style;
+    }
 
 }
 
