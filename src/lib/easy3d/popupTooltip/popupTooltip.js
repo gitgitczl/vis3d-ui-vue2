@@ -130,7 +130,7 @@ class PopupTooltipTool {
         } else {
             promptAttr.position = position;
             var promptAttrClone = JSON.parse(JSON.stringify(promptAttr));
-            defaultVal = Object.assign(defaultVal,promptAttrClone);
+            defaultVal = Object.assign(defaultVal, promptAttrClone);
         }
         return new Prompt(this.viewer, defaultVal);
     }
