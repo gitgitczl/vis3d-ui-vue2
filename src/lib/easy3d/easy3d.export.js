@@ -266,8 +266,9 @@ let workControl = {
     },
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {
+        console.log("closeTool===>", name, dutoName);
         let toolAttr = this.getComponentByName(name);
-       /*  if(!toolAttr) return ; */
+        /*  if(!toolAttr) return ; */
         // 是否能被其他模块释放 默认为true  与closeDisableExcept互斥
         if (dutoName) {
             toolAttr.disableByOthers =
@@ -305,11 +306,13 @@ let workControl = {
         toolAttr.domShow = true;
         // 打开的时候 关闭其他模块
         if (toolAttr.openDisableAnothers) {
-            for (let key in this.componentsArr) {
-                if (key != name) {
-                    this.closeToolByName(key, name);
+            for (let i = 0; i < this.componentsArr.length; i++) {
+                let ct = this.componentsArr[i];
+                if (ct.workName != name && ct.show) {
+                    this.closeToolByName(ct.workName, name);
                 }
             }
+
         }
         this.toolsState[name] = true;
     },
