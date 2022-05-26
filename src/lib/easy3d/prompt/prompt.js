@@ -169,7 +169,6 @@ class Prompt {
     setByPX(opt) {
         if (!opt) return;
         if (this.promptDom) {
-            debugger
             this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(this.contentW) / 2) + "px";
             this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(this.contentH)) + "px";
         }

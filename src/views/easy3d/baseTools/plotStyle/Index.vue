@@ -24,8 +24,8 @@
                   v-for="(opt, index) in item.options"
                   :key="index"
                   :label="index"
-                  >{{ opt.name }}</el-radio
-                >
+                  >{{ opt.name }}
+                </el-radio>
               </el-radio-group>
             </el-col>
           </el-row>
@@ -90,13 +90,13 @@ export default {
   props: {
     title: "",
     position: {},
-    size: {}
+    size: {},
   },
   data() {
     return {
       plotStyleAttr: {},
       plotStyleBtn: ["标绘属性", "自有属性"],
-      plotActive: 0,
+      plotActive: 1,
       name: "",
     };
   },
@@ -118,16 +118,32 @@ export default {
       this.plotStyleAttr = plotStyle[entityObj.attr.styleType];
       // 设置样式默认值
       let entityStyleValue = entityObj.getStyle();
+
+      // 循环样式配置里面的属性
       for (let i in this.plotStyleAttr) {
         let attr = this.plotStyleAttr[i];
         if (attr.type == "checkbox") {
-          for (let key in attr.options[attr.value]) {
-            if (key != "name")
-              attr.options[attr.value][key].value = entityStyleValue[key];
+          // 循环checkbox中options选中的属性
+          let checkboxSelect = attr.options[attr.value];
+          for (let key in checkboxSelect) {
+            if (key != "name") {
+              checkboxSelect[key].value = entityStyleValue[key];
+            }
           }
         }
-        attr.value =
-          entityStyleValue[i] === undefined ? attr.value : entityStyleValue[i];
+        if (attr.value == "show" || attr.value == "false") {
+          attr.value =
+             typeof(entityStyleValue[i]) == "boolean"
+              ? entityStyleValue[i]
+                ? "show"
+                : "false"
+              : entityStyleValue[i];
+        } else {
+          attr.value =
+            entityStyleValue[i] === undefined
+              ? attr.value
+              : entityStyleValue[i];
+        }
       }
     },
 

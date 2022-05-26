@@ -147,6 +147,7 @@ export default {
      * 关闭 向上抛出
      */
     close() {
+      alert(1);
       this.$emit("close", true);
     },
   },
