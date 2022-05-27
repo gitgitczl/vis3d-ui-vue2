@@ -125,7 +125,7 @@ window.workConfig = {
         },
         {
             "name": "区域导航",
-            "show": false,
+            "show": true,
             "workName": "region",
             "closeDisableSelf": true,
             "openDisableAnothers": false
@@ -150,7 +150,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": true,
+            "show": false,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,
