@@ -125,10 +125,14 @@ window.workConfig = {
         },
         {
             "name": "区域导航",
-            "show": false,
+            "show": true,
             "workName": "region",
             "closeDisableSelf": true,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "size": {
+                "height": 120,
+                "width" : 300
+            }
         },
         {
             "name": "路径规划",
@@ -150,7 +154,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": true,
+            "show": false,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,

@@ -2,6 +2,7 @@
   <Card
     :width="400"
     :height="100"
+    :size="size"
     @close="close"
     :title="title"
     :position="position"
@@ -22,17 +23,18 @@ export default {
   props: {
     title: "",
     position: {},
+    size: {}
   },
 
   components: {
     Card,
   },
 
-  destroyed(){
-     if (regionPolygon) {
-        window.viewer.dataSources.remove(regionPolygon);
-        regionPolygon = null;
-      }
+  destroyed() {
+    if (regionPolygon) {
+      window.viewer.dataSources.remove(regionPolygon);
+      regionPolygon = null;
+    }
   },
 
   data() {
@@ -67,23 +69,27 @@ export default {
       }
       if (!key) return;
       let that = this;
-      this.axios.get(`/data/bound/xzqh/${key}.json`).then(function (response) {
-        window.viewer.dataSources
-          .add(window.Cesium.GeoJsonDataSource.load(response.data), {
-            stroke: Cesium.Color.WHITE,
-            fill: Cesium.Color.BLUE.withAlpha(0.3), //注意：颜色必须大写，即不能为blue
-            strokeWidth: 5,
+
+      this.axios
+        .get(`/data/bound/xzqh/${key}.json`)
+        .then(function (response) {
+          let dspromise = window.Cesium.GeoJsonDataSource.load(response.data, {
+            stroke: Cesium.Color.YELLOW,
+            fill: Cesium.Color.YELLOW.withAlpha(0.5),
+            strokeWidth: 3,
             clampToGround: true,
-          })
-          .then(function (ds) {
-            regionPolygon = ds;
-            window.viewer.flyTo(ds,{
-              duration : 2
-            })
           });
-      }).catch(function(err){
-        that.$message.error("此区域数据缺失！");
-      });
+          dspromise.then(function (ds) {
+            regionPolygon = ds;
+            window.viewer.flyTo(ds, {
+              duration: 1,
+            });
+          });
+          window.viewer.dataSources.add(dspromise);
+        })
+        .catch(function (err) {
+          that.$message.error("此区域数据缺失！");
+        });
     },
   },
 };

@@ -244,7 +244,6 @@ class GeojsonLayer extends BaseLayer{
     }
     createPolygon(positions, style, properties) {
         style = this.getNewStyle(style, properties);
-        console.log(111);
         let color = null;
         style.color = style.color || "#ffff00";
         style.colorAlpha = style.colorAlpha || 1;
