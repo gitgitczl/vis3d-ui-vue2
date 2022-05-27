@@ -2,6 +2,7 @@
   <Card
     :width="400"
     :height="100"
+    :size="size"
     @close="close"
     :title="title"
     :position="position"
@@ -22,6 +23,7 @@ export default {
   props: {
     title: "",
     position: {},
+    size: {}
   },
 
   components: {

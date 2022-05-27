@@ -128,7 +128,11 @@ window.workConfig = {
             "show": true,
             "workName": "region",
             "closeDisableSelf": true,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "size": {
+                "height": 120,
+                "width" : 300
+            }
         },
         {
             "name": "路径规划",
