@@ -11,6 +11,8 @@
     :x="position.left"
     :y="position.top"
     :parentLimitation="true"
+    :parentW="1910"
+    :parentH="930"
     @resizing="onResizing"
     @resizestop="onResizstop"
     @dragging="onDragging"
@@ -105,7 +107,8 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onDragging(params) {},
+    onDragging(params) {
+    },
 
     /**
      * 拖拽结束
@@ -114,7 +117,8 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onDragstop(params) {},
+    onDragstop(params) {
+    },
 
     /**
      * 放大
