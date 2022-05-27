@@ -192,21 +192,23 @@ export default {
       roamTool = new this.easy3d.RoamTool(window.viewer);
       roamTool.on("startRoam", function () {
         // 开始漫游时 显示漫游面板
-        that.$emit("nowStartRoamAttr", roamTool.getNowroamAttr());
+        that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
+        that.easy3d.workControl.openToolByName("roamStyle");
       });
       roamTool.on("endRoam", function () {
         // 结束漫游时 显示漫游列表
-        that.$emit("nowStartRoamAttr", {});
+        that.$store.commit("setNowRoamAttr", {});
+        that.easy3d.workControl.closeToolByName("roamStyle");
       });
       roamTool.on("roaming", function () {
         // 每秒回调一次
-        that.$emit("nowStartRoamAttr", roamTool.getNowroamAttr());
+        that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
       });
       roamTool.on("stopRoam", function () {
-        that.$emit("nowStartRoamAttr", {});
+        that.$store.commit("setNowRoamAttr", {});
       });
       roamTool.on("goonRoam", function () {
-        that.$emit("nowStartRoamAttr", roamTool.getNowroamAttr());
+        that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
       });
     }
 
@@ -232,7 +234,6 @@ export default {
         that.nowRoamAttr.speed = roamAttr.speed;
       });
       roamDraw.on("endEdit", function (entObj, ent) {
-       
         that.isShowList = true;
         if (!roamTool) return;
         // ======== 当前表单信息 ==========

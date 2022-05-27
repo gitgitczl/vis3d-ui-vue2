@@ -9,14 +9,13 @@ const easy3dStore = {
     isReset: false, // 是否点击重置按钮
     isOpenOverviewMap: false, // 是否打开鹰眼图.
     nowPlotStyleAttr: {},
-    nowRoamViewType: -1, // 飞行漫游属性
+    nowRoamAttr: {}, // 飞行漫游属性
     isPrintMap: false, // 是否打印地图
     isToolOpen: true, // 工具栏是否打开
     operateLayerVisible: {}, // 图层的显示隐藏
     baseLayers : {}, // 监听底图
     operateLayers :{}, // 监听业务图层
     plotEntityObjId : "", // 当前编辑的对象id
-
   },
   mutations: {
     setOperateTool: (state, operateTool) => {
@@ -39,8 +38,8 @@ const easy3dStore = {
       state.nowPlotStyleAttr = nowPlotStyleAttr
     },
 
-    setNowRoamViewType: (state, nowRoamViewType) => {
-      state.nowRoamViewType = nowRoamViewType
+    setNowRoamAttr: (state, nowRoamAttr) => {
+      state.nowRoamAttr = nowRoamAttr
     },
 
     setIsPrintMap: (state, isPrintMap) => {

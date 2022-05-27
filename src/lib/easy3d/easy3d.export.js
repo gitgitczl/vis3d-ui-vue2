@@ -298,12 +298,13 @@ let workControl = {
         this.toolsState[name] = false;
     },
     // 打开单个模块
-    openToolByName(name) {
+    openToolByName(name,attr) {
         if (this.toolsState[name] && this.toolsState[name] === true) return; // 防止二次打开
         let toolAttr = this.getComponentByName(name);
         // 打开某个模块
         toolAttr.show = true;
         toolAttr.domShow = true;
+        if(attr) toolAttr.attr = attr; // 用于打开组件时 传参
         // 打开的时候 关闭其他模块
         if (toolAttr.openDisableAnothers) {
             for (let i = 0; i < this.componentsArr.length; i++) {
@@ -312,7 +313,6 @@ let workControl = {
                     this.closeToolByName(ct.workName, name);
                 }
             }
-
         }
         this.toolsState[name] = true;
     },

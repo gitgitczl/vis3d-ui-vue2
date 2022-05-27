@@ -13,6 +13,7 @@
         :title="item.name"
         :position="item.position"
         :size="item.size"
+        :attr="item.attr"
         @close="close"
       />
     </div>

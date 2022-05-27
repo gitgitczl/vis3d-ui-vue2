@@ -68,13 +68,14 @@ export default {
     title: "",
     position: {},
     size: {},
-    nowStartRoamAttr: {},
   },
   components: {
     Card,
   },
   data() {
-    return {};
+    return {
+      nowStartRoamAttr: {},
+    };
   },
 
   computed: {},
@@ -94,7 +95,15 @@ export default {
     changeView(data) {
       this.$store.commit("setNowRoamViewType", data);
       if (window.nowRoam) window.nowRoam.setViewType(data);
-    }
+    },
+  },
+  watch: {
+    "$store.state.map3d.nowRoamAttr": {
+      handler(attr) {
+        this.nowStartRoamAttr = attr || {};
+      },
+      deep: true,
+    },
   },
 };
 </script>
