@@ -25,6 +25,7 @@ import Head from "@/views/Head.vue";
 import Sidebar from "@/views/easy3d/sidebar.vue";
 import html2canvas from "html2canvas";
 import printJS from "print-js";
+import Roam from '../easy3d/baseTools/roam/Index.vue'
 
 window.viewer = null;
 window.mapViewer = null;
@@ -36,6 +37,7 @@ export default {
   components: {
     Head,
     Sidebar,
+    Roam
   },
   data() {
     return {

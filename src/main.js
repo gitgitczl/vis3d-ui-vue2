@@ -12,6 +12,7 @@ import store from './store';
 import VueDragResize from 'vue-drag-resize'
 Vue.component('vue-drag-resize', VueDragResize)
 
+
 // 区域组件
 import vRegion from 'v-region'
 Vue.use(vRegion)
