@@ -34,6 +34,22 @@
         </div>
       </el-tree>
     </div>
+
+    <!-- 树节点右击菜单 -->
+    <ul class="tree-menu" v-show="isTreeMenu" :style="{ ...meunStyle }">
+      <li>
+        <span>上一层</span>
+      </li>
+      <li >
+        <span>下一层</span>
+      </li>
+      <li>
+        <span>置于顶层</span>
+      </li>
+      <li>
+        <span>置于底层</span>
+      </li>
+    </ul>
   </Card>
 </template>
 
@@ -66,6 +82,8 @@ export default {
         },
       },
       clickTimes: 0, // 当前点击的次数
+      isTreeMenu: false,
+      meunStyle: {}, // 菜单定位样式
     };
   },
 
@@ -189,7 +207,18 @@ export default {
       };
     },
 
-    nodeRightClick(a, b, c, d) {},
+    nodeRightClick(event, data) {
+      this.meunStyle = { top: `${event.pageY}px`, left: `${event.pageX}px` };
+      this.$set(this, "isTreeMenu", true);
+
+      /**
+       * 点击其他地方关闭菜单
+       */
+      const self = this
+      document.onclick = function () {
+        self.$set(self, "isTreeMenu", false);
+      };
+    },
   },
 
   // 保持和树统一
@@ -225,6 +254,39 @@ export default {
   }
   .custom-tree-node-slider {
     width: 150px;
+  }
+}
+.tree-menu {
+  position: fixed;
+  display: block;
+  z-index: 20000;
+  width: 130px;
+  box-sizing: border-box;
+  background-color: #363D4B;
+  padding: 10px 0;
+  border: 1px solid #363D4B;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  li {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 20px;
+    color: #BDC2D0;
+    cursor: pointer;
+    border-bottom: 1px dashed #464d5c;
+    &:last-child{
+      border-bottom: none;
+    }
+    &:hover {
+      background: #464d5c;
+    }
+    i {
+      margin-right: 5px;
+      font-size: 16px;
+      font-weight: bold;
+    }
   }
 }
 </style>
