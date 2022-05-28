@@ -21,6 +21,8 @@ import RoamTool from "./roam/roamTool";
 import ZoomTool from "./zoomTool/zoomTool"
 import OverviewMap from "./overviewMap/overviewMap"
 
+import createMapNavgation from "./mapNavgation/mapNavigation"
+
 // 构建viewer
 class MapViewer {
     constructor(domId, opt) {
@@ -44,6 +46,18 @@ class MapViewer {
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
+
+
+        let options = {};
+        options
+
+        createMapNavgation(this._viewer, {
+            enableCompass: true, // 罗盘
+            enableZoomControls: true, // 缩放控制器
+            enableDistanceLegend: true, // 比例尺
+            enableCompassOuterRing: true, // 罗盘外环
+            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
+        });
     }
 
     get viewer() {
@@ -298,13 +312,13 @@ let workControl = {
         this.toolsState[name] = false;
     },
     // 打开单个模块
-    openToolByName(name,attr) {
+    openToolByName(name, attr) {
         if (this.toolsState[name] && this.toolsState[name] === true) return; // 防止二次打开
         let toolAttr = this.getComponentByName(name);
         // 打开某个模块
         toolAttr.show = true;
         toolAttr.domShow = true;
-        if(attr) toolAttr.attr = attr; // 用于打开组件时 传参
+        if (attr) toolAttr.attr = attr; // 用于打开组件时 传参
         // 打开的时候 关闭其他模块
         if (toolAttr.openDisableAnothers) {
             for (let i = 0; i < this.componentsArr.length; i++) {
