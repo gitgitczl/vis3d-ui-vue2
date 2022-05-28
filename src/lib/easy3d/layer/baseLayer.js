@@ -107,7 +107,7 @@ class BaseLayer {
         if (this._layer) this.viewer.imageryLayers.raiseToTop(this._layer);
     }
 
-    
+
 
 }
 
