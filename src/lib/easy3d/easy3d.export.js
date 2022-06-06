@@ -155,7 +155,7 @@ class MapViewer {
             enableZoomControls: true, // 缩放控制器
             enableDistanceLegend: true, // 比例尺
             enableCompassOuterRing: true, // 罗盘外环
-            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
+            view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView
         });
         /* 
         CesiumNavigation(this.viewer, {
