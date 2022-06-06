@@ -12,10 +12,7 @@ import MeasureTool from "./measure/measureTool";
 import "./lnglatTool/lnglatNavigation.css";
 import LatlngNavigation from "./lnglatTool/lnglatNavigation";
 
-import "./navigation/cesiumNavigation.css";
-
 import gadgets from "./gadgets/gadgets";
-
 import RoamTool from "./roam/roamTool";
 import ZoomTool from "./zoomTool/zoomTool"
 import OverviewMap from "./overviewMap/overviewMap"

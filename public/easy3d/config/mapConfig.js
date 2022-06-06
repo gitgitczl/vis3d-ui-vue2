@@ -10,10 +10,10 @@ window.mapConfig = {
             "roll": 359.99253564205463
         },
         "worldAnimate": false,
-        "bottomLnglatTool": true,
-        "rightTool": true,
-        "popupTooltipTool": true,
-        "navigationTool" : true,
+        "bottomLnglatTool": true, // 经纬度及相机位置提示
+        "rightTool": true, // 是否开启右键功能
+        "popupTooltipTool": true, // 是否开启气泡窗
+        "navigationTool" : true, // 导航球及比例尺
         "depthTestAgainstTerrain": true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
@@ -30,7 +30,6 @@ window.mapConfig = {
             "useDefaultRenderLoop": true,
             "showRenderLoopErrors": false,
             "terrainExaggeration": 1,
-
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
