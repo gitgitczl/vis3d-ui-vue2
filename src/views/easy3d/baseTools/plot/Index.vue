@@ -185,7 +185,7 @@ export default {
     },
 
     close() {
-      this.$store.commit("close", "plot");
+      this.$emit("close", "plot");
     },
 
     // 将style对象转为线性的

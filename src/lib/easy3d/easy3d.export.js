@@ -13,7 +13,6 @@ import "./lnglatTool/lnglatNavigation.css";
 import LatlngNavigation from "./lnglatTool/lnglatNavigation";
 
 import "./navigation/cesiumNavigation.css";
-import createCN from "./navigation/cesiumNavigation";
 
 import gadgets from "./gadgets/gadgets";
 
@@ -21,7 +20,9 @@ import RoamTool from "./roam/roamTool";
 import ZoomTool from "./zoomTool/zoomTool"
 import OverviewMap from "./overviewMap/overviewMap"
 
-import createMapNavgation from "./mapNavgation/mapNavigation"
+import CesiumNavigation from "./mapNavgation/CesiumNavigation"
+import './mapNavgation/styles/cesium-navigation.css'
+
 
 // 构建viewer
 class MapViewer {
@@ -46,18 +47,8 @@ class MapViewer {
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
-
-
-        let options = {};
-        options
-
-        createMapNavgation(this._viewer, {
-            enableCompass: true, // 罗盘
-            enableZoomControls: true, // 缩放控制器
-            enableDistanceLegend: true, // 比例尺
-            enableCompassOuterRing: true, // 罗盘外环
-            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
-        });
+        if(this.opt.map.navigationTool) this.openNavigationTool();
+       
     }
 
     get viewer() {
@@ -161,8 +152,15 @@ class MapViewer {
 
 
     // 构建指北针
-    openNavigation() {
-        let CesiumNavigation = createCN();
+    openNavigationTool() {
+        new CesiumNavigation(this._viewer, {
+            enableCompass: true, // 罗盘
+            enableZoomControls: true, // 缩放控制器
+            enableDistanceLegend: true, // 比例尺
+            enableCompassOuterRing: true, // 罗盘外环
+            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
+        });
+        /* 
         CesiumNavigation(this.viewer, {
             cameraView: this.opt.map.cameraView,
             style: {
@@ -173,7 +171,7 @@ class MapViewer {
             enableZoomControls: true, // 缩放控件
             enableDistanceLegend: true, // 图例
             enableCompassOuterRing: true, // 指南针外环
-        });
+        }); */
     }
 
     // 销毁

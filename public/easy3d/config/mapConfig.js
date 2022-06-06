@@ -10,10 +10,10 @@ window.mapConfig = {
             "roll": 359.99253564205463
         },
         "worldAnimate": false,
-        "navigation": true,
         "bottomLnglatTool": true,
         "rightTool": true,
         "popupTooltipTool": true,
+        "navigationTool" : true,
         "depthTestAgainstTerrain": true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
