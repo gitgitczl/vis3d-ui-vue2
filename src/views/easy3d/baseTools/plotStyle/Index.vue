@@ -58,9 +58,13 @@
       </div>
     </div>
     <div v-if="!plotActive">
-      <div class="plot-style-self basic-text-input">
-        <label>名称：</label>
-        <el-input v-model="name" placeholder="请输入内容"></el-input>
+      <div
+        class="plot-style-self basic-text-input"
+        v-for="(item, index) in ownInfos"
+        :key="index"
+      >
+        <label>{{ item.fieldName }}：</label>
+        <el-input v-bind="item.value" placeholder="请输入内容"></el-input>
       </div>
     </div>
 
@@ -97,7 +101,17 @@ export default {
       plotStyleAttr: {},
       plotStyleBtn: ["标绘属性", "自有属性"],
       plotActive: 1,
-      name: "",
+
+      ownInfos: [
+        {
+          fieldName: "名称",
+          value: "",
+        },
+        {
+          fieldName: "备注",
+          value: "",
+        },
+      ],
     };
   },
 
@@ -133,7 +147,7 @@ export default {
         }
         if (attr.value == "show" || attr.value == "false") {
           attr.value =
-             typeof(entityStyleValue[i]) == "boolean"
+            typeof entityStyleValue[i] == "boolean"
               ? entityStyleValue[i]
                 ? "show"
                 : "false"
@@ -145,6 +159,9 @@ export default {
               : entityStyleValue[i];
         }
       }
+
+      // 其它属性 除样式外
+      entityObj.attr.ownInfo = {};
     },
 
     // 获取标签变化的值
@@ -238,6 +255,7 @@ export default {
   }
 }
 .plot-style-self {
+  margin: 10px auto;
   display: flex;
   align-items: center;
   label {
