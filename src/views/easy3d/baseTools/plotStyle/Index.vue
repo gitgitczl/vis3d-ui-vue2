@@ -58,9 +58,10 @@
       </div>
     </div>
     <div v-if="!plotActive">
+      <!-- 自定义属性信息 -->
       <div
         class="plot-style-self basic-text-input"
-        v-for="(item, index) in ownInfos"
+        v-for="(item, index) in infos"
         :key="index"
       >
         <label>{{ item.fieldName }}：</label>
@@ -102,7 +103,7 @@ export default {
       plotStyleBtn: ["标绘属性", "自有属性"],
       plotActive: 1,
 
-      ownInfos: [
+      infos: [
         {
           fieldName: "名称",
           value: "",
@@ -133,7 +134,7 @@ export default {
       // 设置样式默认值
       let entityStyleValue = entityObj.getStyle();
 
-      // 循环样式配置里面的属性
+      // 循环样式配置里面的属性 并绑定到标签
       for (let i in this.plotStyleAttr) {
         let attr = this.plotStyleAttr[i];
         if (attr.type == "checkbox") {
@@ -160,8 +161,10 @@ export default {
         }
       }
 
-      // 其它属性 除样式外
-      entityObj.attr.ownInfo = {};
+      // 设置当前对象的属性 供导出为geojson
+      entityObj.properties = {
+        infos: this.infos,
+      };
     },
 
     // 获取标签变化的值

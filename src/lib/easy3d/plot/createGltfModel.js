@@ -5,6 +5,8 @@ import cUtil from '../cUtil';
 class CreateGltfModel extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
+    this.type = "gltfModel";
+    this.jsonType = "Point";
     style = style || {};
     this.viewer = viewer;
     if (!style.uri) {

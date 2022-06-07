@@ -8,9 +8,9 @@ class CreatePolyline extends BasePlot {
         opt = opt || {};
         super(viewer, opt);
         this.movePush = false;
-
         this.type = "polyline";
-        this.plotType = "polyline";
+       /* this.plotType = "polyline"; */
+       this.jsonType = "LineString";
     }
 
     start(callBack) {

@@ -53,7 +53,7 @@ class BasePlot {
 
     // 获取坐标数组
     getPositions(isWgs84) {
-        return isWgs84 ? cUtil.cartesiansToLnglats(this.positions,this.viewer) : this.positions;
+        return isWgs84 ? cUtil.cartesiansToLnglats(this.positions, this.viewer) : this.positions;
     }
 
     // 移除
@@ -187,7 +187,7 @@ class BasePlot {
     }
 
     // 获取当前标绘的样式
-    getStyle() {
+    /*  getStyle() {
         if (!this.entity) return;
         let graphic = this.entity[this.plotType];
         if (!graphic) return;
@@ -217,7 +217,7 @@ class BasePlot {
                 break;
         }
         return style;
-    }
+    } */
 
     // 获取线的材质
     transfromLineMaterial(material) {
@@ -243,6 +243,41 @@ class BasePlot {
             colorObj.colorHex = new Cesium.Color(colorVal.red, colorVal.green, colorVal.blue, 1).toCssHexString();
         }
         return colorObj;
+    }
+
+    // 转换为geojson
+    toJson() {
+        if (!this.jsonType) {
+            console.log("缺少geojson类型");
+            return;
+        }
+        let coordinates = this.getPositions(true);
+        let style = this.getStyle();
+        let attr = {
+            "type": "Feature",
+            "properties": {
+                "plotType": this.type,
+                "style": style,
+            },
+            "geometry": {
+                "type": this.jsonType,
+                "coordinates": []
+            }
+        }
+        switch (this.jsonType) {
+            case "Polygon":
+                attr.geometry.coordinates = [coordinates];
+                break;
+            case "Point":
+                attr.geometry.coordinates = coordinates;
+                break;
+            case "Polyline":
+                attr.geometry.coordinates = coordinates;
+                break;
+            default: ;
+        }
+        return attr;
+
     }
 
 

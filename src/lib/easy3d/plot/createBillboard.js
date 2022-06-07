@@ -6,6 +6,7 @@ class CreateBillboard extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
 		this.type = "billboard";
+		this.jsonType = "Point";
 		this.viewer = viewer;
 		let defaultStyle = {
 			verticalOrigin: Cesium.VerticalOrigin.BOTTOM,

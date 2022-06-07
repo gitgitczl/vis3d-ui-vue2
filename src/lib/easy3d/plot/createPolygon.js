@@ -6,7 +6,7 @@ class CreatePolygon extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
 		this.type = "polygon";
-		this.geojsonType = "Polygon";
+		this.jsonType = "Polygon";
 		this.viewer = viewer;
 		this.entity = null;
 		this.polyline = null;

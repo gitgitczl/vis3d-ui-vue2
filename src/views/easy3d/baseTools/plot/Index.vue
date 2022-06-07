@@ -216,8 +216,11 @@ export default {
       }
 
       if (item.type == "saveFile") {
-
-        this.easy3d.cTool.file.downloadFile("图上标绘.json", JSON.stringify({}));
+        let jsondata = window.plotDrawTool.toJson();
+        this.easy3d.cTool.file.downloadFile(
+          "图上标绘.json",
+          JSON.stringify(jsondata)
+        );
       }
 
       if (item.type == "plotDelete") {
