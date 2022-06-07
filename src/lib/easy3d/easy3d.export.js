@@ -1,5 +1,6 @@
 // easy3d类库暴露方法
 import cUtil from "./cUtil";
+import cTool from "./cTool";
 import DrawTool from "./plot/drawTool";
 import LayerTool from "./layer/layerTool";
 import PopupTooltipTool from "./popupTooltip/popupTooltip";
@@ -157,18 +158,6 @@ class MapViewer {
             enableCompassOuterRing: true, // 罗盘外环
             view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView
         });
-        /* 
-        CesiumNavigation(this.viewer, {
-            cameraView: this.opt.map.cameraView,
-            style: {
-                bottom: 60,
-                right: 40,
-            },
-            enableCompass: true, // 罗盘
-            enableZoomControls: true, // 缩放控件
-            enableDistanceLegend: true, // 图例
-            enableCompassOuterRing: true, // 指南针外环
-        }); */
     }
 
     // 销毁
@@ -342,5 +331,5 @@ let workControl = {
 
 
 export default {
-    cUtil, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap
+    cUtil,cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap
 }

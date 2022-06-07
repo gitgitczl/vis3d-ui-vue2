@@ -37,51 +37,56 @@
     "军事标绘": [
         {
             "name": "攻击箭头",
-            "icon": "",
+            "iconImg": "./easy3d/images/plot/gjjt.png",
             "type": "arrow",
             "arrowType": 1,
             "style": {
-                "color": "#0000ff"
+                "color": "#0000ff",
+                "heightReference": 1
             },
             "styleType": "arrow"
         },
         {
             "name": "攻击箭头(平尾)",
-            "icon": "",
+            "iconImg": "./easy3d/images/plot/gjjtpw.png",
             "type": "arrow",
             "arrowType": 2,
             "style": {
-                "color": "#0000ff"
+                "color": "#0000ff",
+                "heightReference": 1
             },
             "styleType": "arrow"
         },
         {
             "name": "攻击箭头(燕尾)",
-            "icon": "",
+            "iconImg": "./easy3d/images/plot/gjjtyw.png",
             "type": "arrow",
             "arrowType": 3,
             "style": {
-                "color": "#0000ff"
+                "color": "#0000ff",
+                "heightReference": 1
             },
             "styleType": "arrow"
         },
         {
             "name": "钳击箭头",
-            "icon": "",
+            "iconImg": "./easy3d/images/plot/qjjt.png",
             "type": "arrow",
             "arrowType": 5,
             "style": {
-                "color": "#0000ff"
+                "color": "#0000ff",
+                "heightReference": 1
             },
             "styleType": "arrow"
         },
         {
             "name": "单尖直箭头",
-            "icon": "",
+            "iconImg": "./easy3d/images/plot/zjt.png",
             "type": "arrow",
             "arrowType": 6,
             "style": {
-                "color": "#0000ff"
+                "color": "#0000ff",
+                "heightReference": 1
             },
             "styleType": "arrow"
         }
