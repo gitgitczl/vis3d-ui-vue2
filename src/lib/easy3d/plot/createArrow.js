@@ -6,8 +6,9 @@ import arrowAlgorithm from "./arrowAlgorithm";
 /* 构建军事标绘 */
 class CreateArrow extends BasePlot {
 	constructor(viewer, situationType, style) {
-
 		super(viewer, style);
+		this.type = "arrow";
+		this.jsonType = "Polygon";
 		if (!situationType) {
 			console.log("缺少箭头类型")
 			return;
@@ -43,7 +44,7 @@ class CreateArrow extends BasePlot {
 
 	start(callBack) {
 		let that = this;
-		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) { //单机开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
@@ -246,6 +247,7 @@ class CreateArrow extends BasePlot {
 		this.forbidDrawWorld(false);
 	}
 
+	
 }
 
 

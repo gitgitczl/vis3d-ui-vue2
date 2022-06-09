@@ -6,6 +6,7 @@ class CreateLabel extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
     this.type = "label";
+    this.jsonType = "Point";
     this.objId = Number(
       new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)
     );

@@ -2,7 +2,7 @@ window.workConfig = {
     "tools": [
         {
             "name": "图上标绘",
-            "show": false,
+            "show": true,
             "workName": "plot",
             "position": {
                 "top": 100,
@@ -10,7 +10,7 @@ window.workConfig = {
             },
             "size": {
                 "width": 350,
-                "height": 400
+                "height": 420
             },
             "closeDisableSelf": true,
             "closeDisableExcept": [
@@ -125,7 +125,7 @@ window.workConfig = {
         },
         {
             "name": "区域导航",
-            "show": true,
+            "show": false,
             "workName": "region",
             "closeDisableSelf": true,
             "openDisableAnothers": false,

@@ -17,6 +17,47 @@ function downloadCanvasIamge(canvas, name) {
     a.dispatchEvent(event)
 }
 
+let file = {
+    //============内部私有属性及方法============
+    _download(fileName, blob) {
+        var aLink = document.createElement('a');
+        aLink.download = fileName;
+        aLink.href = URL.createObjectURL(blob);
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
+    },
+
+    //下载保存文件
+    downloadFile(fileName, string) {
+        var blob = new Blob([string]);
+        this._download(fileName, blob);
+    },
+
+    //下载导出图片
+    downloadImage(name, canvas) {
+        var base64 = canvas.toDataURL("image/png");
+        var blob = this.base64Img2Blob(base64);
+        this._download(name + '.png', blob);
+    },
+
+    base64Img2Blob(code) {
+        var parts = code.split(';base64,');
+        var contentType = parts[0].split(':')[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+
+        var uInt8Array = new Uint8Array(rawLength);
+        for (var i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], {
+            type: contentType
+        });
+    }
+}
+
 export default {
-    downloadCanvasIamge: downloadCanvasIamge
+    downloadCanvasIamge: downloadCanvasIamge,
+    file : file
 }

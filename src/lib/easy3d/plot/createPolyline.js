@@ -8,13 +8,13 @@ class CreatePolyline extends BasePlot {
         opt = opt || {};
         super(viewer, opt);
         this.movePush = false;
-
         this.type = "polyline";
-        this.plotType = "polyline";
+       /* this.plotType = "polyline"; */
+       this.jsonType = "LineString";
     }
 
     start(callBack) {
-        if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+        if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
         this.state = "startCreate";
         let that = this;
         this.handler.setInputAction(function (evt) { //单击开始绘制

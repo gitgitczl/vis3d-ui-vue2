@@ -77,24 +77,8 @@ ResetViewNavigationControl.prototype.resetView = function () {
     this.terria.trackedEntity = trackedEntity
   } else {
     // reset to a default position or view defined in the options
-    if (this.terria.options.defaultResetView) {
-      if (this.terria.options.defaultResetView && this.terria.options.defaultResetView instanceof Cartographic) {
-        camera.flyTo({
-          destination: scene.globe.ellipsoid.cartographicToCartesian(this.terria.options.defaultResetView)
-        })
-      } else if (this.terria.options.defaultResetView && this.terria.options.defaultResetView instanceof Rectangle) {
-        try {
-          Rectangle.validate(this.terria.options.defaultResetView)
-          camera.flyTo({
-            destination: this.terria.options.defaultResetView,
-            orientation: {
-              heading: CesiumMath.toRadians(5.729578)
-            }
-          })
-        } catch (e) {
-          console.log('Cesium-navigation/ResetViewNavigationControl:   options.defaultResetView Cesium rectangle is  invalid!')
-        }
-      }
+    if (this.terria.options.view) {
+      this.setCameraView(this.terria.options.view,this.terria)
     } else if (typeof camera.flyHome === 'function') {
       camera.flyHome(1)
     } else {
@@ -112,6 +96,22 @@ ResetViewNavigationControl.prototype.resetView = function () {
  */
 ResetViewNavigationControl.prototype.activate = function () {
   this.resetView()
+}
+
+ResetViewNavigationControl.prototype.setCameraView = function(obj, mapViewer) {
+  var viewer = mapViewer || window.viewer;
+  if (!obj) return;
+  var position = obj.destination || Cesium.Cartesian3.fromDegrees(obj.x, obj.y, obj.z); // 兼容cartesian3和xyz
+  viewer.camera.flyTo({
+      destination: position,
+      orientation: {
+          heading: Cesium.Math.toRadians(obj.heading || 0),
+          pitch: Cesium.Math.toRadians(obj.pitch || 0),
+          roll: Cesium.Math.toRadians(obj.roll || 0)
+      },
+      duration: obj.duration === undefined ? 3 : obj.duration,
+      complete: obj.complete
+  });
 }
 
 export default ResetViewNavigationControl

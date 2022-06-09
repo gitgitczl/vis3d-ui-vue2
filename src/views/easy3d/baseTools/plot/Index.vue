@@ -11,7 +11,7 @@
     <div class="plot-btn-box basic-plot">
       <ul class="plot-btn">
         <el-tooltip
-          v-for="(item, index) in plotBtn1"
+          v-for="(item, index) in plotBtn"
           :key="index"
           class="item"
           effect="dark"
@@ -19,7 +19,7 @@
           placement="top"
         >
           <li>
-            <i :class="['iconfont', item.icon]"></i>
+            <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
         </el-tooltip>
       </ul>
@@ -34,7 +34,7 @@
           placement="top"
         >
           <li>
-            <i :class="['iconfont', item.icon]"></i>
+            <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
         </el-tooltip>
       </ul>
@@ -66,6 +66,15 @@
         <label>{{ item.name }}</label>
       </li>
     </ul>
+
+    <!-- 打开文件 -->
+    <input
+      type="file"
+      accept=".json"
+      style="display: none"
+      id="plot-loadFile"
+      @change="loadFileChange"
+    />
   </Card>
 </template>
 <script>
@@ -87,34 +96,31 @@ export default {
   data() {
     return {
       cardDialog: false, // 是否打开弹窗
-      plotBtn1: [
+      plotBtn: [
         {
-          name: "打开文件",
-          icon: "icon-dakaiwenjian",
-        },
-        {
-          name: "文件",
+          name: "打开",
           icon: "icon-jianyiwenjian",
+          type: "loadFile",
         },
         {
           name: "保存",
           icon: "icon-baocun",
+          type: "saveFile",
         },
       ],
       plotBtn2: [
         {
           name: "删除",
           icon: "icon-shanchu",
+          type: "plotDelete",
         },
         {
           name: "编辑",
           icon: "icon-shifoubianji",
-        },
-        {
-          name: "属性",
-          icon: "icon-shifouqiyongleshuxingdanchuang",
+          type: "plotEdit",
         },
       ],
+
       plotInitValue: "",
       isPlotActive: -1,
       plotTypeList: [], // 标绘类型
@@ -185,7 +191,7 @@ export default {
     },
 
     close() {
-      this.$store.commit("close", "plot");
+      this.$emit("close", "plot");
     },
 
     // 将style对象转为线性的
@@ -202,6 +208,48 @@ export default {
         }
       }
       return styleVal;
+    },
+    btnClick(item) {
+      if (item.type == "loadFile") {
+        let dom = document.getElementById("plot-loadFile");
+        if (dom) dom.click();
+      }
+
+      if (item.type == "saveFile") {
+        let jsondata = window.plotDrawTool.toJson();
+        this.easy3d.cTool.file.downloadFile(
+          "图上标绘.json",
+          JSON.stringify(jsondata)
+        );
+      }
+
+      if (item.type == "plotDelete") {
+      }
+
+      if (item.type == "plotEdit") {
+      }
+    },
+
+    loadFileChange(e) {
+      let file = e.target.files[0];
+      let fileName = file.name;
+      let fileType = fileName
+        .substring(fileName.lastIndexOf(".") + 1, fileName.length)
+        .toLowerCase();
+      if (fileType != "json") {
+        console.warn("文件类型不合法,请选择json格式标注文件！");
+        return;
+      }
+      if (window.FileReader) {
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onloadend = function (e) {
+          let strjson = this.result;
+          strjson = JSON.parse(strjson);
+          debugger;
+          /*  plotWork.createByJson(strjson); */
+        };
+      }
     },
   },
   watch: {
@@ -229,6 +277,9 @@ export default {
     margin: 0 20px;
   }
   .plot-btn {
+    justify-content: space-between;
+    width: 50%;
+    margin: 0 10px;
     display: flex;
     align-items: center;
     li {
@@ -274,10 +325,11 @@ export default {
     }
     label {
       cursor: pointer;
+      height: 40px;
     }
   }
   img {
-    width: 90px;
+    width: 88px;
     height: 64px;
   }
 }

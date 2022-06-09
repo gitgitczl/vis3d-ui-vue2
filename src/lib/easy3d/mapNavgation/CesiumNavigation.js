@@ -86,35 +86,103 @@ function initialize(viewerCesiumWidget, options) {
   var container = document.createElement('div')
   container.className = 'cesium-widget-cesiumNavigationContainer'
   cesiumWidget.container.appendChild(container)
+  this.container = container;
 
   this.terria = viewerCesiumWidget
   this.terria.options = (defined(options)) ? options : {}
+
+  // 定义viewer的事件 供其它模块调用
   this.terria.afterWidgetChanged = new CesiumEvent()
   this.terria.beforeWidgetChanged = new CesiumEvent()
-  this.container = container
-  registerKnockoutBindings()
 
-
+  // 比例尺
   this.distanceLegendDiv = document.createElement('div')
   container.appendChild(this.distanceLegendDiv)
   this.distanceLegendDiv.setAttribute('id', 'distanceLegendDiv')
+
+  let distanceStyleAttr = (options.distanceLegend && options.distanceLegend.style) || "leftBottom";
+  distanceStyleAttr = (typeof(distanceStyleAttr) == "string") ? getDistanceStyleByType(distanceStyleAttr) : distanceStyleAttr;
+
   this.distanceLegendViewModel = DistanceLegendViewModel.create({
     container: this.distanceLegendDiv,
+    style: distanceStyleAttr,
     terria: this.terria,
-    mapElement: container,
     enableDistanceLegend: this.terria.options.enableDistanceLegend == undefined ? true : this.terria.options.enableDistanceLegend
   })
 
+  // 指北针及缩放按钮
   this.navigationDiv = document.createElement('div')
   this.navigationDiv.setAttribute('id', 'navigationDiv')
   container.appendChild(this.navigationDiv)
-  // Create the navigation controls.
+
+  let compassStyleAttr = (options.distanceLegend && options.distanceLegend.style) || "leftBottom";
+  compassStyleAttr = (typeof(compassStyleAttr) == "string") ? getCompassStyleByType(compassStyleAttr) : compassStyleAttr;
+
   this.navigationViewModel = NavigationViewModel.create({
     container: this.navigationDiv,
     terria: this.terria,
+    style: compassStyleAttr,
     enableZoomControls: this.terria.options.enableZoomControls == undefined ? true : this.terria.options.enableZoomControls,
     enableCompass: this.terria.options.enableCompass == undefined ? true : this.terria.options.enableCompass
   })
+
+  registerKnockoutBindings();
+}
+
+function getDistanceStyleByType(type) {
+  type = type || "leftBottom";
+  let defaultStyle = {};
+  if (type == "leftBottom") {
+    defaultStyle = {
+      left: "10px",
+      bottom: "4px",
+    }
+  } else if (type == "leftTop") {
+    defaultStyle = {
+      left: "20px",
+      top: "20px",
+    }
+  } else if (type == "rightBottom") {
+    defaultStyle = {
+      right: "20px",
+      bottom: "4px",
+    }
+  } else {
+    defaultStyle = {
+      right: "20px",
+      top: "20px"
+    }
+  }
+  defaultStyle.zIndex = 99999;
+  return defaultStyle;
+}
+
+function getCompassStyleByType(type) {
+  type = type || "rightTop";
+  let defaultStyle = {};
+  if (type == "leftBottom") {
+    defaultStyle = {
+      left: "20px",
+      bottom: "60px",
+    }
+  } else if (type == "leftTop") {
+    defaultStyle = {
+      left: "20px",
+      top: "20px",
+    }
+  } else if (type == "rightBottom") {
+    defaultStyle = {
+      right: "20px",
+      bottom: "60px",
+    }
+  } else {
+    defaultStyle = {
+      right: "20px",
+      top: "20px"
+    }
+  }
+  defaultStyle.zIndex = 99999;
+  return defaultStyle;
 }
 
 export default CesiumNavigation

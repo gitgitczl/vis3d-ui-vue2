@@ -1,5 +1,6 @@
 // easy3d类库暴露方法
 import cUtil from "./cUtil";
+import cTool from "./cTool";
 import DrawTool from "./plot/drawTool";
 import LayerTool from "./layer/layerTool";
 import PopupTooltipTool from "./popupTooltip/popupTooltip";
@@ -13,12 +14,13 @@ import "./lnglatTool/lnglatNavigation.css";
 import LatlngNavigation from "./lnglatTool/lnglatNavigation";
 
 import gadgets from "./gadgets/gadgets";
-
 import RoamTool from "./roam/roamTool";
 import ZoomTool from "./zoomTool/zoomTool"
 import OverviewMap from "./overviewMap/overviewMap"
 
-import createMapNavgation from "./mapNavgation/mapNavigation"
+import CesiumNavigation from "./mapNavgation/CesiumNavigation"
+import './mapNavgation/styles/cesium-navigation.css'
+
 
 // 构建viewer
 class MapViewer {
@@ -43,8 +45,8 @@ class MapViewer {
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
-
-
+        if(this.opt.map.navigationTool) this.openNavigationTool();
+       
     }
 
     get viewer() {
@@ -146,14 +148,13 @@ class MapViewer {
 
 
     // 构建指北针
-    openNavigation() {
-        
-        createMapNavgation(this._viewer, {
+    openNavigationTool() {
+        new CesiumNavigation(this._viewer, {
             enableCompass: true, // 罗盘
             enableZoomControls: true, // 缩放控制器
             enableDistanceLegend: true, // 比例尺
             enableCompassOuterRing: true, // 罗盘外环
-            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
+            view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView
         });
     }
 
@@ -328,5 +329,5 @@ let workControl = {
 
 
 export default {
-    cUtil, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap
+    cUtil,cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap
 }

@@ -94,7 +94,7 @@ class DrawTool {
         if (that.startEditFun) that.startEditFun(entityObj, entity);
         that.lastEntityObj = entityObj;
       }
-      entityObj.attr = opt || {};
+      entityObj.attr = opt || {}; // 保存开始绘制时的属性
       that.toolArr.push(entityObj);
     });
 
@@ -242,31 +242,15 @@ class DrawTool {
     }
   }
   // 转为geojson
-  toGeojson() {
+  toJson() {
     let json = {
       type: "FeatureCollection",
       features: [],
     };
     for (let i = 0; i < this.toolArr.length; i++) {
       let item = this.toolArr[i];
-      let properties = item.getAttribute() || {};
-      let style = item.getStyle();
-      properties.style = style; // 将样式属性也存入properties
-      properties.geojsonType = item.geojsonType;
-      properties.type = item.type;
-      coordinates = item.getPositions(true);
-      if (item.geojsonType == "Polygon") {
-        coordinates = [coordinates];
-      }
-
-      let feature = {
-        type: "Feature",
-        geometry: {
-          type: item.geojsonType,
-          coordinates: coordinates,
-        },
-        properties: properties,
-      };
+      let feature = item.toJson();
+      feature.properties = Object.assign(feature.properties, item.properties);
       json.features.push(feature);
     }
     return json;
@@ -340,7 +324,7 @@ class DrawTool {
   bindEdit() {
     let that = this;
     // 如果是线 面 则需要先选中
-    if(!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+    if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       if (!that.canEdit) return;

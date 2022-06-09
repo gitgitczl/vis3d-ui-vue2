@@ -60,25 +60,34 @@ DistanceLegendViewModel.prototype.destroy = function () {
 DistanceLegendViewModel.prototype.show = function (container) {
   var testing
   if (this.enableDistanceLegend) {
-    testing = '<div class="distance-legend" data-bind="visible: distanceLabel && barWidth">' +
+    testing = '<div class="distance-legend" id="easy3d-distance-legend" data-bind="visible: distanceLabel && barWidth">' +
       '<div class="distance-legend-label" data-bind="text: distanceLabel"></div>' +
       '<div class="distance-legend-scale-bar" data-bind="style: { width: barWidth + \'px\', left: (5 + (125 - barWidth) / 2) + \'px\' }"></div>' +
       '</div>'
   } else {
-    testing = '<div class="distance-legend"  style="display: none;" data-bind="visible: distanceLabel && barWidth">' +
+    testing = '<div class="distance-legend" id="easy3d-distance-legend" style="display: none;" data-bind="visible: distanceLabel && barWidth">' +
       '<div class="distance-legend-label"  data-bind="text: distanceLabel"></div>' +
       '<div class="distance-legend-scale-bar"  data-bind="style: { width: barWidth + \'px\', left: (5 + (125 - barWidth) / 2) + \'px\' }"></div>' +
       '</div>'
   }
   loadView(testing, container, this)
-  // loadView(distanceLegendTemplate, container, this);
-  // loadView(require('fs').readFileSync(__dirname + '/../Views/DistanceLegend.html', 'utf8'), container, this);
 }
 
 DistanceLegendViewModel.create = function (options) {
   var result = new DistanceLegendViewModel(options)
   result.show(options.container)
+  result.setStyle(options.style)
   return result
+}
+
+// 设置样式
+DistanceLegendViewModel.prototype.setStyle = function (style) {
+  if (!style || Object.keys(style).length < 1) return;
+  let ele = document.getElementById("easy3d-distance-legend");
+  if(!ele) return ;
+  for(let i in style){
+    ele.style[i] = style[i];
+  }
 }
 
 var geodesic = new EllipsoidGeodesic()
