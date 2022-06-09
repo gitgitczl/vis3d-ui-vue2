@@ -88,7 +88,7 @@ class BaseMeasure {
         const east = new Cesium.Cartesian3(1, 0, 0);
         const arc_east = Cesium.Cartesian3.dot(east, aim);
         const radians_north = Math.acos(arc_north);
-        const dg = Cesium.Math.toDegrees(radians_north);
+        let dg = Cesium.Math.toDegrees(radians_north);
         if (arc_east < 0) dg = 360 - dg;
         return dg;
     }

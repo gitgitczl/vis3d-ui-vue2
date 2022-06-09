@@ -12,9 +12,6 @@ import MeasureTool from "./measure/measureTool";
 import "./lnglatTool/lnglatNavigation.css";
 import LatlngNavigation from "./lnglatTool/lnglatNavigation";
 
-import "./navigation/cesiumNavigation.css";
-import createCN from "./navigation/cesiumNavigation";
-
 import gadgets from "./gadgets/gadgets";
 
 import RoamTool from "./roam/roamTool";
@@ -48,16 +45,6 @@ class MapViewer {
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
 
 
-        let options = {};
-        options
-
-        createMapNavgation(this._viewer, {
-            enableCompass: true, // 罗盘
-            enableZoomControls: true, // 缩放控制器
-            enableDistanceLegend: true, // 比例尺
-            enableCompassOuterRing: true, // 罗盘外环
-            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
-        });
     }
 
     get viewer() {
@@ -136,9 +123,7 @@ class MapViewer {
     // 打开实体鼠标提示
     openPopupTooltip() {
         if (!this.popupTooltip) {
-            this.popupTooltip = new PopupTooltipTool(this.viewer);
-            this.popupTooltip.autoBindTooltip();
-            this.popupTooltip.autoBindPopup();
+          
         }
     }
 
@@ -162,17 +147,13 @@ class MapViewer {
 
     // 构建指北针
     openNavigation() {
-        let CesiumNavigation = createCN();
-        CesiumNavigation(this.viewer, {
-            cameraView: this.opt.map.cameraView,
-            style: {
-                bottom: 60,
-                right: 40,
-            },
+        
+        createMapNavgation(this._viewer, {
             enableCompass: true, // 罗盘
-            enableZoomControls: true, // 缩放控件
-            enableDistanceLegend: true, // 图例
-            enableCompassOuterRing: true, // 指南针外环
+            enableZoomControls: true, // 缩放控制器
+            enableDistanceLegend: true, // 比例尺
+            enableCompassOuterRing: true, // 罗盘外环
+            defaultResetView: Cesium.Cartographic.fromDegrees(116.384259, 39.999645, 1200000.0)
         });
     }
 

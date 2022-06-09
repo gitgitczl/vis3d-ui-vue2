@@ -3,23 +3,7 @@ import CesiumNavigation from './CesiumNavigation'
 import './styles/cesium-navigation.css'
 
 
-/**
- * A mixin which adds the Compass/Navigation widget to the Viewer widget.
- * Rather than being called directly, this function is normally passed as
- * a parameter to {@link Viewer#extend}, as shown in the example below.
- * @exports mapNavigation
- *
- * @param {Viewer} viewer The viewer instance.
- * @param {{}} options The options.
- *
- * @exception {DeveloperError} viewer is required.
- *
- * @demo {@link http://localhost:8080/index.html|run local server with examples}
- *
- * @example
- * var viewer = new Cesium.Viewer('cesiumContainer');
- * viewer.extend(mapNavigation);
- */
+
 function mapNavigation(viewer, options) {
   if (!defined(viewer)) {
     throw new DeveloperError('viewer is required.')
