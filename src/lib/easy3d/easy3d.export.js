@@ -21,6 +21,8 @@ import OverviewMap from "./overviewMap/overviewMap"
 import CesiumNavigation from "./mapNavgation/CesiumNavigation"
 import './mapNavgation/styles/cesium-navigation.css'
 
+import easy3dView from "./viewRoate";
+
 
 // 构建viewer
 class MapViewer {
@@ -41,11 +43,17 @@ class MapViewer {
         this.loadOperateLayers();
 
 
-        if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
+       /*  if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer); */
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
         if(this.opt.map.navigationTool) this.openNavigationTool();
+
+        if (this.opt.map.worldAnimate) {
+            this.openWorldAnimate();
+        } else {
+            if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
+        }
        
     }
 
@@ -143,11 +151,15 @@ class MapViewer {
         }
     }
 
-    // 开启地球动画
-    openWorldAnimate() {
-
+      // 开启地球动画
+      openWorldAnimate() {
+        let that = this;
+        easy3dView.setRotate({ x: this.opt.map.cameraView.x, y: this.opt.map.cameraView.y }, function () {
+            if (that.opt.map.cameraView) {
+                cUtil.setCameraView(that.opt.map.cameraView);
+            }
+        });
     }
-
 
     // 构建指北针
     openNavigationTool() {

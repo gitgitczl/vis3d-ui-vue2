@@ -176,6 +176,33 @@ window.mapConfig = {
                     "maximumScreenSpaceError": 8
                 }
             ]
+        },
+        {
+            "name": "三维点云",
+            "type": "group",
+            "open": true,
+            "children": [
+                {
+                    "name": "线路",
+                    "type": "3dtiles",
+                    "url": " http://localhost/djdp/ganta/tileset.json",
+                    "show": true,
+                    "center": {
+                        "z": 350
+                    },
+                    "maximumScreenSpaceError": 1
+                },
+                {
+                    "type": "3dtiles",
+                    "name": "导线",
+                    "url": "http://localhost/djdp/daoxian/tileset.json",
+                    "maximumScreenSpaceError": 1,
+                    "show": true,
+                    "center": {
+                        "z": 350
+                    },
+                }
+            ]
         }
     ]
 }
