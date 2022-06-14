@@ -133,9 +133,7 @@ class MapViewer {
     // 打开实体鼠标提示
     openPopupTooltip() {
         if (!this.popupTooltip) {
-            this.popupTooltip = new PopupTooltipTool(this.viewer);
-            this.popupTooltip.autoBindTooltip();
-            this.popupTooltip.autoBindPopup();
+          
         }
     }
 
