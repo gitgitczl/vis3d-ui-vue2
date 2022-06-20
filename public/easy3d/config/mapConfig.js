@@ -22,6 +22,7 @@ window.mapConfig = {
             "geocoder": false,
             "homeButton": false,
             "infoBox": false,
+            
             "sceneModePicker": false,
             "selectionIndicator": false,
             "timeline": false,

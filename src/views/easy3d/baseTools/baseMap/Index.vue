@@ -19,7 +19,7 @@
       </li>
     </ul>
     <div class="basic-checkbox basemap-checkbox">
-      <el-checkbox v-model="isShowMap">显示地形</el-checkbox>
+      <el-checkbox v-model="isShowTerrain">显示地形</el-checkbox>
     </div>
   </Card>
 </template>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       baseMapList: this.$store.state.map3d.baseLayers,
-      isShowMap: true,
+      isShowTerrain: true,
       nowShowLayerId: null,
     };
   },
@@ -73,13 +73,8 @@ export default {
       window.mapViewer.baseLayerTool.hideAll();
       window.mapViewer.baseLayerTool.showById(data.id);
     },
-  },
-  watch: {
-    "$store.state.map3d.baseLayers": {
-      handler(data) {
-        debugger;
-      },
-      deep: true,
+    setTerrainVisible() {
+      window.mapViewer.setTerrainVisible(this.isShowTerrain);
     },
   },
 };

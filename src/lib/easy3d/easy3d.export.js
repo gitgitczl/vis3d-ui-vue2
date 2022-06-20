@@ -23,6 +23,24 @@ import './mapNavgation/styles/cesium-navigation.css'
 
 import easy3dView from "./viewRoate";
 
+// 引入天气
+import fog from "./weather/fog";
+import rain from "./weather/rain";
+import snow from "./weather/snow"
+// 自定义天气
+let weather = {
+    fog: fog,
+    rain: rain,
+    snow: snow
+}
+
+import registerAnimate from "./animateMaterial/animate";
+// 注册自定义材质
+let rganimate = registerAnimate();
+let animate = {
+    Wall: rganimate.AnimateWall,
+    FlowLine: rganimate.FlowLineMaterial
+}
 
 // 构建viewer
 class MapViewer {
@@ -38,23 +56,26 @@ class MapViewer {
         this.popupTooltipTool = null;
 
         this.createViewer();
-        this.loadTerrain();
+
         this.loadbaseLayers();
         this.loadOperateLayers();
 
+        this.terrainUrl = '';
+        let { terrain } = this.opt.map;
+        if (terrain && terrain.url) this.loadTerrain(terrain.url);
 
-       /*  if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer); */
+        /*  if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer); */
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
-        if(this.opt.map.navigationTool) this.openNavigationTool();
+        if (this.opt.map.navigationTool) this.openNavigationTool();
 
         if (this.opt.map.worldAnimate) {
             this.openWorldAnimate();
         } else {
             if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
         }
-       
+
     }
 
     get viewer() {
@@ -106,15 +127,25 @@ class MapViewer {
         }
     }
     // 加载地形
-    loadTerrain() {
-        let { terrain } = this.opt.map;
-        if (!terrain || !terrain.url || !terrain.show) return;
+    loadTerrain(url) {
         // 移除原地形
         this._viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
+        this.terrainUrl = url;
+        if (!url) return;
         let terrainProvider = new Cesium.CesiumTerrainProvider({
-            url: terrain.url
+            url: url
         });
         this._viewer.scene.terrainProvider = terrainProvider;
+    }
+
+    // 设置地形的显示隐藏
+    setTerrainVisible(visible) {
+        if (!visible) {
+            this._viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
+        } else {
+            this.loadTerrain(this.terrainUrl);
+        }
+        this._viewer.scene.render();
     }
 
     // 开启右键工具
@@ -133,7 +164,7 @@ class MapViewer {
     // 打开实体鼠标提示
     openPopupTooltip() {
         if (!this.popupTooltip) {
-          
+
         }
     }
 
@@ -149,8 +180,8 @@ class MapViewer {
         }
     }
 
-      // 开启地球动画
-      openWorldAnimate() {
+    // 开启地球动画
+    openWorldAnimate() {
         let that = this;
         easy3dView.setRotate({ x: this.opt.map.cameraView.x, y: this.opt.map.cameraView.y }, function () {
             if (that.opt.map.cameraView) {
@@ -270,6 +301,12 @@ let workControl = {
             case "monomer":
                 this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
                 break;
+            case "weather":
+                this.components.push(import("@/views/easy3d/workTools/weather/Index.vue"));
+                break;
+            case "flowData":
+                this.components.push(import("@/views/easy3d/workTools/flowData/Index.vue"));
+                break;
         }
     },
     // 关闭单个模块 当前模块  其它模块
@@ -341,5 +378,5 @@ let workControl = {
 
 
 export default {
-    cUtil,cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap
+    cUtil, cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap, weather, animate
 }
