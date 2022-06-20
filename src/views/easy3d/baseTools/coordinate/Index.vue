@@ -57,14 +57,14 @@ export default {
     if (!drawTool) {
       drawTool = new this.easy3d.DrawTool(window.viewer);
       drawTool.on("endCreate", function (entObj, ent) {
-        const lnglat = entObj.getPositions();
+        const lnglat = entObj.getPositions(1);
         if (!lnglat) return;
         that.lng = Number(lnglat[0]).toFixed(2);
         that.lat = Number(lnglat[1]).toFixed(2);
         that.height = Number(lnglat[2]).toFixed(2);
       });
       drawTool.on("endEdit", function (entObj, ent) {
-        const lnglat = entObj.getPositions();
+        const lnglat = entObj.getPositions(1);
         if (!lnglat) return;
         that.lng = Number(lnglat[0]).toFixed(2);
         that.lat = Number(lnglat[1]).toFixed(2);

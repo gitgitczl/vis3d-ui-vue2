@@ -77,6 +77,9 @@ export default {
       nowStartRoamAttr: {},
     };
   },
+  destroyed () {
+    
+  },
 
   computed: {},
 

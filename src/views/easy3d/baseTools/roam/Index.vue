@@ -293,6 +293,18 @@ export default {
       });
     }
   },
+  destroyed() {
+    if (roamDraw) {
+      roamDraw.destroy();
+      roamDraw = null;
+    }
+    if (roamTool) {
+      roamTool.destroy();
+      roamTool = null;
+    }
+    roamList = [];
+    this.easy3d.workControl.closeToolByName("roamStyle");
+  },
   methods: {
     close() {
       this.$emit("close", "roam");

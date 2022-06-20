@@ -301,12 +301,6 @@ let workControl = {
             case "monomer":
                 this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
                 break;
-            case "weather":
-                this.components.push(import("@/views/easy3d/workTools/weather/Index.vue"));
-                break;
-            case "flowData":
-                this.components.push(import("@/views/easy3d/workTools/flowData/Index.vue"));
-                break;
         }
     },
     // 关闭单个模块 当前模块  其它模块

@@ -196,6 +196,14 @@ class RoamTool {
         let attr = Object.assign(this.nowStartRoam.attr,this.nowStartRoam.getAttr());
         return attr;
     }
+
+    destroy(){
+        for (let i = this.roamList.length - 1; i >= 0; i--) {
+            let roam = this.roamList[i];
+            roam.destroy();
+        }
+        this.roamList = [];
+    }
 }
 
 export default RoamTool;
