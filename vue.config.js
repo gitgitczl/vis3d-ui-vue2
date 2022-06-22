@@ -55,8 +55,8 @@ module.exports = {
             ]),
             new CopyWebpackPlugin([
                 {
-                    from: path.join(cesiumSource, "ThirdParty/Workers"),
-                    to: "ThirdParty/Workers",
+                    from: path.join(cesiumSource, "ThirdParty"),
+                    to: "ThirdParty",
                 },
             ]),
             new webpack.DefinePlugin({
