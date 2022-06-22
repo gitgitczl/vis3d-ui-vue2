@@ -13,7 +13,7 @@ window.mapConfig = {
         "bottomLnglatTool": true, // 经纬度及相机位置提示
         "rightTool": true, // 是否开启右键功能
         "popupTooltipTool": true, // 是否开启气泡窗
-        "navigationTool" : true, // 导航球及比例尺
+        "navigationTool": true, // 导航球及比例尺
         "depthTestAgainstTerrain": true,  // 是否开启深度监测
         "viewerConfig": {
             "animation": false,
@@ -22,7 +22,7 @@ window.mapConfig = {
             "geocoder": false,
             "homeButton": false,
             "infoBox": false,
-            
+
             "sceneModePicker": false,
             "selectionIndicator": false,
             "timeline": false,
@@ -34,7 +34,7 @@ window.mapConfig = {
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
-            "show": true
+            "show": false
         }
     },
     "baseLayers": [
@@ -145,7 +145,7 @@ window.mapConfig = {
                             "outlineColorAlpha": 1
                         }
                     },
-                    
+
                     "tooltip": [
                         {
                             "field": "name",
@@ -175,34 +175,24 @@ window.mapConfig = {
                         "z": 50
                     },
                     "maximumScreenSpaceError": 8
-                }
-            ]
-        },
-        {
-            "name": "三维点云",
-            "type": "group",
-            "open": true,
-            "children": [
-                {
-                    "name": "线路",
-                    "type": "3dtiles",
-                    "url": " http://localhost/djdp/ganta/tileset.json",
-                    "show": true,
-                    "center": {
-                        "z": 350
-                    },
-                    "maximumScreenSpaceError": 1
                 },
                 {
+                    "name": "长江大桥",
                     "type": "3dtiles",
-                    "name": "导线",
-                    "url": "http://localhost/djdp/daoxian/tileset.json",
+                    "url": "http://112.86.147.194:9009/data/3dtiles/daqiao/daqiaoNew/tileset.json",
+                    "maximumScreenSpaceError": 64,
+                    "show": false
+                },
+                {
+                    "name": "办公楼（bim）",
+                    "type": "3dtiles",
+                    "url": "http://47.117.134.108:9009/data/model/1652516228286/bangonglou/tileset.json",
                     "maximumScreenSpaceError": 1,
-                    "show": true,
-                    "center": {
-                        "z": 350
+                    "center":{
+                        z : 30
                     },
-                }
+                    "show": false
+                },
             ]
         }
     ]

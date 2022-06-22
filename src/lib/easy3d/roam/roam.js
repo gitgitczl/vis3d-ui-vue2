@@ -10,7 +10,7 @@
  *          scale 模型大小
  *          ...  同ModelGraphics中配置
  */
-class Roam {
+ class Roam {
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
@@ -116,12 +116,15 @@ class Roam {
             this.rendHandler = null;
         }
         this.viewer.clock.multiplier = 1;
+        this.isLockView = false;
+        this.viewer.trackedEntity = undefined;
+        this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
     }
 
     createRoamEntity(type, property) {
         let entity = null;
         if (type == "model") {
-            if (!this.opt.roamEntity || !this.opt.roamEntity.uri) {
+            if (!this.opt.entityAttr || !this.opt.entityAttr.uri) {
                 console.log("漫游缺少模型对象！");
                 return;
             }
@@ -131,7 +134,7 @@ class Roam {
                 model: this.opt.entityAttr
             })
         } else if (type == "image") {
-            if (!this.opt.roamEntity || !this.opt.roamEntity.image) {
+            if (!this.opt.entityAttr || !this.opt.entityAttr.image) {
                 console.log("漫游缺少图片对象！");
                 return;
             }

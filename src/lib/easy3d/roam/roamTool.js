@@ -42,7 +42,7 @@ class RoamTool {
     // 创建漫游
     create(opt, callback) {
         opt = opt || {};
-        let { type, positions } = opt;
+        let { roamType, positions } = opt;
         positions = this.transfromPositions(positions);
         let roam = null;
 
@@ -58,7 +58,7 @@ class RoamTool {
         roamAttr = Object.assign(opt, roamAttr);
 
         let that = this;
-        switch (type) {
+        switch (roamType) {
             case 1:
                 // 飞行漫游
                 if (!opt.height) {
@@ -203,6 +203,11 @@ class RoamTool {
             roam.destroy();
         }
         this.roamList = [];
+    }
+
+    // 转化为json
+    goJson(){
+        let arr = [];
     }
 }
 
