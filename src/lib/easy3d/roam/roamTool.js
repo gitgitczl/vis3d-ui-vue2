@@ -9,6 +9,7 @@ class RoamTool {
         this.roamingFun = null;
         this.stopRoamFun = null;
         this.goonRoamFun = null;
+        this.endCreateFun = null;
 
         this.roamList = [];
         this.nowStartRoam = null;
@@ -35,6 +36,10 @@ class RoamTool {
 
         if (type == "goonRoam") {
             this.goonRoamFun = fun;
+        }
+
+        if (type == "endCreate") {
+            this.endCreateFun = fun;
         }
 
     }
@@ -70,6 +75,7 @@ class RoamTool {
                 roam = new Roam(this.viewer, roamAttr);
                 roam.attr = roamAttr;
                 this.roamList.push(roam);
+                if (callback) callback(roam);
                 break;
             case 2:
                 // 贴地漫游
@@ -79,6 +85,7 @@ class RoamTool {
                     roam = new Roam(that.viewer, roamAttr);
                     roam.attr = roamAttr;
                     that.roamList.push(roam);
+                    if (callback) callback(roam);
                 })
                 break;
             case 3:
@@ -90,6 +97,7 @@ class RoamTool {
                 roam = new Roam(this.viewer, roamAttr);
                 roam.attr = roamAttr;
                 this.roamList.push(roam);
+                if (callback) callback(roam);
         }
     }
 
@@ -97,6 +105,12 @@ class RoamTool {
         if (!positions) return;
         if (positions[0] instanceof Cesium.Cartesian3) {
             return positions;
+        } else if (positions[0].x && positions[0].y && positions[0].z) {
+            let arr = [];
+            positions.forEach(item => {
+                arr.push(new Cesium.Cartesian3(item.x, item.y, item.z));
+            })
+            return arr;
         } else {
             let newPositions = [];
             positions.forEach(element => {
@@ -193,11 +207,11 @@ class RoamTool {
 
     getNowroamAttr() {
         if (!this.nowStartRoam) return {};
-        let attr = Object.assign(this.nowStartRoam.attr,this.nowStartRoam.getAttr());
+        let attr = Object.assign(this.nowStartRoam.attr, this.nowStartRoam.getAttr());
         return attr;
     }
 
-    destroy(){
+    destroy() {
         for (let i = this.roamList.length - 1; i >= 0; i--) {
             let roam = this.roamList[i];
             roam.destroy();
@@ -206,8 +220,13 @@ class RoamTool {
     }
 
     // 转化为json
-    goJson(){
+    toJson() {
         let arr = [];
+        for (let i = this.roamList.length - 1; i >= 0; i--) {
+            let roam = this.roamList[i];
+            arr.push(roam.getAttr());
+        }
+        return arr;
     }
 }
 

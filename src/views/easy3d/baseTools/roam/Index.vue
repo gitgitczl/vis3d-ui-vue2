@@ -7,11 +7,11 @@
     :position="position"
     titleIcon="icon-youlan"
   >
-    <p class="roam-toolip">提示：导入的文件支持.json文件</p>
+    <p class="roam-toolip">提示：支持.json格式的路线文件导入</p>
     <div class="roam-operate">
       <span class="basic-btn" @click="startDraw">新增线路</span>
-      <span class="basic-btn">导入</span>
-      <span class="basic-btn">导出</span>
+      <span class="basic-btn" @click="importFile">导入</span>
+      <span class="basic-btn" @click="saveFile">导出</span>
     </div>
 
     <div class="split-line"></div>
@@ -146,13 +146,22 @@
         <span class="basic-clear-btn" @click="resetEdit">取消</span>
       </div>
     </div>
+
+    <!-- 打开文件 -->
+    <input
+      type="file"
+      accept=".json"
+      style="display: none"
+      id="roam-loadFile"
+      @change="loadFileChange"
+    />
   </Card>
 </template>
 
 <script>
 // 飞行漫游
 import Card from "@/views/easy3d/components/card/Card.vue";
-let roamDraw = null;
+let roamDrawTool = null;
 let roamList = [];
 let roamTool = null;
 let nowEditEntityObj = null;
@@ -212,11 +221,11 @@ export default {
       });
     }
 
-    if (!roamDraw) {
-      roamDraw = new this.easy3d.DrawTool(window.viewer, {
+    if (!roamDrawTool) {
+      roamDrawTool = new this.easy3d.DrawTool(window.viewer, {
         hasEdit: true,
       });
-      roamDraw.on("startEdit", function (entObj, ent) {
+      roamDrawTool.on("startEdit", function (entObj, ent) {
         nowEditEntityObj = entObj;
         roamTool.endRoam();
         window.nowRoam = null;
@@ -233,7 +242,9 @@ export default {
         that.nowRoamAttr.alltimes = roamAttr.alltimes;
         that.nowRoamAttr.speed = roamAttr.speed;
       });
-      roamDraw.on("endEdit", function (entObj, ent) {
+
+      roamDrawTool.on("endEdit", function (entObj, ent) {
+        debugger
         that.isShowList = true;
         if (!roamTool) return;
         // ======== 当前表单信息 ==========
@@ -257,8 +268,9 @@ export default {
           plotId: entObj.objId,
         };
         let roams = roamTool.getRoamByField("plotId", entObj.objId);
+
         if (roams[0]) {
-          // ====== 编辑 ======
+          // ====== 编辑 更新列表中数据 ======
           // 同步漫游列表中数据
           let plotId = roams[0].roam.attr.plotId;
           for (let i = 0; i < that.roamList.length; i++) {
@@ -270,9 +282,10 @@ export default {
           // 编辑时 先删除原来的漫游对象 下面重新创建
           roamTool.removeRoam(roams[0].roam);
         } else {
-          // ====== 新增 ======
+          // ====== 新增 列表中插入信数据 ======
           that.roamList.push(roamform);
         }
+
         // 创建新的漫游对象
         let attr = {};
         let positions = entObj.getPositions(false);
@@ -294,9 +307,9 @@ export default {
     }
   },
   destroyed() {
-    if (roamDraw) {
-      roamDraw.destroy();
-      roamDraw = null;
+    if (roamDrawTool) {
+      roamDrawTool.destroy();
+      roamDrawTool = null;
     }
     if (roamTool) {
       roamTool.destroy();
@@ -310,11 +323,11 @@ export default {
       this.$emit("close", "roam");
     },
     startDraw() {
-      if (!roamDraw) return;
-      roamDraw.start({
+      if (!roamDrawTool) return;
+      roamDrawTool.start({
         type: "polyline",
         style: {
-          material: Cesium.Color.RED.withAlpha(0.6),
+          color: Cesium.Color.RED.withAlpha(0.6),
           width: 3,
         },
       });
@@ -339,7 +352,7 @@ export default {
         roamTool.startRoam(roams[0].roam);
       }
       // 隐藏对应线
-      let eo = roamDraw.getEntityObjById(attr.plotId);
+      let eo = roamDrawTool.getEntityObjById(attr.plotId);
       if (eo.entityObj) eo.entityObj.setVisible(false);
     },
     roamEdit(attr) {
@@ -347,9 +360,9 @@ export default {
       roamTool.endRoam();
       window.nowRoam = null;
       // 隐藏对应线
-      let eo = roamDraw.getEntityObjById(attr.plotId);
+      let eo = roamDrawTool.getEntityObjById(attr.plotId);
       if (eo.entityObj) {
-        roamDraw.startEditOne(eo.entityObj);
+        roamDrawTool.startEditOne(eo.entityObj);
       }
     },
     roamDelete(attr) {
@@ -357,7 +370,7 @@ export default {
       if (roams[0]) {
         roamTool.removeRoam(roams[0].roam);
       }
-      roamDraw.removeById(attr.plotId);
+      roamDrawTool.removeById(attr.plotId);
 
       for (let i = 0; i < this.roamList.length; i++) {
         if (this.roamList[i].plotId == attr.plotId) {
@@ -369,21 +382,74 @@ export default {
 
     // 提交当前编辑
     confirmEdit() {
-      if (!roamDraw) return;
-      roamDraw.endEdit();
+      if (!roamDrawTool) return;
+      roamDrawTool.endEdit();
     },
     // 取消当前编辑
     resetEdit() {
       // 移除当前编辑对象
-      if (!roamDraw) return;
-      roamDraw.endEdit();
+      if (!roamDrawTool) return;
+      roamDrawTool.endEdit();
       if (nowEditEntityObj)
         this.roamDelete({
           plotId: nowEditEntityObj.entity.objId,
         });
     },
+    importFile() {
+      let dom = document.getElementById("roam-loadFile");
+      if (dom) dom.click();
+    },
+    saveFile() {
+      let jsondata = roamTool.toJson();
+      this.easy3d.cTool.file.downloadFile(
+        "图上标绘.json",
+        JSON.stringify(jsondata)
+      );
+    },
+
+    // 打开当前漫游文件
+    loadFileChange(e) {
+      let file = e.target.files[0];
+      let fileName = file.name;
+      let fileType = fileName
+        .substring(fileName.lastIndexOf(".") + 1, fileName.length)
+        .toLowerCase();
+      if (fileType != "json") {
+        console.warn("文件类型不合法,请选择json格式标注文件！");
+        return;
+      }
+      if (window.FileReader) {
+        let reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onloadend = function (e) {
+          let strjson = this.result;
+          let jsonArr = JSON.parse(strjson);
+
+          // 构建漫游线路
+          for (let i = 0; i < jsonArr.length; i++) {
+            let attr = jsonArr[i];
+            let positions = attr.positions;
+            let arr = [];
+            positions.forEach((item) => {
+              arr.push(new Cesium.Cartesian3(item.x, item.y, item.z));
+            });
+            roamDrawTool.createByPositions({
+              type: "polyline",
+              style: {
+                color: Cesium.Color.RED.withAlpha(0.6),
+                width: 3,
+              },
+              positions: arr,
+            });
+            debugger
+            roamDrawTool.endEdit();
+          }
+        };
+      }
+    },
   },
   watch: {
+    // 漫游视角切换
     "$store.state.map3d.nowRoamViewType": function (data) {
       this.nowRoamAttr.viewType = data;
     },

@@ -7,7 +7,8 @@ window.mapConfig = {
             "z": 6137.747059134269,
             "heading": 351.34704629855594,
             "pitch": -45.628475600570006,
-            "roll": 359.99253564205463
+            "roll": 359.99253564205463,
+            "duration" : 0
         },
         "worldAnimate": false,
         "bottomLnglatTool": true, // 经纬度及相机位置提示

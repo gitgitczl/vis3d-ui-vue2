@@ -150,8 +150,9 @@ class MapViewer {
 
     // 开启右键工具
     openRightTool() {
-        if (!this.popupTooltipTool) {
-            this.popupTooltipTool = new RightTool(this.viewer, {})
+        if (!this.rightTool) {
+            this.rightTool = new RightTool(this.viewer, {})
+
         }
     }
     closeRightTool() {
@@ -162,9 +163,19 @@ class MapViewer {
     }
 
     // 打开实体鼠标提示
-    openPopupTooltip() {
-        if (!this.popupTooltip) {
-
+    openPopupTooltip(bindPopup, bindClick) {
+        if (!this.popupTooltipTool) {
+            bindPopup = bindPopup == undefined ? true : bindPopup;
+            bindClick = bindClick == undefined ? true : bindClick;
+            this.popupTooltipTool = new PopupTooltipTool(this._viewer, {});
+            if (bindPopup) this.popupTooltipTool.autoBindPopup();
+            if (bindClick) this.popupTooltipTool.autoBindTooltip();
+        }
+    }
+    closePopupTooltip() {
+        if (this.popupTooltipTool) {
+            this.popupTooltipTool.destroy();
+            this.popupTooltipTool = null;
         }
     }
 

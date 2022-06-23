@@ -9,8 +9,8 @@ class CreatePolyline extends BasePlot {
         super(viewer, opt);
         this.movePush = false;
         this.type = "polyline";
-       /* this.plotType = "polyline"; */
-       this.jsonType = "LineString";
+        /* this.plotType = "polyline"; */
+        this.jsonType = "LineString";
     }
 
     start(callBack) {
@@ -123,10 +123,8 @@ class CreatePolyline extends BasePlot {
         if (style.lineType) {
             material = this.getMaterial(style.lineType, style);
         } else {
-            let color = Cesium.Color.fromCssColorString(style.color || "#000000");
-            if (style.colorAlpha) {
-                material = color.withAlpha(style.colorAlpha);
-            }
+            let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color || "#000000");
+            material = color.withAlpha(style.colorAlpha || 1);
         }
 
         this.entity.polyline.material = material;
@@ -167,6 +165,7 @@ class CreatePolyline extends BasePlot {
 
     createPolyline() {
         let that = this;
+
         let polyline = this.viewer.entities.add({
             polyline: {
                 positions: new Cesium.CallbackProperty(function () {

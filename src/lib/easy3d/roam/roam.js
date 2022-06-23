@@ -10,8 +10,9 @@
  *          scale 模型大小
  *          ...  同ModelGraphics中配置
  */
- class Roam {
+class Roam {
     constructor(viewer, opt) {
+        console.log("漫游对象属性--》",opt);
         this.viewer = viewer;
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         this.opt = opt || {};
@@ -337,6 +338,7 @@
             distanceED: this.distanceED,
             times: this.distanceED,
             viewType: this.viewType
+            /*  objId: this.objId */
         };
         return Object.assign(this.opt, attr);
     }

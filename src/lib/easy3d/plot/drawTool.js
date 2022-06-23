@@ -147,7 +147,7 @@ class DrawTool {
     let that = this;
     let entityObj = this.createByType(opt);
     if (!entityObj) return;
-
+    this.intoEdit = opt.intoEdit == undefined ? true : opt.intoEdit; // 绘制完成后 是否直接进入编辑（能否进入编辑 还得看 canEdit属性）
     entityObj.createByPositions(opt.positions, function (entity) {
       entityObj.setStyle(opt.style); // 设置相关样式
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
@@ -319,7 +319,6 @@ class DrawTool {
     }
     return obj;
   }
-
   // 绑定编辑
   bindEdit() {
     let that = this;
@@ -372,7 +371,6 @@ class DrawTool {
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
-
   endEdit() {
     if (this.lastEntityObj) {
       // 结束除当前选中实体的所有编辑操作
@@ -389,7 +387,6 @@ class DrawTool {
       this.toolArr[i].endEdit();
     }
   }
-
   // 绑定删除事件
   bindRemove() {
     let that = this;
