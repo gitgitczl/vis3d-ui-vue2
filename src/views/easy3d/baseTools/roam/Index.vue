@@ -21,7 +21,7 @@
       <el-table
         v-show="isShowList"
         :data="roamTabList"
-        height="60%"
+        max-height="400px"
         style="width: 100%"
       >
         <el-table-column label="序号" type="index"></el-table-column>
@@ -304,6 +304,7 @@ export default {
       });
     }
   },
+
   destroyed() {
     if (roamDrawTool) {
       roamDrawTool.destroy();
@@ -315,6 +316,7 @@ export default {
     }
     this.easy3d.workControl.closeToolByName("roamStyle");
   },
+
   methods: {
     close() {
       this.$emit("close", "roam");
