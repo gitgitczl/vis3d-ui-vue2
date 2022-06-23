@@ -20,7 +20,7 @@
     <div class="reset-table roam-tabel">
       <el-table
         v-show="isShowList"
-        :data="roamList"
+        :data="roamTabList"
         max-height="400px"
         style="width: 100%"
       >
@@ -162,7 +162,6 @@
 // 飞行漫游
 import Card from "@/views/easy3d/components/card/Card.vue";
 let roamDrawTool = null;
-let roamList = [];
 let roamTool = null;
 let nowEditEntityObj = null;
 
@@ -182,7 +181,7 @@ export default {
   data() {
     return {
       isShowList: true,
-      roamList: [],
+      roamTabList: [],
       nowRoamAttr: {
         name: "",
         roamType: "0",
@@ -272,9 +271,9 @@ export default {
           // ====== 编辑 更新列表中数据 ======
           // 同步漫游列表中数据
           let plotId = roams[0].roam.attr.plotId;
-          for (let i = 0; i < that.roamList.length; i++) {
-            if (that.roamList[i].plotId == plotId) {
-              that.roamList.splice(i, 1, roamform);
+          for (let i = 0; i < that.roamTabList.length; i++) {
+            if (that.roamTabList[i].plotId == plotId) {
+              that.roamTabList.splice(i, 1, roamform);
               break;
             }
           }
@@ -282,7 +281,7 @@ export default {
           roamTool.removeRoam(roams[0].roam);
         } else {
           // ====== 新增 列表中插入信数据 ======
-          that.roamList.push(roamform);
+          that.roamTabList.push(roamform);
         }
 
         // 创建新的漫游对象
@@ -315,7 +314,6 @@ export default {
       roamTool.destroy();
       roamTool = null;
     }
-    roamList = [];
     this.easy3d.workControl.closeToolByName("roamStyle");
   },
 
@@ -332,19 +330,6 @@ export default {
           width: 3,
         },
       });
-    },
-    getRoamById(id) {
-      if (!id) return;
-      let obj = {};
-      for (let i = 0; i < roamList.length; i++) {
-        let roam = roamList[i];
-        if (roam.id == id) {
-          obj.roam = roam;
-          obj.index = i;
-          break;
-        }
-      }
-      return obj;
     },
     startRoam(attr) {
       let roams = roamTool.getRoamByField("plotId", attr.plotId);
@@ -373,9 +358,9 @@ export default {
       }
       roamDrawTool.removeById(attr.plotId);
 
-      for (let i = 0; i < this.roamList.length; i++) {
-        if (this.roamList[i].plotId == attr.plotId) {
-          this.roamList.splice(i, 1);
+      for (let i = 0; i < this.roamTabList.length; i++) {
+        if (this.roamTabList[i].plotId == attr.plotId) {
+          this.roamTabList.splice(i, 1);
           break;
         }
       }
