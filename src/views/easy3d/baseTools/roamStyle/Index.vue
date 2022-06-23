@@ -10,6 +10,7 @@
     <div class="roam-style-btn">
       <span class="basic-btn" @click="stopRoam">暂停</span>
       <span class="basic-btn" @click="goonRoam">继续</span>
+      <span class="basic-btn-danger" @click="endRoam">结束</span>
     </div>
     <ul class="roam-style-box">
       <li class="basic-text-input">
@@ -77,9 +78,7 @@ export default {
       nowStartRoamAttr: {},
     };
   },
-  destroyed () {
-    
-  },
+  destroyed() {},
 
   computed: {},
 
@@ -98,6 +97,9 @@ export default {
     changeView(data) {
       this.$store.commit("setNowRoamViewType", data);
       if (window.nowRoam) window.nowRoam.setViewType(data);
+    },
+    endRoam() {
+      if (window.nowRoam) window.nowRoam.end();
     },
   },
   watch: {

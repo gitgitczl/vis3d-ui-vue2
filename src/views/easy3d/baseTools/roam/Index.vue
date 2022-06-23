@@ -26,7 +26,7 @@
       >
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column label="名称" prop="name"></el-table-column>
-        <el-table-column label="类型" prop="type"></el-table-column>
+        <el-table-column label="类型" prop="typeName"></el-table-column>
         <el-table-column label="备注" prop="mark"></el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
@@ -244,7 +244,6 @@ export default {
       });
 
       roamDrawTool.on("endEdit", function (entObj, ent) {
-        debugger
         that.isShowList = true;
         if (!roamTool) return;
         // ======== 当前表单信息 ==========
@@ -264,7 +263,7 @@ export default {
         let roamform = {
           name: that.nowRoamAttr.name,
           mark: that.nowRoamAttr.mark || "无",
-          type: roamTypeNmae,
+          typeName: roamTypeNmae,
           plotId: entObj.objId,
         };
         let roams = roamTool.getRoamByField("plotId", entObj.objId);
@@ -379,7 +378,6 @@ export default {
         }
       }
     },
-
     // 提交当前编辑
     confirmEdit() {
       if (!roamDrawTool) return;
@@ -406,9 +404,9 @@ export default {
         JSON.stringify(jsondata)
       );
     },
-
     // 打开当前漫游文件
     loadFileChange(e) {
+      let that = this;
       let file = e.target.files[0];
       let fileName = file.name;
       let fileType = fileName
@@ -441,7 +439,16 @@ export default {
               },
               positions: arr,
             });
-            debugger
+            // 当前属性赋值
+            that.nowRoamAttr = {
+              name: attr.name || "未命名",
+              roamType: attr.roamType,
+              viewType: attr.viewType,
+              mark: attr.mark,
+              roamFixtype: attr.times ? "fixtimes" : "fixspeed",
+              alltimes: attr.alltimes,
+              speed: attr.speed,
+            };
             roamDrawTool.endEdit();
           }
         };
