@@ -471,7 +471,7 @@ export default {
 .roam-operate {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 10px auto;
   span {
     height: 40px;
     padding: 0 20px;
