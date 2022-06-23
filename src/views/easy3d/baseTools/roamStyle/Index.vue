@@ -39,6 +39,10 @@
               ).toFixed(2)
             )
           "
+          v-if="!isNaN(Number(
+                (nowStartRoamAttr.distanceED / nowStartRoamAttr.alldistance) *
+                  100
+              ))"
           status="success"
         ></el-progress>
         <!-- <el-input disabled v-model="nowStartRoamAttr.distanceED"></el-input> -->
