@@ -224,6 +224,7 @@ export default {
       }
 
       if (item.type == "plotDelete") {
+        
       }
 
       if (item.type == "plotEdit") {

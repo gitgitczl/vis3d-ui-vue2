@@ -56,6 +56,11 @@ class BasePlot {
         return isWgs84 ? cUtil.cartesiansToLnglats(this.positions, this.viewer) : this.positions;
     }
 
+    // 绑定自定义属性到entity上
+    setOwnProp(prop) {
+        if (this.entity) this.entity.ownProp = prop;
+    }
+
     // 移除
     remove() {
         if (this.entity) {
@@ -277,8 +282,8 @@ class BasePlot {
             default: ;
         }
         return attr;
-
     }
+
 
 
 }

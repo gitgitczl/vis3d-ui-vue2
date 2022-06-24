@@ -78,8 +78,8 @@ class DrawTool {
       this.lastStartEntityObj = null;
     }
     let entityObj = this.createByType(opt);
-
     if (!entityObj) return;
+    entityObj.plotAttr = opt || {}; // 保存开始绘制时的属性
     // 开始绘制
     entityObj.start(function (entity) {
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
@@ -94,7 +94,7 @@ class DrawTool {
         if (that.startEditFun) that.startEditFun(entityObj, entity);
         that.lastEntityObj = entityObj;
       }
-      entityObj.attr = opt || {}; // 保存开始绘制时的属性
+   
       that.toolArr.push(entityObj);
     });
 
@@ -147,6 +147,7 @@ class DrawTool {
     let that = this;
     let entityObj = this.createByType(opt);
     if (!entityObj) return;
+    entityObj.plotAttr = opt; // 保存开始绘制时的属性
     this.intoEdit = opt.intoEdit == undefined ? true : opt.intoEdit; // 绘制完成后 是否直接进入编辑（能否进入编辑 还得看 canEdit属性）
     entityObj.createByPositions(opt.positions, function (entity) {
       entityObj.setStyle(opt.style); // 设置相关样式
