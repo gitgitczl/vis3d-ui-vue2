@@ -24,6 +24,8 @@ export default {
   },
   mounted() {},
   destroyed() {},
-  methods: {},
+  methods: {
+    
+  },
 };
 </script>

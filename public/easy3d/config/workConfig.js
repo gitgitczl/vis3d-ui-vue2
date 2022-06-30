@@ -96,7 +96,7 @@ window.workConfig = {
         },
         {
             "name": "空间分析",
-            "show": false,
+            "show": true,
             "workName": "analysis",
             "position": {
                 "top": 200,

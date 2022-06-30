@@ -76,7 +76,7 @@ window.mapConfig = {
                         "roll": 359.9323408763138
                     },
                     "type": "arcgiscache",
-                    "show": true
+                    "show": false
                 }
             ]
         },
