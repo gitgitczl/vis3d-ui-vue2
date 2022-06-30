@@ -59,14 +59,12 @@ class BaseLayer {
     show() {
         if (this._layer) {
             this._layer.show = true;
-            this._layer.attr.show = true;
         }
     }
 
     hide() {
         if (this._layer) {
             this._layer.show = false;
-            this._layer.attr.show = false;
         }
     }
 

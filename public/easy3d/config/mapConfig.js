@@ -2,12 +2,12 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            "x": 120.23489052314471,
-            "y": 35.988737950087234,
-            "z": 6137.747059134269,
-            "heading": 351.34704629855594,
-            "pitch": -45.628475600570006,
-            "roll": 359.99253564205463,
+            heading: 35.18013248724374,
+            pitch: -19.489698676627384,
+            roll: 359.9988731036681,
+            x: 118.71156267363396,
+            y: 32.07822724431911,
+            z: 1690.5742399088617,
             "duration" : 0
         },
         "worldAnimate": false,
@@ -56,6 +56,31 @@ window.mapConfig = {
         }
     ],
     "operateLayers": [
+        {
+            "name": "地图切片",
+            "open": true,
+            "type": "group",
+            "children": [
+                {
+                    "name": "水下地形",
+                    "url": "http://112.86.147.194:9009/data/demnewtile/L{arc_z}/R{arc_y}/C{arc_x}.png",
+                    "minimumLevel": 1,
+                    "maximumLevel": 19,
+                    "minimumTerrainLevel": 1,
+                    "view": {
+                        "x": 118.73263653438936,
+                        "y": 31.971959788539053,
+                        "z": 6643.463555185671,
+                        "heading": 341.6647257262609,
+                        "pitch": -36.54290725763041,
+                        "roll": 359.9323408763138
+                    },
+                    "type": "arcgiscache",
+                    "show": true
+                }
+            ]
+        },
+
         {
             "name": "测试图层",
             "type": "group",

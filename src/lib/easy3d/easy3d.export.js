@@ -112,6 +112,7 @@ class MapViewer {
                 let layer = layers[i];
                 // 添加id
                 layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+                layer.alpha = layer.alpha == undefined ? 1 : layer.alpha;
                 if (layer.children && layer.children.length > 0) {
                     dg(layer.children)
                 } else {

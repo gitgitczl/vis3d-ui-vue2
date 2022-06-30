@@ -10,7 +10,7 @@
         :default-expanded-keys="expandedKeys"
         :default-checked-keys="checkedKeys"
         node-key="id"
-        @node-click="nodeClick"
+        @node-click="nodeClick" 
         @check="nodeCheck"
         @node-contextmenu="nodeRightClick"
       >
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+
+/*  */
 import Card from "@/views/easy3d/components/card/Card.vue";
 export default {
   name: "layers",
@@ -137,7 +139,7 @@ export default {
         }
       } */
       let visible;
-      if (data.type == "group") {
+      /*  if (data.type == "group") {
         visible =
           data.children[0] &&
           state.checkedKeys.indexOf(data.children[0].id) != -1;
@@ -148,7 +150,9 @@ export default {
       } else {
         visible = state.checkedKeys.indexOf(data.id) != -1;
         this.setNodeVisible(data, visible);
-      }
+      } */
+      visible = state.checkedKeys.indexOf(data.id) != -1;
+      window.mapViewer.operateLayerTool.setVisible(data.id, visible);
     },
     nodeClick(data) {
       this.clickTimes++;
@@ -190,7 +194,7 @@ export default {
       this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
     },
     setNodeVisible(data, visible) {
-       window.mapViewer.operateLayerTool.setVisible(data.id, visible);
+      window.mapViewer.operateLayerTool.setVisible(data.id, visible);
     },
     // childeren转为线性
     getAllLayers(lys) {

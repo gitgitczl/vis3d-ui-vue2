@@ -17,7 +17,7 @@ class LayerTool {
     }
     add(opt) {
         let layerObj = null;
-        opt = opt || {};
+        opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
         switch (type) {
             case "xyz": //xyz格式切片
@@ -130,10 +130,7 @@ class LayerTool {
         let layerOpt = this.getLayerObjById(id);
         if (layerOpt && layerOpt.layerObj) {
             layerOpt.layerObj.hide();
-            // 数据隔离
-            let newAttr = JSON.parse(JSON.stringify(layerOpt.layerObj.attr || {}));
-            newAttr.show = false;
-            layerOpt.layerObj.attr = newAttr;
+            layerOpt.layerObj.attr.show = false;
         }
     }
     showById(id) {
@@ -141,9 +138,7 @@ class LayerTool {
         let layerOpt = this.getLayerObjById(id);
         if (layerOpt && layerOpt.layerObj) {
             layerOpt.layerObj.show();
-            let newAttr = JSON.parse(JSON.stringify(layerOpt.layerObj.attr || {}));
-            newAttr.show = true;
-            layerOpt.layerObj.attr = newAttr;
+            layerOpt.layerObj.attr.show = true;
         }
     }
 
