@@ -107,8 +107,7 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onDragging(params) {
-    },
+    onDragging(params) {},
 
     /**
      * 拖拽结束
@@ -117,8 +116,7 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onDragstop(params) {
-    },
+    onDragstop(params) {},
 
     /**
      * 放大
@@ -188,5 +186,6 @@ export default {
   height: calc(100% - 44px);
   box-sizing: border-box;
   padding: 10px 20px;
+  overflow: auto;
 }
 </style>

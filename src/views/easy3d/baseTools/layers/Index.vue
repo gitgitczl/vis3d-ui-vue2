@@ -40,7 +40,7 @@
       <li>
         <span>上一层</span>
       </li>
-      <li >
+      <li>
         <span>下一层</span>
       </li>
       <li>
@@ -116,7 +116,7 @@ export default {
       if (layerOpt) layerOpt.layerObj.setAlpha(data.alpha);
     },
     nodeCheck(data, state) {
-      this.checkedKeys = state.checkedKeys;
+      /*  this.checkedKeys = state.checkedKeys;
       let allshowLayers = window.mapViewer.operateLayerTool.getAllshow();
       let allhideLayers = window.mapViewer.operateLayerTool.getAllhide();
       let len = allshowLayers.length;
@@ -135,6 +135,19 @@ export default {
         if (state.checkedKeys.indexOf(layer2.attr.id) != -1) {
           window.mapViewer.operateLayerTool.setVisible(layer2.attr.id, true);
         }
+      } */
+      let visible;
+      if (data.type == "group") {
+        visible =
+          data.children[0] &&
+          state.checkedKeys.indexOf(data.children[0].id) != -1;
+        for (let index = 0; index < data.children.length; index++) {
+          let item = data.children[index];
+          this.setNodeVisible(item, visible);
+        }
+      } else {
+        visible = state.checkedKeys.indexOf(data.id) != -1;
+        this.setNodeVisible(data, visible);
       }
     },
     nodeClick(data) {
@@ -176,7 +189,9 @@ export default {
       }
       this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
     },
-
+    setNodeVisible(data, visible) {
+       window.mapViewer.operateLayerTool.setVisible(data.id, visible);
+    },
     // childeren转为线性
     getAllLayers(lys) {
       lys = lys || {};
@@ -214,7 +229,7 @@ export default {
       /**
        * 点击其他地方关闭菜单
        */
-      const self = this
+      const self = this;
       document.onclick = function () {
         self.$set(self, "isTreeMenu", false);
       };
@@ -262,9 +277,9 @@ export default {
   z-index: 20000;
   width: 130px;
   box-sizing: border-box;
-  background-color: #363D4B;
+  background-color: #363d4b;
   padding: 10px 0;
-  border: 1px solid #363D4B;
+  border: 1px solid #363d4b;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   li {
@@ -273,10 +288,10 @@ export default {
     align-items: center;
     box-sizing: border-box;
     padding: 0 20px;
-    color: #BDC2D0;
+    color: #bdc2d0;
     cursor: pointer;
     border-bottom: 1px dashed #464d5c;
-    &:last-child{
+    &:last-child {
       border-bottom: none;
     }
     &:hover {
