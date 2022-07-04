@@ -10,7 +10,7 @@
         :default-expanded-keys="expandedKeys"
         :default-checked-keys="checkedKeys"
         node-key="id"
-        @node-click="nodeClick" 
+        @node-click="nodeClick"
         @check="nodeCheck"
         @node-contextmenu="nodeRightClick"
       >
@@ -54,7 +54,6 @@
 </template>
 
 <script>
-
 /*  */
 import Card from "@/views/easy3d/components/card/Card.vue";
 export default {
@@ -118,40 +117,8 @@ export default {
       if (layerOpt) layerOpt.layerObj.setAlpha(data.alpha);
     },
     nodeCheck(data, state) {
-      /*  this.checkedKeys = state.checkedKeys;
-      let allshowLayers = window.mapViewer.operateLayerTool.getAllshow();
-      let allhideLayers = window.mapViewer.operateLayerTool.getAllhide();
-      let len = allshowLayers.length;
-      for (let i = 0; i < len; i++) {
-        let layer = allshowLayers[i];
-        if (layer == undefined) continue;
-        if (state.checkedKeys.indexOf(layer.attr.id) == -1) {
-          window.mapViewer.operateLayerTool.setVisible(layer.attr.id, false);
-        }
-      }
-
-      let len2 = allhideLayers.length;
-      for (let j = 0; j < len2; j++) {
-        let layer2 = allhideLayers[j];
-        if (layer2 == undefined) continue;
-        if (state.checkedKeys.indexOf(layer2.attr.id) != -1) {
-          window.mapViewer.operateLayerTool.setVisible(layer2.attr.id, true);
-        }
-      } */
-      let visible;
-      /*  if (data.type == "group") {
-        visible =
-          data.children[0] &&
-          state.checkedKeys.indexOf(data.children[0].id) != -1;
-        for (let index = 0; index < data.children.length; index++) {
-          let item = data.children[index];
-          this.setNodeVisible(item, visible);
-        }
-      } else {
-        visible = state.checkedKeys.indexOf(data.id) != -1;
-        this.setNodeVisible(data, visible);
-      } */
-      visible = state.checkedKeys.indexOf(data.id) != -1;
+      this.checkedKeys = state.checkedKeys;
+      let visible = state.checkedKeys.indexOf(data.id) != -1;
       window.mapViewer.operateLayerTool.setVisible(data.id, visible);
     },
     nodeClick(data) {

@@ -7,6 +7,7 @@ import SingleImageLayer from "./singleImageLayer.js";
 import TMSLayer from "./tmsLayer.js";
 import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
+import WMSLayer from "./wmsLayer";
 class LayerTool {
     constructor(viewer) {
         this.viewer = viewer;
@@ -44,6 +45,9 @@ class LayerTool {
                 break;
             case "3dtiles":// 模型
                 layerObj = new TilesetLayer(this.viewer, opt);
+                break;
+            case "wms":// 模型
+                layerObj = new WMSLayer(this.viewer, opt);
                 break;
             case "grid":// 网格图层
                 layerObj = new GridLayer(this.viewer, opt);

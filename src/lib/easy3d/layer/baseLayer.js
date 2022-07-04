@@ -23,6 +23,17 @@ class BaseLayer {
         if (this.opt.minimumLevel) this.providerAttr.minimumLevel = this.opt.minimumLevel;
         if (this.opt.maximumLevel) this.providerAttr.maximumLevel = this.opt.maximumLevel;
         this.providerAttr.url = opt.url;
+        if (this.opt.srs == "EPSG:3857") {
+            this.opt.tilingScheme = new Cesium.WebMercatorTilingScheme();
+        } else if (this.opt.srs == "EPSG:4490") {
+
+        } else if (this.opt.srs == "EPSG:4326") {
+            this.opt.tilingScheme = new Cesium.GeographicTilingScheme();
+        } else {
+
+        }
+
+        this.providerAttr = Object.assign(this.opt, this.providerAttr);
         this._layer = null;
         this._provider = {};
     }
@@ -38,11 +49,11 @@ class BaseLayer {
             rectangle: this.opt.rectangle,
             /*  cutoutRectangle : this.opt.rectangle, */
             alpha: this.opt.alpha || 1, // 控制显示的层级
-            brightness: this.opt.brightness || 1,
             show: this.opt.show == undefined ? true : this.opt.show
         }
         if (this.opt.minimumTerrainLevel) options.minimumTerrainLevel = this.opt.minimumTerrainLevel; // 控制显示的层级
         if (this.opt.maximumTerrainLevel) options.maximumTerrainLevel = this.opt.maximumTerrainLevel;  // 控制显示的层级
+        /* options = Object.assign(this.opt, options); */
         this._layer = new Cesium.ImageryLayer(this._provider, options);
         this.viewer.imageryLayers.add(this._layer, this.opt.zIndex);
         this._layer.attr = this.opt; // 保存配置信息
@@ -59,12 +70,14 @@ class BaseLayer {
     show() {
         if (this._layer) {
             this._layer.show = true;
+            this._layer.attr.show = true;
         }
     }
 
     hide() {
         if (this._layer) {
             this._layer.show = false;
+            this._layer.attr.show = false;
         }
     }
 
