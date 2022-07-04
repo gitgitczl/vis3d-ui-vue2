@@ -110,7 +110,6 @@ function oreatationToHpr(position, orientation, isWgs84) {
         pitch = Cesium.Math.toDegrees(pitch);
         roll = Cesium.Math.toDegrees(roll);
     }
-
     return { heading, pitch, roll }
 }
 
@@ -205,6 +204,21 @@ function lerpPositions(positions) {
     return arr;
 }
 
+
+// 由两点计算和地形以及模型的交点  当前点 可能是两点间 可能是两点外
+function getIntersectPosition(p1, p2) {
+    if (!p1 || !p2) {
+        console.log("缺少坐标！");
+        return;
+    }
+    let direction = Cesium.Cartesian3.subtract(p2.clone(), p1.clone(), new Cesium.Cartesian3());
+    direction = Cesium.Cartesian3.normalize(dir, new Cesium.Cartesian3());
+    let ray = new Cesium.Ray(p1.clone(), direction.clone());
+
+    let pick = viewer.scene.pickFromRay(ray);
+    if (!pick) return null;
+    return pick.position;
+}
 
 
 

@@ -9,7 +9,7 @@
 
         <div class="analysis-btn analysis-top-btn basic-analysis-btn">
           <span>圆形通视分析</span>
-          <span>通视分析</span>
+          <span>单线通视分析</span>
           <span class="basic-analysis-btn-clear">清除</span>
         </div>
     </div>
