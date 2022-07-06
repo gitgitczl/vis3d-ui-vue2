@@ -206,13 +206,15 @@ function lerpPositions(positions) {
 
 
 // 由两点计算和地形以及模型的交点  当前点 可能是两点间 可能是两点外
-function getIntersectPosition(p1, p2) {
+function getIntersectPosition(viewer, obj) {
+    let p1 = obj.startPoint;
+    let p2 = obj.endPoint;
     if (!p1 || !p2) {
         console.log("缺少坐标！");
         return;
     }
     let direction = Cesium.Cartesian3.subtract(p2.clone(), p1.clone(), new Cesium.Cartesian3());
-    direction = Cesium.Cartesian3.normalize(dir, new Cesium.Cartesian3());
+    direction = Cesium.Cartesian3.normalize(direction, new Cesium.Cartesian3());
     let ray = new Cesium.Ray(p1.clone(), direction.clone());
 
     let pick = viewer.scene.pickFromRay(ray);
@@ -220,6 +222,31 @@ function getIntersectPosition(p1, p2) {
     return pick.position;
 }
 
+// 获取圆上的点
+function getCirclePoints(center, aimP, angle) {
+    let dis = Cesium.Cartesian3.distance(center.clone(), aimP.clone());
+    let circlePositions = [];
+    for (let i = 0; i < 360; i += angle) {
+        // 旋转矩阵
+        var hpr = new Cesium.HeadingPitchRoll(
+            Cesium.Math.toRadians(i),
+            Cesium.Math.toRadians(0),
+            Cesium.Math.toRadians(0));
+        let mtx4 = Cesium.Transforms.headingPitchRollToFixedFrame(center.clone(), hpr);
+        let mtx3 = Cesium.Matrix4.getMatrix3(mtx4, new Cesium.Matrix3());
+        let newPosition = Cesium.Matrix3.multiplyByVector(mtx3, aimP.clone(), new Cesium.Cartesian3());
+
+        let dir = Cesium.Cartesian3.subtract(newPosition.clone(), center.clone(), new Cesium.Cartesian3());
+        dir = Cesium.Cartesian3.normalize(dir, new Cesium.Cartesian3());
+        dir = Cesium.Cartesian3.multiplyByScalar(dir, dis, new Cesium.Cartesian3());
+        newPosition = Cesium.Cartesian3.add(center.clone(), dir.clone(), new Cesium.Cartesian3());
+
+        let ctgc = Cesium.Cartographic.fromCartesian(newPosition.clone());
+        circlePositions.push(ctgc);
+    }
+    circlePositions.unshift();
+    return circlePositions;
+}
 
 
 
@@ -235,6 +262,8 @@ export default {
     wgs2gcj: wgs2gcj,
     gcj2wgs: gcj2wgs,
     lerpPositions: lerpPositions,
-    oreatationToHpr: oreatationToHpr
+    oreatationToHpr: oreatationToHpr,
+    getIntersectPosition : getIntersectPosition,
+    getCirclePoints : getCirclePoints
 }
 

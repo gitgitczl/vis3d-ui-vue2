@@ -35,7 +35,7 @@ window.mapConfig = {
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
-            "show": false
+            "show": true
         }
     },
     "baseLayers": [

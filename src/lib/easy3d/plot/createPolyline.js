@@ -11,6 +11,8 @@ class CreatePolyline extends BasePlot {
         this.type = "polyline";
         /* this.plotType = "polyline"; */
         this.jsonType = "LineString";
+
+        this.maxPointNum = opt.maxPointNum || Number.MAX_VALUE; // 最多点数
     }
 
     start(callBack) {
@@ -28,7 +30,25 @@ class CreatePolyline extends BasePlot {
             let point = that.createPoint(cartesian);
             point.wz = that.positions.length - 1;
             that.controlPoints.push(point);
+
+            // 达到最大数量 结束绘制
+            if (that.positions.length == that.maxPointNum) {
+                that.state = "endCreate";
+                if (that.handler) {
+                    that.handler.destroy();
+                    that.handler = null;
+                }
+                if (that.prompt) {
+                    that.prompt.destroy();
+                    that.prompt = null;
+                }
+                that.viewer.trackedEntity = undefined;
+                that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                if (callBack) callBack(that.entity);
+            }
+
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
         this.handler.setInputAction(function (evt) { //移动时绘制线
             that.state = "creating";
             if (that.positions.length < 1) {
@@ -45,7 +65,6 @@ class CreatePolyline extends BasePlot {
                 that.movePush = true;
             } else {
                 that.positions[that.positions.length - 1] = cartesian;
-
             }
 
             if (that.positions.length == 2) {
@@ -53,8 +72,8 @@ class CreatePolyline extends BasePlot {
                     that.entity = that.createPolyline();
                 }
             }
-
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
         this.handler.setInputAction(function (evt) { //右键取消上一步
             if (!that.entity) {
                 return;
@@ -70,7 +89,6 @@ class CreatePolyline extends BasePlot {
                 that.movePush = false;
                 that.positions = [];
             }
-
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
         this.handler.setInputAction(function (evt) { //双击结束绘制
