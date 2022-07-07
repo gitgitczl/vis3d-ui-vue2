@@ -2,13 +2,13 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            heading: 35.18013248724374,
-            pitch: -19.489698676627384,
-            roll: 359.9988731036681,
-            x: 118.71156267363396,
-            y: 32.07822724431911,
-            z: 1690.5742399088617,
-            "duration" : 0
+            "x": 109.7539126282521,
+            "y": 38.278566740100075,
+            "z": 1272.6765886403555,
+            "heading": 40.17708006619951,
+            "pitch": -25.250874945968437,
+            "roll": 359.9999932270445,
+            "duration": 0
         },
         "worldAnimate": false,
         "bottomLnglatTool": true, // 经纬度及相机位置提示
@@ -196,9 +196,9 @@ window.mapConfig = {
                     "name": "城区模型",
                     "type": "3dtiles",
                     "url": "http://8.141.58.76:6814/data/3dtiles/tileset.json",
-                    "show": false,
+                    "show": true,
                     "center": {
-                        "z": 50
+                        "z": 45
                     },
                     "maximumScreenSpaceError": 8
                 },
@@ -214,8 +214,8 @@ window.mapConfig = {
                     "type": "3dtiles",
                     "url": "http://47.117.134.108:9009/data/model/1652516228286/bangonglou/tileset.json",
                     "maximumScreenSpaceError": 1,
-                    "center":{
-                        z : 30
+                    "center": {
+                        z: 30
                     },
                     "show": false
                 },

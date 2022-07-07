@@ -1,5 +1,5 @@
 // 可视域核心类 注 cesium中采用的大部分为透视投影相机
-import VisualFieldShader from "./shader";
+import getPostStageFragmentShader from "./shader";
 class VisualField {
     constructor(viewer, options) {
         if (!Cesium.defined(viewer)) {
@@ -23,9 +23,13 @@ class VisualField {
         // 视锥体长度 即距远平面的距离
         this._distance = Cesium.defaultValue(cameraOptions.distance, 100);
         // 可见地区颜色 
-        this._visibleAreaColor = Cesium.Cartesian4.fromColor(Cesium.defaultValue(Cesium.Color.fromCssColorString(cameraOptions.visibleAreaColor), new Cesium.Color(0, 1, 0, 0.5)));
+        this._visibleAreaColor = cameraOptions.visibleAreaColor instanceof Cesium.Color ? cameraOptions.visibleAreaColor : Cesium.Color.fromCssColorString(cameraOptions.visibleAreaColor);
+        // 可见区域颜色透明度
+        this._visibleAreaColorAlpha = cameraOptions.visibleAreaColorAlpha == undefined ? 1 : cameraOptions.visibleAreaColorAlpha;
         // 不可见地区颜色
-        this._hiddenAreaColor = Cesium.Cartesian4.fromColor(Cesium.defaultValue(Cesium.Color.fromCssColorString(cameraOptions.hiddenAreaColor), new Cesium.Color(1, 0, 0, 0.5)));
+        this._hiddenAreaColor = cameraOptions.hiddenAreaColor instanceof Cesium.Color ? cameraOptions.hiddenAreaColor : Cesium.Color.fromCssColorString(cameraOptions.hiddenAreaColor);
+        // 不可见地区颜色透明度
+        this._hiddenAreaColorAlpha =  cameraOptions.hiddenAreaColorAlpha == undefined ? 1 : cameraOptions.hiddenAreaColorAlpha;
         // 点光源中的像素大小尺寸
         this._size = Cesium.defaultValue(options.size, 2048);
         // 点光源中的柔和阴影
@@ -38,13 +42,13 @@ class VisualField {
         // 构建视锥体
         this._lightCameraPrimitive = undefined;
         // 构建光源相机
-        this._lightCamera = new Cesium.Camera(scene);
+        this._lightCamera = new Cesium.Camera(this._scene);
         // 控制椎体相机改变
         this._lightCameraDirty = false;
         // 添加后处理
         this._stage = undefined;
         this._stageDirty = true;
-        this._bias = this._shadowMap._primitiveBias;
+
         // 创建一个点光源
         this._shadowMap = new Cesium.ShadowMap({
             context: this._scene.context,
@@ -58,7 +62,7 @@ class VisualField {
             normalOffset: false,
             fromLightSource: false
         });
-
+        this._bias = this._shadowMap._primitiveBias;
         this.updateCamera();
     }
 
@@ -95,7 +99,27 @@ class VisualField {
     }
 
     set visibleAreaColor(value) {
-        this._visibleAreaColor = Cesium.Cartesian4.fromColor(value);
+        let color = value instanceof Cesium.Color ? value : Cesium.Color.fromCssColorString(value);
+        this._visibleAreaColor = color;
+        /* this._visibleAreaColor = Cesium.Cartesian4.fromColor(color); */
+        this._scene.requestRender();
+    }
+
+    get visibleAreaColorAlpha(){
+        return this._visibleAreaColorAlpha;
+    }
+
+    set visibleAreaColorAlpha(value){
+        this._visibleAreaColorAlpha = Number(value);
+        this._scene.requestRender();
+    }
+
+    get hiddenAreaColorAlpha(){
+        return this._hiddenAreaColorAlpha;
+    }
+
+    set hiddenAreaColorAlpha(value){
+        this._hiddenAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
 
@@ -104,7 +128,9 @@ class VisualField {
     }
 
     set hiddenAreaColor(value) {
-        this._hiddenAreaColor = Cesium.Cartesian4.fromColor(value);
+        let color = value instanceof Cesium.Color ? value : Cesium.Color.fromCssColorString(value);
+        this._hiddenAreaColor = color;
+        /* this._hiddenAreaColor = Cesium.Cartesian4.fromColor(color); */
         this._scene.requestRender();
     }
 
@@ -328,9 +354,13 @@ class VisualField {
                 return shadowMap._shadowMapMatrix;
             },
             viewShed_frontColor: function () {
-                return that._visibleAreaColor;
+                let vColor = that._visibleAreaColor.withAlpha(that._visibleAreaColorAlpha);
+                vColor = Cesium.Cartesian4.fromColor(vColor);
+                return vColor;
             },
             viewShed_backColor: function () {
+                let hColor = that._hiddenAreaColor.withAlpha(that._hiddenAreaColorAlpha);
+                hColor = Cesium.Cartesian4.fromColor(hColor);
                 return that._hiddenAreaColor;
             },
             viewShed_Far: function () {
@@ -356,15 +386,16 @@ class VisualField {
             combinedUniforms1: new Cesium.Cartesian4(),
             combinedUniforms2: new Cesium.Cartesian4()
         };
+        let fshader = getPostStageFragmentShader(shadowMap, false)
         this._stage = new Cesium.PostProcessStage({
-            fragmentShader: VisualFieldShader.getPostStageFragmentShader(shadowMap, false),
+            fragmentShader: fshader,
             uniforms: uniformMap
         });
         this._scene.postProcessStages.add(this._stage);
     }
 
     update(frameState) {
-        if (this._lightCameraDirty) this._updateCamera();
+        if (this._lightCameraDirty) this.updateCamera();
         this.updateStage();
         frameState.shadowMaps.push(this._shadowMap);
         if (this._lightCameraPrimitive) this._lightCameraPrimitive.update(frameState);

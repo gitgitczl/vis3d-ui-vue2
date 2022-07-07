@@ -1,4 +1,6 @@
 import VisualField from "./visualField";
+import Prompt from "../../prompt/prompt";
+import "../../prompt/prompt.css";
 class VisualTool {
     constructor(viewer, opt) {
         if (!Cesium.defined(viewer)) {
@@ -13,29 +15,40 @@ class VisualTool {
         this.endPosition = null;
         this.vfPrimitive = null;
 
+        // 默认样式
         let defaultStyle = {
             visibleAreaColor: "#00FF00",
+            visibleAreaColorAlpha: 1,
             hiddenAreaColor: "#FF0000",
+            hiddenAreaColorAlpha: 1,
+            verticalFov: 60,
+            horizontalFov: 120
         }
         this.opt = Object.assign(defaultStyle, opt || {});
 
         this.visibleAreaColor = this.opt.visibleAreaColor;
         this.hiddenAreaColor = this.opt.hiddenAreaColor;
+        this.visibleAreaColorAlpha = this.opt.visibleAreaColorAlpha;
+        this.hiddenAreaColorAlpha = this.opt.hiddenAreaColorAlpha;
+
         this.heading = this.opt.heading || 0;
         this.pitch = this.opt.pitch || 0;
+        this.verticalFov = this.opt.verticalFov;
+        this.horizontalFov = this.opt.horizontalFov;
+        this.distance = 0;
     }
 
-    startDraw() {
+    startDraw(fun) {
         let that = this;
         if (!this.prompt) this.prompt = new Prompt(this.viewer, this.promptStyle);
         this.handler.setInputAction(function (evt) {
             // 单击开始绘制
             let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
             if (!cartesian) return;
-            if (!this.startPosition) {
-                this.startPosition = cartesian.clone();
+            if (!that.startPosition) {
+                that.startPosition = cartesian.clone();
             } else {
-                this.endPosition = cartesian.clone();
+                that.endPosition = cartesian.clone();
                 if (that.handler) {
                     that.handler.destroy();
                     that.handler = null;
@@ -61,7 +74,11 @@ class VisualTool {
                     cameraOptions: {
                         viewerPosition: that.startPosition.clone(),
                         visibleAreaColor: that.visibleAreaColor,
-                        hiddenAreaColor: that.hiddenAreaColor
+                        visibleAreaColorAlpha: that.visibleAreaColorAlpha,
+                        hiddenAreaColor: that.hiddenAreaColor,
+                        hiddenAreaColorAlpha: that.hiddenAreaColorAlpha,
+                        horizontalFov: that.horizontalFov,
+                        verticalFov: that.verticalFov
                     }
                 });
                 that.viewer.scene.primitives.add(that.vfPrimitive);
@@ -70,7 +87,14 @@ class VisualTool {
             let c1 = Cesium.Cartographic.fromCartesian(that.startPosition.clone());
             let c2 = Cesium.Cartographic.fromCartesian(cartesian.clone());
             let angle = that.computeAngle(c1, c2);
+            that.heading = angle;
             that.vfPrimitive.heading = angle;
+
+            let distance = Cesium.Cartesian3.distance(that.startPosition.clone(), cartesian.clone());
+            that.distance = distance;
+            that.vfPrimitive.distance = distance;
+
+            if (fun) fun(heading, distance);
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
 
@@ -80,6 +104,12 @@ class VisualTool {
         this.visibleAreaColor = val;
         if (this.vfPrimitive) this.vfPrimitive.visibleAreaColor = val;
     }
+    // 设置可视区域颜色透明度
+    setVisibleAreaColorAlpha(val) {
+        if (!val) return;
+        this.visibleAreaColorAlpha = Number(val);
+        if (this.vfPrimitive) this.vfPrimitive.visibleAreaColorAlpha = Number(val);
+    }
 
     // 设置不可视区域颜色
     setHiddenAreaColor(val) {
@@ -88,33 +118,45 @@ class VisualTool {
         if (this.vfPrimitive) this.vfPrimitive.hiddenAreaColor = val;
     }
 
+    // 设置不可视区域颜色透明度
+    setHiddenAreaColorAlpha(val) {
+        if (!val) return;
+        this.hiddenAreaColorAlpha = Number(val);
+        if (this.vfPrimitive) this.vfPrimitive.hiddenAreaColorAlpha = Number(val);
+    }
+
     // 设置锥体长度
     setDistance(val) {
         if (!val) return;
+        this.distance = Number(val);
         if (this.vfPrimitive) this.vfPrimitive.distance = Number(val);
     }
 
     // 设置垂直张角
     setVerticalFov(val) {
         if (!val) return;
+        this.verticalFov = Number(val);
         if (this.vfPrimitive) this.vfPrimitive.verticalFov = Number(val);
     }
 
     // 设置水平张角
-    setHorizontalFov() {
+    setHorizontalFov(val) {
         if (!val) return;
+        this.horizontalFov = Number(val);
         if (this.vfPrimitive) this.vfPrimitive.horizontalFov = Number(val);
     }
 
     // 设置锥体姿态 -- 偏转角
     setHeading(val) {
         if (!val) return;
+        this.heading = 0;
         if (this.vfPrimitive) this.vfPrimitive.heading = Number(val);
     }
 
     // 设置锥体姿态 -- 仰俯角
     setPitch(val) {
         if (!val) return;
+        this.pitch = Number(val);
         if (this.vfPrimitive) this.vfPrimitive.pitch = Number(val);
     }
 
@@ -158,10 +200,21 @@ class VisualTool {
         return cartesian;
     }
 
-    destroy() {
+    clear() {
         if (this.vfPrimitiv) {
             this.viewer.scene.primitives.remove(this.vfPrimitive);
             this.vfPrimitive = null;
+        }
+    }
+    destroy(){
+        this.clear();
+        if (this.handler) {
+            this.handler.destroy();
+            this.handler = null;
+        }
+        if (this.prompt) {
+            this.prompt.destroy();
+            this.prompt = null;
         }
     }
 }
