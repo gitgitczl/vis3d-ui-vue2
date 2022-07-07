@@ -26,7 +26,10 @@ import easy3dView from "./viewRoate";
 // 引入天气
 import fog from "./weather/fog";
 import rain from "./weather/rain";
-import snow from "./weather/snow"
+import snow from "./weather/snow";
+
+
+
 // 自定义天气
 let weather = {
     fog: fog,
@@ -42,6 +45,12 @@ let animate = {
     FlowLine: rganimate.FlowLineMaterial
 }
 
+
+// 引入分析模块
+import VisualTool from "./analysis/visualField/visualTool";
+let analysis = {
+    VisualTool: VisualTool
+}
 // 构建viewer
 class MapViewer {
     constructor(domId, opt) {
@@ -382,7 +391,20 @@ let workControl = {
 }
 
 
-
 export default {
-    cUtil, cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap, weather, animate
+    cUtil, 
+    cTool, 
+    MapViewer, 
+    DrawTool, 
+    LayerTool, 
+    MeasureTool, 
+    Prompt, 
+    gadgets, 
+    RoamTool, 
+    workControl, 
+    ZoomTool, 
+    OverviewMap, 
+    weather, 
+    animate, 
+    analysis
 }

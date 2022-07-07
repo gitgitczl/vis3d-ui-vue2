@@ -13,7 +13,7 @@ class VisualField {
         // 定义相机目标位置
         this._viewerPosition = Cesium.defaultValue(cameraOptions.viewerPosition, new Cesium.Cartesian3.fromDegrees(0, 0, 0));
         // 定义相机的方向
-        this._direction = Cesium.defaultValue(cameraOptions.direction, 0);
+        this._heading = Cesium.defaultValue(cameraOptions.heading, 0);
         // 定义相机的仰俯角
         this._pitch = Cesium.defaultValue(cameraOptions.pitch, 0);
         // 水平视角范围
@@ -118,12 +118,12 @@ class VisualField {
         this._scene.requestRender();
     }
 
-    get direction() {
-        return this._direction;
+    get heading() {
+        return this._heading;
     }
 
-    get direction(value) {
-        this._direction = value;
+    set heading(value) {
+        this._heading = value;
         this._lightCameraDirty = true;
         this._scene.requestRender();
     }
@@ -153,7 +153,7 @@ class VisualField {
         return this._verticalFov;
     }
 
-    get verticalFov(value) {
+    set verticalFov(value) {
         this._verticalFov = value;
         this._bugDistance = this._distance + 0.000001 * this._horizontalFov - 0.000001 * this._verticalFov;
         this._lightCameraDirty = true;
@@ -191,7 +191,7 @@ class VisualField {
         this._lightCamera.setView({
             destination: this._viewerPosition,
             orientation: {
-                heading: Cesium.Math.toRadians(this._direction),
+                heading: Cesium.Math.toRadians(this._heading),
                 pitch: Cesium.Math.toRadians(this._pitch)
             }
         });
@@ -336,8 +336,8 @@ class VisualField {
             viewShed_Far: function () {
                 return shadowMap._lightCamera.frustum.far;
             },
-            shadowMap_lightDirectionEC: function () {
-                return shadowMap._lightDirectionEC;
+            shadowMap_lightheadingEC: function () {
+                return shadowMap._lightheadingEC;
             },
             shadowMap_lightPositionEC: function () {
                 return shadowMap._lightPositionEC;

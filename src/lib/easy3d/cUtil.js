@@ -248,6 +248,28 @@ function getCirclePoints(center, aimP, angle) {
     return circlePositions;
 }
 
+/**
+ * 
+ * @param {Cartographic} p1 
+ * @param {Cartographic} p2 
+ * @returns 
+ */
+function computeAngle(p1, p2) {
+    var lng_a = p1.longitude;
+    var lat_a = p1.latitude;
+    var lng_b = p2.longitude;
+    var lat_b = p2.latitude;
+    var y = Math.sin(lng_b - lng_a) * Math.cos(lat_b);
+    var x = Math.cos(lat_a) * Math.sin(lat_b) - Math.sin(lat_a) * Math.cos(lat_b) * Math.cos(lng_b - lng_a);
+    var bearing = Math.atan2(y, x);
+
+    bearing = bearing * 180.0 / Math.PI;
+    if (bearing < -180) {
+        bearing = bearing + 360;
+    }
+    return bearing;
+}
+
 
 
 
@@ -264,6 +286,7 @@ export default {
     lerpPositions: lerpPositions,
     oreatationToHpr: oreatationToHpr,
     getIntersectPosition : getIntersectPosition,
-    getCirclePoints : getCirclePoints
+    getCirclePoints : getCirclePoints,
+    computeAngle : computeAngle
 }
 
