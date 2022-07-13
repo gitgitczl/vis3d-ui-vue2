@@ -108,7 +108,12 @@ class MapViewer {
         if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
         for (let i = 0; i < baseLayers.length; i++) {
             let layer = baseLayers[i];
-            if (layer.type != "group") this.baseLayerTool.add(layer);
+            if (layer.type != "group") {
+                // 添加id
+                layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+                this.baseLayerTool.add(layer);
+            }
+
         }
     }
     // 构建业务图层
@@ -392,19 +397,19 @@ let workControl = {
 
 
 export default {
-    cUtil, 
-    cTool, 
-    MapViewer, 
-    DrawTool, 
-    LayerTool, 
-    MeasureTool, 
-    Prompt, 
-    gadgets, 
-    RoamTool, 
-    workControl, 
-    ZoomTool, 
-    OverviewMap, 
-    weather, 
-    animate, 
+    cUtil,
+    cTool,
+    MapViewer,
+    DrawTool,
+    LayerTool,
+    MeasureTool,
+    Prompt,
+    gadgets,
+    RoamTool,
+    workControl,
+    ZoomTool,
+    OverviewMap,
+    weather,
+    animate,
     analysis
 }

@@ -114,7 +114,6 @@ export default {
     },
     setHorizontalFov(val) {
       if (!visualField) return;
-      debugger
       visualField.setHorizontalFov(val);
     },
     setVerticalFov(val) {
