@@ -146,7 +146,7 @@ class CreateGltfModel extends BasePlot {
     let orientation = this.entity.orientation.getValue();
     let p = this.entity.position.getValue(this.viewer.clock.currentTime);
     let hpr = cUtil.oreatationToHpr(p.clone(), orientation, true) || {};
-    obj.heading = hpr.heading || 0;
+    obj.heading = (hpr.heading || 0) < 360 ? (hpr.heading + 360) : hpr.heading;
     obj.pitch = hpr.pitch || 0;
     obj.roll = hpr.roll || 0;
     obj.scale = model.scale.getValue();
