@@ -224,7 +224,6 @@ export default {
       }
 
       if (item.type == "plotDelete") {
-        
       }
 
       if (item.type == "plotEdit") {
@@ -247,8 +246,7 @@ export default {
         reader.onloadend = function (e) {
           let strjson = this.result;
           strjson = JSON.parse(strjson);
-          debugger;
-          /*  plotWork.createByJson(strjson); */
+          plotWork.createByJson(strjson);
         };
       }
     },
