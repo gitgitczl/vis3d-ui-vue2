@@ -1,40 +1,22 @@
 <template>
   <div class="sidebar-box">
     <ul class="basic-sidebar operate-btn">
-      <el-tooltip
-        v-for="(item, index) in basicReset"
-        :key="index"
-        class="item"
-        effect="dark"
-        :content="item.name"
-        placement="left"
-      >
+      <el-tooltip v-for="(item, index) in basicReset" :key="index" class="item" effect="dark" :content="item.name"
+        placement="left">
         <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
       </el-tooltip>
     </ul>
 
     <ul class="basic-sidebar operate-btn map-operate-btn">
-      <el-tooltip
-        v-for="(item, index) in mapLayer"
-        :key="index"
-        class="item"
-        effect="dark"
-        :content="item.name"
-        placement="left"
-      >
+      <el-tooltip v-for="(item, index) in mapLayer" :key="index" class="item" effect="dark" :content="item.name"
+        placement="left">
         <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
       </el-tooltip>
     </ul>
 
     <ul class="basic-sidebar operate-btn">
-      <el-tooltip
-        v-for="(item, index) in mapOperate"
-        :key="index"
-        class="item"
-        effect="dark"
-        :content="item.name"
-        placement="left"
-      >
+      <el-tooltip v-for="(item, index) in mapOperate" :key="index" class="item" effect="dark" :content="item.name"
+        placement="left">
         <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
       </el-tooltip>
     </ul>
@@ -57,6 +39,8 @@
 
 <script>
 import screenfull from "screenfull";
+import html2canvas from "html2canvas";
+import printJS from "print-js";
 export default {
   name: "sidebar",
 
@@ -261,9 +245,30 @@ export default {
       }
 
       if (item.type === "print") {
-        this.$store.commit("setIsPrintMap", true);
+        this.printMap();
       }
     },
+
+
+    // 地图打印
+    printMap() {
+      window.viewer.scene.render();
+      let container = document.getElementById(window.viewer._container.id);
+      html2canvas(container, {
+        backgroundColor: null,
+        useCORS: true,
+        windowHeight: document.body.scrollHeight,
+      }).then((canvas) => {
+        const url = canvas.toDataURL();
+        this.img = url;
+        printJS({
+          printable: url,
+          type: "image",
+          documentTitle: "地图输出",
+        });
+      });
+    },
+
   },
 };
 </script>
@@ -279,6 +284,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   .operate-btn {
     li {
       width: 100%;
@@ -291,6 +297,7 @@ export default {
       cursor: pointer;
     }
   }
+
   .map-operate-btn {
     margin: 32px 0;
   }

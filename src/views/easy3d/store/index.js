@@ -10,7 +10,6 @@ const easy3dStore = {
     isOpenOverviewMap: false, // 是否打开鹰眼图.
     nowPlotStyleAttr: {},
     nowRoamAttr: {}, // 飞行漫游属性
-    isPrintMap: false, // 是否打印地图
     isToolOpen: true, // 工具栏是否打开
     operateLayerVisible: {}, // 图层的显示隐藏
     baseLayers : {}, // 监听底图
@@ -40,10 +39,6 @@ const easy3dStore = {
 
     setNowRoamAttr: (state, nowRoamAttr) => {
       state.nowRoamAttr = nowRoamAttr
-    },
-
-    setIsPrintMap: (state, isPrintMap) => {
-      state.isPrintMap = isPrintMap
     },
 
     setOperateLayerVisible: (state, operateLayerVisible) => {

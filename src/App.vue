@@ -19,8 +19,6 @@
 </template>
 
 <script>
-import html2canvas from 'html2canvas'
-import printJS from 'print-js'
 import Head from '@/views/Head.vue'
 import Map from '@/views/easy3d/index.vue'
 export default {
@@ -57,25 +55,6 @@ export default {
       this.$set(this, 'isHelp', true)
     },
 
-    /**
-     * 地图输出
-     */
-    onPrintMap() {
-      window.viewer.scene.render()
-      html2canvas(this.$refs.app, {
-        backgroundColor: null,
-        useCORS: true,
-        windowHeight: document.body.scrollHeight
-      }).then((canvas) => {
-        const url = canvas.toDataURL()
-        this.img = url
-        printJS({
-          printable: url,
-          type: 'image',
-          documentTitle: '地图输出'
-        })
-      })
-    }
   }
 }
 </script>
