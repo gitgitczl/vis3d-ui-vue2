@@ -200,7 +200,7 @@ window.mapConfig = {
                     "center": {
                         "z": 45
                     },
-                    "maximumScreenSpaceError": 8
+                    "maximumScreenSpaceError": 64
                 },
                 {
                     "name": "长江大桥",

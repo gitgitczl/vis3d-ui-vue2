@@ -29,7 +29,7 @@ class VisualField {
         // 不可见地区颜色
         this._hiddenAreaColor = cameraOptions.hiddenAreaColor instanceof Cesium.Color ? cameraOptions.hiddenAreaColor : Cesium.Color.fromCssColorString(cameraOptions.hiddenAreaColor);
         // 不可见地区颜色透明度
-        this._hiddenAreaColorAlpha =  cameraOptions.hiddenAreaColorAlpha == undefined ? 1 : cameraOptions.hiddenAreaColorAlpha;
+        this._hiddenAreaColorAlpha = cameraOptions.hiddenAreaColorAlpha == undefined ? 1 : cameraOptions.hiddenAreaColorAlpha;
         // 点光源中的像素大小尺寸
         this._size = Cesium.defaultValue(options.size, 2048);
         // 点光源中的柔和阴影
@@ -48,6 +48,8 @@ class VisualField {
         // 添加后处理
         this._stage = undefined;
         this._stageDirty = true;
+       
+        this.updateCamera();
 
         // 创建一个点光源
         this._shadowMap = new Cesium.ShadowMap({
@@ -62,8 +64,8 @@ class VisualField {
             normalOffset: false,
             fromLightSource: false
         });
+
         this._bias = this._shadowMap._primitiveBias;
-        this.updateCamera();
     }
 
     get enabled() {
@@ -101,24 +103,23 @@ class VisualField {
     set visibleAreaColor(value) {
         let color = value instanceof Cesium.Color ? value : Cesium.Color.fromCssColorString(value);
         this._visibleAreaColor = color;
-        /* this._visibleAreaColor = Cesium.Cartesian4.fromColor(color); */
         this._scene.requestRender();
     }
 
-    get visibleAreaColorAlpha(){
+    get visibleAreaColorAlpha() {
         return this._visibleAreaColorAlpha;
     }
 
-    set visibleAreaColorAlpha(value){
+    set visibleAreaColorAlpha(value) {
         this._visibleAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
 
-    get hiddenAreaColorAlpha(){
+    get hiddenAreaColorAlpha() {
         return this._hiddenAreaColorAlpha;
     }
 
-    set hiddenAreaColorAlpha(value){
+    set hiddenAreaColorAlpha(value) {
         this._hiddenAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
@@ -208,7 +209,7 @@ class VisualField {
         // 视锥体宽高比
         const horizontalFovRadians = Cesium.Math.toRadians(this._horizontalFov);
         const verticalFovRadians = Cesium.Math.toRadians(this._verticalFov);
-        /*  this._lightCamera.frustum.aspectRatio = (this._bugDistance * Math.tan(horizontalFovRadians * 0.5) * 2.0) / (this._bugDistance * Math.tan(verticalFovRadians * 0.5) * 2.0); */
+         this._lightCamera.frustum.aspectRatio = (this._bugDistance * Math.tan(horizontalFovRadians * 0.5) * 2.0) / (this._bugDistance * Math.tan(verticalFovRadians * 0.5) * 2.0);
         this._lightCamera.frustum.aspectRatio = Math.tan(horizontalFovRadians * 0.5) / Math.tan(verticalFovRadians * 0.5);
         // 如果水平方向张角大于垂直方向 则视锥体张角取值为水平方向角度 ？
         if (this._horizontalFov > this._verticalFov) this._lightCamera.frustum.fov = Cesium.Math.toRadians(this._horizontalFov);

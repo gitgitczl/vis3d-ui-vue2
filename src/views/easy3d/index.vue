@@ -17,7 +17,6 @@
         @close="close"
       />
     </div>
-    <LoadData v-if="isloadData"></LoadData>
   </div>
 </template>
 <script>
@@ -25,7 +24,6 @@ import Head from "@/views/Head.vue";
 import Sidebar from "@/views/easy3d/sidebar.vue";
 import html2canvas from "html2canvas";
 import printJS from "print-js";
-import Roam from '../easy3d/baseTools/roam/Index.vue'
 
 window.viewer = null;
 window.mapViewer = null;
@@ -36,15 +34,13 @@ export default {
   name: "Map",
   components: {
     Head,
-    Sidebar,
-    Roam
+    Sidebar
   },
   data() {
     return {
       componentsArr: [],
       plotEntityObjId: null,
-      nowStartRoamAttr: null, // 当前漫游的数据
-      isloadData: false,
+      nowStartRoamAttr: null // 当前漫游的数据
     };
   },
 
@@ -85,25 +81,6 @@ export default {
         toolName: name,
         openState: false,
       });
-    },
-
-    // 获取当前标绘的ent对象 打开样式面板
-    setPlotEntityObjId(id) {
-      if (id) {
-        this.plotEntityObjId = id;
-        this.easy3d.workControl.openToolByName("plotStyle");
-      } else {
-        this.easy3d.workControl.closeToolByName("plotStyle");
-      }
-    },
-
-    setNowStartRoamAttr(attr) {
-      if (Object.keys(attr).length != 0) {
-        this.nowStartRoamAttr = attr;
-        this.easy3d.workControl.openToolByName("roamStyle");
-      } else {
-        this.easy3d.workControl.openToolByName("roamStyle");
-      }
     },
 
     // 地图打印
