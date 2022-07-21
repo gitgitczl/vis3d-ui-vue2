@@ -22,8 +22,7 @@
 <script>
 import Head from "@/views/Head.vue";
 import Sidebar from "@/views/easy3d/sidebar.vue";
-import html2canvas from "html2canvas";
-import printJS from "print-js";
+
 
 window.viewer = null;
 window.mapViewer = null;
@@ -84,23 +83,6 @@ export default {
       });
     },
 
-    // 地图打印
-    printMap() {
-      window.viewer.scene.render();
-      html2canvas(this.$refs.mapbox, {
-        backgroundColor: null,
-        useCORS: true,
-        windowHeight: document.body.scrollHeight,
-      }).then((canvas) => {
-        const url = canvas.toDataURL();
-        this.img = url;
-        printJS({
-          printable: url,
-          type: "image",
-          documentTitle: "地图输出",
-        });
-      });
-    },
 
     // =================== 监听操作图层的开启关闭 =======================
     setLayerVisible(attr, visible) {
@@ -161,7 +143,7 @@ export default {
     // 监听 是否打印
     "$store.state.map3d.isPrintMap": function (res) {
       if (res) {
-        this.printMap();
+       
         this.$store.commit("setIsPrintMap", false);
       }
     },
