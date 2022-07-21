@@ -34,13 +34,13 @@ export default {
   name: "Map",
   components: {
     Head,
-    Sidebar
+    Sidebar,
   },
   data() {
     return {
       componentsArr: [],
       plotEntityObjId: null,
-      nowStartRoamAttr: null // 当前漫游的数据
+      nowStartRoamAttr: null, // 当前漫游的数据
     };
   },
 
@@ -58,9 +58,10 @@ export default {
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
 
     // 读取配置文件中配置 并构建相应组件标签
-    this.easy3d.workControl.init(window.workConfig, function (list) {
-      that.componentsArr = list;
-    });
+    if (window.workConfig.panel)
+      this.easy3d.workControl.init(window.workConfig, function (list) {
+        that.componentsArr = list;
+      });
 
     // 构建缩放按钮
     if (!zoomTool) {

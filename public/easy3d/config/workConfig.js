@@ -1,4 +1,5 @@
 window.workConfig = {
+    "panel": true, // 是否创建面板
     "tools": [
         {
             "name": "图上标绘",

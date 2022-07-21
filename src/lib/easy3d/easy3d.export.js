@@ -84,8 +84,6 @@ class MapViewer {
         } else {
             if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
         }
-                
-
     }
 
     get viewer() {
