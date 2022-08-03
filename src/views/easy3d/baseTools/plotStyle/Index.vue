@@ -130,7 +130,7 @@ export default {
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjById(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
       if (!entityObj) return;
-      this.plotStyleAttr = plotStyle[entityObj.attr.styleType];
+      this.plotStyleAttr = plotStyle[entityObj.plotAttr.styleType];
       // 设置样式默认值
       let entityStyleValue = entityObj.getStyle();
 

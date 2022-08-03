@@ -253,7 +253,7 @@ class BasePlot {
     // 转换为geojson
     toJson() {
         if (!this.jsonType) {
-            console.log("缺少geojson类型");
+            console.log("缺少json类型");
             return;
         }
         let coordinates = this.getPositions(true);
