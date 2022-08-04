@@ -216,7 +216,7 @@ export default {
       }
 
       if (item.type == "saveFile") {
-        let jsondata = window.plotDrawTool.toJson();
+        let jsondata = window.plotDrawTool.toGeojson();
         this.easy3d.cTool.file.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
@@ -246,7 +246,8 @@ export default {
         reader.onloadend = function (e) {
           let strjson = this.result;
           strjson = JSON.parse(strjson);
-          plotWork.createByJson(strjson);
+          debugger
+          window.plotDrawTool.createByGeojson(strjson);
         };
       }
     },

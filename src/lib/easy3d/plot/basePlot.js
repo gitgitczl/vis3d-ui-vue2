@@ -22,6 +22,7 @@ class BasePlot {
                 y: 30
             }
         }
+        this.properties = {};
     }
 
     // 坐标拾取
@@ -250,40 +251,10 @@ class BasePlot {
         return colorObj;
     }
 
-    // 转换为geojson
-    toJson() {
-        if (!this.jsonType) {
-            console.log("缺少json类型");
-            return;
-        }
-        let coordinates = this.getPositions(true);
-        let style = this.getStyle();
-        let attr = {
-            "type": "Feature",
-            "properties": {
-                "plotType": this.type,
-                "style": style,
-            },
-            "geometry": {
-                "type": this.jsonType,
-                "coordinates": []
-            }
-        }
-        switch (this.jsonType) {
-            case "Polygon":
-                attr.geometry.coordinates = [coordinates];
-                break;
-            case "Point":
-                attr.geometry.coordinates = coordinates;
-                break;
-            case "Polyline":
-                attr.geometry.coordinates = coordinates;
-                break;
-            default: ;
-        }
-        return attr;
+    // 设置实体的属性
+    setAttr(attr) {
+        this.properties.attr = attr || {};
     }
-
 
 
 }

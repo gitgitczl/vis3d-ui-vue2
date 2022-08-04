@@ -10,7 +10,11 @@
             "name": "线",
             "type": "polyline",
             "iconImg": "./easy3d/images/plot/polyline.png",
-            "styleType": "polyline"
+            "styleType": "polyline",
+            "style":{
+                "clampToGround": true,
+                "color": "#ffff00"
+            }
         },
         {
             "name": "面",

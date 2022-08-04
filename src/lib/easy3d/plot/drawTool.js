@@ -94,7 +94,7 @@ class DrawTool {
         if (that.startEditFun) that.startEditFun(entityObj, entity);
         that.lastEntityObj = entityObj;
       }
-   
+
       that.toolArr.push(entityObj);
     });
 
@@ -155,107 +155,90 @@ class DrawTool {
       if (opt.success) opt.success(entityObj, entity);
       if (that.endCreateFun) that.endCreateFun(entityObj, entity);
       if (that.show == false) entityObj.setVisible(false);
-
       // 如果可以编辑 则绘制完成打开编辑 
-      if (that.canEdit && that.intoEdit) {
+      /* if (that.canEdit && that.intoEdit) {
         entityObj.startEdit();
         if (that.startEditFun) that.startEditFun(entityObj, entity);
         that.lastEntityObj = entityObj;
-      }
+      } */
     });
     this.toolArr.push(entityObj);
     return entityObj;
   }
   // 根据geojson构建entity
-  createByGeojson(json, style) {
-    let that = this;
-    // 实际构建方法
-    function create(properties, positions) {
-      that.createByPositions({
-        type: properties.type || "point",
-        style: properties.style || {},
-        positions: positions,
-        properties: properties,
-      });
-    }
-    // 解析json数据
-    json = json || {};
-    let features = json.features;
-    if (!features || features.length < 1) return;
-    for (let index = 0; index < features.length; index++) {
-      let feature = features[index];
-
-      let type = feature.geometry.type;
-      let properties = feature.properties;
-      let coordinates = feature.geometry.coordinates;
-      switch (type) {
-        case "Point": // 当geojson是单点时  可能创建点 图标点 单个模型
-          let position = cUtil.lnglatToCartesian(coordinates);
-          // 构建单点
-          properties.type = "point";
-          create(properties, position);
-          break;
-        case "MultiPoint":
-          for (let i = 0; i < coordinates.length; i++) {
-            let position = cUtil.lnglatToCartesian(coordinates);
-            // 构建单点
-            properties.type = "point";
-            create(properties, position);
-          }
-          break;
+  createByGeojson(data) {
+    let { features } = data;
+    for (let i = 0; i < features.length; i++) {
+      let feature = features[i];
+      const { properties, geometry } = feature;
+      let plotType = properties.plotType;
+      const jsonType = geometry.type;
+      const coordinates = geometry.coordinates;
+      let positions = [];
+      let drawType = "";
+      switch (jsonType) {
         case "LineString":
-          properties.type = "polyline";
-          create(properties, cUtil.lnglatsToCartesians(coordinates));
-          // 构建折线
-          break;
-        case "MultiLineString":
-          for (let i = 0; i < coordinates.length; i++) {
-            let coor = coordinates[i];
-            // 构建折线
-            properties.type = "polyline";
-            create(properties, cUtil.lnglatsToCartesians(coor));
-          }
+          positions = cUtil.lnglatsToCartesians(coordinates);
+          drawType = "polyline";
           break;
         case "Polygon":
-          properties.type = "polygon";
-          properties.style = style || {
-            fill: true,
-            heightReference: 1,
-            color: "rgba(0,255,255,0.5)",
-          };
-          create(properties, cUtil.lnglatsToCartesians(coordinates[0]));
-          // 构建面
+          positions = cUtil.lnglatsToCartesians(coordinates[0]);
+          drawType = "polygon";
           break;
-        case "MultiPolygon":
-          for (let i = 0; i < coordinates.length; i++) {
-            let coor = coordinates[i][0];
-            properties.type = "polygon";
-            properties.style = style || {
-              fill: true,
-              heightReference: 1,
-              color: "rgba(0,255,255,0.5)",
-            };
-            create(properties, cUtil.lnglatsToCartesians(coor));
-          }
+        case "point":
+          positions = cUtil.lnglatsToCartesians([coordinates]);
+          drawType = plotType;
           break;
-        default:
+        default: ;
       }
+      this.createByPositions({
+        type: drawType,
+        positions: positions,
+        style: properties.style
+      })
+
     }
   }
   // 转为geojson
-  toJson() {
-    let json = {
+  toGeojson() {
+    let featureCollection = {
       type: "FeatureCollection",
       features: [],
     };
     for (let i = 0; i < this.toolArr.length; i++) {
       let item = this.toolArr[i];
-      let feature = item.toJson();
+      let coordinates = item.getPositions(true);
+      let style = item.getStyle();
+      let feature = {
+        "type": "Feature",
+        "properties": {
+          "plotType": item.type,
+          "style": style,
+        },
+        "geometry": {
+          "type": item.jsonType,
+          "coordinates": []
+        }
+      }
+      switch (item.type) {
+        case "polygon":
+          feature.geometry.coordinates = [coordinates];
+          break;
+        case "point":
+          feature.geometry.coordinates = coordinates;
+          break;
+        case "polyline":
+          feature.geometry.coordinates = coordinates;
+          break;
+        default: ;
+      }
       feature.properties = Object.assign(feature.properties, item.properties);
-      json.features.push(feature);
+      featureCollection.features.push(feature);
     }
-    return json;
+    return featureCollection;
   }
+
+
   destroy() {
     for (let i = 0; i < this.toolArr.length; i++) {
       this.toolArr[i].destroy();

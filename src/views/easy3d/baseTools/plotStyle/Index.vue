@@ -162,9 +162,7 @@ export default {
       }
 
       // 设置当前对象的属性 供导出为geojson
-      entityObj.properties = {
-        infos: this.infos,
-      };
+      entityObj.setAttr(this.infos);
     },
 
     // 获取标签变化的值
