@@ -355,6 +355,15 @@ class DrawTool {
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
+  // 关闭编辑功能
+  closeEdit(){
+    this.endEdit();
+    this.canEdit = false;
+  }
+  // 开启编辑功能
+  openEdit(){
+    this.canEdit = true;
+  }
   endEdit() {
     if (this.lastEntityObj) {
       // 结束除当前选中实体的所有编辑操作

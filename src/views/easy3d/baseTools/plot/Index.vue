@@ -1,23 +1,10 @@
 <template>
-  <Card
-    :title="title"
-    :width="342"
-    :position="position"
-    :size="size"
-    height="auto"
-    titleIcon="icon-tushangcehui"
-    @close="close"
-  >
+  <Card :title="title" :width="342" :position="position" :size="size" height="auto" titleIcon="icon-tushangcehui"
+    @close="close">
     <div class="plot-btn-box basic-plot">
       <ul class="plot-btn">
-        <el-tooltip
-          v-for="(item, index) in plotBtn"
-          :key="index"
-          class="item"
-          effect="dark"
-          :content="item.name"
-          placement="top"
-        >
+        <el-tooltip v-for="(item, index) in plotBtn" :key="index" class="item" effect="dark" :content="item.name"
+          placement="top">
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -25,14 +12,8 @@
       </ul>
       <span></span>
       <ul class="plot-btn">
-        <el-tooltip
-          v-for="(item, index) in plotBtn2"
-          :key="index"
-          class="item"
-          effect="dark"
-          :content="item.name"
-          placement="top"
-        >
+        <el-tooltip v-for="(item, index) in plotBtn2" :key="index" class="item" effect="dark" :content="item.name"
+          placement="top">
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -40,41 +21,22 @@
       </ul>
     </div>
     <div class="plot-select basic-select">
-      <el-select
-        v-model="plotInitValue"
-        @change="onChangePlot"
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="(item, index) in plotTypeList"
-          :key="index"
-          :label="item"
-          :value="item"
-        >
+      <el-select v-model="plotInitValue" @change="onChangePlot" placeholder="请选择">
+        <el-option v-for="(item, index) in plotTypeList" :key="index" :label="item" :value="item">
         </el-option>
       </el-select>
     </div>
 
     <ul class="plot-box basic-tool">
-      <li
-        v-for="(item, index) in plotList"
-        :key="index"
-        :class="[index === isPlotActive ? 'tool-active' : '']"
-        @click="onChangePlotType(index, item)"
-      >
+      <li v-for="(item, index) in plotList" :key="index" :class="[index === isPlotActive ? 'tool-active' : '']"
+        @click="onChangePlotType(index, item)">
         <span><img :src="item.iconImg" /></span>
         <label>{{ item.name }}</label>
       </li>
     </ul>
 
     <!-- 打开文件 -->
-    <input
-      type="file"
-      accept=".json"
-      style="display: none"
-      id="plot-loadFile"
-      @change="loadFileChange"
-    />
+    <input type="file" accept=".json" style="display: none" id="plot-loadFile" @change="loadFileChange" />
   </Card>
 </template>
 <script>
@@ -167,7 +129,7 @@ export default {
     }
   },
 
-  destroyed() {},
+  destroyed() { },
   methods: {
     // 选择标绘类型
     onChangePlot(data) {
@@ -228,8 +190,12 @@ export default {
       }
 
       if (item.type == "plotEdit") {
+        if (item.name == "关闭编辑") {
+          window.plotDrawTool.closeEdit();
+        } else {
+          window.plotDrawTool.openEdit();
+        }
         item.name = item.name == "关闭编辑" ? "开启编辑" : "关闭编辑";
-        window.plotDrawTool.canEdit = item.name == "关闭编辑" ? false : true;
       }
     },
 
@@ -273,18 +239,21 @@ export default {
 .plot-btn-box {
   display: flex;
   align-items: center;
+
   span {
     width: 1px;
     height: 10px;
     background: #6f768c;
     margin: 0 20px;
   }
+
   .plot-btn {
     justify-content: space-between;
     width: 50%;
     margin: 0 10px;
     display: flex;
     align-items: center;
+
     li {
       width: 36px;
       height: 36px;
@@ -292,24 +261,30 @@ export default {
       align-items: center;
       justify-content: center;
       cursor: pointer;
+
       i {
         font-size: 20px;
       }
     }
   }
 }
+
 .plot-select {
   margin: 20px 0;
+
   .el-select {
     width: 100%;
   }
+
   .el-input__inner {
     border-radius: 20px;
   }
 }
+
 .plot-box {
   display: flex;
   flex-wrap: wrap;
+
   li {
     width: 90px;
     box-sizing: border-box;
@@ -319,18 +294,22 @@ export default {
     justify-content: center;
     margin: 0 16px 10px 0;
     cursor: pointer;
+
     &:nth-child(3n) {
       margin-right: 0;
     }
+
     span {
       font-size: 26px;
       margin-bottom: 10px;
     }
+
     label {
       cursor: pointer;
       height: 40px;
     }
   }
+
   img {
     width: 88px;
     height: 64px;
