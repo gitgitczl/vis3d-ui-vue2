@@ -1,3 +1,4 @@
+
 // 鼠标提示框
 class Prompt {
     /**
@@ -14,6 +15,7 @@ class Prompt {
      *          y
      *      style：
      *          background ： 弹窗背景色 默认为white
+     *          boxShadow : 弹窗阴影
     */
     constructor(viewer, opt) {
         this.viewer = viewer;
@@ -34,8 +36,6 @@ class Prompt {
                 background: "rgba(0,0,0,0.5)",
                 color: "white"
             }
-
-
         }
         this.opt = Object.assign(defaultOpt, opt);
         const mapid = this.viewer.container.id;
@@ -59,10 +59,16 @@ class Prompt {
         if (this.opt.closeBtn) { // 移动提示框 不显示关闭按钮
             closeHtml = `<a class="prompt-close" attr="${this.opt.id}" id="prompt-close-${this.opt.id}" href="#close">x</a>`;
         }
+
+        let boxShadowAttr = '';
+        if (this.opt.style.boxShadow == false) {
+            boxShadowAttr = "-webkit-box-shadow:none !important";
+        }
+
         const promptId = "prompt-" + this.opt.id;
         const promptConenet = `
                 <!-- 文本内容 -->
-                <div class="prompt-content-container" style="background:${background} !important;color:${color} !important">
+                <div class="prompt-content-container" style="background:${background} !important;color:${color} !important;${boxShadowAttr}">
                     <div class="prompt-content" id="prompt-content-${this.opt.id}">
                         ${this.opt.content}
                     </div>
@@ -79,6 +85,7 @@ class Prompt {
         this.promptDiv.innerHTML = promptConenet;
         let mapDom = window.document.getElementById(mapid);
         mapDom.appendChild(this.promptDiv);
+
         const clsBtn = window.document.getElementById(`prompt-close-${this.opt.id}`);
         let that = this;
         if (clsBtn) {
@@ -91,13 +98,12 @@ class Prompt {
         this.contentW = this.promptDom.offsetWidth; // 宽度
         this.contentH = this.promptDom.offsetHeight; // 高度
         this.position = this.transPosition(this.opt.position);
-        if (promptType == 2) {
-            this.bindRender(); // 固定位置弹窗 绑定实时渲染 当到地球背面时 隐藏
-        }
-
-        if (this.opt.show == false) {
-            this.hide();
-        }
+        if (promptType == 2) this.bindRender(); // 固定位置弹窗 绑定实时渲染 当到地球背面时 隐藏
+        if (this.opt.show == false) this.hide();
+        this.containerW = this.viewer.container.offsetWidth;
+        this.containerH = this.viewer.container.offsetHeight;
+        this.containerLeft = this.viewer.container.offsetLeft;
+        this.containerTop = this.viewer.container.offsetTop;
     }
     // 销毁
     destroy() {
@@ -114,12 +120,13 @@ class Prompt {
     bindRender() {
         let that = this;
         this.rendHandler = this.viewer.scene.postRender.addEventListener(function () {
-            if (!that.isShow) {
-                if (that.promptDom) that.promptDom.style.display = "none";
+            if (!that.isShow && that.promptDom) {
+                that.promptDom.style.display = "none";
                 return;
             }
-            if (that.position) {
-                const px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(that.viewer.scene, that.position);
+            if (!that.position) return;
+            if (that.position instanceof Cesium.Cartesian3) {
+                let px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(that.viewer.scene, that.position);
                 if (!px) return;
                 const occluder = new Cesium.EllipsoidalOccluder(that.viewer.scene.globe.ellipsoid, that.viewer.scene.camera.position);
                 // 当前点位是否可见
@@ -134,14 +141,43 @@ class Prompt {
                     x: px.x,
                     y: px.y
                 });
+            } else {
+                that.setByPX({
+                    x: that.position.x,
+                    y: that.position.y
+                });
             }
+
         }, this);
     }
+
+    // 判断是否在当前视野内
+    isInView() {
+        if (!this.position) return false;
+        const px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, this.position);
+        const occluder = new Cesium.EllipsoidalOccluder(this.viewer.scene.globe.ellipsoid, this.viewer.scene.camera.position);
+        // 是否在地球背面
+        const res = occluder.isPointVisible(this.position);
+        let isin = false;
+        if(!px) return isin;
+        if (
+            px.x > this.containerLeft &&
+            px.x < (this.containerLeft + this.containerW) &&
+            px.y > this.containerTop &&
+            px.y < (this.containerTop + this.containerH)
+        ) {
+            isin = true;
+        }
+        return res && isin;
+    }
+
     setVisible(isShow) {
-        this.isShow = isShow === undefined ? true : isShow;
-        if (isShow) {
+        let isin = this.isInView(this.position);
+        if (isin && isShow) {
+            this.isShow = true;
             if (this.promptDom) this.promptDom.style.display = "block";
         } else {
+            this.isShow = false;
             if (this.promptDom) this.promptDom.style.display = "none";
         }
     }
@@ -159,8 +195,6 @@ class Prompt {
         if (px instanceof Cesium.Cartesian3) {
             this.position = px.clone();
             px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, px);
-        } else {
-            this.position = this.viewer.scene.pickPosition(px)
         }
         if (px) this.setByPX(px);
         if (html) this.setContent(html);

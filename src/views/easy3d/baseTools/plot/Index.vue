@@ -115,7 +115,7 @@ export default {
           type: "plotDelete",
         },
         {
-          name: "编辑",
+          name: "关闭编辑",
           icon: "icon-shifoubianji",
           type: "plotEdit",
         },
@@ -224,9 +224,12 @@ export default {
       }
 
       if (item.type == "plotDelete") {
+        window.plotDrawTool.removeAll();
       }
 
       if (item.type == "plotEdit") {
+        item.name = item.name == "关闭编辑" ? "开启编辑" : "关闭编辑";
+        window.plotDrawTool.canEdit = item.name == "关闭编辑" ? false : true;
       }
     },
 
@@ -246,7 +249,7 @@ export default {
         reader.onloadend = function (e) {
           let strjson = this.result;
           strjson = JSON.parse(strjson);
-          debugger
+
           window.plotDrawTool.createByGeojson(strjson);
         };
       }

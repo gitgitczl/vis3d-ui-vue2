@@ -34,7 +34,7 @@ class PopupTooltipTool {
             }
 
             /* 如果当前实体绑定了点击事件 则执行点击事件*/
-            /* if (ent.click) ent.click(ent); */
+            if (ent.click) ent.click(ent);
             // 如果当前实体绑定了气泡窗 则弹出气泡窗
             if (ent.popup == undefined) return;
             if (!ent.popupPrompt) {
@@ -88,7 +88,7 @@ class PopupTooltipTool {
             if (ent.tooltipPrompt) {
                 ent.tooltipPrompt.update(evt.endPosition); // 除点状坐标外 点状坐标的锚点 为创建时的位置
             } else {// 重新构建
-                ent.tooltipPrompt = that.createPrompt(ent, ent.tooltip);
+                ent.tooltipPrompt = that.createPrompt(ent, ent.tooltip,evt.endPosition);
             }
 
             let isvisible;
@@ -102,35 +102,24 @@ class PopupTooltipTool {
             that.lastTooltipPromptEnt = ent;
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
-    createPrompt(ent, promptAttr) {
-        let position = promptAttr.position;
-        /*  if (ent.billboard || ent.point || ent.model) {
-             position = ent.position.getValue();
-             // 计算贴地坐标
-             if (ent instanceof Cesium.Billboard || 
-                 (ent.billboard && ent.billboard.heightReference.getValue() == 1) || 
-                 ent.point && ent.point.heightReference.getValue() == 1 || 
-                 ent.model && ent.model.heightReference.getValue() == 1
-                 ) {
-                 let ctgc = Cesium.Cartographic.fromCartesian(position);
-                 const height = viewer.scene.sampleHeight(ctgc);
-                 ctgc.height = height;
-                 position = Cesium.Cartographic.toCartesian(ctgc);
-             }
-        } */
+    createPrompt(ent, promptAttr,px) {
+        let position;
         let defaultVal = JSON.parse(JSON.stringify(this.defaultVal));
+        if (ent.billboard || ent.point || ent.model) {
+            position = ent.position.getValue(this.viewer.clock.currentTime);
+        } else {
+            position = px;
+        }
 
         if (ent.tooltip) {
-            defaultVal.closeBtn = false;
+            this.defaultVal.closeBtn = false;
         }
 
         if (promptAttr.constructor == String) {  // 支持两种传参 字符串 / 对象
-            defaultVal.position = position;
             defaultVal.content = promptAttr;
         } else {
             promptAttr.position = position;
-            var promptAttrClone = JSON.parse(JSON.stringify(promptAttr));
-            defaultVal = Object.assign(defaultVal, promptAttrClone);
+            defaultVal = Object.assign(defaultVal, promptAttr);
         }
         return new Prompt(this.viewer, defaultVal);
     }
