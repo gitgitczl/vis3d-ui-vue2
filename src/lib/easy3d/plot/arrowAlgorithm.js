@@ -3,7 +3,6 @@ import ArrowUtil from "./arrowUtil";
 
 class AttackArrow {
     constructor(opt) {
-
         this.type = "AttackArrow";
         if (!opt) opt = {};
         //影响因素

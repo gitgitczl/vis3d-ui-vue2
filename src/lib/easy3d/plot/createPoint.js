@@ -6,7 +6,6 @@ class CreatePoint extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
 		this.type = "point";
-		this.jsonType = "Point";
 		this.viewer = viewer;
 		let defaultStyle = {
 			color: Cesium.Color.AQUA,

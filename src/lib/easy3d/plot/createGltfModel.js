@@ -6,7 +6,6 @@ class CreateGltfModel extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
     this.type = "gltfModel";
-    this.jsonType = "Point";
     style = style || {};
     this.viewer = viewer;
     if (!style.uri) {
@@ -122,7 +121,7 @@ class CreateGltfModel extends BasePlot {
     let roll = Cesium.Math.toRadians(this.style.roll);
     let hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
     let orientation = Cesium.Transforms.headingPitchRollQuaternion(cartesian, hpr);
-    
+
     let entity = this.viewer.entities.add({
       position: cartesian,
       orientation: orientation,
@@ -142,7 +141,7 @@ class CreateGltfModel extends BasePlot {
   getStyle() {
     let obj = {};
     let model = this.entity.model;
-     obj.minimumPixelSize = model.minimumPixelSize.getValue();
+    obj.minimumPixelSize = model.minimumPixelSize.getValue();
     let orientation = this.entity.orientation.getValue();
     let p = this.entity.position.getValue(this.viewer.clock.currentTime);
     let hpr = cUtil.oreatationToHpr(p.clone(), orientation, true) || {};
@@ -150,6 +149,7 @@ class CreateGltfModel extends BasePlot {
     obj.pitch = hpr.pitch || 0;
     obj.roll = hpr.roll || 0;
     obj.scale = model.scale.getValue();
+    obj.uri = model.uri._value;
     return obj;
   }
   setStyle(style) {

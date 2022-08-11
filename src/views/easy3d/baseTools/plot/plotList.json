@@ -100,10 +100,10 @@
             "name": "白浮船",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/baifuchuan.png",
+            "iconImg": "./easy3d/images/plot/baidengchuan.png",
             "style": {
                 "heightReference": 1,
-                "uri": "http://123.60.20.254:9009/mapdata/gltf/baifu.glb",
+                "uri": "./gltf/baidengchuan.glb",
                 "minimumPixelSize": 24,
                 "scale": 5,
                 "heading": 0,
@@ -115,43 +115,13 @@
             "name": "红灯船",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/hongdengchuan.png",
+            "iconImg": "./easy3d/images/plot/hongfuchuan.png",
             "style": {
                 "heightReference": 1,
-                "uri": "http://123.60.20.254:9009/mapdata/gltf/hongdengchuan.glb",
+                "uri": "./gltf/hongfuchuan.glb",
                 "minimumPixelSize": 24,
                 "scale": 1,
                 "heading": -30,
-                "pitch": 0,
-                "roll": 0
-            }
-        },
-        {
-            "name": "红浮船",
-            "type": "gltfModel",
-            "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/hongfugu.png",
-            "style": {
-                "heightReference": 1,
-                "uri": "http://123.60.20.254:9009/mapdata/gltf/hongfu.glb",
-                "minimumPixelSize": 24,
-                "scale": 0.5,
-                "heading": 0,
-                "pitch": 0,
-                "roll": 0
-            }
-        },
-        {
-            "name": "左右通航",
-            "type": "gltfModel",
-            "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/zuoyoutonghang.png",
-            "style": {
-                "heightReference": 1,
-                "uri": "http://123.60.20.254:9009/mapdata/gltf/zuoyouhonghang.glb",
-                "minimumPixelSize": 24,
-                "scale": 1,
-                "heading": 0,
                 "pitch": 0,
                 "roll": 0
             }

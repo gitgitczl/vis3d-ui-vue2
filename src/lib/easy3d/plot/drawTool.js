@@ -209,6 +209,7 @@ class DrawTool {
       let item = this.toolArr[i];
       let coordinates = item.getPositions(true);
       let style = item.getStyle();
+      let geoType = this.transType(item.type);
       let feature = {
         "type": "Feature",
         "properties": {
@@ -216,26 +217,50 @@ class DrawTool {
           "style": style,
         },
         "geometry": {
-          "type": item.jsonType,
+          "type": item.geoType,
           "coordinates": []
         }
       }
-      switch (item.type) {
-        case "polygon":
+      switch (geoType) {
+        case "Polygon":
           feature.geometry.coordinates = [coordinates];
           break;
-        case "point":
+        case "Point":
           feature.geometry.coordinates = coordinates;
           break;
-        case "polyline":
+        case "LineString":
           feature.geometry.coordinates = coordinates;
           break;
+        case "" :
+            
         default: ;
       }
       feature.properties = Object.assign(feature.properties, item.properties);
       featureCollection.features.push(feature);
     }
     return featureCollection;
+  }
+
+  // 标绘类型和geojson数据类型相互转换
+  transType(plotType){
+    let geoType = '';
+    switch(plotType){
+      case "polyline" :
+        geoType = "LineString";
+        break;
+      case "polygon":
+        geoType = "Polygon";
+        break;
+      case "point":
+      case "gltfModel":
+      case "label":
+      case "Billboard":
+        geoType = "Point";
+        break;  
+      default :
+        geoType = plotType;
+    }
+    return geoType;
   }
 
 
@@ -356,12 +381,12 @@ class DrawTool {
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
   // 关闭编辑功能
-  closeEdit(){
+  closeEdit() {
     this.endEdit();
     this.canEdit = false;
   }
   // 开启编辑功能
-  openEdit(){
+  openEdit() {
     this.canEdit = true;
   }
   endEdit() {

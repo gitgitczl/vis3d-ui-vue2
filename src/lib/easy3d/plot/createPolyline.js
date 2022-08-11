@@ -9,9 +9,6 @@ class CreatePolyline extends BasePlot {
         super(viewer, opt);
         this.movePush = false;
         this.type = "polyline";
-        /* this.plotType = "polyline"; */
-        this.jsonType = "LineString";
-
         this.maxPointNum = opt.maxPointNum || Number.MAX_VALUE; // 最多点数
     }
 

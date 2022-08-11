@@ -8,7 +8,6 @@ class CreateArrow extends BasePlot {
 	constructor(viewer, situationType, style) {
 		super(viewer, style);
 		this.type = "arrow";
-		this.jsonType = "Polygon";
 		if (!situationType) {
 			console.log("缺少箭头类型")
 			return;
