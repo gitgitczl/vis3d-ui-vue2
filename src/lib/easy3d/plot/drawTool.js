@@ -172,11 +172,11 @@ class DrawTool {
       let feature = features[i];
       const { properties, geometry } = feature;
       let plotType = properties.plotType;
-      const jsonType = geometry.type;
+      const geoType = geometry.type;
       const coordinates = geometry.coordinates;
       let positions = [];
       let drawType = "";
-      switch (jsonType) {
+      switch (geoType) {
         case "LineString":
           positions = cUtil.lnglatsToCartesians(coordinates);
           drawType = "polyline";
@@ -185,12 +185,13 @@ class DrawTool {
           positions = cUtil.lnglatsToCartesians(coordinates[0]);
           drawType = "polygon";
           break;
-        case "point":
-          positions = cUtil.lnglatsToCartesians([coordinates]);
+        case "Point":
+          positions = cUtil.lnglatsToCartesians([coordinates])[0];
           drawType = plotType;
           break;
         default: ;
       }
+      debugger
       this.createByPositions({
         type: drawType,
         positions: positions,
@@ -205,6 +206,7 @@ class DrawTool {
       type: "FeatureCollection",
       features: [],
     };
+    if(this.toolArr.length==0) return null;
     for (let i = 0; i < this.toolArr.length; i++) {
       let item = this.toolArr[i];
       let coordinates = item.getPositions(true);
@@ -217,7 +219,7 @@ class DrawTool {
           "style": style,
         },
         "geometry": {
-          "type": item.geoType,
+          "type": geoType,
           "coordinates": []
         }
       }

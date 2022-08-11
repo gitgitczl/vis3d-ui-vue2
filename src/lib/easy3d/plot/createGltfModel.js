@@ -149,16 +149,20 @@ class CreateGltfModel extends BasePlot {
     obj.pitch = hpr.pitch || 0;
     obj.roll = hpr.roll || 0;
     obj.scale = model.scale.getValue();
-    obj.uri = model.uri._value;
+    obj.uri = model.uri.getValue();
     return obj;
   }
   setStyle(style) {
     if (!style) return;
     this.setOrientation(style.heading, style.pitch, style.roll);
     this.entity.model.scale.setValue(style.scale == undefined ? 1 : style.scale);
+    if(style.uri)   this.entity.model.uri.setValue(style.uri);
     this.style = Object.assign(this.style, style);
   }
   setOrientation(h, p, r) {
+    h = h || 0;
+    p = p || 0;
+    r = r || 0;
     this.style.heading = h;
     this.style.pitch = p;
     this.style.roll = r;
