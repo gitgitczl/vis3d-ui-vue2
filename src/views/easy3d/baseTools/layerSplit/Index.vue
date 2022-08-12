@@ -1,6 +1,6 @@
 <template>
   <Card :title="title" :position="position" :size="size" height="auto" titleIcon="icon-tushangcehui" @close="close">
-    <label>可选图层</label>
+    <label>可选图层：</label>
     <el-select placeholder="请选择" v-model="nowSelectId" @change="changeLayer">
       <el-option v-for="(item, index) in layerList" :key="index" :label="item.name" :value="item.id"></el-option>
     </el-select>
@@ -48,8 +48,6 @@ export default {
     ).layerObj;
     lyrObj.setVisible(true);
 
-    nowSplitLayerObj = lyrObj;
-
     if (!layerSplit)
       layerSplit = new LayerSplit(window.viewer, {
         layer: lyrObj._layer,
@@ -94,7 +92,6 @@ export default {
     },
     changeLayer(attr) {
       let lyr = this.getLayerObjById(attr.id);
-      nowSplitLayerObj = lyrObj;
       if (!lyr) return;
       if (layerSplit) layerSplit.setLayer(lyr);
       // 还原上一个选中的对象
@@ -111,6 +108,9 @@ export default {
         attr: JSON.parse(JSON.stringify(attr)),
         visible: true,
       });
+    },
+    resetLastlyr(){
+      
     },
     close() {
       this.$emit("close", "layerSplit");
