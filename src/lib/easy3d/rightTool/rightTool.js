@@ -194,6 +194,16 @@ class RightTool {
     bindHandler() {
         let that = this;
         this.rightClickHandler.setInputAction(function (evt) {
+            const pick = that.viewer.scene.pick(evt.position);
+            let ent;
+            if (pick && pick.primitive && !(pick.primitive instanceof Cesium.Cesium3DTileset)) { // 拾取图元
+                ent = pick.primitive;
+            }
+            if (pick && pick.id && pick.id instanceof Cesium.Entity) {
+                ent = pick.id;
+            }
+            if(ent) return ; // 控制不能在已绘制的地方进行右键弹出面板
+
             that.refreshDepthVal();
             const px = evt.position;
             that._clickPX = evt.position;

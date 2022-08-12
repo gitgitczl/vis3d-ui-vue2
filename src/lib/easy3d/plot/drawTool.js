@@ -191,13 +191,11 @@ class DrawTool {
           break;
         default: ;
       }
-      debugger
       this.createByPositions({
         type: drawType,
         positions: positions,
         style: properties.style
       })
-
     }
   }
   // 转为geojson
