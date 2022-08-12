@@ -61,6 +61,7 @@ class Roam {
         this.alldistance = attr.alldistance;
         this.alltimes = attr.alltimes;
         this.speed = attr.speed;
+
         this.roamEntity = this.createRoamEntity(this.opt.entityType, attr.property);
     }
 
@@ -72,6 +73,7 @@ class Roam {
     }
     // 开始漫游
     start() {
+        if (this.roamEntity) this.roamEntity.show = true;
         this.clockSpeed = 1;
         this.viewer.clock.currentTime = this.startTime;
         this.viewer.clock.multiplier = this.clockSpeed;
@@ -154,6 +156,7 @@ class Roam {
                 }
             })
         }
+        entity.show = false;
         return entity;
     }
 

@@ -190,7 +190,7 @@ class RoamTool {
         for (let i = this.roamList.length - 1; i >= 0; i--) {
             let roam = this.roamList[i];
             if (roam.objId == roamId) {
-                roam.start(roam);
+                roam.start();
                 this.nowStartRoam = roam;
                 if (this.startRoamFun) this.startRoamFun(roam);
                 break;

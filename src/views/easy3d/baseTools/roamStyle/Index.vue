@@ -82,7 +82,10 @@ export default {
       nowStartRoamAttr: {},
     };
   },
-  destroyed() {},
+  destroyed() {
+    // 关闭当前页面时 结束当前漫游
+    this.endRoam();
+  },
 
   computed: {},
 
