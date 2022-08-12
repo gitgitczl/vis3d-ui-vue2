@@ -155,7 +155,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": true,
+            "show": false,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,
@@ -180,7 +180,7 @@ window.workConfig = {
         },
         {
             "name": "卷帘对比",
-            "show": false,
+            "show": true,
             "workName": "layerSplit",
             "closeDisableSelf": true,
             "openDisableAnothers": false,

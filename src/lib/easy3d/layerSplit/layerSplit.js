@@ -8,8 +8,8 @@ class LayerSplit {
         this.opt = opt || {};
         this.layer = this.opt.layer;
         /*   if (!this.layer) return; */
-        if (this.layer) this.layer.splitDirection = window.Cesium.ImagerySplitDirection.LEFT;
-        this.mapContainer = this.viewer.container
+        if (this.layer) this.layer.splitDirection = window.Cesium.ImagerySplitDirection.RIGHT;
+        this.mapContainer = this.viewer.container;
         this.init();
     }
     init() {
@@ -26,7 +26,7 @@ class LayerSplit {
         this.mapContainer.appendChild(this.slider);
         this.handler = new window.Cesium.ScreenSpaceEventHandler(this.slider);
 
-        this.viewer.scene.imagerySplitPosition = (this.slider.offsetLeft) / this.slider.parentElement.offsetWidth;
+        this.viewer.scene.imagerySplitPosition = 0.5;
 
         this.handler.setInputAction(function () {
             that.moveActive = true;

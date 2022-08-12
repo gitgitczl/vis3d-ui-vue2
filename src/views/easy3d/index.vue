@@ -148,21 +148,6 @@ export default {
       }
     },
 
-    /**
-     * 监听当前operateLayer的显示隐藏
-     */
-    "$store.state.map3d.operateLayerVisible": {
-      handler(data) {
-        let { attr, visible } = data || {};
-        if (!attr.id) return;
-        this.setLayerVisible(attr, visible);
-        this.$store.commit(
-          "setLayerCheckState",
-          JSON.parse(JSON.stringify(data))
-        );
-      },
-      deep: true,
-    },
   },
 };
 </script>

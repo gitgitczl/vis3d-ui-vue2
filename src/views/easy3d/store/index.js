@@ -11,7 +11,6 @@ const easy3dStore = {
     nowPlotStyleAttr: {},
     nowRoamAttr: {}, // 飞行漫游属性
     isToolOpen: true, // 工具栏是否打开
-    operateLayerVisible: {}, // 图层的显示隐藏
     baseLayers : {}, // 监听底图
     operateLayers :{}, // 监听业务图层
     plotEntityObjId : "", // 当前编辑的对象id
@@ -41,9 +40,7 @@ const easy3dStore = {
       state.nowRoamAttr = nowRoamAttr
     },
 
-    setOperateLayerVisible: (state, operateLayerVisible) => {
-      state.operateLayerVisible = operateLayerVisible
-    },
+    
 
     setIsToolOpen: (state, isToolOpen) => {
       state.isToolOpen = isToolOpen

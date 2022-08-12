@@ -1,26 +1,14 @@
 <template>
-  <Card
-    :title="title"
-    :position="position"
-    :size="size"
-    height="auto"
-    titleIcon="icon-tushangcehui"
-    @close="close"
-  >
+  <Card :title="title" :position="position" :size="size" height="auto" titleIcon="icon-tushangcehui" @close="close">
     <label>可选图层</label>
     <el-select placeholder="请选择" v-model="nowSelectId" @change="changeLayer">
-      <el-option
-        v-for="(item, index) in layerList"
-        :key="index"
-        :label="item.name"
-        :value="item.id"
-      ></el-option>
+      <el-option v-for="(item, index) in layerList" :key="index" :label="item.name" :value="item.id"></el-option>
     </el-select>
   </Card>
 </template>
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
-import MapSplit from "@/lib/easy3d/layerSplit/layerSplit.js";
+import LayerSplit from "@/lib/easy3d/layerSplit/layerSplit.js";
 let layerSplit = null;
 let nowLayerAttr = {};
 export default {
@@ -58,13 +46,12 @@ export default {
     let lyrObj = window.mapViewer.operateLayerTool.getLayerObjById(
       this.nowSelectId
     ).layerObj;
-
-    console.log("前--->", JSON.parse(JSON.stringify(operateLayers)));
     lyrObj.setVisible(true);
-    console.log("后--->", JSON.parse(JSON.stringify(operateLayers)));
+
+    nowSplitLayerObj = lyrObj;
 
     if (!layerSplit)
-      layerSplit = new MapSplit(window.viewer, {
+      layerSplit = new LayerSplit(window.viewer, {
         layer: lyrObj._layer,
       });
   },
@@ -107,6 +94,7 @@ export default {
     },
     changeLayer(attr) {
       let lyr = this.getLayerObjById(attr.id);
+      nowSplitLayerObj = lyrObj;
       if (!lyr) return;
       if (layerSplit) layerSplit.setLayer(lyr);
       // 还原上一个选中的对象
@@ -127,16 +115,7 @@ export default {
     close() {
       this.$emit("close", "layerSplit");
     },
-    // 还原上一个选中的状态
-    resetLastlyr() {
-      if (nowLayerAttr.layer) {
-        this.$store.commit("setOperateLayerVisible", {
-          attr: JSON.parse(JSON.stringify(nowLayerAttr.layerObj.attr)),
-          visible: nowLayerAttr.oldVisible,
-        });
-        nowLayerAttr = {};
-      }
-    },
+   
   },
 };
 </script>
