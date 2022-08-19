@@ -60,15 +60,12 @@ class Prompt {
             closeHtml = `<a class="prompt-close" attr="${this.opt.id}" id="prompt-close-${this.opt.id}" href="#close">x</a>`;
         }
 
-        let boxShadowAttr = '';
-        if (this.opt.style.boxShadow == false) {
-            boxShadowAttr = "-webkit-box-shadow:none !important";
-        }
-
+        let boxShadow = this.opt.style.boxShadow;
+       
         const promptId = "prompt-" + this.opt.id;
         const promptConenet = `
                 <!-- 文本内容 -->
-                <div class="prompt-content-container" style="background:${background} !important;color:${color} !important;${boxShadowAttr}">
+                <div class="prompt-content-container" style="background:${background} !important;color:${color} !important;box-shadow:${boxShadow}">
                     <div class="prompt-content" id="prompt-content-${this.opt.id}">
                         ${this.opt.content}
                     </div>
@@ -131,7 +128,6 @@ class Prompt {
                 const occluder = new Cesium.EllipsoidalOccluder(that.viewer.scene.globe.ellipsoid, that.viewer.scene.camera.position);
                 // 当前点位是否可见
                 const res = occluder.isPointVisible(that.position);
-
                 if (res) {
                     if (that.promptDom) that.promptDom.style.display = "block";
                 } else {
@@ -154,12 +150,17 @@ class Prompt {
     // 判断是否在当前视野内
     isInView() {
         if (!this.position) return false;
-        const px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, this.position);
+        let px = null;
+        if (this.position instanceof Cesium.Cartesian2) {
+            px = this.position;
+        } else {
+            px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, this.position);
+        }
         const occluder = new Cesium.EllipsoidalOccluder(this.viewer.scene.globe.ellipsoid, this.viewer.scene.camera.position);
         // 是否在地球背面
         const res = occluder.isPointVisible(this.position);
         let isin = false;
-        if(!px) return isin;
+        if (!px) return isin;
         if (
             px.x > this.containerLeft &&
             px.x < (this.containerLeft + this.containerW) &&
@@ -212,12 +213,10 @@ class Prompt {
     // 坐标转换
     transPosition(p) {
         let position;
-        if (p instanceof Cesium.Cartesian3) {
-            position = p;
-        } else if (Array.isArray(p)) {
+        if (Array.isArray(p)) {
             const posi = Cesium.Cartesian3.fromDegrees(p[0], p[1], p[2] || 0);
             position = posi.clone();
-        } else {
+        } else { // 像素类型
             position = p;
         }
         return position;

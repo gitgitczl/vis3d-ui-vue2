@@ -220,6 +220,7 @@ export default {
           window.plotDrawTool.createByGeojson(strjson);
         };
       }
+       e.target.value = "";
     },
   },
   watch: {

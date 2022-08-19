@@ -67,6 +67,7 @@ class PopupTooltipTool {
                 ent = pick.id;
             }
 
+            
             /* 以下几种形式销毁弹窗
             1、未拾取到对象
             2、拾取到的对象不是上一个对象 */
@@ -84,7 +85,7 @@ class PopupTooltipTool {
             }
 
             if (ent.tooltip == undefined || ent.tooltip == "") return;
-            // 修改位置    
+            // 修改位置   
             if (ent.tooltipPrompt) {
                 ent.tooltipPrompt.update(evt.endPosition); // 除点状坐标外 点状坐标的锚点 为创建时的位置
             } else {// 重新构建
@@ -114,11 +115,10 @@ class PopupTooltipTool {
         if (ent.tooltip) {
             this.defaultVal.closeBtn = false;
         }
-
+        defaultVal.position = position;
         if (promptAttr.constructor == String) {  // 支持两种传参 字符串 / 对象
             defaultVal.content = promptAttr;
         } else {
-            promptAttr.position = position;
             defaultVal = Object.assign(defaultVal, promptAttr);
         }
         return new Prompt(this.viewer, defaultVal);
