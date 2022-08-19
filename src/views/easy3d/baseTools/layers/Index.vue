@@ -19,7 +19,11 @@
           <div class="custom-tree-node-slider">
             <el-slider
               v-show="checkedKeys.indexOf(data.id) != -1"
-              v-if="data.type !== '3dtiles' && data.type !== 'group'"
+              v-if="
+                data.type !== '3dtiles' &&
+                data.type !== 'group' &&
+                data.type !== 'plot'
+              "
               show-input
               :show-input-controls="false"
               :show-tooltip="false"

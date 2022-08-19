@@ -80,6 +80,32 @@ window.mapConfig = {
                 }
             ]
         },
+        {
+            // 兼容标绘类型的数据
+            "name": "航标模型",
+            "type": "group",
+            "open": true,
+            "children": [
+                {
+                    "name": "白灯船",
+                    "id": "1010", // 不可少
+                    "type": "plot",
+                    "plotType": "gltfModel",
+                    "styleType": "gltfModel",
+                    "positions": [118.71356267363396, 32.07222724431911, 0],
+                    "show": true,
+                    "style": {
+                        "heightReference": 1,
+                        "uri": "./gltf/baidengchuan.glb",
+                        "minimumPixelSize": 24,
+                        "scale": 5,
+                        "heading": 0,
+                        "pitch": 0,
+                        "roll": 0
+                    }
+                }
+            ]
+        },
 
         {
             "name": "测试图层",

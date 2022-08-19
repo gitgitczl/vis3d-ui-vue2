@@ -26,10 +26,7 @@ import easy3dView from "./viewRoate";
 // 引入天气
 import fog from "./weather/fog";
 import rain from "./weather/rain";
-import snow from "./weather/snow";
-
-
-
+import snow from "./weather/snow"
 // 自定义天气
 let weather = {
     fog: fog,
@@ -45,12 +42,8 @@ let animate = {
     FlowLine: rganimate.FlowLineMaterial
 }
 
+console.log("当前更新时间为：2022-07-07 17:40; \n ==== 数图科技 数图科技 ====");
 
-// 引入分析模块
-import VisualTool from "./analysis/visualField/visualTool";
-let analysis = {
-    VisualTool: VisualTool
-}
 // 构建viewer
 class MapViewer {
     constructor(domId, opt) {
@@ -58,8 +51,13 @@ class MapViewer {
         this.domId = domId;
         this.opt = opt || {};
         this._viewer = null;
+
         this.baseLayerTool = null;
         this.operateLayerTool = null;
+
+        this.basePlotTool = null;
+        this.operatePlotTool = null;
+
         this.rightTool = null;
         this.bottomLnglatTool = null;
         this.popupTooltipTool = null;
@@ -69,9 +67,10 @@ class MapViewer {
         this.loadbaseLayers();
         this.loadOperateLayers();
 
+
         this.terrainUrl = '';
         let { terrain } = this.opt.map;
-        if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
+        if (terrain && terrain.url) this.loadTerrain(terrain.url);
 
         /*  if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer); */
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
@@ -84,6 +83,7 @@ class MapViewer {
         } else {
             if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
         }
+
     }
 
     get viewer() {
@@ -104,15 +104,28 @@ class MapViewer {
     // 构建图层
     loadbaseLayers() {
         let { baseLayers } = this.opt || [];
-        if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
         for (let i = 0; i < baseLayers.length; i++) {
             let layer = baseLayers[i];
-            if (layer.type != "group") {
-                // 添加id
-                layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+            if (!layer.type) {
+                console.log("缺少基础图层的图层类型", layer);
+                return;
+            }
+            if (layer.type == "group") continue;
+            // 添加id
+            layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+            if (layer.type == "plot") { // 兼容单个类型标绘在文件中配置
+                if (!this.basePlotTool) {
+                    this.basePlotTool = new DrawTool(this._viewer, {
+                        canEdit: false,
+                    });
+                }
+                layer.type = layer.plotType;
+                this.basePlotTool.createByPositions(layer);
+
+            } else {
+                if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
                 this.baseLayerTool.add(layer);
             }
-
         }
     }
     // 构建业务图层
@@ -134,10 +147,28 @@ class MapViewer {
             }
         };
         dg(operateLayers);
-        if (!this.operateLayerTool) this.operateLayerTool = new LayerTool(this._viewer);
+
+
         for (let i = 0; i < allOperateLayers.length; i++) {
             let layer = allOperateLayers[i];
-            if (layer.type != "group") this.operateLayerTool.add(layer);
+            if (!layer.type) {
+                console.log("缺少基础图层的图层类型", layer);
+                return;
+            }
+            if (layer.type == "group") continue;
+            if (layer.type == "plot") { // 兼容单个类型标绘在文件中配置
+                debugger
+                if (!this.operatePlotTool) {
+                    this.operatePlotTool = new DrawTool(this._viewer, {
+                        canEdit: false,
+                    });
+                }
+                layer.type = layer.plotType;
+                this.operatePlotTool.createByPositions(layer);
+            } else {
+                if (!this.operateLayerTool) this.operateLayerTool = new LayerTool(this._viewer);
+                this.operateLayerTool.add(layer);
+            }
         }
     }
     // 加载地形
@@ -165,7 +196,7 @@ class MapViewer {
     // 开启右键工具
     openRightTool() {
         if (!this.rightTool) {
-            this.rightTool = new RightTool(this.viewer, {})
+            this.rightTool = new RightTool(this.viewer, {});
 
         }
     }
@@ -177,19 +208,11 @@ class MapViewer {
     }
 
     // 打开实体鼠标提示
-    openPopupTooltip(bindPopup, bindClick) {
-        if (!this.popupTooltipTool) {
-            bindPopup = bindPopup == undefined ? true : bindPopup;
-            bindClick = bindClick == undefined ? true : bindClick;
-            this.popupTooltipTool = new PopupTooltipTool(this._viewer, {});
-            if (bindPopup) this.popupTooltipTool.autoBindPopup();
-            if (bindClick) this.popupTooltipTool.autoBindTooltip();
-        }
-    }
-    closePopupTooltip() {
-        if (this.popupTooltipTool) {
-            this.popupTooltipTool.destroy();
-            this.popupTooltipTool = null;
+    openPopupTooltip() {
+        if (!this.popupTooltip) {
+            this.popupTooltip = new PopupTooltipTool(this.viewer, {});
+            this.popupTooltip.autoBindTooltip();
+            this.popupTooltip.autoBindPopup();
         }
     }
 
@@ -236,6 +259,17 @@ class MapViewer {
             this.operateLayerTool.destroy();
             this.operateLayerTool = null;
         }
+
+        if (this.basePlotTool) {
+            this.basePlotTool.destroy();
+            this.basePlotTool = null;
+        }
+
+        if (this.operatePlotTool) {
+            this.operatePlotTool.destroy();
+            this.operatePlotTool = null;
+        }
+
         if (this.bottomLnglatTool) {
             this.bottomLnglatTool.destroy();
             this.bottomLnglatTool = null;
@@ -326,6 +360,12 @@ let workControl = {
             case "monomer":
                 this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
                 break;
+            case "weather":
+                this.components.push(import("@/views/easy3d/workTools/weather/Index.vue"));
+                break;
+            case "flowData":
+                this.components.push(import("@/views/easy3d/workTools/flowData/Index.vue"));
+                break;
         }
     },
     // 关闭单个模块 当前模块  其它模块
@@ -395,20 +435,7 @@ let workControl = {
 }
 
 
+
 export default {
-    cUtil,
-    cTool,
-    MapViewer,
-    DrawTool,
-    LayerTool,
-    MeasureTool,
-    Prompt,
-    gadgets,
-    RoamTool,
-    workControl,
-    ZoomTool,
-    OverviewMap,
-    weather,
-    animate,
-    analysis
+    cUtil, cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, workControl, ZoomTool, OverviewMap, weather, animate
 }

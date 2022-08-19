@@ -65,7 +65,7 @@ class CreateGltfModel extends BasePlot {
     if (lnglatArr instanceof Cesium.Cartesian3) {
       this.position = lnglatArr;
     } else {
-      this.position = Cesium.Cartesian3.fromDegrees(lnglatArr[0], lnglatArr[1], lnglatArr[2]);
+      this.position = Cesium.Cartesian3.fromDegrees(lnglatArr[0], lnglatArr[1], lnglatArr[2] || 0);
     }
     this.entity = this.createGltfModel(this.position);
     callBack(this.entity);
@@ -129,7 +129,8 @@ class CreateGltfModel extends BasePlot {
         uri: this.modelUri,
         minimumPixelSize: this.style.minimumPixelSize,
         maximumScale: this.style.maximumScale,
-        scale: this.style.scale || 1
+        scale: this.style.scale || 1,
+        heightReference : this.style.heightReference
       }
     });
     entity.objId = this.objId;
@@ -156,7 +157,8 @@ class CreateGltfModel extends BasePlot {
     if (!style) return;
     this.setOrientation(style.heading, style.pitch, style.roll);
     this.entity.model.scale.setValue(style.scale == undefined ? 1 : style.scale);
-    if(style.uri)   this.entity.model.uri.setValue(style.uri);
+    if (style.uri) this.entity.model.uri.setValue(style.uri);
+    if (style.heightReference != undefined) this.entity.model.heightReference.setValue(Number(style.heightReference));
     this.style = Object.assign(this.style, style);
   }
   setOrientation(h, p, r) {
