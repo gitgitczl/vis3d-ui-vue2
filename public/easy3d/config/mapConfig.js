@@ -92,8 +92,8 @@ window.mapConfig = {
                     "type": "plot",
                     "plotType": "gltfModel",
                     "styleType": "gltfModel",
-                    "positions": [118.71356267363396, 32.07222724431911, 0],
-                    "show": true,
+                    "positions": [109.769837, 38.285877, 0],
+                    "show": 1,
                     "style": {
                         "heightReference": 1,
                         "uri": "./gltf/baidengchuan.glb",

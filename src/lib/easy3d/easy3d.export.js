@@ -55,7 +55,6 @@ class MapViewer {
         this.baseLayerTool = null;
         this.operateLayerTool = null;
 
-        this.basePlotTool = null;
         this.operatePlotTool = null;
 
         this.rightTool = null;
@@ -113,19 +112,8 @@ class MapViewer {
             if (layer.type == "group") continue;
             // 添加id
             layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
-            if (layer.type == "plot") { // 兼容单个类型标绘在文件中配置
-                if (!this.basePlotTool) {
-                    this.basePlotTool = new DrawTool(this._viewer, {
-                        canEdit: false,
-                    });
-                }
-                layer.type = layer.plotType;
-                this.basePlotTool.createByPositions(layer);
-
-            } else {
-                if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
-                this.baseLayerTool.add(layer);
-            }
+            if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
+            this.baseLayerTool.add(layer);
         }
     }
     // 构建业务图层
@@ -156,8 +144,7 @@ class MapViewer {
                 return;
             }
             if (layer.type == "group") continue;
-            if (layer.type == "plot") { // 兼容单个类型标绘在文件中配置
-                debugger
+            if (layer.type == "plot" && layer.show) { // 兼容单个类型标绘在文件中配置
                 if (!this.operatePlotTool) {
                     this.operatePlotTool = new DrawTool(this._viewer, {
                         canEdit: false,
@@ -258,11 +245,6 @@ class MapViewer {
         if (this.operateLayerTool) {
             this.operateLayerTool.destroy();
             this.operateLayerTool = null;
-        }
-
-        if (this.basePlotTool) {
-            this.basePlotTool.destroy();
-            this.basePlotTool = null;
         }
 
         if (this.operatePlotTool) {

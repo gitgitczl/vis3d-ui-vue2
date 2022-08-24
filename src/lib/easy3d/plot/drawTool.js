@@ -27,7 +27,7 @@
         this.removeHandler = new Cesium.ScreenSpaceEventHandler(
           this.viewer.scene.canvas
         );
-        this.show = obj.drawEndShow == undefined ? true : obj.drawEndShow;
+        /* this.show = obj.drawEndShow == undefined ? true : obj.drawEndShow; */
         this.nowEditObj = null; // 当前编辑对象
     
         this.startEditFun = null;
@@ -88,7 +88,7 @@
           if (opt.success) opt.success(entityObj, entity);
           if (that.endCreateFun) that.endCreateFun(entityObj, entity);
     
-          if (that.show == false) entityObj.setVisible(false);
+          if (opt.show == false) entityObj.setVisible(false);
     
           // 如果可以编辑 则绘制完成打开编辑
           if (that.canEdit && that.intoEdit) {
@@ -158,7 +158,8 @@
           // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
           if (opt.success) opt.success(entityObj, entity);
           if (that.endCreateFun) that.endCreateFun(entityObj, entity);
-          if (that.show == false) entityObj.setVisible(false);
+          debugger
+          if (opt.show == false) entityObj.setVisible(false);
           // 如果可以编辑 则绘制完成打开编辑 
           /* if (that.canEdit && that.intoEdit) {
             entityObj.startEdit();
@@ -313,10 +314,10 @@
           obj.entityObj.destroy();
         }
       }
-      locateById(id) {
+      zoomToById(id) {
         let obj = this.getEntityObjByObjId(id);
         if (obj.entityObj) {
-          obj.entityObj.locate();
+          obj.entityObj.zoomTo();
         }
       }
       // 根据标绘对象绑定的属性获取标绘对象 id : 123456

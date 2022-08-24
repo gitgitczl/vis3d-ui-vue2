@@ -256,6 +256,12 @@ class BasePlot {
         this.properties.attr = attr || {};
     }
 
+    zoomTo() {
+        if (this.entity) {
+            this.viewer.zoomTo(this.entity);
+        }
+    }
+
 
 }
 

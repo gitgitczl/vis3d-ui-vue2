@@ -22,7 +22,7 @@
               v-if="
                 data.type !== '3dtiles' &&
                 data.type !== 'group' &&
-                data.type !== 'plot'
+                !data.plotType
               "
               show-input
               :show-input-controls="false"
@@ -122,8 +122,19 @@ export default {
     },
     nodeCheck(data, state) {
       this.checkedKeys = state.checkedKeys;
-      let visible = state.checkedKeys.indexOf(data.id) != -1;
-      window.mapViewer.operateLayerTool.setVisible(data.id, visible);
+      let visible;
+      if (data.type == "group") {
+        visible =
+          data.children[0] &&
+          state.checkedKeys.indexOf(data.children[0].id) != -1;
+        for (let index = 0; index < data.children.length; index++) {
+          let item = data.children[index];
+          this.setNodeVisible(item, visible);
+        }
+      } else {
+        visible = state.checkedKeys.indexOf(data.id) != -1;
+        this.setNodeVisible(data, visible);
+      }
     },
     nodeClick(data) {
       this.clickTimes++;
@@ -134,11 +145,15 @@ export default {
         if (this.clickTimes == 2) {
           // 双击节点
           if (data.type == "group") return;
-          let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(
-            data.id
-          );
-          if (layerOpt && layerOpt.layerObj && layerOpt.layerObj.show)
-            layerOpt.layerObj.zoomTo();
+          if (data.plotType) {
+            /*   window.mapViewer.operatePlotTool.zoomToById(data.id); */
+          } else {
+            let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(
+              data.id
+            );
+            if (layerOpt && layerOpt.layerObj && layerOpt.layerObj.show)
+              layerOpt.layerObj.zoomTo();
+          }
         }
 
         this.clickTimes = 0;
@@ -165,7 +180,11 @@ export default {
       this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
     },
     setNodeVisible(data, visible) {
-      window.mapViewer.operateLayerTool.setVisible(data.id, visible);
+      if (data.plotType) {
+        window.mapViewer.operatePlotTool.setVisible(data.id, visible);
+      } else {
+        window.mapViewer.operateLayerTool.setVisible(data.id, visible);
+      }
     },
     // childeren转为线性
     getAllLayers(lys) {
