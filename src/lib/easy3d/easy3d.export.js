@@ -70,7 +70,7 @@ class MapViewer {
 
         this.terrainUrl = '';
         let { terrain } = this.opt.map;
-        if (terrain && terrain.url) this.loadTerrain(terrain.url);
+        if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
 
         /*  if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer); */
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
@@ -360,7 +360,7 @@ let workControl = {
             case "monomer":
                 this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
                 break;
-            default:;    
+            default: ;
         }
     },
     // 关闭单个模块 当前模块  其它模块
