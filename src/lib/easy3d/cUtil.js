@@ -270,11 +270,105 @@ function computeAngle(p1, p2) {
     return bearing;
 }
 
+function updatePositionsHeight(pois, h) {
+    if (!pois || h == undefined) return;
+    var newPois = [];
+    for (var i = 0; i < pois.length; i++) {
+        var c3 = pois[i];
+        var ct = cartesianToLnglat(c3);
+        var newC3 = Cesium.Cartesian3.fromDegrees(ct[0], ct[1], h);
+        newPois.push(newC3);
+    }
+    return newPois;
+}
+
+function computeUniforms(positions, fix, isOn3dtiles) {
+    if (!positions) return;
+    if (!fix) fix = 1000;
+    var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
+        positions: positions,
+        vertexFormat: Cesium.PerInstanceColorAppearance.FLAT_VERTEX_FORMAT,
+        granularity: Math.PI / Math.pow(2, 11) / fix
+    });
+    var geom = new Cesium.PolygonGeometry.createGeometry(polygonGeometry);
+    var indices = geom.indices;
+    var attrPosition = geom.attributes.position;
+    var data = {};
+    data.uniformArr = [];
+    data.minHeight = Number.MAX_VALUE;
+    data.maxHeight = Number.MIN_VALUE;
+    for (var index = 0; index < indices.length; index = index + 3) {
+        var obj = {};
+        var first = indices[index];
+        var second = indices[index + 1];
+        var third = indices[index + 2];
+        var cartesian1 = new Cesium.Cartesian3(attrPosition.values[first * 3], geom
+            .attributes.position.values[first * 3 + 1], attrPosition.values[first * 3 +
+            2]);
+        var h1;
+        if (!isOn3dtiles) {
+            h1 = getTerrainHeight(cartesian1);
+        } else {
+            h1 = get3dtilesHeight(cartesian1);
+        }
+        var cartesian2 = new Cesium.Cartesian3(attrPosition.values[second * 3], geom
+            .attributes.position.values[second * 3 + 1], attrPosition.values[second *
+            3 + 2]);
+        var h2;
+        if (!isOn3dtiles) {
+            h2 = getTerrainHeight(cartesian2);
+        } else {
+            h2 = get3dtilesHeight(cartesian2);
+        }
+        var cartesian3 = new Cesium.Cartesian3(geom.attributes.position.values[third * 3], geom
+            .attributes.position.values[third * 3 + 1], attrPosition.values[third * 3 +
+            2]);
+        var h3;
+        if (!isOn3dtiles) {
+            h3 = getTerrainHeight(cartesian3);
+        } else {
+            h3 = get3dtilesHeight(cartesian3);
+        }
+        obj.height = (h1 + h2 + h3) / 3;
+        if (data.minHeight > obj.height) {
+            data.minHeight = obj.height;
+        }
+        if (data.maxHeight < obj.height) {
+            data.maxHeight = obj.height;
+        }
+        obj.area = computeAreaOfTriangle(cartesian1, cartesian2, cartesian3);
+        data.uniformArr.push(obj);
+    }
+    return data;
+}
+
+function getTerrainHeight(cartesian) {
+    if (!cartesian) return;
+    return viewer.scene.globe.getHeight(Cesium.Cartographic.fromCartesian(cartesian));
+}
+function get3dtilesHeight(cartesian) {
+    if (!cartesian) return;
+    return viewer.scene.sampleHeight(Cesium.Cartographic.fromCartesian(cartesian));
+}
+
+function computeAreaOfTriangle(pos1, pos2, pos3) {
+    if (!pos1 || !pos2 || !pos3) {
+        console.log("传入坐标有误！");
+        return 0;
+    }
+    var a = Cesium.Cartesian3.distance(pos1, pos2);
+    var b = Cesium.Cartesian3.distance(pos2, pos3);
+    var c = Cesium.Cartesian3.distance(pos3, pos1);
+    var S = (a + b + c) / 2;
+    return Math.sqrt(S * (S - a) * (S - b) * (S - c));
+}
 
 
 
 
 export default {
+    updatePositionsHeight: updatePositionsHeight,
+    computeUniforms: computeUniforms,
     cartesianToLnglat: cartesianToLnglat,
     cartesiansToLnglats: cartesiansToLnglats,
     lnglatsToCartesians: lnglatsToCartesians,
@@ -285,8 +379,8 @@ export default {
     gcj2wgs: gcj2wgs,
     lerpPositions: lerpPositions,
     oreatationToHpr: oreatationToHpr,
-    getIntersectPosition : getIntersectPosition,
-    getCirclePoints : getCirclePoints,
-    computeAngle : computeAngle
+    getIntersectPosition: getIntersectPosition,
+    getCirclePoints: getCirclePoints,
+    computeAngle: computeAngle
 }
 

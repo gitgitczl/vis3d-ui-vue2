@@ -180,7 +180,7 @@ window.workConfig = {
         },
         {
             "name": "卷帘对比",
-            "show": true,
+            "show": false,
             "workName": "layerSplit",
             "closeDisableSelf": true,
             "openDisableAnothers": false,
