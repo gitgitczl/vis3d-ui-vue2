@@ -222,7 +222,7 @@ function getIntersectPosition(viewer, obj) {
     return pick.position;
 }
 
-// 获取圆上的点
+// 由两点获取圆上的点 
 function getCirclePoints(center, aimP, angle) {
     let dis = Cesium.Cartesian3.distance(center.clone(), aimP.clone());
     let circlePositions = [];
@@ -247,6 +247,8 @@ function getCirclePoints(center, aimP, angle) {
     circlePositions.unshift();
     return circlePositions;
 }
+
+// 由中心点和半径获取圆上的点
 
 /**
  * 
@@ -361,6 +363,12 @@ function computeAreaOfTriangle(pos1, pos2, pos3) {
     var c = Cesium.Cartesian3.distance(pos3, pos1);
     var S = (a + b + c) / 2;
     return Math.sqrt(S * (S - a) * (S - b) * (S - c));
+}
+
+// 计算坡度
+function getSlope(viewer,center){
+    if(!viewer || !center) return ;
+    
 }
 
 

@@ -146,7 +146,7 @@ export default {
           // 双击节点
           if (data.type == "group") return;
           if (data.plotType) {
-            /*   window.mapViewer.operatePlotTool.zoomToById(data.id); */
+            /* window.mapViewer.operatePlotTool.zoomToById(data.id); */
           } else {
             let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(
               data.id
