@@ -249,6 +249,9 @@ function getCirclePoints(center, aimP, angle) {
 }
 
 // 由中心点和半径获取圆上的点
+function getCirclePointsByRadius(){
+    
+}
 
 /**
  * 

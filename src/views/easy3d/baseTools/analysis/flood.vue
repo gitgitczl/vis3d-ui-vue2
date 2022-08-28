@@ -137,7 +137,7 @@ export default {
                 positions : polygonPositions,
                 extrudedHeight : new Cesium.CallbackProperty(function(){
                     return this.nowHeight
-                },false);
+                },false)
             }
         });
     }
