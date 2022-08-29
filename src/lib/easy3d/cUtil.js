@@ -249,8 +249,27 @@ function getCirclePoints(center, aimP, angle) {
 }
 
 // 由中心点和半径获取圆上的点
-function getCirclePointsByRadius(){
-    
+function getCirclePointsByRadius(viewer, opt) {
+    let { center, radius, angle } = opt || {};
+    viewer = viewer || window.viewer;
+    if (!center || !radius) return;
+    angle = angle || 60;
+    let positions = [];
+    // 局部坐标系到世界坐标系的矩阵
+    let mtx4 = Cesium.Transforms.eastNorthUpToFixedFrame(center.clone());
+    // 世界到局部
+    const mtx4_inverse = Cesium.Matrix4.inverse(mtx4, mtx4.clone());
+    const local_center = Cesium.Matrix4.multiplyByPoint(mtx4_inverse, center.clone(), new Cesium.Cartesian3());
+    let rposition = Cesium.Cartesian3.add(local_center, new Cesium.Cartesian3(0, radius, 0), new Cesium.Cartesian3());
+    for (let i = 0; i <= 360; i += angle) {
+        const radians = Cesium.Math.toRadians(angle);
+        const mtx3 = Cesium.Matrix3.fromRotationX(radians);
+        let newPosition = Cesium.Matrix3.multiplyByVector(mtx3, rposition, new Cesium.Cartesian3());
+        newPosition = Cesium.Matrix4.multiplyByPoint(mtx4, newPosition.clone(), new Cesium.Cartesian3());
+        positions.push(newPosition);
+    }
+    return positions;
+
 }
 
 /**
@@ -369,15 +388,53 @@ function computeAreaOfTriangle(pos1, pos2, pos3) {
 }
 
 // 计算坡度
-function getSlope(viewer,center){
-    if(!viewer || !center) return ;
-    
+function getSlopePosition(viewer, center) {
+    if (!viewer || !center) return;
+    let positions = getCirclePointsByRadius(viewer, {
+        center: center,
+        radius: 1,
+        angle: 10
+    });
+
+    let minH = Number.MAX_VALUE;
+    let centerH = getTerrainHeight(center.clone());
+    let step = -1;
+    for (let i = 0; i < positions.length; i++) {
+        let h = getTerrainHeight(positions[i]);
+        if (minH > h) {
+            minH = h;
+            step = i;
+        }
+    }
+    let startP;
+    let endP;
+    if (minH < centerH) {
+        startP = center.clone();
+        endP = positions[step].clone();
+    } else {
+        startP = positions[step].clone();
+        endP = center.clone();
+
+    }
+    let startCgtc = Cesium.Cartographic.fromCartesian(startP);
+    let endCgtc = Cesium.Cartographic.fromCartesian(endP);
+    startP = Cesium.Cartesian3.fromRadians(startCgtc.longitude, startCgtc.latitude, minH < centerH ? centerH : minH);
+    endP = Cesium.Cartesian3.fromRadians(endCgtc.longitude, endCgtc.latitude, minH < centerH ? minH : centerH);
+    let dis = Cesium.Cartesian3.distance(startP, endP);
+    let height = Math.abs(centerH - minH);
+    let sinAngle = height / dis;
+    let angle = Math.acos(sinAngle);
+    angle = Cesium.Math.toDegrees(angle);
+    return {
+        startP, endP, angle
+    };
 }
 
 
 
-
 export default {
+    getSlopePosition: getSlopePosition,
+    getCirclePointsByRadius: getCirclePointsByRadius,
     updatePositionsHeight: updatePositionsHeight,
     computeUniforms: computeUniforms,
     cartesianToLnglat: cartesianToLnglat,

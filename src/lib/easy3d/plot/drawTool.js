@@ -158,7 +158,6 @@
           // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
           if (opt.success) opt.success(entityObj, entity);
           if (that.endCreateFun) that.endCreateFun(entityObj, entity);
-          debugger
           if (opt.show == false) entityObj.setVisible(false);
           // 如果可以编辑 则绘制完成打开编辑 
           /* if (that.canEdit && that.intoEdit) {
