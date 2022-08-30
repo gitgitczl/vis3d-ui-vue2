@@ -84,6 +84,7 @@
         entityObj.attr = opt || {}; // 保存开始绘制时的属性
         // 开始绘制
         entityObj.start(function (entity) {
+          that.toolArr.push(entityObj);
           // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
           if (opt.success) opt.success(entityObj, entity);
           if (that.endCreateFun) that.endCreateFun(entityObj, entity);
@@ -96,8 +97,6 @@
             if (that.startEditFun) that.startEditFun(entityObj, entity);
             that.lastEntityObj = entityObj;
           }
-    
-          that.toolArr.push(entityObj);
         });
     
         this.lastStartEntityObj = entityObj;
@@ -154,6 +153,7 @@
         entityObj.attr = opt; // 保存开始绘制时的属性
         this.intoEdit = opt.intoEdit == undefined ? true : opt.intoEdit; // 绘制完成后 是否直接进入编辑（能否进入编辑 还得看 canEdit属性）
         entityObj.createByPositions(opt.positions, function (entity) {
+          that.toolArr.push(entityObj);
           entityObj.setStyle(opt.style); // 设置相关样式
           // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
           if (opt.success) opt.success(entityObj, entity);
@@ -166,7 +166,6 @@
             that.lastEntityObj = entityObj;
           } */
         });
-        this.toolArr.push(entityObj);
         return entityObj;
       }
       // 根据geojson构建entity

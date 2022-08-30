@@ -258,13 +258,13 @@ function getCirclePointsByRadius(viewer, opt) {
     // 局部坐标系到世界坐标系的矩阵
     let mtx4 = Cesium.Transforms.eastNorthUpToFixedFrame(center.clone());
     // 世界到局部
-    const mtx4_inverse = Cesium.Matrix4.inverse(mtx4, mtx4.clone());
+    const mtx4_inverse = Cesium.Matrix4.inverse(mtx4, new Cesium.Matrix4());
     const local_center = Cesium.Matrix4.multiplyByPoint(mtx4_inverse, center.clone(), new Cesium.Cartesian3());
-    let rposition = Cesium.Cartesian3.add(local_center, new Cesium.Cartesian3(0, radius, 0), new Cesium.Cartesian3());
+    let rposition = Cesium.Cartesian3.add(local_center, new Cesium.Cartesian3(radius, 0, 0), new Cesium.Cartesian3());
     for (let i = 0; i <= 360; i += angle) {
-        const radians = Cesium.Math.toRadians(angle);
-        const mtx3 = Cesium.Matrix3.fromRotationX(radians);
-        let newPosition = Cesium.Matrix3.multiplyByVector(mtx3, rposition, new Cesium.Cartesian3());
+        const radians = Cesium.Math.toRadians(i);
+        const mtx3 = Cesium.Matrix3.fromRotationZ(radians);
+        let newPosition = Cesium.Matrix3.multiplyByVector(mtx3, rposition.clone(), new Cesium.Cartesian3());
         newPosition = Cesium.Matrix4.multiplyByPoint(mtx4, newPosition.clone(), new Cesium.Cartesian3());
         positions.push(newPosition);
     }
@@ -388,12 +388,12 @@ function computeAreaOfTriangle(pos1, pos2, pos3) {
 }
 
 // 计算坡度
-function getSlopePosition(viewer, center) {
+function getSlopePosition(viewer, center, radius, angle) {
     if (!viewer || !center) return;
     let positions = getCirclePointsByRadius(viewer, {
         center: center,
-        radius: 1,
-        angle: 10
+        radius: radius || 10,
+        angle: angle || 10
     });
 
     let minH = Number.MAX_VALUE;
@@ -423,10 +423,10 @@ function getSlopePosition(viewer, center) {
     let dis = Cesium.Cartesian3.distance(startP, endP);
     let height = Math.abs(centerH - minH);
     let sinAngle = height / dis;
-    let angle = Math.acos(sinAngle);
-    angle = Cesium.Math.toDegrees(angle);
+    const slopeAngle = Math.acos(sinAngle);
+    const slope = Cesium.Math.toDegrees(slopeAngle);
     return {
-        startP, endP, angle
+        startP, endP, slope
     };
 }
 
