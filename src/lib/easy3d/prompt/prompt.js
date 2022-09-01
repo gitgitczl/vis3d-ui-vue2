@@ -38,15 +38,14 @@ class Prompt {
             }
         }
         this.opt = Object.assign(defaultOpt, opt);
+
+        // ====================== 创建弹窗内容 start ======================
         const mapid = this.viewer.container.id;
         this.isShow = this.opt.show == undefined ? true : this.opt.show; // 是否显示
-
         let anchorHtml = ``;
         let closeHtml = ``;
-
         const background = this.opt.style.background;
         const color = this.opt.style.color;
-
         if (this.opt.anchor) {
             anchorHtml += `
             <div class="prompt-anchor-container">
@@ -55,13 +54,10 @@ class Prompt {
             </div>
             `;
         }
-
         if (this.opt.closeBtn) { // 移动提示框 不显示关闭按钮
             closeHtml = `<a class="prompt-close" attr="${this.opt.id}" id="prompt-close-${this.opt.id}" href="#close">x</a>`;
         }
-
         let boxShadow = this.opt.style.boxShadow;
-       
         const promptId = "prompt-" + this.opt.id;
         const promptConenet = `
                 <!-- 文本内容 -->
@@ -82,7 +78,6 @@ class Prompt {
         this.promptDiv.innerHTML = promptConenet;
         let mapDom = window.document.getElementById(mapid);
         mapDom.appendChild(this.promptDiv);
-
         const clsBtn = window.document.getElementById(`prompt-close-${this.opt.id}`);
         let that = this;
         if (clsBtn) {
@@ -95,6 +90,8 @@ class Prompt {
         this.contentW = this.promptDom.offsetWidth; // 宽度
         this.contentH = this.promptDom.offsetHeight; // 高度
         this.position = this.transPosition(this.opt.position);
+        // ====================== 创建弹窗内容 end ======================
+
         if (promptType == 2) this.bindRender(); // 固定位置弹窗 绑定实时渲染 当到地球背面时 隐藏
         if (this.opt.show == false) this.hide();
         this.containerW = this.viewer.container.offsetWidth;
@@ -147,6 +144,15 @@ class Prompt {
         }, this);
     }
 
+    update(px, html) {
+        if (px instanceof Cesium.Cartesian3) {
+            this.position = px.clone();
+            px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, px);
+        }
+        if (px) this.setByPX(px);
+        if (html) this.setContent(html);
+    }
+
     // 判断是否在当前视野内
     isInView() {
         if (!this.position) return false;
@@ -192,14 +198,7 @@ class Prompt {
         let pc = window.document.getElementById(`prompt-content-${this.opt.id}`);
         pc.innerHTML = content;
     }
-    update(px, html) {
-        if (px instanceof Cesium.Cartesian3) {
-            this.position = px.clone();
-            px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, px);
-        }
-        if (px) this.setByPX(px);
-        if (html) this.setContent(html);
-    }
+
 
     setByPX(opt) {
         if (!opt) return;
@@ -216,6 +215,8 @@ class Prompt {
         if (Array.isArray(p)) {
             const posi = Cesium.Cartesian3.fromDegrees(p[0], p[1], p[2] || 0);
             position = posi.clone();
+        } if (p instanceof Cesium.Cartesian3) {
+            position = p.clone();
         } else { // 像素类型
             position = p;
         }

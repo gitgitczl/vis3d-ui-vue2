@@ -38,10 +38,17 @@ class PopupTooltipTool {
             // 如果当前实体绑定了气泡窗 则弹出气泡窗
             if (ent.popup == undefined) return;
             if (!ent.popupPrompt) {
-                ent.popupPrompt = that.createPrompt(ent, ent.popup);
+                let popup = {};
+                if (typeof (ent.popup) == "string") {
+                    popup.content = ent.popup;
+                } else {
+                    popup = Object.assign(popup, ent.popup);
+                }
+                popup.type = popup.type || 2; // 点击弹窗默认为固定点位弹窗
+                ent.popupPrompt = that.createPrompt(ent, popup, evt.position);
                 ent.popupPrompt.ent = ent; // 双向绑定
             }
-            if (ent.position) ent.popupPrompt.update(evt.position); // 除点状坐标外
+            if (!ent.position) ent.popupPrompt.update(evt.position); // 除点状坐标外
 
             let isvisible;
             if (ent.popup.constructor == String) {
@@ -67,7 +74,7 @@ class PopupTooltipTool {
                 ent = pick.id;
             }
 
-            
+
             /* 以下几种形式销毁弹窗
             1、未拾取到对象
             2、拾取到的对象不是上一个对象 */
@@ -89,7 +96,7 @@ class PopupTooltipTool {
             if (ent.tooltipPrompt) {
                 ent.tooltipPrompt.update(evt.endPosition); // 除点状坐标外 点状坐标的锚点 为创建时的位置
             } else {// 重新构建
-                ent.tooltipPrompt = that.createPrompt(ent, ent.tooltip,evt.endPosition);
+                ent.tooltipPrompt = that.createPrompt(ent, ent.tooltip, evt.endPosition);
             }
 
             let isvisible;
@@ -103,7 +110,7 @@ class PopupTooltipTool {
             that.lastTooltipPromptEnt = ent;
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
-    createPrompt(ent, promptAttr,px) {
+    createPrompt(ent, promptAttr, px) {
         let position;
         let defaultVal = JSON.parse(JSON.stringify(this.defaultVal));
         if (ent.billboard || ent.point || ent.model) {

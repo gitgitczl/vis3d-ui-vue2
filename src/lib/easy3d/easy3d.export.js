@@ -47,8 +47,6 @@ let animate = {
     FlowLine: rganimate.FlowLineMaterial
 }
 
-console.log("当前更新时间为：2022-07-07 17:40; \n ==== 数图科技 数图科技 ====");
-
 // 构建viewer
 class MapViewer {
     constructor(domId, opt) {

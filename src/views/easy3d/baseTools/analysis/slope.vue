@@ -2,7 +2,7 @@
   <div>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">
       <span @click="draw">绘制范围</span>
-      <span class="basic-analysis-btn-clear">清除</span>
+      <span @click="clear" class="basic-analysis-btn-clear">清除</span>
     </div>
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
       window.slopDrawTool.on("endCreate", function (entObj, ent) {
         // 创建完成后 打开控制面板
         const positions = entObj.getPositions();
+        /* that.loadSlopeGeometry(positions); */
         let newps = that.lerpPositions(positions);
         newps.slopPositions.forEach((p, index) => {
           let obj = cUtil.getSlopePosition(
@@ -35,6 +36,8 @@ export default {
           );
           let color = that.getColorBySlop(obj.slope);
           let line = that.createArrow([obj.startP, obj.endP], color);
+          let sp = obj.slope ? Number(obj.slope).toFixed(2) + "°" : "--";
+          line.popup = `<span>坡度为：${sp || "--"}</span>`;
           if (line) lines.push(line);
         });
         window.slopDrawTool.removeOne(entObj);
@@ -177,9 +180,33 @@ export default {
       ];
       let colorStep = Math.floor((slop / 75) * colors.length);
       let color = colors[colorStep] || colors[colors.length - 1];
-      let alpha = slop / 75;
-      color = Cesium.Color.fromCssColorString(color).withAlpha(alpha);
+      let alpha = slop / 100;
+      color = Cesium.Color.fromCssColorString("#CC0000").withAlpha(alpha);
       return color;
+    },
+    loadSlopeGeometry(positions) {
+      let ins = new Cesium.GeometryInstance({
+        geometry: new Cesium.PolygonGeometry({
+          polygonHierarchy: new Cesium.PolygonHierarchy(positions),
+        }),
+        attributes: {
+          /* color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+            Cesium.Color.ORANGE
+          ), */
+        },
+      });
+      window.viewer.scene.primitives.add(
+        new Cesium.GroundPrimitive({
+          geometryInstances: ins,
+          /*  appearance: new Cesium.PerInstanceColorAppearance({
+            translucent: false,
+            closed: true,
+          }), */
+          appearance: new Cesium.MaterialAppearance({
+            material: Cesium.Material.fromType("SlopeRamp"),
+          }),
+        })
+      );
     },
   },
 };
