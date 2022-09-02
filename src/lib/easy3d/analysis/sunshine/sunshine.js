@@ -9,10 +9,11 @@ class Sunshine {
         this._endTime = opt.endTime;
         if (this._endTime instanceof Date) this._endTime = Cesium.JulianDate.fromDate(this._endTime, new Cesium.JulianDate());
         this.oldShouldAnimate = this.viewer.clock.shouldAnimate;
-        this.multiplier = opt.multiplier || 2400;
+        this.multiplier = opt.multiplier || 60;
     }
     start() {
         this.viewer.clock.currentTime = this._startTime.clone();
+        this.viewer.clock.startTime =  this._startTime.clone();
         this.viewer.clock.shouldAnimate = true;
         this.viewer.clock.multiplier = this.multiplier;
         this.viewer.scene.globe.enableLighting = true;

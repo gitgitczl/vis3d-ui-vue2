@@ -15,7 +15,8 @@
           v-model="jzmHeight"
           placeholder="请输入内容"
         ></el-input-number>
-        <span class="volume-btn">点选高度</span>
+        <span> &nbsp;m </span>
+        <span class="volume-btn" @click="flfxSetHeight">点选高度</span>
       </li>
       <li>
         <label>挖方体积：</label>
@@ -23,15 +24,15 @@
           :controls="false"
           v-model="digTotalV"
         ></el-input-number>
-        <span> ㎡</span>
+        <span> &nbsp;㎡</span>
       </li>
       <li>
-        <label>围墙顶高：</label>
+        <label>填方体积：</label>
         <el-input-number
           :controls="false"
           v-model="fillTotalV"
         ></el-input-number>
-        <span> ㎡</span>
+        <span> &nbsp;㎡</span>
       </li>
     </ul>
   </div>
@@ -44,6 +45,7 @@ let bzmPlane = null;
 let bzdPoints = [];
 let polygonPositions;
 let setHeightHandler = null;
+
 export default {
   name: "Volume",
   data() {
@@ -136,15 +138,15 @@ export default {
     },
     flfxStartCompute(h) {
       let uniformData = cUtil.computeUniforms(polygonPositions);
-      this.createWall(
-        polygonPositions,
-        uniformData.minHeight,
-        h || uniformData.maxHeight
-      );
+      let mh = uniformData.maxHeight;
+      if (h && h > uniformData.maxHeight) {
+        mh = h;
+      }
+      this.createWall(polygonPositions, uniformData.minHeight, mh);
       this.digTotalV = this.digV(uniformData);
       this.fillTotalV = this.fillV(uniformData);
       // 构建标准面
-      this.createBZM(polygonPositions, uniformData.maxHeight);
+      this.createBZM(polygonPositions, mh);
     },
     // 挖方体积
     digV(data) {
@@ -243,7 +245,7 @@ export default {
     flfxSetHeight(callback) {
       let that = this;
       setHeightHandler = new Cesium.ScreenSpaceEventHandler(
-        viewer.scene.canvas
+        window.viewer.scene.canvas
       );
       setHeightHandler.setInputAction(function (evt) {
         //单击开始绘制
@@ -252,9 +254,9 @@ export default {
         let cartesian = viewer.scene.globe.pick(ray, viewer.scene);
         let lnglat = cUtil.cartesianToLnglat(cartesian);
         that.jzmHeight = lnglat[2];
-        that.setHeightHandler.destroy();
-        that.setHeightHandler = null;
         that.flfxStartCompute(that.jzmHeight);
+        setHeightHandler.destroy();
+        setHeightHandler = null;
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     },
   },

@@ -1,13 +1,12 @@
 <template>
   <Card
-    :width="342"
-    height="auto"
+    :size="size"
     :title="title"
     titleIcon="icon-fenxikongjian1"
     @close="close"
   >
     <div class="analysis-tomain" @click="tomain" v-show="analysisName !== ''">
-      返回 <span>{{ analysisName }}</span>
+      <a><<</a> <span>{{ analysisName }}</span>
     </div>
     <ul class="analysis-box basic-tool" v-show="analysisName == ''">
       <li
@@ -86,6 +85,7 @@ export default {
       type: String,
       default: "",
     },
+      size: {},
   },
   data() {
     return {
@@ -241,6 +241,8 @@ export default {
   justify-content: flex-start;
 }
 .analysis-tomain {
+  padding: 6px 4px;
+  border-bottom: 1px gray dashed;
   cursor: pointer;
 }
 </style>

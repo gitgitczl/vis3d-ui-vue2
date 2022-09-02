@@ -2,58 +2,102 @@
   <div>
     <p class="slope-toolip">提示：模拟设定时间范围内的太阳光效果</p>
     <div class="sunshine-item basic-time">
-      <label>日期选择：</label>
+      <label>开始时间：</label>
       <el-date-picker
-        v-model="date"
-        type="date"
-        placeholder="选择日期">
+        v-model="startTime"
+        type="datetime"
+        placeholder="选择日期"
+      >
       </el-date-picker>
     </div>
-    <div class="sunshine-item reset-slider basic-slider">
-      <label>时间选择：</label>
-      <el-slider v-model="time"></el-slider>
+    <div class="sunshine-item basic-time">
+      <label>结束时间：</label>
+      <el-date-picker v-model="endTime" type="datetime" placeholder="选择日期">
+      </el-date-picker>
     </div>
-    <div class="sunshine-item">
+    <div class="sunshine-item basic-time">
       <label>当前时间：</label>
-      <p>3月21日 15:23</p>
+      <el-date-picker v-model="nowTime" type="datetime" disabled>
+      </el-date-picker>
     </div>
     <div class="analysis-btn basic-analysis-bottom-btn">
-      <span>清除</span>
-      <span>播放</span>
+      <span @click="start">开始</span>
+      <span @click="end">结束</span>
     </div>
   </div>
 </template>
 
 <script>
 /* 日照分析 */
+let sunshine = null;
 export default {
-  name: 'Sunshine',
+  name: "Sunshine",
 
   data() {
     return {
-      date: '', // 日期
-      time: 0 // 时间
+      startTime: "",
+      endTime: "",
+      nowTime: "",
     };
   },
 
   mounted() {},
 
-  destroyed() {},
+  destroyed() {
+    if (sunshine) {
+      sunshine.destroy();
+      sunshine = null;
+    }
+  },
 
-  methods: {},
+  methods: {
+    start() {
+      let that = this;
+      if (!this.startTime || !this.endTime) return;
+      let startDate = new Date(this.startTime);
+      let endDate = new Date(this.endTime);
+
+      let startt = startDate.getTime();
+      let endtt = endDate.getTime();
+
+      if (startt > endtt) {
+        alert("开始时间不得大于结束时间！");
+        return;
+      }
+      if (!sunshine) {
+        sunshine = new this.easy3d.analysis.Sunshine(viewer, {
+          startTime: startDate,
+          endTime: endDate,
+        });
+      }
+      sunshine.start();
+
+      window.setInterval(function () {
+        let time = window.viewer.clock.currentTime;
+        let date = Cesium.JulianDate.toDate(time);
+        // console.log("date===>",date);
+        that.nowTime = date;
+      }, 100);
+    },
+    end() {
+      if (!sunshine) return;
+      sunshine.end();
+      this.nowTime = "";
+    },
+  },
 };
 </script>
 
 <style lang="less">
-.sunshine-item{
+.sunshine-item {
   display: flex;
   align-items: center;
-  label{
+  label {
     margin-right: 10px;
   }
-  .el-slider{
+  .el-slider {
     width: calc(100% - 80px);
   }
+  margin: 8px auto;
 }
-
 </style>
