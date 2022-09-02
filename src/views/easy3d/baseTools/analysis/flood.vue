@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flood-bar">
     <ul class="flood-body basic-flood basic-number">
       <li>
         <label>分析区域：</label>
@@ -39,8 +39,8 @@
       </li>
     </ul>
     <div class="analysis-btn basic-analysis-btn">
-      <span @click="clear">清除</span>
       <span @click="start">开始分析</span>
+      <span @click="clear" class="basic-analysis-btn-clear">清除</span>
     </div>
   </div>
 </template>
@@ -57,60 +57,73 @@ export default {
     return {
       minHeight: 0, // 最低高度
       maxHeight: 0, // 最大高度
-      speed: 0, // 淹没速度
-      nowHeight : 0
+      speed: 1, // 淹没速度
+      nowHeight: 0,
     };
   },
   mounted() {
     let that = this;
     if (!window.floodDrawTool)
-        window.floodDrawTool = new this.easy3d.DrawTool(window.viewer, {
-            canEdit: false,
-        });
+      window.floodDrawTool = new this.easy3d.DrawTool(window.viewer, {
+        canEdit: true,
+      });
 
+    window.floodDrawTool.on("endCreate", function (entObj, ent) {
+      // 创建完成后 打开控制面板
+    });
+    window.floodDrawTool.on("startEdit", function (entObj, ent) {
+      // 开始编辑
+    });
+    window.floodDrawTool.on("endEdit", function (entObj, ent) {
+      // 编辑完成后
+      polygonPositions = entObj.getPositions();
+      let uniformData = cUtil.computeUniforms(polygonPositions, 10);
+      that.minHeight = Number(uniformData.minHeight).toFixed(2);
+      that.maxHeight = Number(uniformData.maxHeight).toFixed(2);
+    });
   },
   destroyed() {
-      this.clear()
-      window.floodDrawTool.destroy();
-      window.floodDrawTool = null;
+    this.clear();
+    window.floodDrawTool.destroy();
+    window.floodDrawTool = null;
   },
   methods: {
-    clear(){
-        if(interVal){
-            window.clearInterVal(interVal);
-            interVal = null;
-        }
-        if(window.floodDrawTool){
-            window.floodDrawTool.removeAll();
-            entObj = null;
-        }
-        if(floodPolygon){
-            window.entities.remove(floodPolygon);
-            floodPolygon = null;
-        }
-        this.minHeight = 0;
-        this.maxHeight = 0;
-        this.speed = 0;
-        this.nowHeight = 0;
+    clear() {
+      if (interVal) {
+        window.clearInterval(interVal);
+        interVal = null;
+      }
+      if (window.floodDrawTool) {
+        window.floodDrawTool.removeAll();
+      }
+      if (floodPolygon) {
+        window.viewer.entities.remove(floodPolygon);
+        floodPolygon = null;
+      }
+      this.minHeight = 0;
+      this.maxHeight = 0;
+      this.speed = 1;
+      this.nowHeight = 0;
     },
-    start(){
-        if(!polygonPositions) return ;
-        let uniformData = cUtil.computeUniforms(polygonPositions);
-        that.minHeight = uniformData.minHeight;
-        that.maxHeight = uniformData.maxHeight;
-        window.floodDrawTool.removeOne(entObj);
-        floodPolygon = that.createFloodPolygon();
-        if(!floodPolygon) return ;
-
-        this.nowHeight = this.minHeight;
-        let that = this;
-        interVal = window.setInterval(()=>{
-            if(that.nowHeight >=that.maxHeight){
-                that.nowHeight = that.maxHeight
-                return;
-            }
-            that.nowHeight += 0.1 * that.speed;
-        },100);
+    start() {
+      if (!polygonPositions) return;
+      window.floodDrawTool.removeAll();
+      if (floodPolygon) {
+        window.viewer.entities.remove(floodPolygon);
+        floodPolygon = null;
+      }
+      floodPolygon = this.createFloodPolygon();
+      if (!floodPolygon) return;
+      let that = this;
+      let nh = this.minHeight;
+      interVal = window.setInterval(() => {
+        if (that.nowHeight >= that.maxHeight) {
+          that.nowHeight = that.maxHeight;
+          return;
+        }
+        nh += 0.1 * that.speed;
+        that.nowHeight = Number(nh).toFixed(2);
+      }, 100);
     },
     draw() {
       if (!window.floodDrawTool) return;
@@ -124,24 +137,23 @@ export default {
           outlineColor: "#ff0000",
           heightReference: 1,
         },
-        success:function(entObj){
-            polygonPositions = entObj.getPositions();
-            window.floodDrawTool.removeOne(entObj);
-        }
       });
     },
     // 构建淹没面
-    createFloodPolygon(){
-        return window.viewer.entities.add({
-            polygon : {
-                positions : polygonPositions,
-                extrudedHeight : new Cesium.CallbackProperty(function(){
-                    return this.nowHeight
-                },false)
-            }
-        });
-    }
-
+    createFloodPolygon() {
+      let that = this;
+      return window.viewer.entities.add({
+        polygon: {
+          hierarchy: polygonPositions,
+          material: Cesium.Color.BLUE.withAlpha(0.5),
+          height: 0,
+          perPositionHeight: true,
+          extrudedHeight: new Cesium.CallbackProperty(function () {
+            return that.nowHeight;
+          }, false)
+        },
+      });
+    },
   },
 };
 </script>
@@ -167,5 +179,8 @@ export default {
       cursor: pointer;
     }
   }
+}
+.flood-bar {
+  margin-top: 10px;
 }
 </style>
