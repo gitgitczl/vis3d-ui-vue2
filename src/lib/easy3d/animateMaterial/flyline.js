@@ -27,8 +27,12 @@ FlyLineMaterial.prototype.getValue = function (time, result) {
 }
 FlyLineMaterial.prototype.equals = function (other) {
     return this === other ||
-        (other instanceof FlyLineMaterial &&
-            Cesium.Property.equals(this._color, other._color))
+        (
+            other instanceof FlyLineMaterial && 
+            Cesium.Property.equals(this._color, other._color) && 
+            this._image._value == other._image._value && 
+            this.repeat.equals(other.repeat)
+        );
 }
 
 export default FlyLineMaterial;

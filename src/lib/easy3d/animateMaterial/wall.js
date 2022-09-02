@@ -29,8 +29,12 @@ AnimateWall.prototype.getValue = function (time, result) {
 }
 AnimateWall.prototype.equals = function (other) {
   return this === other ||
-    (other instanceof AnimateWall &&
-      Cesium.Property.equals(this._color, other._color))
+        (
+            other instanceof AnimateWall && 
+            Cesium.Property.equals(this._color, other._color) && 
+            this._image._value == other._image._value && 
+            this.repeat.equals(other.repeat)
+        );
 }
 
 

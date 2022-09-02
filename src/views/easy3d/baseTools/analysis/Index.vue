@@ -6,7 +6,10 @@
     titleIcon="icon-fenxikongjian1"
     @close="close"
   >
-    <ul class="analysis-box basic-tool">
+    <div class="analysis-tomain" @click="tomain" v-show="analysisName !== ''">
+      返回 <span>{{ analysisName }}</span>
+    </div>
+    <ul class="analysis-box basic-tool" v-show="analysisName == ''">
       <li
         v-for="(item, index) in btnlist"
         :key="index"
@@ -17,30 +20,33 @@
         <label>{{ item.name }}</label>
       </li>
     </ul>
-    <!-- 日照分析 -->
-    <Sunshine v-show="changeAnalysisType === 'sunshine'" />
-    <!-- 可视域分析 -->
-    <VisualField v-show="changeAnalysisType === 'visualField'" />
-    <!-- 方量分析 -->
-    <Volume v-show="changeAnalysisType === 'volume'" />
-    <!-- 淹没分析 -->
-    <Flood v-show="changeAnalysisType === 'flood'" />
-    <!-- 地形开挖 -->
-    <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" />
-    <!-- 地表透明 -->
-    <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" />
-    <!-- 坡度坡向 -->
-    <Slope v-show="changeAnalysisType === 'slope'" />
-    <!-- 模型剖切 -->
-    <ModelClip v-show="changeAnalysisType === 'modelClip'" />
-    <!-- 模型压平 -->
-    <ModelFlat v-show="changeAnalysisType === 'modelFlat'" />
-    <!-- 限高分析 -->
-    <HeightLimit v-show="changeAnalysisType === 'heightLimit'" />
-    <!-- 通视分析 -->
-    <Insight v-show="changeAnalysisType === 'insight'" />
-    <!-- 等高线 -->
-    <Contour v-show="changeAnalysisType === 'contour'" />
+
+    <div>
+      <!-- 日照分析 -->
+      <Sunshine v-show="changeAnalysisType === 'sunshine'" />
+      <!-- 可视域分析 -->
+      <VisualField v-show="changeAnalysisType === 'visualField'" />
+      <!-- 方量分析 -->
+      <Volume v-show="changeAnalysisType === 'volume'" />
+      <!-- 淹没分析 -->
+      <Flood v-show="changeAnalysisType === 'flood'" />
+      <!-- 地形开挖 -->
+      <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" />
+      <!-- 地表透明 -->
+      <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" />
+      <!-- 坡度坡向 -->
+      <Slope v-show="changeAnalysisType === 'slope'" />
+      <!-- 模型剖切 -->
+      <ModelClip v-show="changeAnalysisType === 'modelClip'" />
+      <!-- 模型压平 -->
+      <ModelFlat v-show="changeAnalysisType === 'modelFlat'" />
+      <!-- 限高分析 -->
+      <HeightLimit v-show="changeAnalysisType === 'heightLimit'" />
+      <!-- 通视分析 -->
+      <Insight v-show="changeAnalysisType === 'insight'" />
+      <!-- 等高线 -->
+      <Contour v-show="changeAnalysisType === 'contour'" />
+    </div>
   </Card>
 </template>
 
@@ -73,7 +79,7 @@ export default {
     TerrainExcavate,
     VisualField,
     Volume,
-    HeightLimit
+    HeightLimit,
   },
   props: {
     title: {
@@ -83,6 +89,7 @@ export default {
   },
   data() {
     return {
+      analysisName: "",
       btnlist: [
         {
           name: "日照分析",
@@ -145,7 +152,7 @@ export default {
           type: "contour",
         },
       ],
-      changeAnalysisType: '',
+      changeAnalysisType: "",
     };
   },
 
@@ -157,11 +164,17 @@ export default {
       this.$emit("close", "analysis");
     },
 
+    tomain() {
+      this.analysisName = "";
+      this.$set(this, "changeAnalysisType", "");
+    },
+
     /**
      * 选择空间分析
-     * @param {Object} data 
+     * @param {Object} data
      */
     onChangeAnalysis(data) {
+      this.analysisName = data.name;
       this.$set(this, "changeAnalysisType", data.type);
     },
   },
@@ -195,20 +208,20 @@ export default {
     }
   }
 }
-.slope-toolip{
+.slope-toolip {
   font-size: 12px;
   margin: 15px 0;
-  li{
+  li {
     display: flex;
     flex-wrap: wrap;
-    color: #6D748A;
+    color: #6d748a;
   }
 }
-.analysis-btn{
+.analysis-btn {
   display: flex;
   justify-content: flex-end;
   margin-top: 15px;
-  span{
+  span {
     height: 32px;
     padding: 0 15px;
     box-sizing: border-box;
@@ -219,12 +232,15 @@ export default {
     justify-content: center;
     cursor: pointer;
     margin-right: 7px;
-    &:last-child{
+    &:last-child {
       margin-right: 0;
     }
   }
 }
-.analysis-top-btn{
+.analysis-top-btn {
   justify-content: flex-start;
+}
+.analysis-tomain {
+  cursor: pointer;
 }
 </style>

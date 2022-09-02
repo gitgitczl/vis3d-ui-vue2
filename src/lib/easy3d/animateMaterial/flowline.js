@@ -31,7 +31,12 @@ FlowLineMaterial.prototype.getValue = function (time, result) {
 
 FlowLineMaterial.prototype.equals = function (other) {
     return this === other ||
-        other instanceof FlowLineMaterial && Cesium.Property.equals(this._color, other._color);
+        (
+            other instanceof FlowLineMaterial && 
+            Cesium.Property.equals(this._color, other._color) && 
+            this._image._value == other._image._value && 
+            this.repeat.equals(other.repeat)
+        );
 };
 
 
