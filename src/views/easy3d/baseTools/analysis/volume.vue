@@ -113,7 +113,7 @@ export default {
       });
     },
     clear() {
-      if (!window.volumeDrawTool) {
+      if (window.volumeDrawTool) {
         window.volumeDrawTool.removeAll();
       }
       if (wall) {
