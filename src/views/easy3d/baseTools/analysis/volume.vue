@@ -68,9 +68,9 @@ export default {
         // 开始编辑
       });
       window.volumeDrawTool.on("endEdit", function (entObj, ent) {
+        polygonPositions = entObj.getPositions();
         // 编辑完成后
         that.clear();
-        polygonPositions = entObj.getPositions();
         that.flfxStartCompute(that.jzmHeight);
       });
     }
@@ -138,26 +138,33 @@ export default {
     },
     flfxStartCompute(h) {
       let uniformData = cUtil.computeUniforms(polygonPositions);
-      let mh = uniformData.maxHeight;
-      if (h && h > uniformData.maxHeight) {
-        mh = h;
+      let minh = uniformData.minHeight;
+      let maxh = uniformData.maxHeight;
+      if (h) {
+        if (h > maxh) {
+          maxh = h;
+        }
+        if (h < minh) {
+          minh = h;
+        }
       }
-      this.createWall(polygonPositions, uniformData.minHeight, mh);
-      this.digTotalV = this.digV(uniformData);
-      this.fillTotalV = this.fillV(uniformData);
+
+      this.createWall(polygonPositions, minh, maxh);
+      this.digTotalV = this.digV(uniformData,minh);
+      this.fillTotalV = this.fillV(uniformData,maxh);
       // 构建标准面
-      this.createBZM(polygonPositions, mh);
+      this.createBZM(polygonPositions, h || uniformData.minHeight);
     },
     // 挖方体积
-    digV(data) {
+    digV(data,minh) {
       if (!data) return;
       var uniforms = data.uniformArr;
-      if (!uniforms || uniforms.length == 0 || !data.minHeight) return;
+      if (!uniforms || uniforms.length == 0 || !minh) return;
       var totalV = 0;
       for (var i = 0; i < uniforms.length; i++) {
         var item = uniforms[i];
-        if (item.height > data.minHeight) {
-          var v = item.area * (item.height - data.minHeight);
+        if (item.height > minh) {
+          var v = item.area * (item.height - minh);
           totalV += v;
         }
       }
@@ -165,15 +172,15 @@ export default {
       return totalV;
     },
     // 填方体积
-    fillV(data) {
+    fillV(data,maxh) {
       if (!data) return;
       var uniforms = data.uniformArr;
-      if (!uniforms || uniforms.length == 0 || !data.maxHeight) return;
+      if (!uniforms || uniforms.length == 0 || !maxh) return;
       var totalV = 0;
       for (var i = 0; i < uniforms.length; i++) {
         var item = uniforms[i];
-        if (data.maxHeight > item.height) {
-          var v = item.area * (data.maxHeight - item.height);
+        if (maxh > item.height) {
+          var v = item.area * (maxh - item.height);
           totalV += v;
         }
       }
