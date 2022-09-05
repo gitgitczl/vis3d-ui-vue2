@@ -118,13 +118,13 @@ export default {
         // 开始编辑
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.objId);
-        that.easy3d.workControl.openToolByName("plotStyle");
+        window.workControl.openToolByName("plotStyle");
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
         nowPlotEntObj = null;
         let lnglats = entObj.getPositions(true);
-        that.easy3d.workControl.closeToolByName("plotStyle");
+        window.workControl.closeToolByName("plotStyle");
       });
     }
   },

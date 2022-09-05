@@ -186,12 +186,12 @@ export default {
       roamTool.on("startRoam", function () {
         // 开始漫游时 显示漫游面板
         that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
-        that.easy3d.workControl.openToolByName("roamStyle");
+        window.workControl.openToolByName("roamStyle");
       });
       roamTool.on("endRoam", function () {
         // 结束漫游时 显示漫游列表
         that.$store.commit("setNowRoamAttr", {});
-        that.easy3d.workControl.closeToolByName("roamStyle");
+        window.workControl.closeToolByName("roamStyle");
       });
       roamTool.on("roaming", function () {
         // 每秒回调一次
@@ -352,7 +352,7 @@ export default {
         roamTool.startRoam(roams[0].roam);
       }
       // 隐藏对应线
-      let eo = roamDrawTool.getEntityObjById(attr.plotId);
+      let eo = roamDrawTool.getEntityObjByObjId(attr.plotId);
       if (eo.entityObj) eo.entityObj.setVisible(false);
       lastRouteObj = eo;
     },
@@ -361,7 +361,7 @@ export default {
       roamTool.endRoam();
       window.nowRoam = null;
       // 隐藏对应线
-      let eo = roamDrawTool.getEntityObjById(attr.plotId);
+      let eo = roamDrawTool.getEntityObjByObjId(attr.plotId);
       if (eo.entityObj) {
         roamDrawTool.startEditOne(eo.entityObj);
       }

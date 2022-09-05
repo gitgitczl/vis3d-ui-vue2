@@ -22,7 +22,7 @@
 <script>
 import Head from "@/views/Head.vue";
 import Sidebar from "@/views/easy3d/sidebar.vue";
-
+import workControl from "./workControl.js";
 
 window.viewer = null;
 window.mapViewer = null;
@@ -56,9 +56,10 @@ export default {
     this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
 
+    window.workControl = workControl; // 绑定到全局
     // 读取配置文件中配置 并构建相应组件标签
     if (window.workConfig.panel)
-      this.easy3d.workControl.init(window.workConfig, function (list) {
+      workControl.init(window.workConfig, function (list) {
         that.componentsArr = list;
       });
 
@@ -83,7 +84,6 @@ export default {
       });
     },
 
-
     // =================== 监听操作图层的开启关闭 =======================
     setLayerVisible(attr, visible) {
       attr = attr || {};
@@ -98,9 +98,9 @@ export default {
         if (!name) return;
         if (!data.openState) {
           // 关闭某个模块
-          this.easy3d.workControl.closeToolByName(name);
+          workControl.closeToolByName(name);
         } else {
-          this.easy3d.workControl.openToolByName(name);
+          workControl.openToolByName(name);
         }
       },
       deep: true,
@@ -143,11 +143,9 @@ export default {
     // 监听 是否打印
     "$store.state.map3d.isPrintMap": function (res) {
       if (res) {
-       
         this.$store.commit("setIsPrintMap", false);
       }
     },
-
   },
 };
 </script>
