@@ -15,7 +15,6 @@ var CesiumEvent = Event
  */
 var CesiumNavigation = function (viewerCesiumWidget) {
   initialize.apply(this, arguments)
-
   this._onDestroyListeners = []
 }
 
