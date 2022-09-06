@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { knockout, SvgPathBindingHandler } from 'cesium/Cesium.js'
+let cesium = require('cesium/Cesium.js');
+let { knockout, SvgPathBindingHandler } = cesium;
 import KnockoutMarkdownBinding from './KnockoutMarkdownBinding'
 import KnockoutHammerBinding from './KnockoutHammerBinding'
 var Knockout = knockout

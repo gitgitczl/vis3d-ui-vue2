@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { defined, Ray, Cartesian3, Cartographic, ReferenceFrame, SceneMode } from 'cesium/Cesium.js'
+let cesium = require('cesium/Cesium.js');
+let { defined, Ray, Cartesian3, Cartographic, ReferenceFrame, SceneMode } = cesium;
 
 var Utils = {}
 

@@ -22,7 +22,7 @@ import Print from 'vue-print-nb'
 Vue.use(Print);
 
 window.cUtil = cUtil;
-var cesium = require('cesium/Cesium.js');
+let cesium = require('cesium/Cesium.js');
 var widgets = require('cesium/Widgets/widgets.css');
 
 Vue.prototype.Cesium = window.Cesium = cesium;

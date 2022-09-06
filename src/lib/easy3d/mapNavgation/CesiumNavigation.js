@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-/* let Cesium = require('cesium/Cesium.js'); */
-import { defined, Event, knockout, DeveloperError } from 'cesium/Cesium.js'
+let cesium = require('cesium/Cesium.js');
+let { defined, Event, knockout, DeveloperError } = cesium;
 import registerKnockoutBindings from './core/registerKnockoutBindings'
 import DistanceLegendViewModel from './viewModels/DistanceLegendViewModel'
 import NavigationViewModel from './viewModels/NavigationViewModel'
@@ -100,7 +100,7 @@ function initialize(viewerCesiumWidget, options) {
   this.distanceLegendDiv.setAttribute('id', 'distanceLegendDiv')
 
   let distanceStyleAttr = (options.distanceLegend && options.distanceLegend.style) || "leftBottom";
-  distanceStyleAttr = (typeof(distanceStyleAttr) == "string") ? getDistanceStyleByType(distanceStyleAttr) : distanceStyleAttr;
+  distanceStyleAttr = (typeof (distanceStyleAttr) == "string") ? getDistanceStyleByType(distanceStyleAttr) : distanceStyleAttr;
 
   this.distanceLegendViewModel = DistanceLegendViewModel.create({
     container: this.distanceLegendDiv,
@@ -115,7 +115,7 @@ function initialize(viewerCesiumWidget, options) {
   container.appendChild(this.navigationDiv)
 
   let compassStyleAttr = (options.distanceLegend && options.distanceLegend.style) || "leftBottom";
-  compassStyleAttr = (typeof(compassStyleAttr) == "string") ? getCompassStyleByType(compassStyleAttr) : compassStyleAttr;
+  compassStyleAttr = (typeof (compassStyleAttr) == "string") ? getCompassStyleByType(compassStyleAttr) : compassStyleAttr;
 
   this.navigationViewModel = NavigationViewModel.create({
     container: this.navigationDiv,

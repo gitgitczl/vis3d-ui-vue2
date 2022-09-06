@@ -1,4 +1,5 @@
-import { defined, DeveloperError, knockout } from 'cesium/Cesium.js'
+let cesium = require('cesium/Cesium.js');
+let { defined, DeveloperError, knockout } = cesium;
 
 var Knockout = knockout;
 /**

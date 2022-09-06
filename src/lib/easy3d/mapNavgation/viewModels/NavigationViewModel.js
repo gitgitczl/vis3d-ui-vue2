@@ -1,4 +1,5 @@
-import { defined, Math as CesiumMath, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } from 'cesium/Cesium.js'
+let cesium = require('cesium/Cesium.js');
+let { defined, Math, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } = cesium;
 import loadView from '../core/loadView'
 import ResetViewNavigationControl from './ResetViewNavigationControl'
 import ZoomNavigationControl from './ZoomNavigationControl'
@@ -6,7 +7,7 @@ import svgCompassOuterRing from '../svgPaths/svgCompassOuterRing'
 import svgCompassGyro from '../svgPaths/svgCompassGyro'
 import svgCompassRotationMarker from '../svgPaths/svgCompassRotationMarker'
 import Utils from '../core/Utils'
-// var CesiumMath = Math;
+// var Math = Math;
 var Knockout = knockout;
 
 var NavigationViewModel = function (options) {
@@ -263,7 +264,7 @@ NavigationViewModel.prototype.handleDoubleClick = function (viewModel, e) {
   camera.flyToBoundingSphere(focusBoundingSphere, {
     offset: new HeadingPitchRange(0,
       // do not use camera.pitch since the pitch at the center/target is required
-      CesiumMath.PI_OVER_TWO - Cartesian3.angleBetween(
+      Math.PI_OVER_TWO - Cartesian3.angleBetween(
         surfaceNormal,
         camera.directionWC
       ),
@@ -363,7 +364,7 @@ function orbit(viewModel, compassElement, cursorVector) {
     var rate = (viewModel.orbitCursorOpacity - 0.5) * 2.5 / 1000
     var distance = deltaT * rate
 
-    var angle = viewModel.orbitCursorAngle + CesiumMath.PI_OVER_TWO
+    var angle = viewModel.orbitCursorAngle + Math.PI_OVER_TWO
     var x = Math.cos(angle) * distance
     var y = Math.sin(angle) * distance
 
@@ -403,7 +404,7 @@ function orbit(viewModel, compassElement, cursorVector) {
 
   function updateAngleAndOpacity(vector, compassWidth) {
     var angle = Math.atan2(-vector.y, vector.x)
-    viewModel.orbitCursorAngle = CesiumMath.zeroToTwoPi(angle - CesiumMath.PI_OVER_TWO)
+    viewModel.orbitCursorAngle = Math.zeroToTwoPi(angle - Math.PI_OVER_TWO)
 
     var distance = Cartesian2.magnitude(vector)
     var maxDistance = compassWidth / 2.0
@@ -508,7 +509,7 @@ function rotate(viewModel, compassElement, cursorVector) {
     var angle = Math.atan2(-vector.y, vector.x)
 
     var angleDifference = angle - viewModel.rotateInitialCursorAngle
-    var newCameraAngle = CesiumMath.zeroToTwoPi(viewModel.rotateInitialCameraAngle - angleDifference)
+    var newCameraAngle = Math.zeroToTwoPi(viewModel.rotateInitialCameraAngle - angleDifference)
 
     var camera = viewModel.terria.scene.camera
 

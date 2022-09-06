@@ -1,4 +1,6 @@
-﻿import { defined, Ray, IntersectionTests, Cartesian3, SceneMode } from 'cesium/Cesium.js'
+﻿let cesium = require('cesium/Cesium.js');
+
+let { defined, Ray, IntersectionTests, Cartesian3, SceneMode } = cesium;
 import NavigationControl from './NavigationControl'
 import Utils from '../core/Utils'
 
