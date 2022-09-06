@@ -22,7 +22,7 @@ import CesiumNavigation from "./mapNavgation/CesiumNavigation"
 import './mapNavgation/styles/cesium-navigation.css'
 
 import easy3dView from "./viewRoate";
-
+import LayerSplit from "./layerSplit/layerSplit";
 // 引入天气
 import fog from "./weather/fog";
 import rain from "./weather/rain";
@@ -274,5 +274,5 @@ class MapViewer {
 
 
 export default {
-    cUtil, cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, ZoomTool, OverviewMap, weather, animate, analysis
+    cUtil, cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, ZoomTool, OverviewMap, weather, animate, analysis, LayerSplit
 }

@@ -8,7 +8,6 @@
 </template>
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
-/* import LayerSplit from "@/lib/easy3d/layerSplit/layerSplit.js"; */
 let layerSplit = null;
 let lastLayerAttr = {}; // 当前操作的图层
 export default {
@@ -54,7 +53,7 @@ export default {
     lastLayerAttr = this.layerList[0];
 
     if (!layerSplit) {
-      layerSplit = new LayerSplit(window.viewer, {
+      layerSplit = new this.easy3d.LayerSplit(window.viewer, {
         layer: lyrObj._layer,
       });
     }
