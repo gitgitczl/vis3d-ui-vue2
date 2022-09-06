@@ -8,7 +8,7 @@
 </template>
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
-import LayerSplit from "@/lib/easy3d/layerSplit/layerSplit.js";
+/* import LayerSplit from "@/lib/easy3d/layerSplit/layerSplit.js"; */
 let layerSplit = null;
 let lastLayerAttr = {}; // 当前操作的图层
 export default {
@@ -29,7 +29,7 @@ export default {
   },
 
   mounted() {
-
+    return;
     let operateLayers = this.$store.state.map3d.operateLayers;
     let res = this.getAllLayers(operateLayers);
 
