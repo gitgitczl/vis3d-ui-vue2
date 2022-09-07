@@ -53,6 +53,7 @@ export default {
       window.mapConfig
     ));
     window.viewer = mapViewer._viewer;
+
     this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
 
@@ -67,6 +68,8 @@ export default {
     if (!zoomTool) {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
+
+   
   },
   destroyed() {
     if (window.viewer) {
@@ -89,6 +92,8 @@ export default {
       attr = attr || {};
       window.mapViewer.operateLayerTool.setVisible(attr.id, visible);
     },
+
+    
   },
   watch: {
     // 监听工具面板的开启

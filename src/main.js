@@ -5,10 +5,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import less from 'less'
-/* import easy3d from "easygis-3d/easy3d/easy3d.export.js" */
+import easy3d from "@/lib/easy3d/easy3d.export.js"
 // 本地加密类库
-import "@/lib/easy3d-min/easy3d.css"
-import easy3d from "@/lib/easy3d-min/easy3d.min.js"
+/* import "@/lib/easy3d-min/easy3d.css"
+import easy3d from "@/lib/easy3d-min/easy3d.min.js" */
 import store from './store';
 // 拖拽组件注册
 import VueDragResize from 'vue-drag-resize'

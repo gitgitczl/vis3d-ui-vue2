@@ -61,7 +61,7 @@ class Prompt {
         const promptId = "prompt-" + this.opt.id;
         const promptConenet = `
                 <!-- 文本内容 -->
-                <div class="prompt-content-container" style="background:${background} !important;color:${color} !important;box-shadow:${boxShadow}">
+                <div class="prompt-content-container" style="background:${background} !important;color:${color} !important;box-shadow:${boxShadow} !important">
                     <div class="prompt-content" id="prompt-content-${this.opt.id}">
                         ${this.opt.content}
                     </div>

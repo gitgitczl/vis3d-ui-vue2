@@ -1,7 +1,7 @@
 import $ from "jquery";
 class RightTool {
     constructor(viewer, opt) {
-        
+
         opt = opt || {};
         const defaultVal = {
             lnglat: true,
@@ -29,11 +29,11 @@ class RightTool {
 
 
         // 点击其它地方 关闭面板
-        $(document).off("click").on("click",function(){
+        $(document).off("click").on("click", function () {
             $(".easy3d-right-tool").hide();
         });
 
-        $(".easy3d-right-tool").click(function(event){
+        $(".easy3d-right-tool").click(function (event) {
             event.stopPropagation();    //  阻止事件冒泡
         });
 
@@ -185,10 +185,10 @@ class RightTool {
         });
     }
 
-    refreshDepthVal(){
+    refreshDepthVal() {
         const oldDepth = this.viewer.scene.globe.depthTestAgainstTerrain;
         let depthVal = !oldDepth ? "深度检测（开）" : "深度检测（关）";
-        $(`#right-tool-depth-${this.randomId}`).html(depthVal); 
+        $(`#right-tool-depth-${this.randomId}`).html(depthVal);
     }
 
     bindHandler() {
@@ -202,7 +202,7 @@ class RightTool {
             if (pick && pick.id && pick.id instanceof Cesium.Entity) {
                 ent = pick.id;
             }
-            if(ent) return ; // 控制不能在已绘制的地方进行右键弹出面板
+            if (ent) return; // 控制不能在已绘制的地方进行右键弹出面板
 
             that.refreshDepthVal();
             const px = evt.position;
@@ -253,6 +253,22 @@ class RightTool {
         `;
         $("body").append(html);
         $(`#easy3d-right-tool-shadow-${this.randomId}`).show();
+    }
+
+    // 自主创建
+    append(opt) {
+        let id = opt.id || new Date().getTime();
+        let html = `
+            <li id="right-tool-${id}">
+                ${opt.content}
+            </li>
+        `;
+        $(`#easy3d-right-tool-${this.randomId} ul`).append(html);
+        $(`#right-tool-${id}`).on("click", function () {
+            if (opt.click) opt.click($(this));
+        });
+
+        
     }
 }
 
