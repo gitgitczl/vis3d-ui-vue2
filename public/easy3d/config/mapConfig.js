@@ -2,12 +2,12 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            "x": 102.4788862137766,
-            "y": 29.931350308027575,
-            "z": 5170.455910025957,
-            "heading": 17.659339313895533,
-            "pitch": -35.18050595942522,
-            "roll": 359.99460755059573,
+            "x": 116.49147330478236,
+            "y": 30.082887908416023,
+            "z": 242.48342032344797,
+            "heading": 336.78563195198035,
+            "pitch": -24.917567388838943,
+            "roll": 359.9997916424982,
             "duration": 0
         },
         "worldAnimate": false,
@@ -35,7 +35,7 @@ window.mapConfig = {
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
-            "show": true
+            "show": false
         }
     },
     "baseLayers": [
@@ -226,14 +226,14 @@ window.mapConfig = {
                     "center": {
                         "z": 45
                     },
-                    "maximumScreenSpaceError": 64
+                    "maximumScreenSpaceError": 1
                 },
                 {
                     "name": "某某监区",
                     "type": "3dtiles",
                     "url": "http://localhost/jc/Production_5.json",
                     "show": true,
-                    "maximumScreenSpaceError": 64
+                    "maximumScreenSpaceError": 1
                 },
                 {
                     "name": "长江大桥",

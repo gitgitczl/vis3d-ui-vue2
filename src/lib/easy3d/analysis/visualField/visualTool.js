@@ -58,7 +58,6 @@ class VisualTool {
                     that.prompt = null;
                 }
             }
-
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {
             // 移动时绘制线

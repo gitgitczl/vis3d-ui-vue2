@@ -48,7 +48,7 @@ class VisualField {
         // 添加后处理
         this._stage = undefined;
         this._stageDirty = true;
-       
+
         this.updateCamera();
 
         // 创建一个点光源
@@ -209,10 +209,16 @@ class VisualField {
         // 视锥体宽高比
         const horizontalFovRadians = Cesium.Math.toRadians(this._horizontalFov);
         const verticalFovRadians = Cesium.Math.toRadians(this._verticalFov);
-         this._lightCamera.frustum.aspectRatio = (this._bugDistance * Math.tan(horizontalFovRadians * 0.5) * 2.0) / (this._bugDistance * Math.tan(verticalFovRadians * 0.5) * 2.0);
-        this._lightCamera.frustum.aspectRatio = Math.tan(horizontalFovRadians * 0.5) / Math.tan(verticalFovRadians * 0.5);
+        /*  this._lightCamera.frustum.aspectRatio = (this._bugDistance * Math.tan(horizontalFovRadians * 0.5) * 2.0) / (this._bugDistance * Math.tan(verticalFovRadians * 0.5) * 2.0); */
         // 如果水平方向张角大于垂直方向 则视锥体张角取值为水平方向角度 ？
+        /*  if (this._horizontalFov > this._verticalFov) this._lightCamera.frustum.fov = Cesium.Math.toRadians(this._horizontalFov); */
+
+
+        this._lightCamera.frustum.aspectRatio = (this._bugDistance * Math.tan(horizontalFovRadians * 0.5) * 2.0) / (this._bugDistance * Math.tan(verticalFovRadians * 0.5) * 2.0);
+
+        //定义视锥体的视场角度为水平方向角度
         if (this._horizontalFov > this._verticalFov) this._lightCamera.frustum.fov = Cesium.Math.toRadians(this._horizontalFov);
+
 
         // 设置相机姿态
         this._lightCamera.setView({
@@ -247,8 +253,8 @@ class VisualField {
 
     // 构建谁锥体几何
     createOutLineGeometry() {
-        let positions = new Float32Array(633);
-        let i, a, s, d, p = positions,
+        var positions = new Float32Array(633);
+        var i, a, s, d, p = positions,
             m = Cesium.Math.toRadians(this._horizontalFov),
             v = Cesium.Math.toRadians(this._verticalFov),
             b = Math.tan(0.5 * m),
@@ -257,15 +263,15 @@ class VisualField {
         d = this._distance * S;
         i = -a;
         s = -d;
-        let P = 0;
+        var P = 0;
         p[P++] = 0;
         p[P++] = 0;
         p[P++] = 0;
-        let D, I;
-        let M = Math.PI - 0.5 * m;
-        let R = m / 4;
+        var D, I;
+        var M = Math.PI - 0.5 * m;
+        var R = m / 4;
 
-        for (let L = 0; L < 5; ++L) {
+        for (var L = 0; L < 5; ++L) {
             D = M + L * R;
             let B = d / (this._distance / Math.cos(D));
             let F = Math.atan(B);
@@ -279,7 +285,7 @@ class VisualField {
             }
         }
         R = m / 20;
-        for (let G = 0; G < 21; ++G) {
+        for (var G = 0; G < 21; ++G) {
             D = M + G * R;
             let B = d / (this._distance / Math.cos(D));
             let F = Math.atan(B);
@@ -292,7 +298,7 @@ class VisualField {
             }
         }
 
-        let attributes = new Cesium.GeometryAttributes({
+        var attributes = new Cesium.GeometryAttributes({
             position: new Cesium.GeometryAttribute({
                 componentDatatype: Cesium.ComponentDatatype.DOUBLE,
                 componentsPerAttribute: 3,
@@ -300,9 +306,9 @@ class VisualField {
             })
         });
 
-        let indices = new Uint16Array(408);
-        let t = indices;
-        let r = 0;
+        var indices = new Uint16Array(408);
+        var t = indices;
+        var r = 0;
         t[r++] = 0;
         t[r++] = 1;
         t[r++] = 0;
@@ -311,14 +317,14 @@ class VisualField {
         t[r++] = 85;
         t[r++] = 0;
         t[r++] = 105;
-        for (let i = 0, n = 0; n < 5; ++n) {
+        for (var i = 0, n = 0; n < 5; ++n) {
             i++;
             for (let a = 0; a < 20; ++a) {
                 t[r++] = i++, t[r++] = i
             }
         }
         i++;
-        for (let s = 0; s < 20; ++s) {
+        for (var s = 0; s < 20; ++s) {
             for (let l = 0; l < 5; ++l) {
                 t[r++] = i, t[r++] = i++ + 5;
             }
