@@ -111,6 +111,7 @@ class VisualField {
     }
 
     set visibleAreaColorAlpha(value) {
+        debugger
         this._visibleAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
@@ -120,6 +121,7 @@ class VisualField {
     }
 
     set hiddenAreaColorAlpha(value) {
+        debugger
         this._hiddenAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
@@ -361,6 +363,7 @@ class VisualField {
                 return shadowMap._shadowMapMatrix;
             },
             viewShed_frontColor: function () {
+               
                 let vColor = that._visibleAreaColor.withAlpha(that._visibleAreaColorAlpha);
                 vColor = Cesium.Cartesian4.fromColor(vColor);
                 return vColor;
@@ -368,7 +371,7 @@ class VisualField {
             viewShed_backColor: function () {
                 let hColor = that._hiddenAreaColor.withAlpha(that._hiddenAreaColorAlpha);
                 hColor = Cesium.Cartesian4.fromColor(hColor);
-                return that._hiddenAreaColor;
+                return hColor;
             },
             viewShed_Far: function () {
                 return shadowMap._lightCamera.frustum.far;

@@ -20,7 +20,7 @@
         class="reset-color-picker color-picker-box basic-text-input"
         v-if="detailAttr.type === 'color-picker'"
       >
-        <el-color-picker v-model="detailAttr.value" @change="toChange"></el-color-picker>
+        <el-color-picker v-model="detailAttr.value" @active-change="toChange"></el-color-picker>
         <el-input v-model="detailAttr.value" placeholder="请输入内容" @change="toChange"></el-input>
       </el-col>
       <el-col :span="10" v-if="detailAttr.type === 'slider'" class="reset-slider basic-slider">

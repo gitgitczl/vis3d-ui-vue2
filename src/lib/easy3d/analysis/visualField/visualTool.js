@@ -8,7 +8,6 @@ class VisualTool {
         }
         this.viewer = viewer;
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
-        this.positions = [];
         this.prompt = null;
 
         this.startPosition = null;
@@ -57,6 +56,16 @@ class VisualTool {
                     that.prompt.destroy();
                     that.prompt = null;
                 }
+                let c1 = Cesium.Cartographic.fromCartesian(that.startPosition.clone());
+                let c2 = Cesium.Cartographic.fromCartesian(that.endPosition.clone());
+                let angle = that.computeAngle(c1, c2);
+                that.heading = angle;
+                that.vfPrimitive.heading = angle;
+
+                let distance = Cesium.Cartesian3.distance(that.startPosition.clone(), that.endPosition.clone());
+                that.distance = distance;
+                that.vfPrimitive.distance = distance;
+                if (fun) fun(angle, distance);
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {
@@ -93,7 +102,7 @@ class VisualTool {
             that.distance = distance;
             that.vfPrimitive.distance = distance;
 
-            if (fun) fun(heading, distance);
+
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
 
@@ -141,8 +150,10 @@ class VisualTool {
     // 设置水平张角
     setHorizontalFov(val) {
         if (!val) return;
-        this.horizontalFov = Number(val);
-        if (this.vfPrimitive) this.vfPrimitive.horizontalFov = Number(val);
+        let value = Number(val);
+        value = value >= 180 ? 179 : value; // 水平张角不超过180
+        this.horizontalFov = Number(value);
+        if (this.vfPrimitive) this.vfPrimitive.horizontalFov = Number(value);
     }
 
     // 设置锥体姿态 -- 偏转角
@@ -174,6 +185,7 @@ class VisualTool {
         if (bearing < -180) {
             bearing = bearing + 360;
         }
+        bearing = bearing % 360;
         return bearing;
     }
 
@@ -200,12 +212,12 @@ class VisualTool {
     }
 
     clear() {
-        if (this.vfPrimitiv) {
+        if (this.vfPrimitive) {
             this.viewer.scene.primitives.remove(this.vfPrimitive);
             this.vfPrimitive = null;
         }
     }
-    destroy(){
+    destroy() {
         this.clear();
         if (this.handler) {
             this.handler.destroy();

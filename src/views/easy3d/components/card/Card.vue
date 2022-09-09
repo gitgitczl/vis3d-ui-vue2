@@ -158,7 +158,7 @@ export default {
 <style lang="less">
 .easy3d-card {
   position: absolute;
-  z-index: 999;
+  z-index: 1 !important;
 }
 .card-title {
   height: 44px;
