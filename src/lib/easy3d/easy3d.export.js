@@ -30,9 +30,11 @@ import snow from "./weather/snow";
 // 引入分析模块
 import VisualTool from "./analysis/visualField/visualTool";
 import Sunshine from "./analysis/sunshine/sunshine";
+import LimitHeight from "./analysis/limitHeight/limitHeight";
 let analysis = {
     VisualTool: VisualTool,
-    Sunshine: Sunshine
+    Sunshine: Sunshine,
+    LimitHeight: LimitHeight
 }
 // 自定义天气
 let weather = {

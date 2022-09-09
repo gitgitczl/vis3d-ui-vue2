@@ -40,7 +40,7 @@
       <!-- 模型压平 -->
       <ModelFlat v-show="changeAnalysisType === 'modelFlat'" />
       <!-- 限高分析 -->
-      <HeightLimit v-show="changeAnalysisType === 'heightLimit'" />
+      <LimitHeight v-show="changeAnalysisType === 'LimitHeight'" />
       <!-- 通视分析 -->
       <Insight v-show="changeAnalysisType === 'insight'" />
       <!-- 等高线 -->
@@ -62,7 +62,7 @@ import Sunshine from "@/views/easy3d/baseTools/analysis/sunshine.vue";
 import TerrainExcavate from "@/views/easy3d/baseTools/analysis/terrainExcavate.vue";
 import VisualField from "@/views/easy3d/baseTools/analysis/visualField.vue";
 import Volume from "@/views/easy3d/baseTools/analysis/volume.vue";
-import HeightLimit from "@/views/easy3d/baseTools/analysis/heightLimit.vue";
+import LimitHeight from "@/views/easy3d/baseTools/analysis/limitHeight.vue";
 export default {
   name: "analysis",
   components: {
@@ -78,14 +78,14 @@ export default {
     TerrainExcavate,
     VisualField,
     Volume,
-    HeightLimit,
+    LimitHeight,
   },
   props: {
     title: {
       type: String,
       default: "",
     },
-      size: {},
+    size: {},
   },
   data() {
     return {
@@ -139,7 +139,7 @@ export default {
         {
           name: "限高分析",
           icon: "icon-xiangaofenxi",
-          type: "heightLimit",
+          type: "LimitHeight",
         },
         {
           name: "通视分析",
