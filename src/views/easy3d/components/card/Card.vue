@@ -13,7 +13,6 @@
     :parentLimitation="true"
     :parentW="1910"
     :parentH="930"
-    :z="999"
     @resizing="onResizing"
     @resizestop="onResizstop"
     @dragging="onDragging"
@@ -159,7 +158,7 @@ export default {
 <style lang="less">
 .easy3d-card {
   position: absolute;
-  z-index: 999;
+  z-index: 999 !important;
 }
 .card-title {
   height: 44px;
