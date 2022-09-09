@@ -13,6 +13,7 @@
     :parentLimitation="true"
     :parentW="1910"
     :parentH="930"
+    :z="999"
     @resizing="onResizing"
     @resizestop="onResizstop"
     @dragging="onDragging"
