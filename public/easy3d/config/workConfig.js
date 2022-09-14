@@ -97,7 +97,7 @@ window.workConfig = {
         },
         {
             "name": "空间分析",
-            "show": true,
+            "show": false,
             "workName": "analysis",
             "position": {
                 "top": 200,
@@ -159,7 +159,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": false,
+            "show": true,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,

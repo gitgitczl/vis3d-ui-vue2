@@ -102,12 +102,11 @@ export default {
       if (window.nowRoam) window.nowRoam.goon();
     },
     changeView(data) {
-      this.$store.commit("setNowRoamViewType", data);
       if (window.nowRoam) window.nowRoam.setViewType(data);
     },
     endRoam() {
       if (window.nowRoam) window.nowRoam.end();
-    },
+    }
   },
   watch: {
     "$store.state.map3d.nowRoamAttr": {

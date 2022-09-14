@@ -22,7 +22,7 @@ class TilesetLayer extends BaseLayer {
             new Cesium.Cesium3DTileset({
                 maximumScreenSpaceError: this.opt.maximumScreenSpaceError || 1,
                 url: this.opt.url,
-               /*  maximumMemoryUsage: 1024, */
+                maximumMemoryUsage: this.opt.maximumMemoryUsage || 512,
                 /* debugShowBoundingVolume:true, */
                 /*  preloadWhenHidden: true, */
                  preferLeaves : true,

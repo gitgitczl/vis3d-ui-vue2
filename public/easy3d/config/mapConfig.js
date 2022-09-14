@@ -252,6 +252,14 @@ window.mapConfig = {
                     },
                     "show": false
                 },
+                {
+                    "name": "某某监区",
+                    "type": "3dtiles",
+                    "url": "http://192.168.1.17/jcjy/tileset.json",
+                    "show": false,
+                    "maximumScreenSpaceError": 1,
+                    "maximumMemoryUsage" : 512
+                }
             ]
         }
     ]

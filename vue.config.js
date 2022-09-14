@@ -17,7 +17,7 @@ module.exports = {
         host: 'localhost',
         port: port,
         open: true,
-        proxy: {
+        /* proxy: {
              // localhost:80/data --> http://47.117.134.108:9009/prod-api/prod-api/code
             [process.env.VUE_APP_BASE_API]: {
                 target: `http://47.117.134.108:9009/`,
@@ -26,7 +26,7 @@ module.exports = {
                     ['^' + process.env.VUE_APP_BASE_API]: '/',
                 }
             }
-        },
+        }, */
         disableHostCheck: true
     },
     configureWebpack: {

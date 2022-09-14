@@ -10,9 +10,10 @@
  *          scale 模型大小
  *          ...  同ModelGraphics中配置
  */
+import cUtil from "../cUtil";
 class Roam {
     constructor(viewer, opt) {
-        console.log("漫游对象属性--》",opt);
+        console.log("漫游对象属性--》", opt);
         this.viewer = viewer;
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         this.opt = opt || {};
@@ -39,6 +40,7 @@ class Roam {
 
         this.endRoamCallback = opt.endRoamCallback;
         this.roamingCallback = opt.roamingCallback;
+        this.fixType = this.opt.fixType || (this.opt.alltimes ? "0" : "1"); // 0 表示固定时长漫游 1 表示固定速度漫游  
 
         this.init();
         this.setViewType(opt.viewType); // 初始化时 设置视角
@@ -46,10 +48,10 @@ class Roam {
 
     init() {
         let attr = {};
-        if (this.opt.times) {
+        if (this.fixType == "0") {
             // 固定时长漫游
-            this.endTime = Cesium.JulianDate.addSeconds(this.startTime, this.opt.times, new Cesium.JulianDate());
-            attr = this.createPropertyByTimes(this.positions, this.opt.times);
+            this.endTime = Cesium.JulianDate.addSeconds(this.startTime, this.opt.alltimes, new Cesium.JulianDate());
+            attr = this.createPropertyByTimes(this.positions, this.opt.alltimes);
         } else {
             // 固定速度漫游 (m/s)
             if (!this.opt.speed) {
@@ -88,7 +90,13 @@ class Roam {
         this.viewer.clock.shouldAnimate = false;
         this.distanceED = this.alldistance;
         this.timesED = this.alltimes;
+        this.viewer.trackedEntity = undefined;
+        this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
         if (this.endRoamCallback) this.endRoamCallback(this.opt);
+        if (this.rendHandler) {
+            this.rendHandler();
+            this.rendHandler = null;
+        }
     }
     // 暂停漫游
     stop() {
@@ -162,7 +170,7 @@ class Roam {
 
 
     transfromPositions(positions) {
-        if (!positions) return;
+        if (!positions || positions.length < 1) return;
         if (positions[0] instanceof Cesium.Cartesian3) {
             return positions;
         } else {
@@ -172,6 +180,15 @@ class Roam {
                 newPositions.push(p);
             });
             return newPositions;
+        }
+    }
+
+    reversePositions(positions) {
+        if (!positions || positions.length < 1) return;
+        if (positions[0] instanceof Cesium.Cartesian3) {
+            return cUtil.cartesiansToLnglats(positions);
+        } else {
+            return positions;
         }
     }
 
@@ -188,11 +205,11 @@ class Roam {
                 let currentTime = that.viewer.clock.currentTime;
                 let tiemC = Cesium.JulianDate.compare(that.endTime, currentTime);
                 if (tiemC < 0) {
-
                     that.end();
                     return;
                 }
                 if (that.roamingCallback) that.roamingCallback(that.distanceED, that.timesED);
+                console.log("===>", that.isLockView, that.objId);
                 if (that.isLockView) {
                     that.getModelMatrix(that.roamEntity, that.viewer.clock.currentTime, scratch);
                     that.viewer.scene.camera.lookAtTransform(scratch, new Cesium.Cartesian3(-that.viewXYZ.x, that.viewXYZ.y,
@@ -299,6 +316,7 @@ class Roam {
     // 设置漫游视角
     setViewType(viewType) {
         this.viewType = viewType;
+        console.log("setViewType===>", this.isLockView)
         switch (this.viewType) {
             case "dy":
                 this.isLockView = true;
@@ -329,6 +347,7 @@ class Roam {
     // 设置自定义跟随视角
     setTrackView(viewXYZ) {
         this.isLockView = true;
+        console.log("setTrackView===>", this.isLockView)
         this.viewXYZ = viewXYZ;
     }
 
@@ -339,9 +358,11 @@ class Roam {
             alldistance: this.alldistance,
             alltimes: this.alltimes,
             distanceED: this.distanceED,
-            times: this.distanceED,
-            viewType: this.viewType
-            /*  objId: this.objId */
+            speed: this.speed,
+            fixType: this.fixType,
+            positions: this.reversePositions(this.positions)
+            /*entityType: this.opt.entityType,
+              entityAttr: this.opt.entityAttr */
         };
         return Object.assign(this.opt, attr);
     }
