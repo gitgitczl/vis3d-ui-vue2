@@ -92,11 +92,11 @@ class Roam {
         this.timesED = this.alltimes;
         this.viewer.trackedEntity = undefined;
         this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-        if (this.endRoamCallback) this.endRoamCallback(this.opt);
         if (this.rendHandler) {
             this.rendHandler();
             this.rendHandler = null;
         }
+        if (this.endRoamCallback) this.endRoamCallback(this.opt);
     }
     // 暂停漫游
     stop() {
