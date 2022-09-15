@@ -48,7 +48,7 @@
                 "outlineWidth": 1,
                 "outlineColor": "#ff0000",
                 "heightReference": 1,
-                "showBackground" : false,
+                "showBackground" : true,
                 "backgroundColor" : null,
                 "scale" : 1 
             },

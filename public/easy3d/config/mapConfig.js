@@ -229,13 +229,6 @@ window.mapConfig = {
                     "maximumScreenSpaceError": 1
                 },
                 {
-                    "name": "某某监区",
-                    "type": "3dtiles",
-                    "url": "http://localhost/jc/Production_5.json",
-                    "show": true,
-                    "maximumScreenSpaceError": 1
-                },
-                {
                     "name": "长江大桥",
                     "type": "3dtiles",
                     "url": "http://112.86.147.194:9009/data/3dtiles/daqiao/daqiaoNew/tileset.json",

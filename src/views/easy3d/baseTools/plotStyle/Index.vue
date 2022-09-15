@@ -137,14 +137,15 @@ export default {
       // 循环样式配置里面的属性 并绑定到标签
       for (let i in this.plotStyleAttr) {
         let attr = this.plotStyleAttr[i];
-        // 当前实体的值
-        attr.value =
-          typeof entityStyleValue[i] == "boolean"
-            ? entityStyleValue[i]
-              ? "show"
-              : "hide"
-            : entityStyleValue[i];
+
         if (attr.type == "checkbox") {
+          // 当前实体的值
+          attr.value =
+            typeof entityStyleValue[i] == "boolean"
+              ? entityStyleValue[i]
+                ? "show"
+                : "hide"
+              : entityStyleValue[i];
           // 循环checkbox中options选中的属性
           let checkboxSelect = attr.options[attr.value];
           for (let key in checkboxSelect) {
@@ -165,11 +166,31 @@ export default {
 
     // 获取标签变化的值
     toChange() {
+      /* let newStyle = this.transformStyleVal(this.plotStyleAttr); */
+      /* console.log("plotStyle style===>", newStyle, this.plotStyleAttr); */
+      let newStyle = Object.assign({}, this.plotStyleAttr) ;
       this.$store.commit("setNowPlotStyleAttr", this.plotStyleAttr);
     },
 
     onChangePlotStyle(index) {
       this.$set(this, "plotActive", index);
+    },
+    transformStyleVal(style) {
+      if (!style) return;
+      let styleVal = {};
+      for (let i in style) {
+        styleVal[i] = style[i].value;
+        if (style[i].type == "checkbox") {
+          let option = style[i].options[style[i].value];
+          styleVal[i] = option.value; // 当前 checkbox 的选项值  非其子选项中的option值
+          for (let step in option) {
+            if (step != "name" && step != "value") {
+              styleVal[step] = option[step].value;
+            }
+          }
+        }
+      }
+      return styleVal;
     },
   },
   watch: {

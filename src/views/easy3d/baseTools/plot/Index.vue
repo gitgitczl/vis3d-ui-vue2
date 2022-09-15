@@ -204,7 +204,9 @@ export default {
           let option = style[i].options[style[i].value];
           styleVal[i] = option.value; // 当前 checkbox 的选项值  非其子选项中的option值
           for (let step in option) {
-            styleVal[step] = option[step].value;
+            if (step != "name" && step != "value") {
+              styleVal[step] = option[step].value;
+            }
           }
         }
       }
@@ -267,7 +269,9 @@ export default {
     "$store.state.map3d.nowPlotStyleAttr": {
       handler(style) {
         if (!nowPlotEntObj) return;
-        let plotStyle = this.transformStyleVal(style);
+        let plotStyle = this.transformStyleVal(JSON.parse(JSON.stringify(style)));
+        console.log("plot style===>", style, plotStyle);
+        /* console.log("plotStyle===>", plotStyle); */
         window.plotDrawTool.updateOneStyle(nowPlotEntObj, plotStyle);
       },
       deep: true,

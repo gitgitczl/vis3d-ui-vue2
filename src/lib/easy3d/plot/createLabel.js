@@ -78,7 +78,6 @@ class CreateLabel extends BasePlot {
     }
 
     this.entity.label.outlineWidth = style.outlineWidth;
-
     if (style.backgroundColor) {
       let backgroundColor =
         style.backgroundColor instanceof Cesium.Color

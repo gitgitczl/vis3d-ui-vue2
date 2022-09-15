@@ -63,7 +63,7 @@
         <el-slider
           v-model="detailAttr.value"
           :min="detailAttr.min === undefined ? 0 : detailAttr.min"
-          :max="detailAttr.max === undefined ? 0 : detailAttr.max"
+          :max="detailAttr.max === undefined ? 1 : detailAttr.max"
           :step="detailAttr.step === undefined ? 1 : detailAttr.step"
           @change="toChange"
         ></el-slider>
