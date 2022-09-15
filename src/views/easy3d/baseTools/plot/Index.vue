@@ -1,10 +1,23 @@
 <template>
-  <Card :title="title" :width="342" :position="position" :size="size" height="auto" titleIcon="icon-tushangcehui"
-    @close="close">
+  <Card
+    :title="title"
+    :width="342"
+    :position="position"
+    :size="size"
+    height="auto"
+    titleIcon="icon-tushangcehui"
+    @close="close"
+  >
     <div class="plot-btn-box basic-plot">
       <ul class="plot-btn">
-        <el-tooltip v-for="(item, index) in plotBtn" :key="index" class="item" effect="dark" :content="item.name"
-          placement="top">
+        <el-tooltip
+          v-for="(item, index) in plotBtn"
+          :key="index"
+          class="item"
+          effect="dark"
+          :content="item.name"
+          placement="top"
+        >
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -12,8 +25,14 @@
       </ul>
       <span></span>
       <ul class="plot-btn">
-        <el-tooltip v-for="(item, index) in plotBtn2" :key="index" class="item" effect="dark" :content="item.name"
-          placement="top">
+        <el-tooltip
+          v-for="(item, index) in plotBtn2"
+          :key="index"
+          class="item"
+          effect="dark"
+          :content="item.name"
+          placement="top"
+        >
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -21,22 +40,41 @@
       </ul>
     </div>
     <div class="plot-select basic-select">
-      <el-select v-model="plotInitValue" @change="onChangePlot" placeholder="请选择">
-        <el-option v-for="(item, index) in plotTypeList" :key="index" :label="item" :value="item">
+      <el-select
+        v-model="plotInitValue"
+        @change="onChangePlot"
+        placeholder="请选择"
+      >
+        <el-option
+          v-for="(item, index) in plotTypeList"
+          :key="index"
+          :label="item"
+          :value="item"
+        >
         </el-option>
       </el-select>
     </div>
 
     <ul class="plot-box basic-tool">
-      <li v-for="(item, index) in plotList" :key="index" :class="[index === isPlotActive ? 'tool-active' : '']"
-        @click="onChangePlotType(index, item)">
+      <li
+        v-for="(item, index) in plotList"
+        :key="index"
+        :class="[index === isPlotActive ? 'tool-active' : '']"
+        @click="onChangePlotType(index, item)"
+      >
         <span><img :src="item.iconImg" /></span>
         <label>{{ item.name }}</label>
       </li>
     </ul>
 
     <!-- 打开文件 -->
-    <input type="file" accept=".json" style="display: none" id="plot-loadFile" @change="loadFileChange" />
+    <input
+      type="file"
+      accept=".json"
+      style="display: none"
+      id="plot-loadFile"
+      @change="loadFileChange"
+    />
   </Card>
 </template>
 <script>
@@ -129,7 +167,7 @@ export default {
     }
   },
 
-  destroyed() { },
+  destroyed() {},
   methods: {
     // 选择标绘类型
     onChangePlot(data) {
@@ -164,6 +202,7 @@ export default {
         styleVal[i] = style[i].value;
         if (style[i].type == "checkbox") {
           let option = style[i].options[style[i].value];
+          styleVal[i] = option.value; // 当前 checkbox 的选项值  非其子选项中的option值
           for (let step in option) {
             styleVal[step] = option[step].value;
           }
@@ -179,7 +218,7 @@ export default {
 
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
-        if(!jsondata) return ;
+        if (!jsondata) return;
         this.easy3d.cTool.file.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
@@ -220,7 +259,7 @@ export default {
           window.plotDrawTool.createByGeojson(strjson);
         };
       }
-       e.target.value = "";
+      e.target.value = "";
     },
   },
   watch: {

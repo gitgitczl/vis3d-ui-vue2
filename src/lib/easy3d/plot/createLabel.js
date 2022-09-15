@@ -17,49 +17,25 @@ class CreateLabel extends BasePlot {
 
   start(callBack) {
     if (!this.prompt && this.promptStyle.show)
-      this.prompt = new Prompt(this.viewer,this.promptStyle);
+      this.prompt = new Prompt(this.viewer, this.promptStyle);
     let that = this;
     this.state = "startCreate";
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (!cartesian) return;
-      that.prompt.update(evt.position, `
-        <ul class="label-context-${that.objId}" objId="${that.objId}">
-          <li>名称：<input type="text" objId="${that.objId}" id="label-name-${that.objId}" /></li>
-          <li>
-              <input type="button" value="确定" objId="${that.objId}" id="label-confirm-${that.objId}"/>
-              <input type="button" value="取消" objId="${that.objId}" id="label-reset-${that.objId}"/>
-          </li>
-        <ul>
-      `);
-      // 事件绑定
-      let confirmBtn = document.getElementById(`label-confirm-${that.objId}`);
-      let resetBtn = document.getElementById(`label-reset-${that.objId}`);
-      confirmBtn.addEventListener("click", function () {
-        let objId = confirmBtn.getAttribute("objId");
-        const inputName = document.getElementById(`label-name-${objId}`);
-        const labelName = inputName.innerText();
-        that.entity = that.createLabel(cartesian, labelName);
-        that.position = cartesian;
-        that.state = "endCreate";
-        if (that.handler) {
-          that.handler.destroy();
-          that.handler = null;
+      that.entity = that.createLabel(cartesian.clone());
+      that.position = cartesian.clone();
+      that.state = "endCreate";
+      if (that.handler) {
+        that.handler.destroy();
+        that.handler = null;
       }
-        if (that.prompt) {
-          that.prompt.destroy();
-          that.prompt = null;
-        }
-        if (callBack) callBack(that.entity);
-      });
-
-      resetBtn.addEventListener("click", function () {
-        let objId = resetBtn.getAttribute("objId");
-        that.destroy();
-      });
-
-
+      if (that.prompt) {
+        that.prompt.destroy();
+        that.prompt = null;
+      }
+      if (callBack) callBack(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     this.handler.setInputAction(function (evt) {
@@ -114,6 +90,17 @@ class CreateLabel extends BasePlot {
       this.entity.label.backgroundColor = backgroundColor;
     }
 
+    if (style.outlineColor) {
+      let outlineColor =
+        style.outlineColor instanceof Cesium.Color
+          ? style.outlineColor
+          : Cesium.Color.fromCssColorString(style.outlineColor || "#000000");
+      outlineColor = outlineColor.withAlpha(
+        style.outlineColorAlpha || 1
+      );
+      this.entity.label.outlineColor = outlineColor;
+    }
+
     if (style.heightReference != undefined)
       this.entity.label.heightReference = Number(style.heightReference);
     if (style.pixelOffset) this.entity.label.pixelOffset = style.pixelOffset;
@@ -129,7 +116,7 @@ class CreateLabel extends BasePlot {
   getStyle() {
     let obj = {};
     let label = this.entity.label;
-
+    debugger
     let fillColor = label.fillColor.getValue();
     obj.fillColorAlpha = fillColor.alpha;
     obj.fillColor = new Cesium.Color(
@@ -140,27 +127,31 @@ class CreateLabel extends BasePlot {
     ).toCssHexString();
 
     obj.outlineWidth = label.outlineWidth._value;
-
-    let backgroundColor = label.backgroundColor.getValue();
-    obj.backgroundColorAlpha = backgroundColor.alpha;
-    obj.backgroundColor = new Cesium.Color(
-      backgroundColor.red,
-      backgroundColor.green,
-      backgroundColor.blue,
-      1
-    ).toCssHexString();
-
     obj.showBackground = Boolean(label.showBackground.getValue());
+    if (label.backgroundColor) {
+      let bkColor = label.backgroundColor.getValue();
+      obj.backgroundColorAlpha = bkColor.alpha;
+      obj.backgroundColor = new Cesium.Color(bkColor.red, bkColor.green, bkColor.blue, 1).toCssHexString();
+    }
+
+
+    if (label.outlineColor) {
+      let outlineColor = label.outlineColor.getValue();
+      obj.outlineColorAlpha = outlineColor.alpha;
+      obj.outlineColor = new Cesium.Color(outlineColor.red, outlineColor.green, outlineColor.blue, 1).toCssHexString();
+    }
 
     if (label.heightReference != undefined)
       obj.heightReference = label.heightReference.getValue();
     obj.pixelOffset = label.pixelOffset;
 
     obj.text = label.text.getValue();
+
+    
     return obj;
   }
   getPositions(isWgs84) {
-    return isWgs84 ? cUtil.cartesianToLnglat(this.position) :this.position ;
+    return isWgs84 ? cUtil.cartesianToLnglat(this.position) : this.position;
   }
 
   startEdit() {
@@ -215,7 +206,7 @@ class CreateLabel extends BasePlot {
     let label = this.viewer.entities.add({
       position: cartesian,
       label: {
-        text: text || "",
+        text: text || "--",
         fillColor: this.style.fillColor
           ? Cesium.Color.fromCssColorString(this.style.fillColor).withAlpha(
             this.style.fillColorAlpha || 1

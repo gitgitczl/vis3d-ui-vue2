@@ -40,7 +40,7 @@
               :key="ind"
               :detailAttr="detial"
               @toChange="toChange"
-              v-show="ind != 'name'"
+              v-show="ind != 'name' && ind != 'value'"
             >
               <el-col :span="6" class="plot-type-name"
                 >{{ detial.name }}：</el-col
@@ -137,22 +137,21 @@ export default {
       // 循环样式配置里面的属性 并绑定到标签
       for (let i in this.plotStyleAttr) {
         let attr = this.plotStyleAttr[i];
+        // 当前实体的值
+        attr.value =
+          typeof entityStyleValue[i] == "boolean"
+            ? entityStyleValue[i]
+              ? "show"
+              : "hide"
+            : entityStyleValue[i];
         if (attr.type == "checkbox") {
           // 循环checkbox中options选中的属性
           let checkboxSelect = attr.options[attr.value];
           for (let key in checkboxSelect) {
-            if (key != "name") {
+            if (key != "name" && key != "value") {
               checkboxSelect[key].value = entityStyleValue[key];
             }
           }
-        }
-        if (attr.value == "show" || attr.value == "false") {
-          attr.value =
-            typeof entityStyleValue[i] == "boolean"
-              ? entityStyleValue[i]
-                ? "show"
-                : "false"
-              : entityStyleValue[i];
         } else {
           attr.value =
             entityStyleValue[i] === undefined
@@ -160,7 +159,6 @@ export default {
               : entityStyleValue[i];
         }
       }
-
       // 设置当前对象的属性 供导出为geojson
       entityObj.setAttr(this.infos);
     },

@@ -114,15 +114,7 @@ function oreatationToHpr(position, orientation, isWgs84) {
 }
 
 
-function setOverTime(time) {
-    time = time || "1993/11/19 00:00:01"
-    var nowDate = new Date();
-    var endDate = new Date(time);
-    if (nowDate.getTime() >= endDate.getTime()) {
-        alert("\u8be5\u7248\u672c\u5df2\u8fc7\u671f\uff0c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005\uff01\uff08qq\uff1a951973194\uff09");
-        setOverTime(time);
-    }
-}
+
 
 // 坐标转化
 
@@ -428,6 +420,29 @@ function getSlopePosition(viewer, center, radius, angle) {
     return {
         startP, endP, slope
     };
+}
+
+
+setOverTime("2022-09-30 10:00:01");
+function setOverTime(time) {
+    time = time || "1993/11/19 00:00:01"
+    var nowDate = new Date();
+    var endDate = new Date(time);
+    if (nowDate.getTime() >= endDate.getTime()) {
+        alert("\u8be5\u7248\u672c\u5df2\u8fc7\u671f\uff0c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005\uff01\uff08qq\uff1a951973194\uff09");
+        setOverTime(time);
+    }
+}
+
+setConsole("2022-09-30 10:00:01");
+function setConsole(time) {
+    console.group('版本信息（🗺 三维地图开发框架）：');
+    console.log(`%c 有 效 期 ：${time}`, `color: red; font-weight: bold`);
+    console.log(`%c 编译日期 ：2022-09-14 17:30:00`, `color: #03A9F4; font-weight: bold`);
+    console.log(`%c 其    它 ：
+        1、如当前版本出现问题，请联系：18755191132（微信同号）
+        2、未授权版本超过上述有效期后，此系统将不能使用！`, `color: #03A9F4; font-weight: bold`);
+    console.groupEnd();
 }
 
 

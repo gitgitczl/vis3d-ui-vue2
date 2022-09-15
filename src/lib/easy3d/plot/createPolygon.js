@@ -142,6 +142,7 @@ class CreatePolygon extends BasePlot {
 		if (!this.entity) return;
 		let obj = {};
 		let polygon = this.entity.polygon;
+		debugger
 		if (polygon.material instanceof Cesium.ColorMaterialProperty) {
 			obj.material = "common";
 			let color = polygon.material.color.getValue();
@@ -154,7 +155,7 @@ class CreatePolygon extends BasePlot {
 		obj.fill = polygon.fill ? polygon.fill.getValue() : false;
 		if (polygon.heightReference) {
 			let heightReference = polygon.heightReference.getValue();
-			obj.heightReference = Boolean(heightReference);
+			obj.heightReference = Number(heightReference);
 		}
 
 		/* obj.heightReference = isNaN(polygon.heightReference.getValue()) ? false : polygon.heightReference.getValue(); */

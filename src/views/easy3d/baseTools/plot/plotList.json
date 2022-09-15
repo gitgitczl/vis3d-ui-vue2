@@ -36,6 +36,23 @@
                 "image": "./easy3d/images/plot/start.png"
             },
             "styleType": "billboard"
+        },
+        {
+            "name": "文字",
+            "type": "label",
+            "iconImg": "./easy3d/images/plot/label.png",
+            "style": {
+                "text" : "新增标注",
+                "fillColor": "#0000ff",
+                "outline" : false,
+                "outlineWidth": 1,
+                "outlineColor": "#ff0000",
+                "heightReference": 1,
+                "showBackground" : false,
+                "backgroundColor" : null,
+                "scale" : 1 
+            },
+            "styleType": "label"
         }
     ],
     "军事标绘": [
