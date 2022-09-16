@@ -92,7 +92,7 @@ export default {
     };
   },
   mounted() {
-    this.value = this.detailAttr.value;
+    this.value = this.detailAttr.value; // 这行代码值两千块
   },
 
   methods: {

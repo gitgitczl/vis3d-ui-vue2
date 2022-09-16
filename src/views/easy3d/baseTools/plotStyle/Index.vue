@@ -186,7 +186,6 @@ export default {
       this.$set(this, "plotActive", index);
     },
     transformStyleVal(style) {
-      debugger
       if (!style) return;
       let styleVal = {};
       for (let i in style) {
