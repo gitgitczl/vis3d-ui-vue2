@@ -115,7 +115,7 @@ class CreateLabel extends BasePlot {
   getStyle() {
     let obj = {};
     let label = this.entity.label;
-    debugger
+    
     let fillColor = label.fillColor.getValue();
     obj.fillColorAlpha = fillColor.alpha;
     obj.fillColor = new Cesium.Color(

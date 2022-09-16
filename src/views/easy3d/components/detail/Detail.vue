@@ -2,15 +2,23 @@
   <div>
     <el-row style="display: flex; align-items: center">
       <slot></slot>
-      <el-col :span="18" class="reset-radio" v-if="detailAttr.type === 'radio-number'">
-        <el-radio-group v-model="detailAttr.value" @change="toChange">
+      <el-col
+        :span="18"
+        class="reset-radio"
+        v-if="detailAttr.type === 'radio-number'"
+      >
+        <el-radio-group v-model="value" @change="toChange">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
       </el-col>
 
-      <el-col :span="18" class="reset-radio" v-if="detailAttr.type === 'radio-boolean'">
-        <el-radio-group v-model="detailAttr.value" @change="toChange">
+      <el-col
+        :span="18"
+        class="reset-radio"
+        v-if="detailAttr.type === 'radio-boolean'"
+      >
+        <el-radio-group v-model="value" @change="toChange">
           <el-radio :label="true">是</el-radio>
           <el-radio :label="false">否</el-radio>
         </el-radio-group>
@@ -23,7 +31,7 @@
       >
         <el-input-number
           size="small"
-          v-model="detailAttr.value"
+          v-model="value"
           @change="toChange"
         ></el-input-number>
       </el-col>
@@ -35,7 +43,7 @@
       >
         <el-input
           size="small"
-          v-model="detailAttr.value"
+          v-model="value"
           @change="toChange"
         ></el-input>
       </el-col>
@@ -46,13 +54,13 @@
         v-if="detailAttr.type === 'color-picker'"
       >
         <el-color-picker
-          v-model="detailAttr.value"
-          @active-change="toChange"
+          v-model="value"
+          @change="toChange"
         ></el-color-picker>
         <el-input
-          v-model="detailAttr.value"
+          v-model="value"
           placeholder="请输入内容"
-          @change="toChange"
+          disabled
         ></el-input>
       </el-col>
       <el-col
@@ -61,7 +69,7 @@
         class="reset-slider basic-slider"
       >
         <el-slider
-          v-model="detailAttr.value"
+          v-model="value"
           :min="detailAttr.min === undefined ? 0 : detailAttr.min"
           :max="detailAttr.max === undefined ? 1 : detailAttr.max"
           :step="detailAttr.step === undefined ? 1 : detailAttr.step"
@@ -79,12 +87,19 @@ export default {
     detailAttr: {},
   },
   data() {
-    return {};
+    return {
+      value: -1,
+    };
+  },
+  mounted() {
+    this.value = this.detailAttr.value;
   },
 
   methods: {
-    toChange() {
-      this.$emit("toChange", true);
+    toChange(val) {
+      this.detailAttr.value = this.value;
+      console.log("detail===>", this.detailAttr);
+      this.$emit("toChange");
     },
   },
 };

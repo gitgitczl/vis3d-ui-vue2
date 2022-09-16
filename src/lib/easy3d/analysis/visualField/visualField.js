@@ -111,7 +111,7 @@ class VisualField {
     }
 
     set visibleAreaColorAlpha(value) {
-        debugger
+        
         this._visibleAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
@@ -121,7 +121,7 @@ class VisualField {
     }
 
     set hiddenAreaColorAlpha(value) {
-        debugger
+        
         this._hiddenAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }

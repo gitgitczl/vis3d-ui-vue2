@@ -126,6 +126,7 @@ export default {
       this.$emit("close", "plotStyle");
     },
     setAttr(id) {
+      console.log("11111setAttr====>", this.plotStyleAttr);
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
@@ -160,22 +161,32 @@ export default {
               : entityStyleValue[i];
         }
       }
+
+      console.log("setAttr====>", this.plotStyleAttr);
       // 设置当前对象的属性 供导出为geojson
       entityObj.setAttr(this.infos);
     },
 
-    // 获取标签变化的值
+    // 获取标签变化的值 修改实体样式
     toChange() {
-      /* let newStyle = this.transformStyleVal(this.plotStyleAttr); */
-      /* console.log("plotStyle style===>", newStyle, this.plotStyleAttr); */
-      let newStyle = Object.assign({}, this.plotStyleAttr) ;
-      this.$store.commit("setNowPlotStyleAttr", this.plotStyleAttr);
+      let val = JSON.parse(JSON.stringify(this.plotStyleAttr));
+      console.log(
+        "plotStyle style===>",
+        this.plotStyleAttr,
+        this.plotStyleAttr.showBackground.options.show.backgroundColorAlpha
+          .value,
+        val.showBackground.options.show.backgroundColorAlpha.value
+      );
+      let newStyle = this.transformStyleVal(val);
+      console.log("plotStyle newStyle===>", newStyle);
+      this.$store.commit("setNowPlotStyleAttr", newStyle); 
     },
 
     onChangePlotStyle(index) {
       this.$set(this, "plotActive", index);
     },
     transformStyleVal(style) {
+      debugger
       if (!style) return;
       let styleVal = {};
       for (let i in style) {

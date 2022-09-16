@@ -142,7 +142,7 @@ class CreatePolygon extends BasePlot {
 		if (!this.entity) return;
 		let obj = {};
 		let polygon = this.entity.polygon;
-		debugger
+		
 		if (polygon.material instanceof Cesium.ColorMaterialProperty) {
 			obj.material = "common";
 			let color = polygon.material.color.getValue();

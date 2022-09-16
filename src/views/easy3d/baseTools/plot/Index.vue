@@ -268,11 +268,12 @@ export default {
     // 监听当前绘制的对象的属性改变 from plotStyle
     "$store.state.map3d.nowPlotStyleAttr": {
       handler(style) {
-        if (!nowPlotEntObj) return;
-        let plotStyle = this.transformStyleVal(JSON.parse(JSON.stringify(style)));
-        console.log("plot style===>", style, plotStyle);
+        /* if (!style) return; */
+        /*  let plotStyle = this.transformStyleVal(JSON.parse(JSON.stringify(style))); */
+       
+        /*  console.log("plot style2===>", style); */
         /* console.log("plotStyle===>", plotStyle); */
-        window.plotDrawTool.updateOneStyle(nowPlotEntObj, plotStyle);
+        window.plotDrawTool.updateOneStyle(nowPlotEntObj, style);
       },
       deep: true,
     },
