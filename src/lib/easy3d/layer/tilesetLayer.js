@@ -22,10 +22,10 @@ class TilesetLayer extends BaseLayer {
             new Cesium.Cesium3DTileset({
                 maximumScreenSpaceError: this.opt.maximumScreenSpaceError || 1,
                 url: this.opt.url,
-                maximumMemoryUsage: this.opt.maximumMemoryUsage || 512,
+                maximumMemoryUsage: this.opt.maximumMemoryUsage || 1024,
                 /* debugShowBoundingVolume:true, */
                 /*  preloadWhenHidden: true, */
-                 preferLeaves : true,
+                preferLeaves: true,
                 /*  skipLevelOfDetail: true,
                  immediatelyLoadDesiredLevelOfDetail: true, */
             })
@@ -53,7 +53,7 @@ class TilesetLayer extends BaseLayer {
 
             if (fun) fun(tileset);
 
-        }).otherwise(function (error) { })
+        })
 
     }
     remove() {

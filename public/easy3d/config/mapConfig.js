@@ -35,7 +35,7 @@ window.mapConfig = {
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
-            "show": false
+            "show": true
         }
     },
     "baseLayers": [
@@ -44,6 +44,13 @@ window.mapConfig = {
             "type": "mapserver",
             "iconImg": "./easy3d/images/baseMap/arcgis.png",
             "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+            "show": false
+        },
+        {
+            "name": "中国",
+            "type": "xyz",
+            "iconImg": "./easy3d/images/baseMap/arcgis.png",
+            "url": "http://localhost/china/{z}/{x}/{y}.jpg",
             "show": true
         },
         {

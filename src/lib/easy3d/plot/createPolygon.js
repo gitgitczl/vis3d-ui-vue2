@@ -59,7 +59,7 @@ class CreatePolygon extends BasePlot {
 				if (that.positions.length == 3) {
 					if (!Cesium.defined(that.entity)) {
 						that.entity = that.createPolygon(that.style);
-						if(!that.style.outline && that.polyline){ // 不需要创建轮廓 则后续删除
+						if (!that.style.outline && that.polyline) { // 不需要创建轮廓 则后续删除
 							that.polyline.show = false;
 						}
 						that.entity.objId = that.objId;
@@ -119,7 +119,7 @@ class CreatePolygon extends BasePlot {
 		this.entity = this.createPolygon();
 		this.polyline = this.createPolyline();
 		this.polyline.show = this.style.outline;
-		
+
 		this.positions = positions;
 		for (let i = 0; i < positions.length; i++) {
 			let newP = positions[i];
@@ -142,7 +142,7 @@ class CreatePolygon extends BasePlot {
 		if (!this.entity) return;
 		let obj = {};
 		let polygon = this.entity.polygon;
-		
+
 		if (polygon.material instanceof Cesium.ColorMaterialProperty) {
 			obj.material = "common";
 			let color = polygon.material.color.getValue();
@@ -205,7 +205,7 @@ class CreatePolygon extends BasePlot {
 				}, false),
 				heightReference: Number(this.style.heightReference),
 				show: true,
-				fill: this.style.fill || true,
+				fill: this.style.fill == undefined ? true : this.style.fill,
 				material: this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1)
 			}
 		}
