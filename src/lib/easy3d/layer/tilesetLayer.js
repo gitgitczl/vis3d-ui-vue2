@@ -18,17 +18,17 @@ class TilesetLayer extends BaseLayer {
     // 加载
     load(fun) {
         let that = this;
+        let defaultVal = {
+            maximumScreenSpaceError: 16,
+            skipLevelOfDetail: true,
+            preferLeaves: true,
+            maximumMemoryUsage: 512
+        }
+
+        let tilesetAttr = Object.assign(defaultVal, this.opt);
+
         let test = this.viewer.scene.primitives.add(
-            new Cesium.Cesium3DTileset({
-                maximumScreenSpaceError: this.opt.maximumScreenSpaceError || 1,
-                url: this.opt.url,
-                maximumMemoryUsage: this.opt.maximumMemoryUsage || 1024,
-                /* debugShowBoundingVolume:true, */
-                /*  preloadWhenHidden: true, */
-                preferLeaves: true,
-                /*  skipLevelOfDetail: true,
-                 immediatelyLoadDesiredLevelOfDetail: true, */
-            })
+            new Cesium.Cesium3DTileset(tilesetAttr)
         );
 
         test.readyPromise.then(function (tileset) {

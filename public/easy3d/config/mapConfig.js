@@ -35,7 +35,7 @@ window.mapConfig = {
         },
         "terrain": {
             "url": "http://data.marsgis.cn/terrain",
-            "show": true
+            "show": false
         }
     },
     "baseLayers": [
@@ -44,14 +44,14 @@ window.mapConfig = {
             "type": "mapserver",
             "iconImg": "./easy3d/images/baseMap/arcgis.png",
             "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-            "show": false
+            "show": true
         },
         {
             "name": "中国",
             "type": "xyz",
             "iconImg": "./easy3d/images/baseMap/arcgis.png",
             "url": "http://localhost/china/{z}/{x}/{y}.jpg",
-            "show": true
+            "show": false
         },
         {
             "name": "天地图",
@@ -236,10 +236,20 @@ window.mapConfig = {
                     "maximumScreenSpaceError": 1
                 },
                 {
+                    "name": "鄂尔多斯",
+                    "type": "3dtiles",
+                    "url": "http://47.117.134.108:9009/data/model/eeds-block1_cesium/tileset.json",
+                    "center": {
+                        "z": 1
+                    },
+                    "show": false,
+                    "maximumScreenSpaceError": 1
+                },
+                {
                     "name": "长江大桥",
                     "type": "3dtiles",
-                    "url": "http://112.86.147.194:9009/data/3dtiles/daqiao/daqiaoNew/tileset.json",
-                    "maximumScreenSpaceError": 64,
+                    "url": "http://112.86.147.194:9009/data/3dtiles/daqiaodingceng/tileset.json",
+                    "maximumScreenSpaceError": 1,
                     "show": false
                 },
                 {
@@ -252,6 +262,15 @@ window.mapConfig = {
                     },
                     "show": false
                 },
+
+                {
+                    "name": "社区",
+                    "type": "3dtiles",
+                    "url": " http://8.141.58.76:6814/data/QX/tileset.json",
+                    "maximumScreenSpaceError": 1,
+                    "show": false
+                },
+               
                 {
                     "name": "某某监区",
                     "type": "3dtiles",
