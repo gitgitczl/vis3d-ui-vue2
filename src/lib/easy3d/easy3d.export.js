@@ -109,7 +109,8 @@ class MapViewer {
     }
     // 构建图层
     loadbaseLayers() {
-        let { baseLayers } = this.opt || [];
+        let { baseLayers } = this.opt;
+        if (!baseLayers) return;
         for (let i = 0; i < baseLayers.length; i++) {
             let layer = baseLayers[i];
             if (!layer.type) {
@@ -125,7 +126,8 @@ class MapViewer {
     }
     // 构建业务图层
     loadOperateLayers() {
-        let { operateLayers } = this.opt || [];
+        let { operateLayers } = this.opt;
+        if (!operateLayers) return;
         // 递归查到所有的图层
         let allOperateLayers = [];
         function dg(layers) {

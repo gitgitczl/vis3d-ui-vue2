@@ -144,6 +144,7 @@ class CreatePoint extends BasePlot {
 				outlineColor: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : (this.style.outlineColor ? Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1) : Cesium.Color.BLACK),
 				outlineWidth: this.style.outlineWidth || 4,
 				pixelSize: this.style.pixelSize || 20,
+				disableDepthTestDistance : Number.MAX_VALUE
 			}
 		})
 		point.objId = this.objId;

@@ -2,12 +2,12 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            "x": 116.49147330478236,
-            "y": 30.082887908416023,
-            "z": 242.48342032344797,
-            "heading": 336.78563195198035,
-            "pitch": -24.917567388838943,
-            "roll": 359.9997916424982,
+            "x": 115.23660672620464,
+            "y": 28.761964707341757,
+            "z": 3313.042002091461,
+            "heading": 355.74495495696283,
+            "pitch": -18.217199813143363,
+            "roll": 359.98690226037075,
             "duration": 0
         },
         "worldAnimate": false,
@@ -34,17 +34,31 @@ window.mapConfig = {
             "terrainExaggeration": 1,
         },
         "terrain": {
-            "url": "http://data.marsgis.cn/terrain",
-            "show": false
+            "url": "http://localhost/erdsterrain",
+            "show": true
         }
     },
     "baseLayers": [
+        {
+            "name": "单张地图",
+            "type": "singleImage",
+            "url": "./easy3d/images/layer/world.jpg",
+            "iconImg": "./easy3d/images/layer/world.jpg",
+            "show": true,
+            "alpha": 1,
+            "rectangle": [
+                -180,
+                -90,
+                180,
+                90
+            ]
+        },
         {
             "name": "arcgis底图",
             "type": "mapserver",
             "iconImg": "./easy3d/images/baseMap/arcgis.png",
             "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-            "show": true
+            "show": false
         },
         {
             "name": "中国",
@@ -132,7 +146,7 @@ window.mapConfig = {
                     "type": "singleImage",
                     "url": "./easy3d/images/layer/world.jpg",
                     "iconImg": "./easy3d/images/layer/world.jpg",
-                    "show": false,
+                    "show": true,
                     "layerSplit": true,
                     "alpha": 1,
                     "rectangle": [
@@ -236,14 +250,15 @@ window.mapConfig = {
                     "maximumScreenSpaceError": 1
                 },
                 {
-                    "name": "鄂尔多斯",
+                    "name": "鄂尔多斯城区（新）",
                     "type": "3dtiles",
-                    "url": "http://47.117.134.108:9009/data/model/eeds-block1_cesium/tileset.json",
-                    "center": {
-                        "z": 1
-                    },
+                    "url": "http://localhost/erdsnew/tileset.json",
                     "show": false,
-                    "maximumScreenSpaceError": 1
+                    "maximumScreenSpaceError": 64,
+                    "maximumMemoryUsage" : 256,
+                    "center": {
+                        "z": 34
+                    },
                 },
                 {
                     "name": "长江大桥",
@@ -270,14 +285,14 @@ window.mapConfig = {
                     "maximumScreenSpaceError": 1,
                     "show": false
                 },
-               
+
                 {
                     "name": "某某监区",
                     "type": "3dtiles",
                     "url": "http://192.168.1.17/jcjy/tileset.json",
                     "show": false,
                     "maximumScreenSpaceError": 1,
-                    "maximumMemoryUsage" : 512
+                    "maximumMemoryUsage": 512
                 }
             ]
         }

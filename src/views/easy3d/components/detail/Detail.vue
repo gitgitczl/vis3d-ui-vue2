@@ -88,7 +88,7 @@ export default {
   },
   data() {
     return {
-      value: -1,
+      value: null,
     };
   },
   mounted() {

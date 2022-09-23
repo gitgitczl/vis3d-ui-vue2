@@ -126,7 +126,7 @@ export default {
       this.$emit("close", "plotStyle");
     },
     setAttr(id) {
-      console.log("11111setAttr====>", this.plotStyleAttr);
+      
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
@@ -170,15 +170,7 @@ export default {
     // 获取标签变化的值 修改实体样式
     toChange() {
       let val = JSON.parse(JSON.stringify(this.plotStyleAttr));
-      console.log(
-        "plotStyle style===>",
-        this.plotStyleAttr,
-        this.plotStyleAttr.showBackground.options.show.backgroundColorAlpha
-          .value,
-        val.showBackground.options.show.backgroundColorAlpha.value
-      );
       let newStyle = this.transformStyleVal(val);
-      console.log("plotStyle newStyle===>", newStyle);
       this.$store.commit("setNowPlotStyleAttr", newStyle); 
     },
 
