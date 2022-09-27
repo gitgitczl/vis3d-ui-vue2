@@ -87,8 +87,7 @@ class Prompt {
             })
         }
         this.promptDom = window.document.getElementById(promptId);
-        this.contentW = this.promptDom.offsetWidth; // 宽度
-        this.contentH = this.promptDom.offsetHeight; // 高度
+
         this.position = this.transPosition(this.opt.position);
         // ====================== 创建弹窗内容 end ======================
 
@@ -199,15 +198,15 @@ class Prompt {
         pc.innerHTML = content;
     }
 
-
     setByPX(opt) {
         if (!opt) return;
         if (this.promptDom) {
-            this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(this.contentW) / 2) + "px";
-            this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(this.contentH)) + "px";
+            const contentW = this.promptDom.offsetWidth; // 宽度
+            const contentH = this.promptDom.offsetHeight; // 高度
+            this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(contentW) / 2) + "px";
+            this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(contentH)) + "px";
         }
     }
-
 
     // 坐标转换
     transPosition(p) {
