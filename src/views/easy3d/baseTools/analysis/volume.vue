@@ -24,7 +24,7 @@
           :controls="false"
           v-model="digTotalV"
         ></el-input-number>
-        <span> &nbsp;㎡</span>
+        <span> &nbsp;m³</span>
       </li>
       <li>
         <label>填方体积：</label>
@@ -32,7 +32,7 @@
           :controls="false"
           v-model="fillTotalV"
         ></el-input-number>
-        <span> &nbsp;㎡</span>
+        <span> &nbsp;m³</span>
       </li>
     </ul>
   </div>

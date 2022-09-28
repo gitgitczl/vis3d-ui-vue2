@@ -63,6 +63,8 @@ import TerrainExcavate from "@/views/easy3d/baseTools/analysis/terrainExcavate.v
 import VisualField from "@/views/easy3d/baseTools/analysis/visualField.vue";
 import Volume from "@/views/easy3d/baseTools/analysis/volume.vue";
 import LimitHeight from "@/views/easy3d/baseTools/analysis/limitHeight.vue";
+import ModelVolume from "@/views/easy3d/baseTools/analysis/modelVolume.vue";
+
 export default {
   name: "analysis",
   components: {
