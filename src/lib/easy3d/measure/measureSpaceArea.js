@@ -20,7 +20,7 @@ class MeasureSpaceArea extends BaseMeasure {
 
 	//开始测量
 	start(callBack) {
-		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		var that = this;
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) {
@@ -31,8 +31,12 @@ class MeasureSpaceArea extends BaseMeasure {
 				that.positions.pop();
 				that.movePush = false;
 			}
+			let point = that.createPoint(cartesian.clone());
+			point.wz = that.positions.length; // 和坐标点关联
+			that.controlPoints.push(point);
 			that.positions.push(cartesian);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
 		this.handler.setInputAction(function (evt) {
 			that.state = "creating";
 			if (that.positions.length < 1) {
@@ -58,7 +62,7 @@ class MeasureSpaceArea extends BaseMeasure {
 						that.polygon = that.createPolygon();
 						that.polygon.isFilter = true;
 						that.polygon.objId = that.objId;
-						if (that.polyline) that.polyline.show = false;
+						/* if (that.polyline) that.polyline.show = false; */
 					}
 					if (!that.floatLabel) that.floatLabel = that.createLabel(cartesian, "");
 				}
@@ -75,10 +79,12 @@ class MeasureSpaceArea extends BaseMeasure {
 				}
 			}
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
 		this.handler.setInputAction(function (evt) {
 			that.state = "creating";
 			if (!that.polyline && !that.polygon) return;
 			that.positions.splice(that.positions.length - 2, 1);
+			that.viewer.entities.remove(that.controlPoints.pop());  
 			if (that.positions.length == 2) {
 				if (that.polygon) {
 					that.viewer.entities.remove(that.polygon);
@@ -117,6 +123,7 @@ class MeasureSpaceArea extends BaseMeasure {
 			that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 			that.viewer.trackedEntity = undefined;
 			that.positions.pop();
+			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
 			var areaCenter = that.getAreaAndCenter(that.positions)
 			var area = areaCenter.area;
 			var center = areaCenter.center;
@@ -137,6 +144,68 @@ class MeasureSpaceArea extends BaseMeasure {
 			if (callBack) callBack(that.polyline);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
+
+	startEdit(callback) {
+		if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polygon)) return;
+		this.state = "startEdit";;
+		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+		let that = this;
+		for (let i = 0; i < that.controlPoints.length; i++) {
+			let point = that.controlPoints[i];
+			if (point) point.show = true;
+		}
+		this.modifyHandler.setInputAction(function (evt) {
+			let pick = that.viewer.scene.pick(evt.position);
+			if (Cesium.defined(pick) && pick.id) {
+				if (!pick.id.objId)
+					that.modifyPoint = pick.id;
+				that.forbidDrawWorld(true);
+
+			}
+		}, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+		this.modifyHandler.setInputAction(function (evt) {
+			if (that.positions.length < 1 || !that.modifyPoint) return;
+			let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
+
+			if (!cartesian) return;
+			that.modifyPoint.position.setValue(cartesian);
+
+			let wz = that.modifyPoint.wz;
+			that.positions[wz] = cartesian.clone();
+
+			var areaCenter = that.getAreaAndCenter(that.positions);
+			var area = areaCenter.area;
+			var center = areaCenter.center;
+			var text = that.formateArea(area, that.unit);
+			that.floatLabel.label.text = "面积：" + text;
+			that.floatLabel.area = area;
+			if (center) that.floatLabel.position.setValue(center);
+
+		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+		this.modifyHandler.setInputAction(function (evt) {
+			if (!that.modifyPoint) return;
+			that.modifyPoint = null;
+			that.forbidDrawWorld(false);
+			if (callback) callback();
+			that.state = "endEdit";
+		}, Cesium.ScreenSpaceEventType.LEFT_UP);
+	}
+
+	endEdit() {
+		let that = this;
+		this.state = "endEdit";;
+		if (this.modifyHandler) {
+			this.modifyHandler.destroy();
+			this.modifyHandler = null;
+		}
+		for (let i = 0; i < that.controlPoints.length; i++) {
+			let point = that.controlPoints[i];
+			if (point) point.show = false;
+		}
+	}
+
+
 	//清除测量结果
 	destroy() {
 		this.state = "no";
@@ -164,10 +233,11 @@ class MeasureSpaceArea extends BaseMeasure {
 		var polyline = this.viewer.entities.add({
 			polyline: {
 				positions: new Cesium.CallbackProperty(function () {
-					return that.positions
+					let linePositions = that.positions.concat([that.positions[0]]);
+					return linePositions
 				}, false),
-				material: Cesium.Color.YELLOW,
-				width: 3,
+				material: Cesium.Color.GOLD,
+				width: 2,
 				clampToGround: true
 			}
 		});
@@ -180,7 +250,7 @@ class MeasureSpaceArea extends BaseMeasure {
 				hierarchy: new Cesium.CallbackProperty(function () {
 					return new Cesium.PolygonHierarchy(that.positions);
 				}, false),
-				material: this.style.material || Cesium.Color.LIME.withAlpha(0.5),
+				material: this.style.material || Cesium.Color.WHITE.withAlpha(0.3),
 				fill: true
 			})
 		});

@@ -34,12 +34,12 @@ class BaseMeasure {
                     outlineWidth: 2,
                     outlineColor: Cesium.Color.BLACK,
                 }),
+                disableDepthTestDistance: Number.POSITIVE_INFINITY,
                 width: 3,
                 clampToGround: clampToGround
             }
         });
 
-        ent.objId = this.objId;
         return ent;
     }
 

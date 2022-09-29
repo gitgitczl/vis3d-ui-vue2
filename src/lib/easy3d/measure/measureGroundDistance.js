@@ -157,7 +157,7 @@ class MeasureGroundDistance extends BaseMeasure {
 
 	// 开始编辑
 	startEdit(callback) {
-		if ((this.state == "endCrerate" || this.state == "endEdit") && !this.polyline) return;
+		if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
 		this.state = "startEdit";
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		let that = this;

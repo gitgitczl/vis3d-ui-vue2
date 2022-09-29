@@ -114,6 +114,7 @@ class MeasureTool {
 			//单击开始绘制
 			if (!that.canEdit) return;
 			let pick = that.viewer.scene.pick(evt.position);
+			debugger
 			if (Cesium.defined(pick) && pick.id && pick.id.objId) {
 				// 选中实体
 				for (let i = 0; i < that.toolArr.length; i++) {
@@ -131,6 +132,7 @@ class MeasureTool {
 							that.lastMeasureObj = null;
 						}
 						// 开始编辑
+						
 						that.toolArr[i].startEdit();
 						that.nowEditObj = that.toolArr[i];
 						if (that.startEditFun) that.startEditFun(that.nowEditObj); // 开始编辑
