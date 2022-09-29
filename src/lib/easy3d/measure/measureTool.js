@@ -45,6 +45,7 @@ class MeasureTool {
 		opt = opt || {};
 		if (!opt.type) return;
 		let ms;
+
 		if (this.nowMeasureObj && (
 			this.nowMeasureObj.state != "endCreate" &&
 			this.nowMeasureObj.state != "endEdit") &&
@@ -89,7 +90,9 @@ class MeasureTool {
 		this.nowMeasureObj = ms;
 		let that = this;
 		if (ms) {
+			this.changeCursor(true);
 			ms.start(function (res) {
+				that.changeCursor(false);
 				if (that.intoEdit) {
 					ms.startEdit();
 					if (that.startEditFun) that.startEditFun(ms);
@@ -187,6 +190,12 @@ class MeasureTool {
 		this.nowMeasureObj.setUnit(unit);
 	}
 
+
+	// 修改鼠标样式
+	changeCursor(isopen) {
+		let body = document.getElementsByTagName("body");
+		body[0].style.cursor = isopen ? "crosshair" : "default";
+	}
 }
 
 export default MeasureTool;

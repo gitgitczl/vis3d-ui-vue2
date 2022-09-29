@@ -29,7 +29,7 @@ class MeasureGroundDistance extends BaseMeasure {
 	}
 
 	//开始测量
-	start(fun) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
 		let that = this;
 		this.state = "startCreate";
@@ -97,11 +97,9 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.floatLable.position.setValue(cartesian);
 				that.floatLable.distance = distance;
 				that.floatDistance = distance;
-				if (that.fun) that.fun(distance);
+				/* if (that.fun) that.fun(distance); */
 			});
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-
-
 		this.handler.setInputAction(function (evt) {
 			that.state = "creating";
 			if (!that.polyline) return;
@@ -153,6 +151,7 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.prompt = null;
 			}
 			that.state = "endCreate";
+			if (callback) callback();
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 

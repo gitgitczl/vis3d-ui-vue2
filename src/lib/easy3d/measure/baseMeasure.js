@@ -15,8 +15,8 @@ class BaseMeasure {
         this.promptStyle = opt.prompt || {
             show: true,
             offset: {
-                x: 30,
-                y: 30
+                x: 60,
+                y: 60
             }
         }
     }
@@ -29,7 +29,11 @@ class BaseMeasure {
                     return positions
                 }, false),
                 show: true,
-                material: Cesium.Color.YELLOW.withAlpha(0.7),
+                material: new Cesium.PolylineOutlineMaterialProperty({
+                    color: Cesium.Color.GOLD,
+                    outlineWidth: 2,
+                    outlineColor: Cesium.Color.BLACK,
+                }),
                 width: 3,
                 clampToGround: clampToGround
             }
@@ -53,8 +57,8 @@ class BaseMeasure {
             position: c,
             label: {
                 text: text || "",
-                font: '24px Helvetica',
-                fillColor: Cesium.Color.SKYBLUE,
+                font: '18px Helvetica',
+                fillColor: Cesium.Color.WHITE,
                 outlineColor: Cesium.Color.BLACK,
                 outlineWidth: 2,
                 disableDepthTestDistance: Number.POSITIVE_INFINITY,
@@ -276,8 +280,8 @@ class BaseMeasure {
     // 构建控制点
     createPoint(position) {
         if (!position) return;
-        this.pointStyle.color = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
-        this.pointStyle.outlineColor = this.pointStyle.color || Cesium.Color.CORNFLOWERBLUE;
+        this.pointStyle.color = this.pointStyle.color || Cesium.Color.AQUA;
+        this.pointStyle.outlineColor = this.pointStyle.color || Cesium.Color.WHITE;
 
         let color = this.pointStyle.color instanceof Cesium.Color ? this.pointStyle.color : Cesium.Color.fromCssColorString(this.pointStyle.color);
         color = color.withAlpha(this.pointStyle.colorAlpha || 0.8);
@@ -288,15 +292,17 @@ class BaseMeasure {
         return this.viewer.entities.add({
             position: position,
             point: {
-                pixelSize: this.pointStyle.property || 10,
+                pixelSize: this.pointStyle.pixelSize || 6,
                 color: color,
-                outlineWidth: this.pointStyle.outlineWidth || 0,
+                outlineWidth: this.pointStyle.outlineWidth || 1,
                 outlineColor: outlineColor,
                 disableDepthTestDistance: Number.POSITIVE_INFINITY
             },
             show: false
         });
     }
+
+
 
 }
 

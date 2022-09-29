@@ -15,7 +15,7 @@ class MeasureSpaceArea extends BaseMeasure {
 		//面积标签
 		this.positions = [];
 		this.movePush = false;
-		this.prompt;
+		this.prompt = undefined;
 	}
 
 	//开始测量
