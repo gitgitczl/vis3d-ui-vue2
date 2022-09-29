@@ -94,7 +94,7 @@ class BaseLayer {
         if (this.opt.view) {
             cUtil.setCameraView(this.opt.view);
         } else {
-            this.viewer.zoomTo(this._layer);
+            if (this._layer.type == "3dtiles") this.viewer.zoomTo(this._layer);
         }
     }
 

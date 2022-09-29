@@ -78,7 +78,6 @@ class MapViewer {
         let { terrain } = this.opt.map;
         if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
 
-        /*  if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer); */
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
@@ -110,6 +109,7 @@ class MapViewer {
     // 构建图层
     loadbaseLayers() {
         let { baseLayers } = this.opt;
+        const baseServer = this.opt.baseServer || '';
         if (!baseLayers) return;
         for (let i = 0; i < baseLayers.length; i++) {
             let layer = baseLayers[i];
@@ -120,6 +120,7 @@ class MapViewer {
             if (layer.type == "group") continue;
             // 添加id
             layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+            if (layer.url) layer.url = layer.url.replace("${baseServer}", baseServer);
             if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
             this.baseLayerTool.add(layer);
         }
@@ -144,8 +145,7 @@ class MapViewer {
             }
         };
         dg(operateLayers);
-
-
+        const baseServer = this.opt.baseServer || '';
         for (let i = 0; i < allOperateLayers.length; i++) {
             let layer = allOperateLayers[i];
             if (!layer.type) {
@@ -153,6 +153,7 @@ class MapViewer {
                 return;
             }
             if (layer.type == "group") continue;
+
             if (layer.type == "plot" && layer.show) { // 兼容单个类型标绘在文件中配置
                 if (!this.operatePlotTool) {
                     this.operatePlotTool = new DrawTool(this._viewer, {
@@ -162,6 +163,7 @@ class MapViewer {
                 layer.type = layer.plotType;
                 this.operatePlotTool.createByPositions(layer);
             } else {
+                if (layer.url) layer.url = layer.url.replace("${baseServer}", baseServer);
                 if (!this.operateLayerTool) this.operateLayerTool = new LayerTool(this._viewer);
                 this.operateLayerTool.add(layer);
             }

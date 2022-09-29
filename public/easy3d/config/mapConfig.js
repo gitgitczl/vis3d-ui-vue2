@@ -34,7 +34,8 @@ window.mapConfig = {
             "terrainExaggeration": 1,
         },
         "terrain": {
-            "url": "http://localhost/erdsterrain",
+            // "url": "http://localhost/erdsterrain",
+            "url": "http://data.marsgis.cn/terrain",
             "show": true
         }
     },
@@ -44,7 +45,7 @@ window.mapConfig = {
             "type": "singleImage",
             "url": "./easy3d/images/layer/world.jpg",
             "iconImg": "./easy3d/images/layer/world.jpg",
-            "show": true,
+            "show": false,
             "alpha": 1,
             "rectangle": [
                 -180,
@@ -58,7 +59,7 @@ window.mapConfig = {
             "type": "mapserver",
             "iconImg": "./easy3d/images/baseMap/arcgis.png",
             "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-            "show": false
+            "show": true
         },
         {
             "name": "中国",
@@ -146,7 +147,7 @@ window.mapConfig = {
                     "type": "singleImage",
                     "url": "./easy3d/images/layer/world.jpg",
                     "iconImg": "./easy3d/images/layer/world.jpg",
-                    "show": true,
+                    "show": false,
                     "layerSplit": true,
                     "alpha": 1,
                     "rectangle": [
@@ -255,7 +256,7 @@ window.mapConfig = {
                     "url": "http://localhost/erdsnew/tileset.json",
                     "show": false,
                     "maximumScreenSpaceError": 64,
-                    "maximumMemoryUsage" : 256,
+                    "maximumMemoryUsage": 256,
                     "center": {
                         "z": 34
                     },
