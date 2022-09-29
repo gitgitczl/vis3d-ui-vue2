@@ -47,6 +47,8 @@ export default {
     let lys = this.baseMapList.filter((layer) => {
       return layer.show == true;
     });
+
+    debugger
     this.nowShowLayerId = lys[0].id;
   },
   destroyed() {},
@@ -61,7 +63,7 @@ export default {
 
       let tempList = this.baseMapList.map((item) => {
         let temp = {};
-        if (item.type === data.type) {
+        if (item.id === data.id) {
           temp = Object.assign({}, item, { show: true });
         } else {
           temp = Object.assign({}, item, { show: false });
@@ -96,9 +98,6 @@ export default {
     color: #6d748a;
     cursor: pointer;
     margin-right: 16px;
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
     img {
       width: 90px;
       height: 80px;

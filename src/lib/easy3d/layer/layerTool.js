@@ -12,6 +12,8 @@ class LayerTool {
     constructor(viewer) {
         this.viewer = viewer;
         this._layerObjs = [];
+
+        this.layerIndex = 0;
     }
     get layers() {
         return this._layerObjs;
@@ -20,6 +22,13 @@ class LayerTool {
         let layerObj = null;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
+
+        // 自动设置图层的index
+        if (type != "geojson" || type != "3dtiles") {
+            opt.index = this.layerIndex;
+            this.layerIndex++;
+        }
+
         switch (type) {
             case "xyz": //xyz格式切片
                 layerObj = new XYZLayer(this.viewer, opt);
@@ -56,7 +65,7 @@ class LayerTool {
                 break;
         }
         if (!layerObj) return;
-        if (layerObj.type == "3dtiles" || layerObj.type=="geojson") {
+        if (layerObj.type == "3dtiles" || layerObj.type == "geojson") {
             layerObj.load(function () {
                 if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
                 layerObj.setVisible(opt.show);

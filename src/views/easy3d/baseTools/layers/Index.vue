@@ -40,20 +40,22 @@
     </div>
 
     <!-- 树节点右击菜单 -->
-    <ul class="tree-menu" v-show="isTreeMenu" :style="{ ...meunStyle }">
-      <li>
-        <span>上一层</span>
-      </li>
-      <li>
-        <span>下一层</span>
-      </li>
-      <li>
-        <span>置于顶层</span>
-      </li>
-      <li>
-        <span>置于底层</span>
-      </li>
-    </ul>
+    <!--
+      <ul class="tree-menu" v-show="isTreeMenu" :style="{ ...meunStyle }">
+        <li>
+          <span>上一层</span>
+        </li>
+        <li>
+          <span>下一层</span>
+        </li>
+        <li>
+          <span>置于顶层</span>
+        </li>
+        <li>
+          <span>置于底层</span>
+        </li>
+      </ul>
+    -->  
   </Card>
 </template>
 
@@ -219,7 +221,6 @@ export default {
     nodeRightClick(event, data) {
       this.meunStyle = { top: `${event.pageY}px`, left: `${event.pageX}px` };
       this.$set(this, "isTreeMenu", true);
-
       /**
        * 点击其他地方关闭菜单
        */
