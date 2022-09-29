@@ -19,7 +19,7 @@
       </li>
     </ul>
     <div class="basic-checkbox basemap-checkbox">
-      <el-checkbox v-model="isShowTerrain">显示地形</el-checkbox>
+      <el-checkbox v-model="isShowTerrain" @change="changeTerrain">显示地形</el-checkbox>
     </div>
   </Card>
 </template>
@@ -48,7 +48,6 @@ export default {
       return layer.show == true;
     });
 
-    debugger
     this.nowShowLayerId = lys[0].id;
   },
   destroyed() {},
@@ -75,7 +74,7 @@ export default {
       window.mapViewer.baseLayerTool.hideAll();
       window.mapViewer.baseLayerTool.showById(data.id);
     },
-    setTerrainVisible() {
+    changeTerrain() {
       window.mapViewer.setTerrainVisible(this.isShowTerrain);
     },
   },
