@@ -207,7 +207,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0 16px 0 0;
+    margin: 6px 10px 0 0;
     cursor: pointer;
     &:nth-child(3n) {
       margin-right: 0;
