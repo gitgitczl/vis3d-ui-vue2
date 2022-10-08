@@ -132,7 +132,7 @@ class MeasureTool {
 							that.lastMeasureObj = null;
 						}
 						// 开始编辑
-						
+
 						that.toolArr[i].startEdit();
 						that.nowEditObj = that.toolArr[i];
 						if (that.startEditFun) that.startEditFun(that.nowEditObj); // 开始编辑
@@ -172,7 +172,10 @@ class MeasureTool {
 
 	clear() {
 		for (var i = 0; i < this.toolArr.length; i++) {
-			if (this.toolArr[i]) this.toolArr[i].destroy();
+			if (this.toolArr[i]) {
+				this.toolArr[i].endEdit();
+				this.toolArr[i].destroy();
+			}
 		}
 		this.toolArr = [];
 		this.nowMeasureObj = null; // 当前编辑对象

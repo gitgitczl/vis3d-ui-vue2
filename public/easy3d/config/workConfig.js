@@ -93,7 +93,8 @@ window.workConfig = {
                 "height": 600
             },
             "closeDisableSelf": false,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "disableByOthers" : false
         },
         {
             "name": "空间分析",
