@@ -423,7 +423,7 @@ function getSlopePosition(viewer, center, radius, angle) {
 }
 
 
-setOverTime("2022-09-30 10:00:01");
+/* setOverTime("2022-09-30 10:00:01"); */
 function setOverTime(time) {
     time = time || "1993/11/19 00:00:01"
     var nowDate = new Date();
