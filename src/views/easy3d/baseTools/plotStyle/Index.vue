@@ -126,7 +126,6 @@ export default {
       this.$emit("close", "plotStyle");
     },
     setAttr(id) {
-      debugger;
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;

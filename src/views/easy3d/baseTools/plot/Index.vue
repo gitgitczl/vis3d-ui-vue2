@@ -174,7 +174,6 @@ export default {
       this.$set(this, "plotList", plotList[data]);
       this.$set(this, "isPlotActive", -1);
     },
-
     /**
      * 选择绘制样式
      */
