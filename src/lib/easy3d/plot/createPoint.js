@@ -26,7 +26,6 @@ class CreatePoint extends BasePlot {
 			if (!cartesian) return;
 			that.entity = that.createPoint(cartesian);
 			that.position = cartesian;
-			that.state = "endCreate";
 			if (that.handler) {
 				that.handler.destroy();
 				that.handler = null;
@@ -35,6 +34,7 @@ class CreatePoint extends BasePlot {
 				that.prompt.destroy();
 				that.prompt = null;
 			}
+			that.state = "endCreate";
 			if (callBack) callBack(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制

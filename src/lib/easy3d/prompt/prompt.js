@@ -29,7 +29,7 @@ class Prompt {
             type: promptType,
             anchor: promptType == 2 ? true : false,
             closeBtn: promptType == 2 ? true : false,
-            offset: promptType == 2 ? { x: 0, y: -20 } : { x: 30, y: 20 },
+            offset: promptType == 2 ? { x: 0, y: -20 } : { x: 10, y: 10 },
             content: "",
             show: true,
             style: {
@@ -203,8 +203,13 @@ class Prompt {
         if (this.promptDom) {
             const contentW = this.promptDom.offsetWidth; // 宽度
             const contentH = this.promptDom.offsetHeight; // 高度
-            this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(contentW) / 2) + "px";
-            this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(contentH)) + "px";
+            if (this.opt.type == 1) {
+                this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0))) + "px";
+                this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0))) + "px";
+            } else {
+                this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(contentW) / 2) + "px";
+                this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(contentH)) + "px";
+            }
         }
     }
 

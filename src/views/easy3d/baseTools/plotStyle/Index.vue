@@ -19,7 +19,7 @@
           <el-row style="margin-bottom: 10px">
             <el-col :span="6" class="plot-type-name">{{ item.name }}：</el-col>
             <el-col :span="18" class="reset-radio">
-              <el-radio-group v-model="item.value">
+              <el-radio-group v-model="item.value" @change="toChange">
                 <el-radio
                   v-for="(opt, index) in item.options"
                   :key="index"
@@ -126,7 +126,7 @@ export default {
       this.$emit("close", "plotStyle");
     },
     setAttr(id) {
-      
+      debugger;
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
@@ -171,12 +171,13 @@ export default {
     toChange() {
       let val = JSON.parse(JSON.stringify(this.plotStyleAttr));
       let newStyle = this.transformStyleVal(val);
-      this.$store.commit("setNowPlotStyleAttr", newStyle); 
+      this.$store.commit("setNowPlotStyleAttr", newStyle);
     },
 
     onChangePlotStyle(index) {
       this.$set(this, "plotActive", index);
     },
+
     transformStyleVal(style) {
       if (!style) return;
       let styleVal = {};
@@ -184,6 +185,7 @@ export default {
         styleVal[i] = style[i].value;
         if (style[i].type == "checkbox") {
           let option = style[i].options[style[i].value];
+          if (!option) continue;
           styleVal[i] = option.value; // 当前 checkbox 的选项值  非其子选项中的option值
           for (let step in option) {
             if (step != "name" && step != "value") {

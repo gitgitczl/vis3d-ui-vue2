@@ -97,6 +97,7 @@ export default {
 
   methods: {
     toChange(val) {
+      debugger
       this.detailAttr.value = this.value;
       console.log("detail===>", this.detailAttr);
       this.$emit("toChange");
