@@ -3,7 +3,7 @@ window.workConfig = {
     "tools": [
         {
             "name": "图上标绘",
-            "show": false,
+            "show": true,
             "workName": "plot",
             "position": {
                 "top": 100,

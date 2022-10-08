@@ -26,7 +26,6 @@ class CreateLabel extends BasePlot {
       if (!cartesian) return;
       that.entity = that.createLabel(cartesian.clone());
       that.position = cartesian.clone();
-      that.state = "endCreate";
       if (that.handler) {
         that.handler.destroy();
         that.handler = null;
@@ -35,6 +34,7 @@ class CreateLabel extends BasePlot {
         that.prompt.destroy();
         that.prompt = null;
       }
+      that.state = "endCreate";
       if (callBack) callBack(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -115,7 +115,7 @@ class CreateLabel extends BasePlot {
   getStyle() {
     let obj = {};
     let label = this.entity.label;
-    
+
     let fillColor = label.fillColor.getValue();
     obj.fillColorAlpha = fillColor.alpha;
     obj.fillColor = new Cesium.Color(
@@ -146,7 +146,7 @@ class CreateLabel extends BasePlot {
 
     obj.text = label.text.getValue();
 
-    
+
     return obj;
   }
   getPositions(isWgs84) {
@@ -222,6 +222,7 @@ class CreateLabel extends BasePlot {
         pixelOffset: this.style.pixelOffset || Cesium.Cartesian2.ZERO,
         showBackground: this.style.showBackground,
         heightReference: this.style.heightReference || 0,
+        disableDepthTestDistance: Number.MAX_VALUE
       },
     });
     label.objId = this.objId;

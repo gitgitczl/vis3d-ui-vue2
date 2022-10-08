@@ -161,7 +161,7 @@ export default {
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
         nowPlotEntObj = null;
-        let lnglats = entObj.getPositions(true);
+       /*  let lnglats = entObj.getPositions(true); */
         window.workControl.closeToolByName("plotStyle");
       });
     }
@@ -174,7 +174,6 @@ export default {
       this.$set(this, "plotList", plotList[data]);
       this.$set(this, "isPlotActive", -1);
     },
-
     /**
      * 选择绘制样式
      */
@@ -194,24 +193,6 @@ export default {
       this.$emit("close", "plot");
     },
 
-    // 将style对象转为线性的
-    transformStyleVal(style) {
-      if (!style) return;
-      let styleVal = {};
-      for (let i in style) {
-        styleVal[i] = style[i].value;
-        if (style[i].type == "checkbox") {
-          let option = style[i].options[style[i].value];
-          styleVal[i] = option.value; // 当前 checkbox 的选项值  非其子选项中的option值
-          for (let step in option) {
-            if (step != "name" && step != "value") {
-              styleVal[step] = option[step].value;
-            }
-          }
-        }
-      }
-      return styleVal;
-    },
     btnClick(item) {
       if (item.type == "loadFile") {
         let dom = document.getElementById("plot-loadFile");

@@ -93,12 +93,12 @@ export default {
   },
   mounted() {
     this.value = this.detailAttr.value; // 这行代码值两千块
+    console.log("--->",this.detailAttr);
   },
 
   methods: {
     toChange(val) {
       this.detailAttr.value = this.value;
-      console.log("detail===>", this.detailAttr);
       this.$emit("toChange");
     },
   },
