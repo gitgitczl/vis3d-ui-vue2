@@ -15,14 +15,11 @@ class MeasureLnglat extends BaseMeasure {
         this.state = "startCreate";
         var that = this;
         this.handler.setInputAction(function (evt) { //单击开始绘制
-            that.state = "endCreate";
-            var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
-            if (!cartesian) return;
-            that.position = cartesian;
             if (that.handler) {
                 that.handler.destroy();
                 that.handler = null;
             }
+            that.state = "endCreate";
             if (callback) callback();
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {

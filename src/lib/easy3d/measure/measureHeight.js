@@ -34,12 +34,10 @@ class MeasureHeight extends BaseMeasure {
           that.prompt.destroy();
           that.prompt = null;
         }
-        that.state = "endCreate";
-
         let point = that.createPoint(cartesian.clone());
         point.wz = 1;
         that.controlPoints.push(point);
-
+        that.state = "endCreate";
         if (callback) callback();
       } else {
         that.polyline = that.createLine(that.positions, false);

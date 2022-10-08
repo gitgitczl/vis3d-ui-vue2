@@ -64,7 +64,10 @@ class MeasureSpaceArea extends BaseMeasure {
 						that.polygon.objId = that.objId;
 						/* if (that.polyline) that.polyline.show = false; */
 					}
-					if (!that.floatLabel) that.floatLabel = that.createLabel(cartesian, "");
+					if (!that.floatLabel){
+						that.floatLabel = that.createLabel(cartesian, "");
+						that.floatLabel.label.heightReference = 1;
+					}
 				}
 				if (that.polygon) {
 					let areaCenter = that.getAreaAndCenter(that.positions)
@@ -250,7 +253,7 @@ class MeasureSpaceArea extends BaseMeasure {
 				hierarchy: new Cesium.CallbackProperty(function () {
 					return new Cesium.PolygonHierarchy(that.positions);
 				}, false),
-				material: this.style.material || Cesium.Color.WHITE.withAlpha(0.3),
+				material: this.style.material || Cesium.Color.WHITE.withAlpha(0.6),
 				fill: true
 			})
 		});
