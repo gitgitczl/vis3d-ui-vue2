@@ -135,11 +135,11 @@
         },
         {
             "name": "弓形面",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/gxm.png",
             "type": "arrow",
             "arrowType": 9,
             "style": {
-                "color": "#001CF4",
+                "color": "#00B038",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -157,22 +157,22 @@
         },
         {
             "name": "矩形旗",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/jxq.png",
             "type": "arrow",
             "arrowType": 11,
             "style": {
-                "color": "#001CF4",
+                "color": "#0094DE",
                 "heightReference": 1
             },
             "styleType": "arrow"
         },
         {
             "name": "扇形",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/sx.png",
             "type": "arrow",
             "arrowType": 12,
             "style": {
-                "color": "#001CF4",
+                "color": "#5902BC",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -190,22 +190,22 @@
         },
         {
             "name": "矩形波浪旗",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/jxblq.png",
             "type": "arrow",
             "arrowType": 14,
             "style": {
-                "color": "#001CF4",
+                "color": "#F47600",
                 "heightReference": 1
             },
             "styleType": "arrow"
         },
         {
             "name": "单线箭头",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/zxjt.png",
             "type": "arrow",
             "arrowType": 16,
             "style": {
-                "color": "#001CF4",
+                "color": "#D0CD00",
                 "heightReference": 1
             },
             "styleType": "arrow"
