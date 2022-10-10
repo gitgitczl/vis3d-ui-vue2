@@ -760,6 +760,7 @@ export default {
     CurveFlag,
     DoubleArrow,
     FineArrow,
+    FineArrowYW,
     GatheringPlace,
     LineStraightArrow,
     Lune,
