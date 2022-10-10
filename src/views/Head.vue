@@ -3,7 +3,7 @@
     <!-- logo -->
     <div class="logo-box">
       <span><img :src="logoBg" /></span>
-      <p>三维全息展示平台</p>
+      <p>三维基础框架</p>
     </div>
     <div class="head-nav"></div>
     <!-- 设置、用户名 -->
