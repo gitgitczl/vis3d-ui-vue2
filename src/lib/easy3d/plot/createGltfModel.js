@@ -130,7 +130,7 @@ class CreateGltfModel extends BasePlot {
         minimumPixelSize: this.style.minimumPixelSize,
         maximumScale: this.style.maximumScale,
         scale: this.style.scale || 1,
-        heightReference : this.style.heightReference
+        heightReference: this.style.heightReference
       }
     });
     entity.objId = this.objId;
@@ -151,6 +151,9 @@ class CreateGltfModel extends BasePlot {
     obj.roll = hpr.roll || 0;
     obj.scale = model.scale.getValue();
     obj.uri = model.uri.getValue();
+
+    let heightReference = entity.heightReference.getValue();
+    obj.heightReference = Number(heightReference);
     return obj;
   }
   setStyle(style) {

@@ -119,7 +119,6 @@ class DrawTool {
   // 开始编辑某个
   startEditOne(entityObj) {
     if (!this.canEdit) return;
-
     if (this.lastEntityObj) {
       // 结束除当前选中实体的所有编辑操作
       this.lastEntityObj.endEdit();
@@ -267,6 +266,11 @@ class DrawTool {
 
 
   destroy() {
+    // 取消当前绘制
+    if (this.lastStartEntityObj) {
+      this.lastStartEntityObj.destroy();
+      this.lastStartEntityObj = null;
+    }
     for (let i = 0; i < this.toolArr.length; i++) {
       this.toolArr[i].destroy();
     }
@@ -288,6 +292,12 @@ class DrawTool {
     this.removeById(entityObj.objId);
   }
   removeAll() {
+    // 取消当前绘制
+    debugger
+    if (this.lastStartEntityObj) {
+      this.lastStartEntityObj.destroy();
+      this.lastStartEntityObj = null;
+    }
     for (let i = 0; i < this.toolArr.length; i++) {
       let obj = this.toolArr[i];
       obj.destroy();
@@ -451,11 +461,7 @@ class DrawTool {
       }
       that.deletePrompt = new Prompt(viewer, {
         content: "<span id='deleteEntity' style='cursor: pointer;'>删除</span>",
-        show: true,
-        offset: {
-          x: 60,
-          y: 60,
-        },
+        show: true
       });
       let deleteDom = document.getElementById("deleteEntity");
       that.deletePrompt.update(px);
