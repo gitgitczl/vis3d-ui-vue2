@@ -154,10 +154,13 @@ class CreateArrow extends BasePlot {
 		obj.colorAlpha = color.alpha;
 		obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
 
-		/* if (polygon.heightReference) {
-			let heightReference = polygon.heightReference.getValue();
-			obj.heightReference = Boolean(heightReference);
-		} */
+		if (this.arrowPlot.onlyLine) {
+			let heightReference = entity.clampToGround.getValue();
+			obj.heightReference = Number(heightReference);
+		} else {
+			let heightReference = entity.heightReference.getValue();
+			obj.heightReference = Number(heightReference);
+		}
 		return obj;
 	}
 	// 设置相关样式
@@ -167,12 +170,16 @@ class CreateArrow extends BasePlot {
 		let material = color.withAlpha(style.colorAlpha || 1);
 		if (this.arrowPlot.onlyLine) {
 			this.entity.polyline.material = material;
+			this.entity.polyline.clampToGround = Boolean(style.heightReference);
 		} else if (this.arrowPlot.hasLine) {
 			this.entity.polyline.material = material;
 			this.entity.polygon.material = material;
+			this.entity.polyline.clampToGround = Boolean(style.heightReference);
+			this.entity.polygon.heightReference = Number(style.heightReference);
 		} else {
 			if (style.fill != undefined) this.entity.polygon.fill = style.fill;
 			this.entity.polygon.material = material;
+			this.entity.polygon.heightReference = Number(style.heightReference);
 		}
 		this.style = Object.assign(this.style, style);
 	}

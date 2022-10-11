@@ -146,11 +146,11 @@
         },
         {
             "name": "直箭头",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/czjt.png",
             "type": "arrow",
             "arrowType": 10,
             "style": {
-                "color": "#001CF4",
+                "color": "#C8CB99",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -179,11 +179,11 @@
         },
         {
             "name": "三角旗",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./easy3d/images/plot/sjq.png",
             "type": "arrow",
             "arrowType": 13,
             "style": {
-                "color": "#001CF4",
+                "color": "#029A8B",
                 "heightReference": 1
             },
             "styleType": "arrow"
