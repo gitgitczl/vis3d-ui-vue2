@@ -2,6 +2,7 @@
 import BaseLayer from './baseLayer.js';
 class MapserverLayer extends BaseLayer {
     constructor(viewer, opt) {
+        
         super(viewer, opt);
         this.type = "mapserver";
         this._provider = new Cesium.ArcGisMapServerImageryProvider(this.providerAttr);

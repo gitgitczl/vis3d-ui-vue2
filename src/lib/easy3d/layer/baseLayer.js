@@ -56,6 +56,7 @@ class BaseLayer {
         /* options = Object.assign(this.opt, options); */
         this._layer = new Cesium.ImageryLayer(this._provider, options);
         this.viewer.imageryLayers.add(this._layer, this.opt.index);
+        /* this.viewer.imageryLayers.add(this._layer); */
         this._layer.attr = this.opt; // 保存配置信息
     }
 

@@ -71,7 +71,7 @@ export default {
       let that = this;
 
       this.axios
-        .get(`/data/bound/xzqh/${key}.json`)
+        .get(`http://localhost/xzqh/${key}.json`)
         .then(function (response) {
           let dspromise = window.Cesium.GeoJsonDataSource.load(response.data, {
             stroke: Cesium.Color.YELLOW,
