@@ -161,13 +161,19 @@ export default {
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
         nowPlotEntObj = null;
-       /*  let lnglats = entObj.getPositions(true); */
+        /*  let lnglats = entObj.getPositions(true); */
         window.workControl.closeToolByName("plotStyle");
       });
     }
   },
 
-  destroyed() {},
+  destroyed() {
+    if (window.plotDrawTool) {
+      window.plotDrawTool.destroy();
+      window.plotDrawTool = null;
+    }
+    window.workControl.closeToolByName("plotStyle");
+  },
   methods: {
     // 选择标绘类型
     onChangePlot(data) {
@@ -334,7 +340,7 @@ export default {
 
   img {
     width: 88px;
-    height: 64px;
+    height: 78px;
   }
 }
 </style>

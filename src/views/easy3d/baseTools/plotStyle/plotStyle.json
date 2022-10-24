@@ -254,16 +254,6 @@
         }
     },
     "arrow": {
-        "heightReference": {
-            "name": "是否贴地",
-            "value": true,
-            "type": "radio-number"
-        },
-        "fill": {
-            "name": "是否填充",
-            "value": true,
-            "type": "radio-boolean"
-        },
         "color": {
             "name": "颜色",
             "value": "#ffffff",
