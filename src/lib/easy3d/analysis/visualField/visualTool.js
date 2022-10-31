@@ -102,7 +102,6 @@ class VisualTool {
             that.distance = distance;
             that.vfPrimitive.distance = distance;
 
-
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
 

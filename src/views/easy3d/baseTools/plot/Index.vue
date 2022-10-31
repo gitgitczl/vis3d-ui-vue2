@@ -151,6 +151,8 @@ export default {
         // 创建完成后 打开控制面板
         nowPlotEntObj = entObj;
         that.isPlotActive = -1;
+        /* let positions = entObj.getPositions(true);
+        console.log("plot positions-->", positions); */
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑

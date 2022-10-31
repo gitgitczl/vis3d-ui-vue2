@@ -2,12 +2,12 @@ window.mapConfig = {
     "baseServer": "http://localhost:1119/",
     "map": {
         "cameraView": {
-            "x": 121.76178687054025,
-            "y": 26.346513383191965,
-            "z": 2243921.957252694,
-            "heading": 354.9702221983265,
-            "pitch": -63.737574656859074,
-            "roll": 359.983616403407,
+            "x": 109.95096505461439,
+            "y": 39.78601424382673,
+            "z": 1807.9275862866602,
+            "heading": 15.935038317002068,
+            "pitch": -17.47322144749886,
+            "roll": 359.9997278543909,
             "duration": 0
         },
         "worldAnimate": false,
@@ -35,7 +35,7 @@ window.mapConfig = {
         "terrain": {
             // "url": "http://localhost/erdsterrain",
             "url": "http://data.marsgis.cn/terrain",
-            "show": true
+            "show": false
         }
     },
     "baseLayers": [
@@ -163,6 +163,12 @@ window.mapConfig = {
                     "url": "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png"
                 },
                 {
+                    "name": "testxyz",
+                    "type": "xyz",
+                    "show": false,
+                    "url": "./data/testxyz/{z}/{x}/{y}.png"
+                },
+                {
                     "name": "行政区划（geojson）",
                     "type": "geojson",
                     "show": false,
@@ -235,7 +241,7 @@ window.mapConfig = {
             ]
         },
         {
-            "name": "三维模型",
+            "name": "倾斜摄影模型",
             "type": "group",
             "open": true,
             "children": [
@@ -275,16 +281,7 @@ window.mapConfig = {
                     "maximumScreenSpaceError": 1,
                     "show": false
                 },
-                {
-                    "name": "办公楼（bim）",
-                    "type": "3dtiles",
-                    "url": "http://47.117.134.108:9009/data/model/1652516228286/bangonglou/tileset.json",
-                    "maximumScreenSpaceError": 1,
-                    "center": {
-                        z: 30
-                    },
-                    "show": false
-                },
+
 
                 {
                     "name": "社区",
@@ -303,6 +300,36 @@ window.mapConfig = {
                     "maximumMemoryUsage": 512
                 }
             ]
+        },
+
+        {
+            "name": "3dmax模型",
+            "type": "group",
+            "open": true,
+            "children": [
+                {
+                    "name": "办公楼",
+                    "type": "3dtiles",
+                    "url": "http://47.117.134.108:9009/data/model/1652516228286/bangonglou/tileset.json",
+                    "show": true,
+                    "maximumScreenSpaceError": 1,
+                    "maximumMemoryUsage": 512,
+                    "center": {
+                        "z": 0
+                    }
+
+                }
+
+            ]
+        },
+
+        {
+            "name": "bim模型",
+            "type": "group",
+            "open": true
+            
         }
+
+
     ]
 }

@@ -3,7 +3,7 @@ window.workConfig = {
     "tools": [
         {
             "name": "图上标绘",
-            "show": true,
+            "show": false,
             "workName": "plot",
             "position": {
                 "top": 100,
@@ -94,7 +94,7 @@ window.workConfig = {
             },
             "closeDisableSelf": false,
             "openDisableAnothers": false,
-            "disableByOthers" : false
+            "disableByOthers": false
         },
         {
             "name": "空间分析",

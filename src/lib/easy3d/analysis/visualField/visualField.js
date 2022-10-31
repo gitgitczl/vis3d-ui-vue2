@@ -111,7 +111,7 @@ class VisualField {
     }
 
     set visibleAreaColorAlpha(value) {
-        
+
         this._visibleAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
@@ -121,7 +121,7 @@ class VisualField {
     }
 
     set hiddenAreaColorAlpha(value) {
-        
+
         this._hiddenAreaColorAlpha = Number(value);
         this._scene.requestRender();
     }
@@ -226,8 +226,8 @@ class VisualField {
         this._lightCamera.setView({
             destination: this._viewerPosition,
             orientation: {
-                heading: Cesium.Math.toRadians(this._heading),
-                pitch: Cesium.Math.toRadians(this._pitch)
+                heading: Cesium.Math.toRadians(0),
+                pitch: Cesium.Math.toRadians(0)
             }
         });
         // 构建视锥体
@@ -256,6 +256,7 @@ class VisualField {
     // 构建谁锥体几何
     createOutLineGeometry() {
         var positions = new Float32Array(633);
+
         var i, a, s, d, p = positions,
             m = Cesium.Math.toRadians(this._horizontalFov),
             v = Cesium.Math.toRadians(this._verticalFov),
@@ -338,6 +339,88 @@ class VisualField {
             primitiveType: Cesium.PrimitiveType.LINES,
             boundingSphere: Cesium.BoundingSphere.fromVertices(positions)
         });
+
+        /* let positions = new Float64Array(5 * 3);
+        // 点0 坐标
+        positions[0] = 0.5;
+        positions[1] = 0.0;
+        positions[2] = 0.5;
+
+        // 点1 坐标
+        positions[3] = 0.0;
+        positions[4] = -1.0;
+        positions[5] = 0.0;
+
+        // 点2 坐标
+        positions[6] = 1.0;
+        positions[7] = -1.0;
+        positions[8] = 0.0;
+
+        // 点3 坐标
+        positions[9] = 1.0;
+        positions[10] = -1.0;
+        positions[11] = 1.0;
+
+        // 点4 坐标
+        positions[12] = 0.0;
+        positions[13] = -1.0;
+        positions[14] = 1.0;
+
+        let that = this;
+        let arr = [];
+        positions.forEach(function (item) {
+            let val = item * that._distance;
+            arr.push(val);
+        });
+        positions = arr;
+
+        // 创建顶点属性中的坐标
+        const attributes = new Cesium.GeometryAttributes({
+            position: new Cesium.GeometryAttribute({
+                componentDatatype: Cesium.ComponentDatatype.DOUBLE,
+                componentsPerAttribute: 3,
+                values: positions
+            })
+        });
+
+        // 点的索引
+        const indices = new Uint16Array(18);
+
+        indices[0] = 0;
+        indices[1] = 4;
+
+        indices[2] = 0;
+        indices[3] = 1;
+
+        indices[4] = 0;
+        indices[5] = 2;
+
+        indices[6] = 0;
+        indices[7] = 3;
+
+        indices[8] = 1;
+        indices[9] = 4;
+
+        indices[10] = 4;
+        indices[11] = 1;
+
+        indices[12] = 1;
+        indices[13] = 2;
+
+        indices[14] = 2;
+        indices[15] = 3;
+
+        indices[16] = 3;
+        indices[17] = 4;
+
+        let geometry = new Cesium.Geometry({
+            attributes: attributes,
+            indices: indices,
+            primitiveType: Cesium.PrimitiveType.LINES,
+            boundingSphere: Cesium.BoundingSphere.fromVertices(positions)
+        }); 
+
+        return geometry;*/
     }
 
     // 更新后处理
@@ -363,7 +446,7 @@ class VisualField {
                 return shadowMap._shadowMapMatrix;
             },
             viewShed_frontColor: function () {
-               
+
                 let vColor = that._visibleAreaColor.withAlpha(that._visibleAreaColorAlpha);
                 vColor = Cesium.Cartesian4.fromColor(vColor);
                 return vColor;

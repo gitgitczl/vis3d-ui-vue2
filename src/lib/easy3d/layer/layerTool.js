@@ -9,11 +9,11 @@ import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
 class LayerTool {
-    constructor(viewer) {
+    constructor(viewer, opt) {
         this.viewer = viewer;
         this._layerObjs = [];
-
-        this.layerIndex = 0;
+        opt =opt || {};
+        this.layerIndex = opt.startIndex || 0;
     }
     get layers() {
         return this._layerObjs;

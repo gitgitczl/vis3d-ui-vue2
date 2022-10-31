@@ -198,7 +198,6 @@ class MeasureTool {
 		this.nowMeasureObj.setUnit(unit);
 	}
 
-
 	// 修改鼠标样式
 	changeCursor(isopen) {
 		let body = document.getElementsByTagName("body");
