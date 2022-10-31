@@ -23,6 +23,7 @@ window.mapConfig = {
             "geocoder": false,
             "homeButton": false,
             "infoBox": false,
+
             "sceneModePicker": false,
             "selectionIndicator": false,
             "timeline": false,
@@ -156,6 +157,14 @@ window.mapConfig = {
                         90
                     ]
                 },
+
+                {
+                    "name": "全国地图（深色）",
+                    "type": "xyz",
+                    "show": false,
+                    "url": "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png"
+                },
+
                 {
                     "name": "全国地图（深色）",
                     "type": "xyz",

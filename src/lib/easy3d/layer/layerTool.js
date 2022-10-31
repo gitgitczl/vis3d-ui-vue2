@@ -12,8 +12,6 @@ class LayerTool {
     constructor(viewer, opt) {
         this.viewer = viewer;
         this._layerObjs = [];
-        opt =opt || {};
-        this.layerIndex = opt.startIndex || 0;
     }
     get layers() {
         return this._layerObjs;
@@ -24,11 +22,6 @@ class LayerTool {
         let type = opt.type;
 
         // 自动设置图层的index
-        if (type != "geojson" || type != "3dtiles") {
-            opt.index = this.layerIndex;
-            this.layerIndex++;
-        }
-
         switch (type) {
             case "xyz": //xyz格式切片
                 layerObj = new XYZLayer(this.viewer, opt);

@@ -21,6 +21,7 @@ export default  {
                 let module = modules[i];
                 const workName = module.default.name;
                 let attr = toolsObj[workName];
+                if(!attr) continue;
                 attr.module = module.default;
                 that.componentsArr.push(attr);
             }
