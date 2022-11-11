@@ -48,6 +48,8 @@ export default {
   mounted() {
     // 构建基础地图
     let that = this;
+
+    debugger;
     let mapViewer = (window.mapViewer = new this.easy3d.MapViewer(
       "mapContainer",
       window.mapConfig
@@ -68,8 +70,6 @@ export default {
     if (!zoomTool) {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
-
-   
   },
   destroyed() {
     if (window.viewer) {
@@ -92,8 +92,6 @@ export default {
       attr = attr || {};
       window.mapViewer.operateLayerTool.setVisible(attr.id, visible);
     },
-
-    
   },
   watch: {
     // 监听工具面板的开启

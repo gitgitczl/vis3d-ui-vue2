@@ -15,11 +15,11 @@ import LatlngNavigation from "./lnglatTool/lnglatNavigation";
 
 import gadgets from "./gadgets/gadgets";
 import RoamTool from "./roam/roamTool";
-import ZoomTool from "./zoomTool/zoomTool"
-import OverviewMap from "./overviewMap/overviewMap"
+import ZoomTool from "./zoomTool/zoomTool";
+import OverviewMap from "./overviewMap/overviewMap";
 
-import CesiumNavigation from "./mapNavgation/CesiumNavigation"
-import './mapNavgation/styles/cesium-navigation.css'
+import CesiumNavigation from "./mapNavgation/CesiumNavigation";
+import "./mapNavgation/styles/cesium-navigation.css";
 
 import easy3dView from "./viewRoate";
 import LayerSplit from "./layerSplit/layerSplit";
@@ -32,253 +32,278 @@ import VisualTool from "./analysis/visualField/visualTool";
 import Sunshine from "./analysis/sunshine/sunshine";
 import LimitHeight from "./analysis/limitHeight/limitHeight";
 let analysis = {
-    VisualTool: VisualTool,
-    Sunshine: Sunshine,
-    LimitHeight: LimitHeight
-}
+  VisualTool: VisualTool,
+  Sunshine: Sunshine,
+  LimitHeight: LimitHeight,
+};
 // 自定义天气
 let weather = {
-    fog: fog,
-    rain: rain,
-    snow: snow
-}
+  fog: fog,
+  rain: rain,
+  snow: snow,
+};
 
 import registerAnimate from "./animateMaterial/animate";
 // 注册自定义材质
 let rganimate = registerAnimate();
 let animate = {
-    Wall: rganimate.AnimateWall,
-    FlowLine: rganimate.FlowLineMaterial
-}
+  Wall: rganimate.AnimateWall,
+  FlowLine: rganimate.FlowLineMaterial,
+};
 
 // 构建viewer
 class MapViewer {
-    constructor(domId, opt) {
-        if (!domId) return;
-        this.domId = domId;
-        this.opt = opt || {};
-        this._viewer = null;
+  constructor(domId, opt) {
+    if (!domId) return;
+    this.domId = domId;
+    this.opt = opt || {};
+    this._viewer = null;
 
-        this.baseLayerTool = null;
-        this.operateLayerTool = null;
+    this.baseLayerTool = null;
+    this.operateLayerTool = null;
 
-        this.operatePlotTool = null;
+    this.operatePlotTool = null;
 
-        this.rightTool = null;
-        this.bottomLnglatTool = null;
-        this.popupTooltipTool = null;
+    this.rightTool = null;
+    this.bottomLnglatTool = null;
+    this.popupTooltipTool = null;
 
-        this.createViewer();
+    this.createViewer();
 
-        this.loadbaseLayers();
-        this.loadOperateLayers();
+    this.loadbaseLayers();
+    this.loadOperateLayers();
 
+    this.terrainUrl = "";
+    let { terrain } = this.opt.map;
+    if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
 
-        this.terrainUrl = '';
-        let { terrain } = this.opt.map;
-        if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
+    if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
+    if (this.opt.map.rightTool) this.openRightTool();
+    if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
+    if (this.opt.map.navigationTool) this.openNavigationTool();
 
-        if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
-        if (this.opt.map.rightTool) this.openRightTool();
-        if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
-        if (this.opt.map.navigationTool) this.openNavigationTool();
+    if (this.opt.map.worldAnimate) {
+      this.openWorldAnimate();
+    } else {
+      if (this.opt.map.cameraView)
+        cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
+    }
+  }
 
-        if (this.opt.map.worldAnimate) {
-            this.openWorldAnimate();
+  get viewer() {
+    return this._viewer;
+  }
+
+  // 构建地图
+  createViewer() {
+    let { viewerConfig } = this.opt.map;
+    this._viewer = new window.Cesium.Viewer(this.domId, viewerConfig);
+    this._viewer.imageryLayers.removeAll();
+    // 是否展示cesium官方logo
+    this._viewer._cesiumWidget._creditContainer.style.display = "none";
+    this._viewer.mapConfig = this.opt;
+    this._viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+      Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+    );
+    this.viewer.scene.globe.depthTestAgainstTerrain =
+      this.opt.map.depthTestAgainstTerrain;
+  }
+  // 构建图层
+  loadbaseLayers() {
+    let { baseLayers } = this.opt;
+    const baseServer = this.opt.baseServer || "";
+    if (!baseLayers) return;
+    for (let i = 0; i < baseLayers.length; i++) {
+      let layer = baseLayers[i];
+      if (!layer.type) {
+        console.log("缺少基础图层的图层类型", layer);
+        return;
+      }
+      if (layer.type == "group") continue;
+      // 添加自定义id
+      layer.id =
+        layer.id ||
+        new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+      if (layer.url) layer.url = layer.url.replace("${baseServer}", baseServer);
+      if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
+      this.baseLayerTool.add(layer);
+    }
+  }
+  // 构建业务图层
+  loadOperateLayers() {
+    let { operateLayers } = this.opt;
+    if (!operateLayers) return;
+    // 递归查到所有的图层
+    let allOperateLayers = [];
+    function dg(layers) {
+      for (let i = 0; i < layers.length; i++) {
+        let layer = layers[i];
+        // 添加id
+        layer.id =
+          layer.id ||
+          new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+        layer.alpha = layer.alpha == undefined ? 1 : layer.alpha;
+        if (layer.children && layer.children.length > 0) {
+          dg(layer.children);
         } else {
-            if (this.opt.map.cameraView) cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
+          allOperateLayers.push(layer);
         }
-
+      }
     }
+    dg(operateLayers);
+    const baseServer = this.opt.baseServer || "";
+    for (let i = 0; i < allOperateLayers.length; i++) {
+      let layer = allOperateLayers[i];
+      if (!layer.type) {
+        console.log("缺少基础图层的图层类型", layer);
+        return;
+      }
+      if (layer.type == "group") continue;
 
-    get viewer() {
-        return this._viewer;
-    }
-
-    // 构建地图
-    createViewer() {
-        let { viewerConfig } = this.opt.map;
-        this._viewer = new window.Cesium.Viewer(this.domId, viewerConfig);
-        this._viewer.imageryLayers.removeAll();
-        // 是否展示cesium官方logo
-        this._viewer._cesiumWidget._creditContainer.style.display = "none";
-        this._viewer.mapConfig = this.opt;
-        this._viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-        this.viewer.scene.globe.depthTestAgainstTerrain = this.opt.map.depthTestAgainstTerrain;
-    }
-    // 构建图层
-    loadbaseLayers() {
-        let { baseLayers } = this.opt;
-        const baseServer = this.opt.baseServer || '';
-        if (!baseLayers) return;
-        for (let i = 0; i < baseLayers.length; i++) {
-            let layer = baseLayers[i];
-            if (!layer.type) {
-                console.log("缺少基础图层的图层类型", layer);
-                return;
-            }
-            if (layer.type == "group") continue;
-            // 添加id
-            layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
-            if (layer.url) layer.url = layer.url.replace("${baseServer}", baseServer);
-            if (!this.baseLayerTool) this.baseLayerTool = new LayerTool(this._viewer);
-            this.baseLayerTool.add(layer);
+      if (layer.type == "plot" && layer.show) {
+        // 兼容单个类型标绘在文件中配置
+        if (!this.operatePlotTool) {
+          this.operatePlotTool = new DrawTool(this._viewer, {
+            canEdit: false,
+          });
         }
+        layer.type = layer.plotType;
+        this.operatePlotTool.createByPositions(layer);
+      } else {
+        if (layer.url)
+          layer.url = layer.url.replace("${baseServer}", baseServer);
+        if (!this.operateLayerTool)
+          this.operateLayerTool = new LayerTool(this._viewer);
+        this.operateLayerTool.add(layer);
+      }
     }
-    // 构建业务图层
-    loadOperateLayers() {
-        let { operateLayers } = this.opt;
-        if (!operateLayers) return;
-        // 递归查到所有的图层
-        let allOperateLayers = [];
-        function dg(layers) {
-            for (let i = 0; i < layers.length; i++) {
-                let layer = layers[i];
-                // 添加id
-                layer.id = layer.id || new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0);
-                layer.alpha = layer.alpha == undefined ? 1 : layer.alpha;
-                if (layer.children && layer.children.length > 0) {
-                    dg(layer.children)
-                } else {
-                    allOperateLayers.push(layer);
-                }
-            }
-        };
-        dg(operateLayers);
-        const baseServer = this.opt.baseServer || '';
-        for (let i = 0; i < allOperateLayers.length; i++) {
-            let layer = allOperateLayers[i];
-            if (!layer.type) {
-                console.log("缺少基础图层的图层类型", layer);
-                return;
-            }
-            if (layer.type == "group") continue;
+  }
+  // 加载地形
+  loadTerrain(url) {
+    // 移除原地形
+    this._viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider(
+      {}
+    );
+    this.terrainUrl = url;
+    if (!url) return;
+    let terrainProvider = new Cesium.CesiumTerrainProvider({
+      url: url,
+    });
+    this._viewer.scene.terrainProvider = terrainProvider;
+  }
 
-            if (layer.type == "plot" && layer.show) { // 兼容单个类型标绘在文件中配置
-                if (!this.operatePlotTool) {
-                    this.operatePlotTool = new DrawTool(this._viewer, {
-                        canEdit: false,
-                    });
-                }
-                layer.type = layer.plotType;
-                this.operatePlotTool.createByPositions(layer);
-            } else {
-                if (layer.url) layer.url = layer.url.replace("${baseServer}", baseServer);
-                if (!this.operateLayerTool) this.operateLayerTool = new LayerTool(this._viewer);
-                this.operateLayerTool.add(layer);
-            }
+  // 设置地形的显示隐藏
+  setTerrainVisible(visible) {
+    if (!visible) {
+      this._viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider(
+        {}
+      );
+    } else {
+      this.loadTerrain(this.terrainUrl);
+    }
+    this._viewer.scene.render();
+  }
+
+  // 开启右键工具
+  openRightTool() {
+    if (!this.rightTool) {
+      this.rightTool = new RightTool(this.viewer, {});
+    }
+  }
+  closeRightTool() {
+    if (this.rightTool) {
+      this.rightTool.destroy();
+      this.rightTool = null;
+    }
+  }
+
+  // 打开实体鼠标提示
+  openPopupTooltip() {
+    if (!this.popupTooltip) {
+      this.popupTooltip = new PopupTooltipTool(this.viewer, {});
+      this.popupTooltip.autoBindTooltip();
+      this.popupTooltip.autoBindPopup();
+    }
+  }
+
+  // 开启地图坐标提示
+  openBottomLnglatTool() {
+    if (!this.bottomLnglatTool)
+      this.bottomLnglatTool = new LatlngNavigation(this._viewer);
+  }
+
+  closeBottomLnglatTool() {
+    if (this.bottomLnglatTool) {
+      this.bottomLnglatTool.destroy();
+      this.bottomLnglatTool = null;
+    }
+  }
+
+  // 开启地球动画
+  openWorldAnimate() {
+    let that = this;
+    easy3dView.setRotate(
+      { x: this.opt.map.cameraView.x, y: this.opt.map.cameraView.y },
+      function () {
+        if (that.opt.map.cameraView) {
+          cUtil.setCameraView(that.opt.map.cameraView);
         }
-    }
-    // 加载地形
-    loadTerrain(url) {
-        // 移除原地形
-        this._viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
-        this.terrainUrl = url;
-        if (!url) return;
-        let terrainProvider = new Cesium.CesiumTerrainProvider({
-            url: url
-        });
-        this._viewer.scene.terrainProvider = terrainProvider;
-    }
+      }
+    );
+  }
 
-    // 设置地形的显示隐藏
-    setTerrainVisible(visible) {
-        if (!visible) {
-            this._viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
-        } else {
-            this.loadTerrain(this.terrainUrl);
-        }
-        this._viewer.scene.render();
-    }
+  // 构建指北针
+  openNavigationTool() {
+    new CesiumNavigation(this._viewer, {
+      enableCompass: true, // 罗盘
+      enableZoomControls: true, // 缩放控制器
+      enableDistanceLegend: true, // 比例尺
+      enableCompassOuterRing: true, // 罗盘外环
+      view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView,
+    });
+  }
 
-    // 开启右键工具
-    openRightTool() {
-        if (!this.rightTool) {
-            this.rightTool = new RightTool(this.viewer, {});
-
-        }
+  // 销毁
+  destroy() {
+    if (this.baseLayerTool) {
+      this.baseLayerTool.destroy();
+      this.baseLayerTool = null;
     }
-    closeRightTool() {
-        if (this.rightTool) {
-            this.rightTool.destroy();
-            this.rightTool = null;
-        }
+    if (this.operateLayerTool) {
+      this.operateLayerTool.destroy();
+      this.operateLayerTool = null;
     }
 
-    // 打开实体鼠标提示
-    openPopupTooltip() {
-        if (!this.popupTooltip) {
-            this.popupTooltip = new PopupTooltipTool(this.viewer, {});
-            this.popupTooltip.autoBindTooltip();
-            this.popupTooltip.autoBindPopup();
-        }
+    if (this.operatePlotTool) {
+      this.operatePlotTool.destroy();
+      this.operatePlotTool = null;
     }
 
-    // 开启地图坐标提示
-    openBottomLnglatTool() {
-        if (!this.bottomLnglatTool) this.bottomLnglatTool = new LatlngNavigation(this._viewer);
+    if (this.bottomLnglatTool) {
+      this.bottomLnglatTool.destroy();
+      this.bottomLnglatTool = null;
     }
-
-    closeBottomLnglatTool() {
-        if (this.bottomLnglatTool) {
-            this.bottomLnglatTool.destroy();
-            this.bottomLnglatTool = null;
-        }
+    if (this._viewer) {
+      this._viewer.destroy();
+      this._viewer = null;
     }
-
-    // 开启地球动画
-    openWorldAnimate() {
-        let that = this;
-        easy3dView.setRotate({ x: this.opt.map.cameraView.x, y: this.opt.map.cameraView.y }, function () {
-            if (that.opt.map.cameraView) {
-                cUtil.setCameraView(that.opt.map.cameraView);
-            }
-        });
-    }
-
-    // 构建指北针
-    openNavigationTool() {
-        new CesiumNavigation(this._viewer, {
-            enableCompass: true, // 罗盘
-            enableZoomControls: true, // 缩放控制器
-            enableDistanceLegend: true, // 比例尺
-            enableCompassOuterRing: true, // 罗盘外环
-            view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView
-        });
-    }
-
-    // 销毁
-    destroy() {
-        if (this.baseLayerTool) {
-            this.baseLayerTool.destroy();
-            this.baseLayerTool = null;
-        }
-        if (this.operateLayerTool) {
-            this.operateLayerTool.destroy();
-            this.operateLayerTool = null;
-        }
-
-        if (this.operatePlotTool) {
-            this.operatePlotTool.destroy();
-            this.operatePlotTool = null;
-        }
-
-        if (this.bottomLnglatTool) {
-            this.bottomLnglatTool.destroy();
-            this.bottomLnglatTool = null;
-        }
-        if (this._viewer) {
-            this._viewer.destroy();
-            this._viewer = null;
-        }
-
-    }
-
+  }
 }
-
-
-
 
 export default {
-    cUtil, cTool, MapViewer, DrawTool, LayerTool, MeasureTool, Prompt, gadgets, RoamTool, ZoomTool, OverviewMap, weather, animate, analysis, LayerSplit
-}
+  cUtil,
+  cTool,
+  MapViewer,
+  DrawTool,
+  LayerTool,
+  MeasureTool,
+  Prompt,
+  gadgets,
+  RoamTool,
+  ZoomTool,
+  OverviewMap,
+  weather,
+  animate,
+  analysis,
+  LayerSplit,
+};

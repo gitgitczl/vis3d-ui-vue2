@@ -95,7 +95,7 @@ class LayerTool {
      * 获取当前图层对象
      * @param {Object} query 
      */
-    getLayerObj(query) {
+    /* getLayerObj(query) {
         let { key, value } = query;
         let obj = {};
         for (let i = 0; i < this._layerObjs.length; i++) {
@@ -107,7 +107,7 @@ class LayerTool {
                 break;
             }
         }
-    }
+    } */
 
     removeLayerObj(layerObj) {
         if (!layerObj) return;
@@ -200,7 +200,7 @@ class LayerTool {
         }
         return returnData;
     }
-    lowerLayer(opt) {
+    /* lowerLayer(opt) {
         if (!opt) return;
         if (opt instanceof String) {
             opt = {
@@ -243,7 +243,7 @@ class LayerTool {
         }
         let obj = this.getLayerObj(opt);
         if (obj && obj.layerObj) obj.layerObj.raiselayerToTop()
-    }
+    } */
 }
 
 export default LayerTool;
