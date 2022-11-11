@@ -1,43 +1,37 @@
 window.mapConfig = {
-    "baseServer": "http://localhost:1119/",
-    "map": {
-        "cameraView": {
-            "x": 109.95096505461439,
-            "y": 39.78601424382673,
-            "z": 1807.9275862866602,
-            "heading": 15.935038317002068,
-            "pitch": -17.47322144749886,
-            "roll": 359.9997278543909,
-            "duration": 0
-        },
-        "worldAnimate": false,
-        "bottomLnglatTool": true, // 经纬度及相机位置提示
-        "rightTool": true, // 是否开启右键功能
-        "popupTooltipTool": true, // 是否开启气泡窗
-        "navigationTool": true, // 导航球及比例尺
-        "depthTestAgainstTerrain": true,  // 是否开启深度监测
-        "viewerConfig": {
-            "animation": false,
-            "baseLayerPicker": false,
-            "fullscreenButton": false,
-            "geocoder": false,
-            "homeButton": false,
-            "infoBox": false,
+  baseServer: "http://localhost:1119/",
+  map: {
+    cameraView: {
+      x: 102.93200569321357,
+      y: 38.943102902948425,
+      z: 17609713.033552103,
+      heading: 350.7966504209515,
+      pitch: -88.56125850992805,
+      roll: 0,
+      duration: 0,
+    },
+    worldAnimate: false,
+    bottomLnglatTool: true, // 经纬度及相机位置提示
+    rightTool: true, // 是否开启右键功能
+    popupTooltipTool: true, // 是否开启气泡窗
+    navigationTool: true, // 导航球及比例尺
+    depthTestAgainstTerrain: true, // 是否开启深度监测
+    viewerConfig: {
+      animation: false,
+      baseLayerPicker: false,
+      fullscreenButton: false,
+      geocoder: false,
+      homeButton: false,
+      infoBox: false,
 
-            "sceneModePicker": false,
-            "selectionIndicator": false,
-            "timeline": false,
-            "navigationHelpButton": false,
-            "scene3DOnly": true,
-            "useDefaultRenderLoop": true,
-            "showRenderLoopErrors": false,
-            "terrainExaggeration": 1,
-        },
-        "terrain": {
-            // "url": "http://localhost/erdsterrain",
-            "url": "http://data.marsgis.cn/terrain",
-            "show": false
-        }
+      sceneModePicker: false,
+      selectionIndicator: false,
+      timeline: false,
+      navigationHelpButton: false,
+      scene3DOnly: true,
+      useDefaultRenderLoop: true,
+      showRenderLoopErrors: false,
+      terrainExaggeration: 1,
     },
     terrain: {
       // "url": "http://localhost/erdsterrain",
@@ -161,28 +155,16 @@ window.mapConfig = {
           url: "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png",
         },
 
-                {
-                    "name": "全国地图（深色）",
-                    "type": "xyz",
-                    "show": false,
-                    "url": "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png"
-                },
-                {
-                    "name": "testxyz",
-                    "type": "xyz",
-                    "show": false,
-                    "url": "./data/testxyz/{z}/{x}/{y}.png"
-                },
-                {
-                    "name": "行政区划（geojson）",
-                    "type": "geojson",
-                    "show": false,
-                    "url": "data/area.json",
-                    "alpha": 0.5,
-                    "style": {
-                        "point": {
-                            "color": "#00FFFF",
-                            /*  "color": {  // 支持多种方式赋值
+        {
+          name: "行政区划（geojson）",
+          type: "geojson",
+          show: false,
+          url: "data/area.json",
+          alpha: 0.5,
+          style: {
+            point: {
+              color: "#00FFFF",
+              /*  "color": {  // 支持多种方式赋值
                                  "field": "name",
                                  "conditions": [
                                      ['${name} >= "东部战区"', '#000000'],
@@ -249,47 +231,51 @@ window.mapConfig = {
       open: true,
       children: [
         {
-            "name": "倾斜摄影模型",
-            "type": "group",
-            "open": true,
-            "children": [
-                {
-                    "name": "城区模型",
-                    "type": "3dtiles",
-                    "url": "http://8.141.58.76:6814/data/3dtiles/tileset.json",
-                    "show": false,
-                    "center": {
-                        "z": 45
-                    },
-                    "maximumScreenSpaceError": 1
-                },
-                {
-                    "name": "鄂尔多斯城区（新）",
-                    "type": "3dtiles",
-                    "url": "http://localhost/erdsnew/tileset.json",
-                    "show": false,
-                    "maximumScreenSpaceError": 64,
-                    "maximumMemoryUsage": 256,
-                    "center": {
-                        "z": 34
-                    },
-                    "view": {
-                        "x": 109.95096505461437,
-                        "y": 39.78601424382673,
-                        "z": 1807.9275862880509,
-                        "heading": 15.935038317002068,
-                        "pitch": -17.473221447498847,
-                        "roll": 359.9997278543909
-                    }
-                },
-                {
-                    "name": "长江大桥",
-                    "type": "3dtiles",
-                    "url": "http://112.86.147.194:9009/data/3dtiles/daqiaodingceng/tileset.json",
-                    "maximumScreenSpaceError": 1,
-                    "show": false
-                },
-
+          name: "城区模型",
+          type: "3dtiles",
+          url: "http://8.141.58.76:6814/data/3dtiles/tileset.json",
+          show: false,
+          center: {
+            z: 45,
+          },
+          maximumScreenSpaceError: 1,
+        },
+        {
+          name: "鄂尔多斯城区（新）",
+          type: "3dtiles",
+          url: "http://localhost/erdsnew/tileset.json",
+          show: false,
+          maximumScreenSpaceError: 64,
+          maximumMemoryUsage: 256,
+          center: {
+            z: 34,
+          },
+          view: {
+            x: 109.95096505461437,
+            y: 39.78601424382673,
+            z: 1807.9275862880509,
+            heading: 15.935038317002068,
+            pitch: -17.473221447498847,
+            roll: 359.9997278543909,
+          },
+        },
+        {
+          name: "长江大桥",
+          type: "3dtiles",
+          url: "http://112.86.147.194:9009/data/3dtiles/daqiaodingceng/tileset.json",
+          maximumScreenSpaceError: 1,
+          show: false,
+        },
+        {
+          name: "办公楼（bim）",
+          type: "3dtiles",
+          url: "http://47.117.134.108:9009/data/model/1652516228286/bangonglou/tileset.json",
+          maximumScreenSpaceError: 1,
+          center: {
+            z: 30,
+          },
+          show: false,
+        },
 
         {
           name: "社区",
@@ -299,45 +285,15 @@ window.mapConfig = {
           show: false,
         },
 
-                {
-                    "name": "某某监区",
-                    "type": "3dtiles",
-                    "url": "http://192.168.1.17/jcjy/tileset.json",
-                    "show": false,
-                    "maximumScreenSpaceError": 1,
-                    "maximumMemoryUsage": 512
-                }
-            ]
-        },
-
         {
-            "name": "3dmax模型",
-            "type": "group",
-            "open": true,
-            "children": [
-                {
-                    "name": "办公楼",
-                    "type": "3dtiles",
-                    "url": "http://47.117.134.108:9009/data/model/1652516228286/bangonglou/tileset.json",
-                    "show": true,
-                    "maximumScreenSpaceError": 1,
-                    "maximumMemoryUsage": 512,
-                    "center": {
-                        "z": 0
-                    }
-
-                }
-
-            ]
+          name: "某某监区",
+          type: "3dtiles",
+          url: "http://192.168.1.17/jcjy/tileset.json",
+          show: false,
+          maximumScreenSpaceError: 1,
+          maximumMemoryUsage: 512,
         },
-
-        {
-            "name": "bim模型",
-            "type": "group",
-            "open": true
-            
-        }
-
-
-    ]
-}
+      ],
+    },
+  ],
+};
