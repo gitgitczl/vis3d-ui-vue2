@@ -9,10 +9,9 @@ import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
 class LayerTool {
-    constructor(viewer) {
+    constructor(viewer, opt) {
         this.viewer = viewer;
         this._layerObjs = [];
-
     }
     get layers() {
         return this._layerObjs;

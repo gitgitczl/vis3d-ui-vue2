@@ -94,7 +94,7 @@ window.workConfig = {
             },
             "closeDisableSelf": false,
             "openDisableAnothers": false,
-            "disableByOthers" : false
+            "disableByOthers": false
         },
         {
             "name": "空间分析",

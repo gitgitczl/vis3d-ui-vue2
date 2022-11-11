@@ -55,7 +55,7 @@
           <span>置于底层</span>
         </li>
       </ul>
-    -->  
+    -->
   </Card>
 </template>
 
@@ -83,7 +83,7 @@ export default {
       checkedKeys: [], // 默认选中节点
       defaultProps: {
         isLeaf: (node, data) => {
-          if (!node.children || !node.children.length) {
+          if (!node.children || node.children.length == 0) {
             return true;
           }
         },
