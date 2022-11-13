@@ -31,6 +31,9 @@ import snow from "./weather/snow";
 import VisualTool from "./analysis/visualField/visualTool";
 import Sunshine from "./analysis/sunshine/sunshine";
 import LimitHeight from "./analysis/limitHeight/limitHeight";
+
+import "./easy3d.less";
+
 let analysis = {
   VisualTool: VisualTool,
   Sunshine: Sunshine,

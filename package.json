@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
-    "cesium": "^1.91.0",
+    "cesium": "~1.91.0",
     "core-js": "^3.6.5",
     "easygis-3d": "^1.0.0",
     "element-ui": "^2.15.6",
@@ -19,6 +19,7 @@
     "markdown-it": "^13.0.1",
     "markdown-it-sanitizer": "^0.4.3",
     "print-js": "^1.6.0",
+    "sass-loader": "^13.2.0",
     "screenfull": "^4.2.1",
     "turf": "^3.0.14",
     "v-region": "^2.2.2",

@@ -241,6 +241,16 @@ window.mapConfig = {
           maximumScreenSpaceError: 1,
         },
         {
+          name: "康巴什模型1",
+          type: "3dtiles",
+          url: "http://10.33.136.4:8000/data/model/eeds-block1/tileset.json",
+          show: true,
+          maximumScreenSpaceError: 1,
+          center: {
+            z: 34,
+          },
+        },
+        {
           name: "鄂尔多斯城区（新）",
           type: "3dtiles",
           url: "http://localhost/erdsnew/tileset.json",
