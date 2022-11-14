@@ -1,4 +1,6 @@
 // easy3d类库暴露方法
+
+import "./easy3d.css";
 import cUtil from "./cUtil";
 import cTool from "./cTool";
 import DrawTool from "./plot/drawTool";
@@ -32,7 +34,6 @@ import VisualTool from "./analysis/visualField/visualTool";
 import Sunshine from "./analysis/sunshine/sunshine";
 import LimitHeight from "./analysis/limitHeight/limitHeight";
 
-import "./easy3d.less";
 
 let analysis = {
   VisualTool: VisualTool,
