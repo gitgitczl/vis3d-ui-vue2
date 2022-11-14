@@ -3,7 +3,7 @@
     <div id="mapContainer"></div>
     <Head />
     <!-- 侧边工具栏 -->
-    <Sidebar></Sidebar>
+    <Sidebar v-show="isshowPanel"></Sidebar>
     <!-- 循环构建组件 -->
     <div v-for="(item, index) in componentsArr" :key="index">
       <component
@@ -37,6 +37,7 @@ export default {
   },
   data() {
     return {
+      isshowPanel: false, // 是否展示面板
       componentsArr: [],
       plotEntityObjId: null,
       nowStartRoamAttr: null, // 当前漫游的数据
@@ -49,7 +50,6 @@ export default {
     // 构建基础地图
     let that = this;
 
-    debugger;
     let mapViewer = (window.mapViewer = new this.easy3d.MapViewer(
       "mapContainer",
       window.mapConfig
@@ -61,10 +61,18 @@ export default {
 
     window.workControl = workControl; // 绑定到全局
     // 读取配置文件中配置 并构建相应组件标签
-    if (window.workConfig.panel)
+    let panelDefault = {
+      create: true,
+      visible: true,
+    };
+    panelDefault = Object.assign(panelDefault, window.workConfig.panel || {});
+
+    if (panelDefault.create) {
       workControl.init(window.workConfig, function (list) {
         that.componentsArr = list;
       });
+      this.isshowPanel = panelDefault.visible;
+    }
 
     // 构建缩放按钮
     if (!zoomTool) {

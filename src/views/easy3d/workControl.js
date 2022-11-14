@@ -1,5 +1,5 @@
 // 模块控制器
-export default  {
+export default {
     components: [],
     toolsState: {},  // 记录模块状态 true 打开 / false 关闭
     componentsArr: [],
@@ -21,7 +21,7 @@ export default  {
                 let module = modules[i];
                 const workName = module.default.name;
                 let attr = toolsObj[workName];
-                if(!attr) continue;
+                if (!attr) continue;
                 attr.module = module.default;
                 that.componentsArr.push(attr);
             }
