@@ -36,7 +36,6 @@ Vue.config.productionTip = false
 Vue.prototype.axios = axios
 
 Vue.use(ElementUI);
-/* Vue.use(less) */
 
 new Vue({
   router,
