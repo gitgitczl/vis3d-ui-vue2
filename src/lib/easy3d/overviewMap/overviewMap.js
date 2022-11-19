@@ -46,7 +46,7 @@ class OverviewMap {
             zoomControl: false,
             attributionControl: false,
         });
-        L.tileLayer("http://a.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+        L.tileLayer("http://10.33.136.4:8000/data/layer/china/{z}/{x}/{y}.jpg").addTo(map);
 
         this.map = map;
 

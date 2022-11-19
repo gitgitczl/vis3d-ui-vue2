@@ -10,6 +10,7 @@ window.mapConfig = {
       "roll": 0,
       duration: 0,
     },
+    errorRender: true, // 是否开启崩溃刷新
     worldAnimate: false,
     bottomLnglatTool: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能
@@ -23,7 +24,6 @@ window.mapConfig = {
       geocoder: false,
       homeButton: false,
       infoBox: false,
-
       sceneModePicker: false,
       selectionIndicator: false,
       timeline: false,
