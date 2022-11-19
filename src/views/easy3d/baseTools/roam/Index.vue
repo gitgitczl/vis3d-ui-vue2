@@ -133,7 +133,7 @@
             <el-option label="普通" value="0"> </el-option>
             <el-option label="飞行漫游" value="1"> </el-option>
             <el-option label="贴地漫游" value="2"> </el-option>
-            <el-option label="贴模型漫游" value="3"> </el-option>
+           <!--  <el-option label="贴模型漫游" value="3"> </el-option> -->
           </el-select>
         </el-col>
       </el-row>
@@ -227,14 +227,9 @@ export default {
       roamModel: "",
       modelList: [
         {
-          name: "白灯船",
-          uri: "./gltf/baidengchuan.glb",
-          scale: 0.5,
-        },
-        {
-          name: "红浮船",
-          uri: "./gltf/hongfu.glb",
-          scale: 0.5,
+          name: "无人机",
+          uri: "./gltf/dajiang.gltf",
+          scale: 50,
         },
       ],
     };
@@ -270,14 +265,17 @@ export default {
         hasEdit: true,
       });
       roamDrawTool.on("startEdit", function (entObj, ent) {
-        nowEditEntityObj = entObj;
+        // 结束其他漫游
         roamTool.endRoam();
         window.nowRoam = null;
+        nowEditEntityObj = entObj;
+        // 不显示漫游列表
         that.isShowList = false;
         let roams = roamTool.getRoamByField("plotId", entObj.objId);
         if (!roams[0]) return;
+        // 获取当前漫游对象属性 表单赋值
         let roamAttr = roams[0].roam.getAttr();
-        // 表单赋值
+        
         that.nowRoamAttr.name = roamAttr.name;
         that.nowRoamAttr.roamType = roamAttr.roamType;
         that.nowRoamAttr.viewType = roamAttr.viewType;
@@ -285,9 +283,10 @@ export default {
         that.nowRoamAttr.fixType = roamAttr.fixType;
         that.nowRoamAttr.alltimes = roamAttr.alltimes;
         that.nowRoamAttr.speed = roamAttr.speed;
-
+        that.nowRoamAttr.height = roamAttr.height;
+        // 获取当前漫游实体对象
         let entityAttr = roamAttr.entityAttr;
-        that.roamModel =  (entityAttr && entityAttr.uri) || "";
+        that.roamModel = (entityAttr && entityAttr.uri) || "";
         that.selectModel = entityAttr.uri ? "isSelectModel" : "noSelectModel";
       });
 
@@ -329,7 +328,7 @@ export default {
           // 编辑时 先删除原来的漫游对象 下面重新创建
           roamTool.removeRoam(roams[0].roam);
         } else {
-          // ====== 新增 列表中插入信数据 ======
+          // ====== 新增 列表中插入新数据 ======
           that.roamTabList.push(roamform);
         }
 
@@ -339,6 +338,7 @@ export default {
         attr.positions = positions;
         attr.plotId = entObj.objId; // 和标绘关联
         let roamAttr = Object.assign(attr, that.nowRoamAttr);
+        // 设置漫游模型
         let entityAttr = that.modelList.filter((model) => {
           return model.uri == that.roamModel;
         });
@@ -347,6 +347,7 @@ export default {
           roamAttr.entityType = "model";
         }
         roamAttr.entityAttr = entityAttr[0] || {}; // 设置漫游模型
+        debugger
         roamTool.create(roamAttr);
 
         // 编辑完后重置表单
@@ -402,6 +403,7 @@ export default {
       let roams = roamTool.getRoamByField("plotId", attr.plotId);
       if (roams[0]) {
         roamTool.startRoam(roams[0].roam);
+        window.nowRoam = roams[0].roam;
       }
       // 隐藏对应线
       let eo = roamDrawTool.getEntityObjByObjId(attr.plotId);

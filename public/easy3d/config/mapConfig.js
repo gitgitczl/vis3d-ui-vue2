@@ -2,12 +2,12 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      x: 102.93200569321357,
-      y: 38.943102902948425,
-      z: 17609713.033552103,
-      heading: 350.7966504209515,
-      pitch: -88.56125850992805,
-      roll: 0,
+      "x": 116.91752169824987,
+      "y": 37.5181481690187,
+      "z": 239110.94656321988,
+      "heading": 350.79666868335846,
+      "pitch": -88.56575307066092,
+      "roll": 0,
       duration: 0,
     },
     worldAnimate: false,
@@ -244,7 +244,7 @@ window.mapConfig = {
           name: "康巴什模型1",
           type: "3dtiles",
           url: "http://10.33.136.4:8000/data/model/eeds-block1/tileset.json",
-          show: true,
+          show: false,
           maximumScreenSpaceError: 1,
           center: {
             z: 34,
@@ -296,12 +296,15 @@ window.mapConfig = {
         },
 
         {
-          name: "某某监区",
+          name: "九成监狱",
           type: "3dtiles",
-          url: "http://192.168.1.17/jcjy/tileset.json",
+          url: "http://192.168.21.108:9999/jcjy/jcjy-hb/tileset.json",
           show: false,
-          maximumScreenSpaceError: 1,
-          maximumMemoryUsage: 512,
+          maximumScreenSpaceError: 16,
+          maximumMemoryUsage: 1024,
+          center: {
+            z: 10
+          }
         },
       ],
     },

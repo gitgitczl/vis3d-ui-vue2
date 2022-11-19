@@ -163,7 +163,8 @@ export default {
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
         nowPlotEntObj = null;
-        /*  let lnglats = entObj.getPositions(true); */
+        let lnglats = entObj.getPositions(true);
+        console.log("lnglats--->", lnglats);
         window.workControl.closeToolByName("plotStyle");
       });
     }

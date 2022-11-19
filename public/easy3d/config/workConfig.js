@@ -163,7 +163,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": false,
+            "show": true,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,
