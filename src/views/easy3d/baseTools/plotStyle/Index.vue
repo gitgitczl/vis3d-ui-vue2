@@ -1,12 +1,10 @@
 <template>
   <Card
-    :width="400"
-    :height="600"
     @close="close"
     :title="title"
     :position="position"
     :size="size"
-    titleIcon="icon-dianyingmulu"
+    :iconfont="iconfont"
   >
     <div v-if="plotActive && Object.keys(plotStyleAttr).length">
       <div
@@ -96,6 +94,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-dianyingmulu",
+    },
   },
   data() {
     return {

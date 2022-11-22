@@ -2,7 +2,8 @@
   <Card
     :title="title"
     :size="size"
-    titleIcon="icon-bangzhushuoming"
+    :position="position"
+    :iconfont="iconfont"
     @close="close"
   >
     <div class="help-box">
@@ -28,6 +29,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-bangzhushuoming",
+    },
   },
 
   data() {
@@ -43,8 +48,8 @@ export default {
 </script>
 
 <style lang="less">
-.help-box{
-  p{
+.help-box {
+  p {
     margin-bottom: 10px;
   }
 }

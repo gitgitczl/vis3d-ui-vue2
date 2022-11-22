@@ -1,11 +1,10 @@
 <template>
   <Card
-    :width="450"
-    :height="600"
     @close="close"
     :title="title"
+    :size="size"
     :position="position"
-    titleIcon="icon-youlan"
+    :iconfont="iconfont"
   >
     <p class="roam-toolip">提示：支持.json格式的路线文件导入</p>
     <div class="roam-operate">
@@ -133,7 +132,7 @@
             <el-option label="普通" value="0"> </el-option>
             <el-option label="飞行漫游" value="1"> </el-option>
             <el-option label="贴地漫游" value="2"> </el-option>
-           <!--  <el-option label="贴模型漫游" value="3"> </el-option> -->
+            <!--  <el-option label="贴模型漫游" value="3"> </el-option> -->
           </el-select>
         </el-col>
       </el-row>
@@ -202,6 +201,11 @@ export default {
   props: {
     title: "",
     position: {},
+    size: {},
+    iconfont: {
+      type: String,
+      default: "icon-youlan",
+    },
   },
 
   components: {
@@ -275,7 +279,7 @@ export default {
         if (!roams[0]) return;
         // 获取当前漫游对象属性 表单赋值
         let roamAttr = roams[0].roam.getAttr();
-        
+
         that.nowRoamAttr.name = roamAttr.name;
         that.nowRoamAttr.roamType = roamAttr.roamType;
         that.nowRoamAttr.viewType = roamAttr.viewType;
@@ -347,7 +351,7 @@ export default {
           roamAttr.entityType = "model";
         }
         roamAttr.entityAttr = entityAttr[0] || {}; // 设置漫游模型
-        debugger
+        debugger;
         roamTool.create(roamAttr);
 
         // 编辑完后重置表单

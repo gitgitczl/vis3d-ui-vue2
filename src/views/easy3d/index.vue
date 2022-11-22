@@ -14,6 +14,7 @@
         :position="item.position"
         :size="item.size"
         :attr="item.attr"
+        :iconfont="item.iconfont"
         @close="close"
       />
     </div>

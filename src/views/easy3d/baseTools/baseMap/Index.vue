@@ -1,11 +1,11 @@
 <template>
   <Card
-    :width="342"
     height="auto"
     :title="title"
     @close="close"
     :size="size"
-    titleIcon="icon-cengshu"
+    :position="position"
+    :iconfont="iconfont"
   >
     <ul class="basemap-box basic-tool">
       <li
@@ -19,7 +19,9 @@
       </li>
     </ul>
     <div class="basic-checkbox basemap-checkbox">
-      <el-checkbox v-model="isShowTerrain" @change="changeTerrain">显示地形</el-checkbox>
+      <el-checkbox v-model="isShowTerrain" @change="changeTerrain"
+        >显示地形</el-checkbox
+      >
     </div>
   </Card>
 </template>
@@ -35,6 +37,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-ditufuwu",
+    },
   },
   data() {
     return {

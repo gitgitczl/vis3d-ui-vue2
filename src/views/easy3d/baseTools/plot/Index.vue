@@ -1,11 +1,9 @@
 <template>
   <Card
     :title="title"
-    :width="342"
     :position="position"
     :size="size"
-    height="auto"
-    titleIcon="icon-tushangcehui"
+    :iconfont="iconfont"
     @close="close"
   >
     <div class="plot-btn-box basic-plot">
@@ -92,6 +90,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-tushangcehui",
+    },
   },
   data() {
     return {

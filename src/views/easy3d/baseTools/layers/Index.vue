@@ -1,5 +1,5 @@
 <template>
-  <Card @close="close" :title="title" :size="size" titleIcon="icon-cengshu">
+  <Card @close="close" :title="title" :size="size" :iconfont="iconfont" :position="position">
     <div class="tree-body reset-tree basic-tree" onselectstart="return false">
       <el-tree
         ref="layerTree"
@@ -73,6 +73,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-cengshu",
+    },
     mapConfig: {},
   },
 

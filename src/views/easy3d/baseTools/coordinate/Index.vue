@@ -1,9 +1,9 @@
 <template>
   <Card
-    :width="342"
-    :height="250"
+    :size="size"
     :title="title"
-    titleIcon="icon-zuobiaodingwei"
+    :position="position"
+    :iconfont="iconfont"
     @close="close"
   >
     <ul class="coordinate-box basic-text-input">
@@ -27,7 +27,6 @@
     </div>
   </Card>
 </template>
-
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
 let drawTool = null;
@@ -38,6 +37,12 @@ export default {
       type: String,
       default: "",
     },
+    iconfont: {
+      type: String,
+      default: "icon-zuobiaodingwei",
+    },
+    size: {},
+    position: {},
   },
 
   components: {
@@ -49,7 +54,7 @@ export default {
       lat: "",
       lng: "",
       height: "",
-     /*  markerUrl: require("@/assets/images/marker/markerBlue.png"), */
+      /*  markerUrl: require("@/assets/images/marker/markerBlue.png"), */
     };
   },
   mounted() {
@@ -94,7 +99,7 @@ export default {
         type: "billboard",
         style: {
           image: "./easy3d/images/pathPlan/start.png",
-           scale : 0.5
+          scale: 0.5,
         },
         positions: [this.lng, this.lat, this.height || 0],
       });
@@ -107,7 +112,7 @@ export default {
         type: "billboard",
         style: {
           image: "./easy3d/images/pathPlan/start.png",
-          scale : 0.5
+          scale: 0.5,
         },
       });
     },

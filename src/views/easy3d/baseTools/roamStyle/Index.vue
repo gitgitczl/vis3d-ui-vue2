@@ -1,12 +1,5 @@
-
 <template>
-  <Card
-    :size="size"
-    @close="close"
-    :title="title"
-    :position="position"
-    titleIcon="icon-youlan"
-  >
+  <Card :size="size" @close="close" :title="title" :position="position">
     <div class="roam-style-btn">
       <span class="basic-btn" @click="stopRoam">暂停</span>
       <span class="basic-btn" @click="goonRoam">继续</span>
@@ -39,10 +32,14 @@
               ).toFixed(2)
             )
           "
-          v-if="!isNaN(Number(
+          v-if="
+            !isNaN(
+              Number(
                 (nowStartRoamAttr.distanceED / nowStartRoamAttr.alldistance) *
                   100
-              ))"
+              )
+            )
+          "
           status="success"
         ></el-progress>
         <!-- <el-input disabled v-model="nowStartRoamAttr.distanceED"></el-input> -->
@@ -73,6 +70,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-youlan",
+    },
   },
   components: {
     Card,
@@ -106,7 +107,7 @@ export default {
     },
     endRoam() {
       if (window.nowRoam) window.nowRoam.end();
-    }
+    },
   },
   watch: {
     "$store.state.map3d.nowRoamAttr": {

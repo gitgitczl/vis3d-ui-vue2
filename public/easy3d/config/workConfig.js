@@ -73,8 +73,8 @@ window.workConfig = {
             "show": false,
             "workName": "help",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 120,
+                "right": 120
             },
             "size": {
                 "width": 350,
@@ -163,7 +163,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": true,
+            "show": false,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,

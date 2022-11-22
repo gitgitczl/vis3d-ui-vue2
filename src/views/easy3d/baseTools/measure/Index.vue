@@ -2,7 +2,8 @@
   <Card
     :title="title"
     :size="size"
-    titleIcon="icon-tushangliangsuan"
+    :position="position"
+    :iconfont="iconfont"
     @close="close"
   >
     <ul class="measure-box basic-tool">
@@ -40,7 +41,6 @@
     </div>
   </Card>
 </template>
-    
 
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
@@ -54,6 +54,10 @@ export default {
     title: "",
     position: {},
     offset: {},
+    iconfont: {
+      type: String,
+      default: "icon-tushangliangsuan",
+    },
     size: {},
   },
   data() {

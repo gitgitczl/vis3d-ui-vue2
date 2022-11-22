@@ -3,12 +3,11 @@
     <div id="mapContainer2"></div>
     <!-- 图层选择 -->
     <Card
-      :width="400"
-      :height="800"
+      :size="size"
       @close="close"
       :title="title"
       :position="position"
-      titleIcon="icon-cengshu"
+      iconfont="icon-cengshu"
     >
       <div class="tree-body reset-tree basic-tree">
         <el-tree
@@ -51,8 +50,13 @@ import Card from "@/views/easy3d/components/card/Card.vue";
 export default {
   name: "twoScreen",
   props: {
-    title: "",
+   title: "",
     position: {},
+    size: {},
+    iconfont: {
+      type: String,
+      default: "icon-fenpingduibi",
+    },
   },
   components: {
     Card,
@@ -174,7 +178,9 @@ export default {
       this.$emit("close", "twoScreen");
     },
     setLayeralpha(data) {
-      let layerOpt = window.mapViewer2.operateLayerTool.getLayerObjById(data.id);
+      let layerOpt = window.mapViewer2.operateLayerTool.getLayerObjById(
+        data.id
+      );
       if (layerOpt && layerOpt.layerObj) layerOpt.layerObj.setAlpha(data.alpha);
     },
     checkLayer(data, state) {
@@ -184,20 +190,14 @@ export default {
       for (let i = 0; i < allshowLayers.length; i++) {
         let layer = allshowLayers[i].layer;
         if (state.checkedKeys.indexOf(layer.attr.id) == -1) {
-          window.mapViewer2.operateLayerTool.setVisible(
-            layer.attr.id,
-            false
-          );
+          window.mapViewer2.operateLayerTool.setVisible(layer.attr.id, false);
         }
       }
 
       for (let j = 0; j < allhideLayers.length; j++) {
         let layer = allhideLayers[j].layer;
         if (state.checkedKeys.indexOf(layer.attr.id) != -1) {
-          window.mapViewer2.operateLayerTool.setVisible(
-            layer.attr.id,
-            true
-          );
+          window.mapViewer2.operateLayerTool.setVisible(layer.attr.id, true);
         }
       }
     },

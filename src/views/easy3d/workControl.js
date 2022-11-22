@@ -15,6 +15,7 @@ export default {
         }
 
         let that = this;
+        debugger
         Promise.all(this.components).then((modules) => {
             // 构建对应组件标签
             for (let i = 0; i < modules.length; i++) {
@@ -25,6 +26,7 @@ export default {
                 attr.module = module.default;
                 that.componentsArr.push(attr);
             }
+
             if (fun) fun(that.componentsArr)
         });
     },
@@ -74,6 +76,9 @@ export default {
                 break;
             case "monomer":
                 this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
+                break;
+            case "help":
+                this.components.push(import("@/views/easy3d/baseTools/help/Index.vue"));
                 break;
             default: ;
         }

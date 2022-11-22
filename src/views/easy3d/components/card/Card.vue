@@ -23,7 +23,7 @@
     <!-- 头部 -->
     <div class="card-title">
       <div class="card-title-info">
-        <i :class="['iconfont', titleIcon]"></i>
+        <i :class="['iconfont', iconfont]"></i>
         <p>{{ title }}</p>
       </div>
       <span class="iconfont icon-danchuangguanbi" @click="close"></span>
@@ -42,7 +42,7 @@ export default {
   props: {
     // 名称
     title: "",
-    titleIcon: {
+    iconfont: {
       type: String,
       default: "",
     },
