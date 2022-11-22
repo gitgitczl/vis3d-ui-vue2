@@ -1,5 +1,6 @@
 let cesium = require('cesium/Cesium.js');
-let { defined, Math, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } = cesium;
+let { defined, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } = cesium;
+let cesiumMath = cesium.Math;
 import loadView from '../core/loadView'
 import ResetViewNavigationControl from './ResetViewNavigationControl'
 import ZoomNavigationControl from './ZoomNavigationControl'
@@ -264,7 +265,7 @@ NavigationViewModel.prototype.handleDoubleClick = function (viewModel, e) {
   camera.flyToBoundingSphere(focusBoundingSphere, {
     offset: new HeadingPitchRange(0,
       // do not use camera.pitch since the pitch at the center/target is required
-      Math.PI_OVER_TWO - Cartesian3.angleBetween(
+      cesiumMath.PI_OVER_TWO - Cartesian3.angleBetween(
         surfaceNormal,
         camera.directionWC
       ),
@@ -364,7 +365,7 @@ function orbit(viewModel, compassElement, cursorVector) {
     var rate = (viewModel.orbitCursorOpacity - 0.5) * 2.5 / 1000
     var distance = deltaT * rate
 
-    var angle = viewModel.orbitCursorAngle + Math.PI_OVER_TWO
+    var angle = viewModel.orbitCursorAngle + cesiumMath.PI_OVER_TWO
     var x = Math.cos(angle) * distance
     var y = Math.sin(angle) * distance
 
@@ -404,7 +405,7 @@ function orbit(viewModel, compassElement, cursorVector) {
 
   function updateAngleAndOpacity(vector, compassWidth) {
     var angle = Math.atan2(-vector.y, vector.x)
-    viewModel.orbitCursorAngle = Math.zeroToTwoPi(angle - Math.PI_OVER_TWO)
+    viewModel.orbitCursorAngle = cesiumMath.zeroToTwoPi(angle - cesiumMath.PI_OVER_TWO)
 
     var distance = Cartesian2.magnitude(vector)
     var maxDistance = compassWidth / 2.0
@@ -509,7 +510,7 @@ function rotate(viewModel, compassElement, cursorVector) {
     var angle = Math.atan2(-vector.y, vector.x)
 
     var angleDifference = angle - viewModel.rotateInitialCursorAngle
-    var newCameraAngle = Math.zeroToTwoPi(viewModel.rotateInitialCameraAngle - angleDifference)
+    var newCameraAngle = cesiumMath.zeroToTwoPi(viewModel.rotateInitialCameraAngle - angleDifference)
 
     var camera = viewModel.terria.scene.camera
 
