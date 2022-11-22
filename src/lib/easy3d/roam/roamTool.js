@@ -63,7 +63,7 @@ class RoamTool {
         roamAttr = Object.assign(opt, roamAttr);
 
         let that = this;
-        switch (roamType) {
+        switch (Number(roamType)) {
             case 1:
                 // 飞行漫游
                 if (!opt.height) {
@@ -126,7 +126,7 @@ class RoamTool {
         let newPositions = [];
         positions.forEach(position => {
             let ctgc = Cesium.Cartographic.fromCartesian(position.clone());
-            ctgc.height = height;
+            ctgc.height = Number(height);
             let p = Cesium.Cartographic.toCartesian(ctgc);
             newPositions.push(p);
         });

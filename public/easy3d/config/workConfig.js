@@ -1,6 +1,6 @@
 window.workConfig = {
     "panel": {
-        create: false,
+        create: true,
         visible: true
     }, // 是否创建面板
     "tools": [
@@ -27,8 +27,8 @@ window.workConfig = {
             "show": false,
             "workName": "plotStyle",
             "position": {
-                "top": 500,
-                "left": 1500
+                "right": 10,
+                "bottom": 30
             },
             "size": {
                 "width": 350,
@@ -163,7 +163,7 @@ window.workConfig = {
         },
         {
             "name": "飞行漫游",
-            "show": false,
+            "show": true,
             "workName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,
@@ -178,8 +178,8 @@ window.workConfig = {
             "closeDisableSelf": false,
             "openDisableAnothers": false,
             "position": {
-                "top": 500,
-                "left": 1500
+                "right": 10,
+                "bottom": 30
             },
             "size": {
                 "width": 350,
@@ -193,8 +193,8 @@ window.workConfig = {
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "position": {
-                "top": 500,
-                "left": 1500
+                "right": 10,
+                "bottom": 30
             },
             "size": {
                 "width": 350,

@@ -92,6 +92,13 @@ class MapViewer {
       if (this.opt.map.cameraView)
         cUtil.setCameraView(this.opt.map.cameraView, this._viewer);
     }
+
+    if(this.opt.map.errorRender){
+      this._viewer.scene.renderError.addEventListener(function(){
+        window.location.reload();
+      },this);
+    }
+
   }
 
   get viewer() {

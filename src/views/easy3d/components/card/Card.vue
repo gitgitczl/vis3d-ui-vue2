@@ -53,8 +53,6 @@ export default {
         return {
           left: 100,
           top: 100,
-          right: 0,
-          bottom: 0,
         };
       },
     },
@@ -75,6 +73,17 @@ export default {
       parentWidth: 0,
       parentHeight: 0,
     };
+  },
+  created() {
+    const mapdom = document.getElementById(window.viewer.container.id);
+    const maph = mapdom.clientHeight;
+    const mapw = mapdom.clientWidth;
+    if (this.position.bottom) {
+      this.position.top = maph - this.size.height - this.position.bottom;
+    }
+    if (this.position.right) {
+      this.position.left = mapw - this.size.width - this.position.right;
+    }
   },
 
   mounted() {
