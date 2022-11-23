@@ -17,7 +17,11 @@ class MeasureTriangle extends BaseMeasure {
         this.horizonLine = null;
         this.firstPosition = null;
         this.endPosition = null;
-        this.midPosition = null;
+
+        this.midPosition = undefined; // 直角坐标
+        this.lowPosition = undefined;
+        this.highPosition = undefined;
+
     }
 
     //开始测量
@@ -40,7 +44,7 @@ class MeasureTriangle extends BaseMeasure {
 
             } else {
                 that.endPosition = cartesian;
-                that.midPosition = that.computerPosition(that.firstPosition, that.endPosition);
+                that.computerPosition(that.firstPosition, that.endPosition);
 
                 let point = that.createPoint(cartesian.clone());
                 point.wz = 1;
@@ -65,13 +69,12 @@ class MeasureTriangle extends BaseMeasure {
                 that.prompt.update(evt.endPosition, "单击开始测量");
                 return;
             }
-
-
             that.prompt.update(evt.endPosition, "单击结束");
+
             var cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
             if (!cartesian) return;
             that.endPosition = cartesian;
-            that.midPosition = that.computerPosition(that.firstPosition, that.endPosition);
+            that.computerPosition(that.firstPosition, that.endPosition);
 
             if (that.firstPosition && that.endPosition && !that.spaceLine) {
                 that.spaceLine = that.viewer.entities.add({
@@ -93,7 +96,7 @@ class MeasureTriangle extends BaseMeasure {
                 that.heightLine = that.viewer.entities.add({
                     polyline: {
                         positions: new Cesium.CallbackProperty(function () {
-                            return [that.firstPosition, that.midPosition]
+                            return [that.lowPosition, that.midPosition]
                         }, false),
                         show: true,
                         material: new Cesium.PolylineOutlineMaterialProperty({
@@ -109,7 +112,7 @@ class MeasureTriangle extends BaseMeasure {
                 that.horizonLine = that.viewer.entities.add({
                     polyline: {
                         positions: new Cesium.CallbackProperty(function () {
-                            return [that.endPosition, that.midPosition]
+                            return [that.highPosition, that.midPosition]
                         }, false),
                         show: true,
                         material: new Cesium.PolylineOutlineMaterialProperty({
@@ -124,6 +127,21 @@ class MeasureTriangle extends BaseMeasure {
             }
             if (that.spaceLine) that.createLabels();
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    }
+
+    //计算正上方的点
+    computerPosition(p1, p2) {
+        const cartographic1 = Cesium.Cartographic.fromCartesian(p1.clone());
+        const cartographic2 = Cesium.Cartographic.fromCartesian(p2.clone());
+        if (cartographic1.height > cartographic2.height) {
+            this.highPosition = p1.clone();
+            this.lowPosition = p2.clone();
+            this.midPosition = Cesium.Cartesian3.fromRadians(cartographic2.longitude, cartographic2.latitude, cartographic1.height);
+        } else {
+            this.lowPosition = p1.clone();
+            this.highPosition = p2.clone();
+            this.midPosition = Cesium.Cartesian3.fromRadians(cartographic1.longitude, cartographic1.latitude, cartographic2.height);
+        }
     }
 
     startEdit(callback) {
@@ -157,7 +175,7 @@ class MeasureTriangle extends BaseMeasure {
                 that.endPosition = cartesian.clone()
             }
 
-            that.midPosition = that.computerPosition(that.firstPosition, that.endPosition);
+            that.computerPosition(that.firstPosition, that.endPosition);
             that.createLabels();
 
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -187,16 +205,16 @@ class MeasureTriangle extends BaseMeasure {
     createLabels() {
         let that = this;
         //高度差
-        var height = Math.abs(Cesium.Cartographic.fromCartesian(that.firstPosition).height - Cesium.Cartographic.fromCartesian(that.endPosition).height);
-        var height_mid = Cesium.Cartesian3.midpoint(that.firstPosition, that.midPosition, new Cesium.Cartesian3());
+        var height = Math.abs(Cesium.Cartographic.fromCartesian(that.highPosition).height - Cesium.Cartographic.fromCartesian(that.lowPosition).height);
+        var height_mid = Cesium.Cartesian3.midpoint(that.lowPosition, that.midPosition, new Cesium.Cartesian3());
         that.heightfloatLabel.show = true;
         that.heightfloatLabel.position.setValue(height_mid);
         let text1 = that.formateLength(height, that.unit);
         that.heightfloatLabel.label.text = "高度差：" + text1;
         that.heightfloatLabel.length = height;
         //水平距离
-        var horizonDistance = Cesium.Cartesian3.distance(that.endPosition, that.midPosition);
-        var horizon_mid = Cesium.Cartesian3.midpoint(that.endPosition, that.midPosition, new Cesium.Cartesian3());
+        var horizonDistance = Cesium.Cartesian3.distance(that.highPosition, that.midPosition);
+        var horizon_mid = Cesium.Cartesian3.midpoint(that.highPosition, that.midPosition, new Cesium.Cartesian3());
         that.horizonDistancefloatLabel.show = true;
         that.horizonDistancefloatLabel.position.setValue(horizon_mid);
         let text2 = that.formateLength(horizonDistance, that.unit);
@@ -251,31 +269,29 @@ class MeasureTriangle extends BaseMeasure {
             this.handler = null;
         }
     }
-    //计算正上方的点
-    computerPosition(p1, p2) {
-        var cartographic1 = Cesium.Cartographic.fromCartesian(p1);
-        var cartographic2 = Cesium.Cartographic.fromCartesian(p2);
-        var c = null;
-        if (cartographic1.height > cartographic2.height) {
-            c = Cesium.Cartesian3.fromRadians(cartographic2.longitude, cartographic2.latitude, cartographic1.height);
-        } else {
-            c = Cesium.Cartesian3.fromRadians(cartographic1.longitude, cartographic1.latitude, cartographic2.height);
-        }
-        return c;
-    }
+
 
     setUnit(unit) {
-        let text1 = that.formateLength(this.heightfloatLabel.length, unit);
-        this.heightfloatLabel.label.text = "高度差：" + text1;
+        debugger
 
-        let text2 = that.formateLength(this.horizonDistancefloatLabel.length, unit);
-        this.horizonDistancefloatLabel.label.text = "水平距离：" + text2;
+        if (this.heightfloatLabel) {
+            let text1 = this.formateLength(this.heightfloatLabel.length, unit);
+            this.heightfloatLabel.label.text = "高度差：" + text1;
+        }
 
-        let text3 = that.formateLength(this.spaceDistancefloatLabel.length, unit);
-        this.spaceDistancefloatLabel.label.text = "空间距离：" + text3;
+        if (this.horizonDistancefloatLabel) {
+            let text2 = this.formateLength(this.horizonDistancefloatLabel.length, unit);
+            this.horizonDistancefloatLabel.label.text = "水平距离：" + text2;
+        }
+
+        if (this.spaceDistancefloatLabel) {
+            let text3 = this.formateLength(this.spaceDistancefloatLabel.length, unit);
+            this.spaceDistancefloatLabel.label.text = "空间距离：" + text3;
+        }
+
+
         this.unit = unit;
     }
-
 }
 
 export default MeasureTriangle;

@@ -35,10 +35,10 @@
       清空测量数据
     </p>
 
-    <div v-show="isShowRes" class="measure-result">
+    <!-- <div v-show="isShowRes" class="measure-result">
       <label>处理结果：</label>
       <span>{{ res }}</span>
-    </div>
+    </div> -->
   </Card>
 </template>
 
@@ -125,8 +125,9 @@ export default {
     let that = this;
     if (!measureTool) {
       measureTool = new this.easy3d.MeasureTool(window.viewer);
-      measureTool.on("measureEnd", function (ms) {
+      measureTool.on("end", function (ms) {
         that.isShowRes = ms.unitType ? true : false;
+        that.isMeasureActive = -1;
       });
     }
   },

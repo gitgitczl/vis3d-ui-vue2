@@ -293,7 +293,6 @@ class DrawTool {
   }
   removeAll() {
     // 取消当前绘制
-    debugger
     if (this.lastStartEntityObj) {
       this.lastStartEntityObj.destroy();
       this.lastStartEntityObj = null;

@@ -351,7 +351,6 @@ export default {
           roamAttr.entityType = "model";
         }
         roamAttr.entityAttr = entityAttr[0] || {}; // 设置漫游模型
-        debugger;
         roamTool.create(roamAttr);
 
         // 编辑完后重置表单

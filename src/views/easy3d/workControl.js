@@ -15,7 +15,6 @@ export default {
         }
 
         let that = this;
-        debugger
         Promise.all(this.components).then((modules) => {
             // 构建对应组件标签
             for (let i = 0; i < modules.length; i++) {

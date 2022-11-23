@@ -1,14 +1,18 @@
 //空间距离量算js
 import MeasureGroundDistance from "./measureGroundDistance";
+import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
-class MeasureSpaceDistance extends MeasureGroundDistance {
+class MeasureSpaceDistance extends BaseMeasure {
 	constructor(viewer, opt) {
 		super(viewer, opt);
 		this.unitType = "length";
 		this.type = "spaceDistance"
 		this.allDistance = 0;
 		this.labels = [];
+		this.positions = [];
+		//线
+		this.polyline = null;
 		this.nowLabel = null; // 编辑时  当前点的label
 		this.nextlabel = null; // 编辑时  下一个点的label
 		this.lastPosition = null;// 编辑时   上一个点的坐标
@@ -268,18 +272,19 @@ class MeasureSpaceDistance extends MeasureGroundDistance {
 
 	// 设置单位
 	setUnit(unit) {
-		for (let i = 0; i < this.labels.length; i++) {
-			let label = this.labels[i];
-			let distance = label.distance;
+		for (let i = 1; i < this.labels.length; i++) {
+			let labelEnt = this.labels[i];
+			let distance = labelEnt.distance;
+			let label = labelEnt.label;
+			if(!label) continue;
 			if (i == this.labels.length - 1) {
-				label.text = "总长：" + that.formateLength(distance, unit);
+				label.text = "总长：" + this.formateLength(distance, unit);
 			} else {
-				label.text = that.formateLength(distance, unit);
+				label.text = this.formateLength(distance, unit);
 			}
 		}
 		this.unit = unit;
 	}
-
 }
 
 export default MeasureSpaceDistance;

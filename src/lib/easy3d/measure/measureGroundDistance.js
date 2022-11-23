@@ -30,7 +30,7 @@ class MeasureGroundDistance extends BaseMeasure {
 
 	//开始测量
 	start(callback) {
-		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		let that = this;
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -89,6 +89,7 @@ class MeasureGroundDistance extends BaseMeasure {
 
 			if (!Cesium.defined(that.polyline)) {
 				that.polyline = that.createLine(that.positions, true);
+				that.polyline.objId = that.objId;
 			}
 			if (!that.lastCartesian) return;
 			that.getGroundLength([cartesian, that.lastCartesian], function (distance) {
@@ -96,7 +97,7 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.floatLable.label.text = that.formateLength(distance, that.unit);
 				that.floatLable.position.setValue(cartesian);
 				that.floatLable.distance = distance;
-				that.floatDistance = distance;
+				if(distance) that.floatDistance = distance;
 				/* if (that.fun) that.fun(distance); */
 			});
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -157,6 +158,7 @@ class MeasureGroundDistance extends BaseMeasure {
 
 	// 开始编辑
 	startEdit(callback) {
+
 		if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
 		this.state = "startEdit";
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -219,7 +221,6 @@ class MeasureGroundDistance extends BaseMeasure {
 					that.allDistance = that.allDistance + changeDis1 + changeDis2;
 					let allDistance = that.formateLength(that.allDistance, that.unit);
 					that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-
 				});
 			}
 
@@ -292,9 +293,11 @@ class MeasureGroundDistance extends BaseMeasure {
 
 	// 设置单位
 	setUnit(unit) {
-		for (let i = 0; i < this.labels.length; i++) {
-			let label = this.labels[i];
-			let distance = label.distance;
+		for (let i = 1; i < this.labels.length; i++) {
+			let labelEnt = this.labels[i];
+			let distance = labelEnt.distance;
+			let label = labelEnt.label;
+			if (!label) continue;
 			if (i == this.labels.length - 1) {
 				label.text = "总长：" + this.formateLength(distance, unit);
 			} else {
