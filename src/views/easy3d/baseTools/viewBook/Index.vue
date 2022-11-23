@@ -1,18 +1,21 @@
 <template>
   <Card
-    :width="400"
-    :height="600"
     @close="close"
     :title="title"
+    :size="size"
     :position="position"
-    titleIcon="icon-dianyingmulu"
+    :iconfont="iconfont"
   >
     <div class="add-box basic-search">
       <el-input v-model="viewerTitle" placeholder="请输入名称"></el-input>
       <span class="btn" @click="onAddViewer">添加</span>
     </div>
     <ul class="viewer-list">
-      <li v-for="(item, index) in viewerList" :key="index" @click="setCameraView(item)">
+      <li
+        v-for="(item, index) in viewerList"
+        :key="index"
+        @click="setCameraView(item)"
+      >
         <img :src="item.imgSrc" />
         <div class="viewer-info">
           <p>{{ item.name }}</p>
@@ -29,8 +32,12 @@ export default {
   name: "viewBook",
 
   props: {
-    title: "",
     position: {},
+    size: {},
+    iconfont: {
+      type: String,
+      default: "icon-dianyingmulu",
+    },
   },
 
   components: {
@@ -40,9 +47,7 @@ export default {
   data() {
     return {
       viewerTitle: "",
-      viewerList: [
-       
-      ],
+      viewerList: [],
     };
   },
 
@@ -60,9 +65,9 @@ export default {
         return;
       }
 
-      if(this.viewerList.some(item => item.name === this.viewerTitle)){
+      if (this.viewerList.some((item) => item.name === this.viewerTitle)) {
         this.$message.error("名称不可重复！");
-        return ;
+        return;
       }
 
       window.viewer.scene.render();
@@ -83,10 +88,10 @@ export default {
     onDeleteViewer(index) {
       this.viewerList.shift(index);
     },
-    setCameraView(attr){
-      if(!attr || !attr.view) return ;
+    setCameraView(attr) {
+      if (!attr || !attr.view) return;
       this.easy3d.cUtil.setCameraView(attr.view);
-    }
+    },
   },
 };
 </script>
@@ -108,7 +113,7 @@ export default {
 }
 .viewer-list {
   height: calc(100% - 50px);
-  margin-top : 10px;
+  margin-top: 10px;
   overflow-x: hidden;
   overflow-y: auto;
   li {

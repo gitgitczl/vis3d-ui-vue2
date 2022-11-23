@@ -2,8 +2,9 @@
   <Card
     :size="size"
     :title="title"
-    titleIcon="icon-fenxikongjian1"
+    :iconfont="iconfont"
     @close="close"
+    :position="position"
   >
     <div class="analysis-tomain" @click="tomain" v-show="analysisName !== ''">
       <a><<</a> <span>{{ analysisName }}</span>
@@ -87,6 +88,11 @@ export default {
       type: String,
       default: "",
     },
+    iconfont: {
+      type: String,
+      default: "icon-fenxikongjian",
+    },
+    position: {},
     size: {},
   },
   data() {

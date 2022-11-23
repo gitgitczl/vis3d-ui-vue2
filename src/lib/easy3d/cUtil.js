@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf';
 function cartesianToLnglat(cartesian, viewer) {
     if (!cartesian) return [];
     viewer = viewer || window.viewer;
@@ -298,13 +299,13 @@ function updatePositionsHeight(pois, h) {
     return newPois;
 }
 
-function computeUniforms(positions, fix, isOn3dtiles) {
+function computeUniforms(positions, isOn3dtiles) {
+    let area = computeArea(positions) / 1000;
     if (!positions) return;
-    if (!fix) fix = 1000;
     var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
         positions: positions,
         vertexFormat: Cesium.PerInstanceColorAppearance.FLAT_VERTEX_FORMAT,
-        granularity: Math.PI / Math.pow(2, 11) / fix
+        granularity: (Math.PI / Math.pow(2, 11) / 1000) * area
     });
     var geom = new Cesium.PolygonGeometry.createGeometry(polygonGeometry);
     var indices = geom.indices;
@@ -356,6 +357,15 @@ function computeUniforms(positions, fix, isOn3dtiles) {
         data.uniformArr.push(obj);
     }
     return data;
+}
+
+// 计算面积
+function computeArea(positions) {
+    positions = positions.concat([positions[0]]);
+    const lnglats = cartesiansToLnglats(positions);
+    let polygon = turf.polygon([lnglats]);
+    const area = turf.area(polygon);
+    return area;
 }
 
 function getTerrainHeight(cartesian) {

@@ -1,4 +1,4 @@
-let turf = require("turf/turf.js");
+import * as turf from '@turf/turf'
 class BaseMeasure {
     constructor(viewer, opt) {
         opt = opt || {};
@@ -31,7 +31,7 @@ class BaseMeasure {
                 show: true,
                 material: new Cesium.PolylineOutlineMaterialProperty({
                     color: Cesium.Color.GOLD,
-                    outlineWidth: 2,
+                    outlineWidth: 1,
                     outlineColor: Cesium.Color.BLACK,
                 }),
                 disableDepthTestDistance: Number.POSITIVE_INFINITY,

@@ -1,11 +1,10 @@
 <template>
   <Card
-    :width="400"
-    :height="600"
     @close="close"
     :title="title"
+    :size="size"
     :position="position"
-    titleIcon="icon-xianludaohang"
+    :iconfont="iconfont"
   >
     <ul class="pathPlan-change basic-text-input">
       <li>
@@ -75,6 +74,11 @@ export default {
   props: {
     title: "",
     position: {},
+    size: {},
+    iconfont: {
+      type: String,
+      default: "icon-xianludaohang",
+    },
   },
 
   components: {
@@ -86,9 +90,7 @@ export default {
       startPlot: "",
       endPlot: "",
       avoid: "",
-      pathPlanList: [
-       
-      ],
+      pathPlanList: [],
       /* startImg: require("@/assets/images/marker/start.png"),
       endImg: require("@/assets/images/marker/end.png"), */
     };
@@ -195,7 +197,7 @@ export default {
 
             let content = "";
             for (let i = 0; i < steps.length; i++) {
-              let fh = i==steps.length-1 ? "。" : ",";
+              let fh = i == steps.length - 1 ? "。" : ",";
               content += steps[i].instruction + fh;
             }
             that.pathPlanList.push({
@@ -222,7 +224,9 @@ export default {
       for (let i = 0; i < lnglats.length; i++) {
         let item = lnglats[i];
         if (item && item[0] && item[1]) {
-          positions.push(window.Cesium.Cartesian3.fromDegrees(item[0], item[1]));
+          positions.push(
+            window.Cesium.Cartesian3.fromDegrees(item[0], item[1])
+          );
         }
       }
       let lowColor = color.withAlpha(0.6);
@@ -231,7 +235,7 @@ export default {
           positions: positions,
           width: 3,
           material: lowColor,
-          clampToGround : 1
+          clampToGround: 1,
         },
       });
       return route;

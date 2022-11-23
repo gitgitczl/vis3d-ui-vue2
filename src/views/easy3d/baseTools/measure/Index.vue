@@ -2,7 +2,8 @@
   <Card
     :title="title"
     :size="size"
-    titleIcon="icon-tushangliangsuan"
+    :position="position"
+    :iconfont="iconfont"
     @close="close"
   >
     <ul class="measure-box basic-tool">
@@ -34,13 +35,12 @@
       清空测量数据
     </p>
 
-    <div v-show="isShowRes" class="measure-result">
+    <!-- <div v-show="isShowRes" class="measure-result">
       <label>处理结果：</label>
       <span>{{ res }}</span>
-    </div>
+    </div> -->
   </Card>
 </template>
-    
 
 <script>
 import Card from "@/views/easy3d/components/card/Card.vue";
@@ -54,6 +54,10 @@ export default {
     title: "",
     position: {},
     offset: {},
+    iconfont: {
+      type: String,
+      default: "icon-tushangliangsuan",
+    },
     size: {},
   },
   data() {
@@ -121,8 +125,9 @@ export default {
     let that = this;
     if (!measureTool) {
       measureTool = new this.easy3d.MeasureTool(window.viewer);
-      measureTool.on("measureEnd", function (ms) {
+      measureTool.on("end", function (ms) {
         that.isShowRes = ms.unitType ? true : false;
+        that.isMeasureActive = -1;
       });
     }
   },

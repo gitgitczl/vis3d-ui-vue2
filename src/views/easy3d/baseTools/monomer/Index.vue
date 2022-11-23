@@ -4,7 +4,7 @@
     :position="position"
     :size="size"
     height="auto"
-    titleIcon="icon-tushangcehui"
+    :iconfont="iconfont"
     @close="close"
   >
     <div style="margin: 0px 0px 10px 0px">
@@ -21,7 +21,9 @@
 
     <!-- 属性设置 -->
     <div v-show="isShowAttrTool">
-      <el-button type="primary" @click="startDraw" style="margin-bottom: 10px;">绘制范围</el-button>
+      <el-button type="primary" @click="startDraw" style="margin-bottom: 10px"
+        >绘制范围</el-button
+      >
       <div>
         <el-row class="monomer-item basic-text-input">
           <el-col :span="4">名称：</el-col>
@@ -68,6 +70,10 @@ export default {
       isShowAttrTool: false,
       isshowInput: false,
       mode: "view",
+      iconfont: {
+        type: String,
+        default: "icon-getihuabianji",
+      },
     };
   },
 
@@ -227,7 +233,7 @@ export default {
 </script>
 
 <style lang="less">
-.monomer-item{
+.monomer-item {
   display: flex;
   align-items: center;
   margin-bottom: 10px;

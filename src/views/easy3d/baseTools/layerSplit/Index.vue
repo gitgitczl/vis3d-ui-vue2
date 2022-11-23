@@ -1,8 +1,19 @@
 <template>
-  <Card :title="title" :position="position" :size="size" height="auto" titleIcon="icon-tushangcehui" @close="close">
+  <Card
+    :title="title"
+    :position="position"
+    :size="size"
+    :iconfont="iconfont"
+    @close="close"
+  >
     <label>可选图层：</label>
     <el-select placeholder="请选择" v-model="nowSelectId" @change="changeLayer">
-      <el-option v-for="(item, index) in layerList" :key="index" :label="item.name" :value="item.id"></el-option>
+      <el-option
+        v-for="(item, index) in layerList"
+        :key="index"
+        :label="item.name"
+        :value="item.id"
+      ></el-option>
     </el-select>
   </Card>
 </template>
@@ -19,6 +30,10 @@ export default {
     size: {},
     position: {},
     title: "",
+    iconfont: {
+      type: String,
+      default: "icon-juanlianduibi",
+    },
   },
   data() {
     return {
@@ -37,7 +52,8 @@ export default {
       let item = allLayers[i];
       item = JSON.parse(JSON.stringify(item));
       item.initState = item.show; // 记录原始状态
-      if (item.layerSplit == true) { // 是否用来做分屏对比
+      if (item.layerSplit == true) {
+        // 是否用来做分屏对比
         this.layerList.push(item);
       }
     }
@@ -57,7 +73,6 @@ export default {
         layer: lyrObj._layer,
       });
     }
-
   },
   destroyed() {
     if (layerSplit) {
@@ -115,7 +130,7 @@ export default {
         layers,
         groups,
       };
-    }
+    },
   },
 };
 </script>

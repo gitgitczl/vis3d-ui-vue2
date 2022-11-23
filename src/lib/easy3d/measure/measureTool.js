@@ -27,7 +27,7 @@ class MeasureTool {
 
 	// 事件绑定
 	on(type, fun) {
-		if (type == "endMeasure") {
+		if (type == "end") {
 			this.endMeasureFun = fun;
 		}
 
@@ -114,6 +114,7 @@ class MeasureTool {
 			//单击开始绘制
 			if (!that.canEdit) return;
 			let pick = that.viewer.scene.pick(evt.position);
+			debugger
 			if (Cesium.defined(pick) && pick.id && pick.id.objId) {
 				// 选中实体
 				for (let i = 0; i < that.toolArr.length; i++) {

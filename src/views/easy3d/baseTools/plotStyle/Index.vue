@@ -1,12 +1,10 @@
 <template>
   <Card
-    :width="400"
-    :height="600"
     @close="close"
     :title="title"
     :position="position"
     :size="size"
-    titleIcon="icon-dianyingmulu"
+    :iconfont="iconfont"
   >
     <div v-if="plotActive && Object.keys(plotStyleAttr).length">
       <div
@@ -96,6 +94,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-dianyingmulu",
+    },
   },
   data() {
     return {
@@ -127,6 +129,7 @@ export default {
     },
     setAttr(id) {
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
+      debugger
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
       if (!entityObj) return;
