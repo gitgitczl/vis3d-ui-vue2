@@ -120,12 +120,11 @@ class CreatePolyline extends BasePlot {
         if (callBack) callBack(this.entity);
         for (let i = 0; i < positions.length; i++) {
             let newP = positions[i];
-            if (this.style.clampToGround) {
-                let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
-                ctgc.height = this.viewer.scene.sampleHeight(ctgc);
-                newP = Cesium.Cartographic.toCartesian(ctgc);
-            }
+
             let point = this.createPoint(newP);
+            if (this.style.clampToGround) {
+                point.point.heightReference = 1;
+            }
             point.wz = this.controlPoints.length;
             this.controlPoints.push(point);
         }

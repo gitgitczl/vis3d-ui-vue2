@@ -150,6 +150,7 @@ class DrawTool {
     let entityObj = this.createByType(opt);
     if (!entityObj) return;
     entityObj.attr = opt; // 保存开始绘制时的属性
+    debugger
     entityObj.createByPositions(opt.positions, function (entity) {
       that.toolArr.push(entityObj);
       entityObj.setStyle(opt.style); // 设置相关样式
@@ -194,6 +195,7 @@ class DrawTool {
       }
       this.createByPositions({
         type: drawType,
+        styleType: plotType,
         positions: positions,
         style: properties.style
       })

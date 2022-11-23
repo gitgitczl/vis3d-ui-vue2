@@ -249,7 +249,7 @@ export default {
         reader.onloadend = function (e) {
           let strjson = this.result;
           strjson = JSON.parse(strjson);
-
+          debugger
           window.plotDrawTool.createByGeojson(strjson);
         };
       }

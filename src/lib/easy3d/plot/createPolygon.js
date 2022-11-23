@@ -124,11 +124,8 @@ class CreatePolygon extends BasePlot {
 		for (let i = 0; i < positions.length; i++) {
 			let newP = positions[i];
 			let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
-			if (this.style.heightReference) {
-				ctgc.height = this.viewer.scene.sampleHeight(ctgc);
-				newP = Cesium.Cartographic.toCartesian(ctgc);
-			}
 			let point = this.createPoint(newP);
+			point.point.heightReference = this.style.heightReference;
 			point.ctgc = ctgc;
 			point.wz = this.controlPoints.length;
 			this.controlPoints.push(point);
