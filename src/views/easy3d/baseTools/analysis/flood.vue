@@ -77,7 +77,7 @@ export default {
     window.floodDrawTool.on("endEdit", function (entObj, ent) {
       // 编辑完成后
       polygonPositions = entObj.getPositions();
-      let uniformData = cUtil.computeUniforms(polygonPositions, 10);
+      let uniformData = cUtil.computeUniforms(polygonPositions);
       that.minHeight = Number(uniformData.minHeight).toFixed(2);
       that.maxHeight = Number(uniformData.maxHeight).toFixed(2);
     });

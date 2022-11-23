@@ -104,8 +104,8 @@ window.workConfig = {
             "show": false,
             "workName": "analysis",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 100,
+                "left": 40
             },
             "size": {
                 "width": 350,

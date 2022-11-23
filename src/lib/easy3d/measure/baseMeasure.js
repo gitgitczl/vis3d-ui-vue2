@@ -1,4 +1,4 @@
-let turf = require("turf/turf.js");
+import * as turf from '@turf/turf'
 class BaseMeasure {
     constructor(viewer, opt) {
         opt = opt || {};

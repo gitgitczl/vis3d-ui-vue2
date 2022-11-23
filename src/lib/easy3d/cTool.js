@@ -56,7 +56,16 @@ let file = {
     }
 }
 
+// 验证 
+let test = {
+    isPositiveNumber(val){ // 正则表达式 >=0
+        let reg = /^[1-9]*[1-9][0-9]*$/;
+        return reg.test(val)
+    }
+}
+
 export default {
     downloadCanvasIamge: downloadCanvasIamge,
-    file : file
+    file : file,
+    test : test
 }

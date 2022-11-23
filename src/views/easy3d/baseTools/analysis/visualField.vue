@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p class="slope-toolip">提示：此功能须基于模型进行绘制展示。</p>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">
       <span @click="startDraw">添加可视域</span>
       <span class="basic-analysis-btn-clear" @click="clear">清除</span>
