@@ -99,6 +99,9 @@ class MapViewer {
       },this);
     }
 
+    this.viewer.scene.debugShowFramesPerSecond =
+      this.opt.map.debugShowFramesPerSecond;
+
   }
 
   get viewer() {
