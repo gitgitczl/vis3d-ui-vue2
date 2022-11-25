@@ -59,7 +59,7 @@ class CreatePolygon extends BasePlot {
 				if (that.positions.length == 3) {
 					if (!Cesium.defined(that.entity)) {
 						that.entity = that.createPolygon(that.style);
-						if(!that.style.outline && that.polyline){ // 不需要创建轮廓 则后续删除
+						if (!that.style.outline && that.polyline) { // 不需要创建轮廓 则后续删除
 							that.polyline.show = false;
 						}
 						that.entity.objId = that.objId;
@@ -119,16 +119,13 @@ class CreatePolygon extends BasePlot {
 		this.entity = this.createPolygon();
 		this.polyline = this.createPolyline();
 		this.polyline.show = this.style.outline;
-		
+
 		this.positions = positions;
 		for (let i = 0; i < positions.length; i++) {
 			let newP = positions[i];
 			let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
-			if (this.style.heightReference) {
-				ctgc.height = this.viewer.scene.sampleHeight(ctgc);
-				newP = Cesium.Cartographic.toCartesian(ctgc);
-			}
 			let point = this.createPoint(newP);
+			point.point.heightReference = this.style.heightReference;
 			point.ctgc = ctgc;
 			point.wz = this.controlPoints.length;
 			this.controlPoints.push(point);
@@ -142,6 +139,7 @@ class CreatePolygon extends BasePlot {
 		if (!this.entity) return;
 		let obj = {};
 		let polygon = this.entity.polygon;
+
 		if (polygon.material instanceof Cesium.ColorMaterialProperty) {
 			obj.material = "common";
 			let color = polygon.material.color.getValue();
@@ -154,7 +152,7 @@ class CreatePolygon extends BasePlot {
 		obj.fill = polygon.fill ? polygon.fill.getValue() : false;
 		if (polygon.heightReference) {
 			let heightReference = polygon.heightReference.getValue();
-			obj.heightReference = Boolean(heightReference);
+			obj.heightReference = Number(heightReference);
 		}
 
 		/* obj.heightReference = isNaN(polygon.heightReference.getValue()) ? false : polygon.heightReference.getValue(); */
@@ -204,7 +202,7 @@ class CreatePolygon extends BasePlot {
 				}, false),
 				heightReference: Number(this.style.heightReference),
 				show: true,
-				fill: this.style.fill || true,
+				fill: this.style.fill == undefined ? true : this.style.fill,
 				material: this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1)
 			}
 		}

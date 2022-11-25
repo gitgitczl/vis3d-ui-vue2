@@ -1,12 +1,10 @@
 <template>
   <Card
-    :width="400"
-    :height="100"
     :size="size"
     @close="close"
     :title="title"
     :position="position"
-    titleIcon="icon-cengshu"
+    :iconfont="iconfont"
   >
     <div class="basic-region">
       <v-region type="group" :town="false" @values="setRegion"></v-region>
@@ -23,7 +21,11 @@ export default {
   props: {
     title: "",
     position: {},
-    size: {}
+    size: {},
+    iconfont:{
+      type:String,
+      default : "icon-diqudaohang"
+    }
   },
 
   components: {
@@ -71,7 +73,7 @@ export default {
       let that = this;
 
       this.axios
-        .get(`/data/bound/xzqh/${key}.json`)
+        .get(`http://localhost/xzqh/${key}.json`)
         .then(function (response) {
           let dspromise = window.Cesium.GeoJsonDataSource.load(response.data, {
             stroke: Cesium.Color.YELLOW,

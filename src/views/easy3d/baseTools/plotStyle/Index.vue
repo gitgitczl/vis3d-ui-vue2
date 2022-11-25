@@ -1,12 +1,10 @@
 <template>
   <Card
-    :width="400"
-    :height="600"
     @close="close"
     :title="title"
     :position="position"
     :size="size"
-    titleIcon="icon-dianyingmulu"
+    :iconfont="iconfont"
   >
     <div v-if="plotActive && Object.keys(plotStyleAttr).length">
       <div
@@ -19,7 +17,7 @@
           <el-row style="margin-bottom: 10px">
             <el-col :span="6" class="plot-type-name">{{ item.name }}：</el-col>
             <el-col :span="18" class="reset-radio">
-              <el-radio-group v-model="item.value">
+              <el-radio-group v-model="item.value" @change="toChange">
                 <el-radio
                   v-for="(opt, index) in item.options"
                   :key="index"
@@ -40,7 +38,7 @@
               :key="ind"
               :detailAttr="detial"
               @toChange="toChange"
-              v-show="ind != 'name'"
+              v-show="ind != 'name' && ind != 'value'"
             >
               <el-col :span="6" class="plot-type-name"
                 >{{ detial.name }}：</el-col
@@ -96,6 +94,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-dianyingmulu",
+    },
   },
   data() {
     return {
@@ -127,6 +129,7 @@ export default {
     },
     setAttr(id) {
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
+      debugger
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
       if (!entityObj) return;
@@ -137,22 +140,22 @@ export default {
       // 循环样式配置里面的属性 并绑定到标签
       for (let i in this.plotStyleAttr) {
         let attr = this.plotStyleAttr[i];
+
         if (attr.type == "checkbox") {
-          // 循环checkbox中options选中的属性
-          let checkboxSelect = attr.options[attr.value];
-          for (let key in checkboxSelect) {
-            if (key != "name") {
-              checkboxSelect[key].value = entityStyleValue[key];
-            }
-          }
-        }
-        if (attr.value == "show" || attr.value == "false") {
+          // 当前实体的值
           attr.value =
             typeof entityStyleValue[i] == "boolean"
               ? entityStyleValue[i]
                 ? "show"
-                : "false"
+                : "hide"
               : entityStyleValue[i];
+          // 循环checkbox中options选中的属性
+          let checkboxSelect = attr.options[attr.value];
+          for (let key in checkboxSelect) {
+            if (key != "name" && key != "value") {
+              checkboxSelect[key].value = entityStyleValue[key];
+            }
+          }
         } else {
           attr.value =
             entityStyleValue[i] === undefined
@@ -161,17 +164,39 @@ export default {
         }
       }
 
+      console.log("setAttr====>", this.plotStyleAttr);
       // 设置当前对象的属性 供导出为geojson
       entityObj.setAttr(this.infos);
     },
 
-    // 获取标签变化的值
+    // 获取标签变化的值 修改实体样式
     toChange() {
-      this.$store.commit("setNowPlotStyleAttr", this.plotStyleAttr);
+      let val = JSON.parse(JSON.stringify(this.plotStyleAttr));
+      let newStyle = this.transformStyleVal(val);
+      this.$store.commit("setNowPlotStyleAttr", newStyle);
     },
 
     onChangePlotStyle(index) {
       this.$set(this, "plotActive", index);
+    },
+
+    transformStyleVal(style) {
+      if (!style) return;
+      let styleVal = {};
+      for (let i in style) {
+        styleVal[i] = style[i].value;
+        if (style[i].type == "checkbox") {
+          let option = style[i].options[style[i].value];
+          if (!option) continue;
+          styleVal[i] = option.value; // 当前 checkbox 的选项值  非其子选项中的option值
+          for (let step in option) {
+            if (step != "name" && step != "value") {
+              styleVal[step] = option[step].value;
+            }
+          }
+        }
+      }
+      return styleVal;
     },
   },
   watch: {

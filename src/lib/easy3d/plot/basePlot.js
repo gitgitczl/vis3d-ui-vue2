@@ -16,11 +16,7 @@ class BasePlot {
         this.entity = null;
         this.pointStyle = {};
         this.promptStyle = opt.prompt || {
-            show: true,
-            offset: {
-                x: 30,
-                y: 30
-            }
+            show: true
         }
         this.properties = {};
     }

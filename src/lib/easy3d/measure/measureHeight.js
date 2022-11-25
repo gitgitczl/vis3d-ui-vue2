@@ -12,12 +12,11 @@ class MeasureHeight extends BaseMeasure {
     this.polyline = null;
     this.floatLabel = null;
     this.positions = [];
-    this.height = 0;
   }
 
   //开始测量
-  start() {
-    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+  start(callback) {
+    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
     let that = this;
     this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -26,8 +25,7 @@ class MeasureHeight extends BaseMeasure {
       if (!cartesian) return;
 
       if (that.positions.length == 2) {
-        that.positions.pop();
-        that.positions.push(cartesian);
+        that.positions[1] = cartesian.clone();
         if (that.handler) {
           that.handler.destroy();
           that.handler = null;
@@ -36,38 +34,103 @@ class MeasureHeight extends BaseMeasure {
           that.prompt.destroy();
           that.prompt = null;
         }
+        let point = that.createPoint(cartesian.clone());
+        point.wz = 1;
+        that.controlPoints.push(point);
         that.state = "endCreate";
+        if (callback) callback();
+      } else {
+        that.polyline = that.createLine(that.positions, false);
+        that.polyline.objId = that.objId;
+        if (!that.floatLabel) that.floatLabel = that.createLabel(cartesian.clone(), "");
+        that.positions.push(cartesian.clone());
+        let point = that.createPoint(cartesian.clone());
+        point.wz = 0;
+        that.controlPoints.push(point);
       }
 
-      that.positions.push(cartesian);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     this.handler.setInputAction(function (evt) {
       let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
-      if (!cartesian) return;
-
       that.state = "creating"
       if (that.positions.length < 1) {
         that.prompt.update(evt.endPosition, "单击开始测量");
         return;
-      } else {
-        that.prompt.update(evt.endPosition, "单击结束");
-
-        if (that.positions.length == 2 && !Cesium.defined(that.polyline)) {
-          that.polyline = that.createLine(that.positions, false);
-          if (!that.floatLabel) that.floatLabel = that.createLabel(cartesian, "");
-        }
-
-        let heightAndCenter = that.getHeightAndCenter(that.positions[0], that.positions[1]);
-        let text = that.formateLength(heightAndCenter.height,that.unit);
-        that.height = heightAndCenter.height;
-        that.floatLabel.label.text = "高度差：" + text;
-        that.floatLabel.length = heightAndCenter.height;
-        if (heightAndCenter.center) that.floatLabel.position.setValue(heightAndCenter.center);
-
       }
+      that.prompt.update(evt.endPosition, "单击结束");
+      if (!cartesian) return;
+      if (that.positions.length < 2) {
+        that.positions.push(cartesian.clone());
+      } else {
+        that.positions[1] = cartesian.clone();
+      }
+
+      let heightAndCenter = that.getHeightAndCenter(that.positions[0], that.positions[1]);
+      let text = that.formateLength(heightAndCenter.height, that.unit);
+      that.floatLabel.label.text = "高度差：" + text;
+      that.floatLabel.length = heightAndCenter.height;
+      if (heightAndCenter.center) that.floatLabel.position.setValue(heightAndCenter.center);
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
+
+  startEdit(callback) {
+    if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
+    this.state = "startEdit";;
+    if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+    let that = this;
+    for (let i = 0; i < that.controlPoints.length; i++) {
+      let point = that.controlPoints[i];
+      if (point) point.show = true;
+    }
+    this.modifyHandler.setInputAction(function (evt) {
+      let pick = that.viewer.scene.pick(evt.position);
+      if (Cesium.defined(pick) && pick.id) {
+        if (!pick.id.objId)
+          that.modifyPoint = pick.id;
+        that.forbidDrawWorld(true);
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+    this.modifyHandler.setInputAction(function (evt) {
+      if (that.positions.length < 1 || !that.modifyPoint) return;
+      let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
+      if (!cartesian) return;
+      that.modifyPoint.position.setValue(cartesian.clone());
+
+      that.positions[that.modifyPoint.wz] = cartesian.clone();
+      let heightAndCenter = that.getHeightAndCenter(that.positions[0], that.positions[1]);
+      let text = that.formateLength(heightAndCenter.height, that.unit);
+      that.floatLabel.label.text = "高度差：" + text;
+      that.floatLabel.length = heightAndCenter.height;
+      if (heightAndCenter.center) that.floatLabel.position.setValue(heightAndCenter.center);
+
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    this.modifyHandler.setInputAction(function (evt) {
+      if (!that.modifyPoint) return;
+      that.modifyPoint = null;
+      that.lastPosition = null;
+      that.nextPosition = null;
+      that.forbidDrawWorld(false);
+      if (callback) callback();
+      that.state = "endEdit";
+    }, Cesium.ScreenSpaceEventType.LEFT_UP);
+  }
+
+  endEdit() {
+    let that = this;
+    this.state = "endEdit";;
+    if (this.modifyHandler) {
+      this.modifyHandler.destroy();
+      this.modifyHandler = null;
+    }
+    for (let i = 0; i < that.controlPoints.length; i++) {
+      let point = that.controlPoints[i];
+      if (point) point.show = false;
+    }
+  }
+
   //清除测量结果
   destroy() {
     if (this.polyline) {

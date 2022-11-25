@@ -11,7 +11,7 @@
             "type": "polyline",
             "iconImg": "./easy3d/images/plot/polyline.png",
             "styleType": "polyline",
-            "style":{
+            "style": {
                 "clampToGround": true,
                 "color": "#ffff00"
             }
@@ -36,6 +36,23 @@
                 "image": "./easy3d/images/plot/start.png"
             },
             "styleType": "billboard"
+        },
+        {
+            "name": "文字",
+            "type": "label",
+            "iconImg": "./easy3d/images/plot/label.png",
+            "style": {
+                "text": "新增标注",
+                "fillColor": "#0000ff",
+                "outline": false,
+                "outlineWidth": 1,
+                "outlineColor": "#ff0000",
+                "heightReference": 1,
+                "showBackground": true,
+                "backgroundColor": null,
+                "scale": 1
+            },
+            "styleType": "label"
         }
     ],
     "军事标绘": [
@@ -45,7 +62,7 @@
             "type": "arrow",
             "arrowType": 1,
             "style": {
-                "color": "#0000ff",
+                "color": "#fc1100",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -56,7 +73,7 @@
             "type": "arrow",
             "arrowType": 2,
             "style": {
-                "color": "#0000ff",
+                "color": "#ddff00",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -67,7 +84,7 @@
             "type": "arrow",
             "arrowType": 3,
             "style": {
-                "color": "#0000ff",
+                "color": "#00e41b",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -78,7 +95,7 @@
             "type": "arrow",
             "arrowType": 5,
             "style": {
-                "color": "#0000ff",
+                "color": "#00ffe5",
                 "heightReference": 1
             },
             "styleType": "arrow"
@@ -89,7 +106,106 @@
             "type": "arrow",
             "arrowType": 6,
             "style": {
-                "color": "#0000ff",
+                "color": "#f200ff",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "单尖直箭头（燕尾）",
+            "iconImg": "./easy3d/images/plot/zjtyw.png",
+            "type": "arrow",
+            "arrowType": 7,
+            "style": {
+                "color": "#D07900",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "闭合曲面",
+            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "type": "arrow",
+            "arrowType": 4,
+            "style": {
+                "color": "#001CF4",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "弓形面",
+            "iconImg": "./easy3d/images/plot/gxm.png",
+            "type": "arrow",
+            "arrowType": 9,
+            "style": {
+                "color": "#00B038",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "直箭头",
+            "iconImg": "./easy3d/images/plot/czjt.png",
+            "type": "arrow",
+            "arrowType": 10,
+            "style": {
+                "color": "#C8CB99",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "矩形旗",
+            "iconImg": "./easy3d/images/plot/jxq.png",
+            "type": "arrow",
+            "arrowType": 11,
+            "style": {
+                "color": "#0094DE",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "扇形",
+            "iconImg": "./easy3d/images/plot/sx.png",
+            "type": "arrow",
+            "arrowType": 12,
+            "style": {
+                "color": "#5902BC",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "三角旗",
+            "iconImg": "./easy3d/images/plot/sjq.png",
+            "type": "arrow",
+            "arrowType": 13,
+            "style": {
+                "color": "#029A8B",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "矩形波浪旗",
+            "iconImg": "./easy3d/images/plot/jxblq.png",
+            "type": "arrow",
+            "arrowType": 14,
+            "style": {
+                "color": "#F47600",
+                "heightReference": 1
+            },
+            "styleType": "arrow"
+        },
+        {
+            "name": "单线箭头",
+            "iconImg": "./easy3d/images/plot/zxjt.png",
+            "type": "arrow",
+            "arrowType": 16,
+            "style": {
+                "color": "#D0CD00",
                 "heightReference": 1
             },
             "styleType": "arrow"

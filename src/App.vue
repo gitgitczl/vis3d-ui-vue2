@@ -51,7 +51,7 @@ export default {
      * 打开帮助说明
      */
     onOpenHelp() {
-      // debugger
+      // 
       this.$set(this, 'isHelp', true)
     },
 

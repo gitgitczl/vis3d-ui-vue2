@@ -26,7 +26,6 @@ class CreatePoint extends BasePlot {
 			if (!cartesian) return;
 			that.entity = that.createPoint(cartesian);
 			that.position = cartesian;
-			that.state = "endCreate";
 			if (that.handler) {
 				that.handler.destroy();
 				that.handler = null;
@@ -35,6 +34,7 @@ class CreatePoint extends BasePlot {
 				that.prompt.destroy();
 				that.prompt = null;
 			}
+			that.state = "endCreate";
 			if (callBack) callBack(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -144,6 +144,7 @@ class CreatePoint extends BasePlot {
 				outlineColor: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : (this.style.outlineColor ? Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1) : Cesium.Color.BLACK),
 				outlineWidth: this.style.outlineWidth || 4,
 				pixelSize: this.style.pixelSize || 20,
+				disableDepthTestDistance : Number.MAX_VALUE
 			}
 		})
 		point.objId = this.objId;

@@ -1,5 +1,4 @@
 /*Cesium无关的常用小工具 */
-
 // 图片下载 实现截屏
 function downloadCanvasIamge(canvas, name) {
     // 通过选择器获取canvas元素
@@ -57,7 +56,16 @@ let file = {
     }
 }
 
+// 验证 
+let test = {
+    isPositiveNumber(val){ // 正则表达式 >=0
+        let reg = /^[1-9]*[1-9][0-9]*$/;
+        return reg.test(val)
+    }
+}
+
 export default {
     downloadCanvasIamge: downloadCanvasIamge,
-    file : file
+    file : file,
+    test : test
 }

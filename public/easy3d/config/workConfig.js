@@ -1,5 +1,8 @@
 window.workConfig = {
-    "panel": true, // 是否创建面板
+    "panel": {
+        create: true,
+        visible: true
+    }, // 是否创建面板
     "tools": [
         {
             "name": "图上标绘",
@@ -24,8 +27,8 @@ window.workConfig = {
             "show": false,
             "workName": "plotStyle",
             "position": {
-                "top": 500,
-                "left": 1500
+                "right": 10,
+                "bottom": 30
             },
             "size": {
                 "width": 350,
@@ -70,8 +73,8 @@ window.workConfig = {
             "show": false,
             "workName": "help",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 120,
+                "right": 120
             },
             "size": {
                 "width": 350,
@@ -93,15 +96,16 @@ window.workConfig = {
                 "height": 600
             },
             "closeDisableSelf": false,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "disableByOthers": false
         },
         {
             "name": "空间分析",
-            "show": true,
+            "show": false,
             "workName": "analysis",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 100,
+                "left": 40
             },
             "size": {
                 "width": 350,
@@ -174,8 +178,8 @@ window.workConfig = {
             "closeDisableSelf": false,
             "openDisableAnothers": false,
             "position": {
-                "top": 500,
-                "left": 1500
+                "right": 10,
+                "bottom": 30
             },
             "size": {
                 "width": 350,
@@ -189,8 +193,8 @@ window.workConfig = {
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "position": {
-                "top": 500,
-                "left": 1500
+                "right": 10,
+                "bottom": 30
             },
             "size": {
                 "width": 350,

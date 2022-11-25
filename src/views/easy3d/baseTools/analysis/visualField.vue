@@ -1,8 +1,9 @@
 <template>
   <div>
+    <p class="slope-toolip">提示：此功能须基于模型进行绘制展示。</p>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">
       <span @click="startDraw">添加可视域</span>
-      <span class="basic-analysis-btn-clear">清除</span>
+      <span class="basic-analysis-btn-clear" @click="clear">清除</span>
     </div>
     <div class="visualfield-body">
       <ul class="visualfield-slider reset-slider basic-slider">
@@ -10,7 +11,7 @@
           <p>水平张角：</p>
           <el-slider
             v-model="horizontalFov"
-            @change="setHorizontalFov"
+            @input="setHorizontalFov"
             :max="180"
           ></el-slider>
         </li>
@@ -18,27 +19,35 @@
           <p>垂直张角：</p>
           <el-slider
             v-model="verticalFov"
-            @change="setVerticalFov"
+            @input="setVerticalFov"
             :max="180"
           ></el-slider>
         </li>
         <li>
           <p>投射距离：</p>
-          <el-slider v-model="distance" @change="setDistance"></el-slider>
+          <el-slider
+            v-model="distance"
+            @input="setDistance"
+            :max="1000"
+          ></el-slider>
         </li>
         <li>
-          <p>偏转角度：</p>
+          <p>偏转角：</p>
           <el-slider
             v-model="heading"
-            @change="setHeading"
+            @input="setHeading"
             :max="360"
           ></el-slider>
+        </li>
+        <li>
+          <p>仰俯角：</p>
+          <el-slider v-model="pitch" @input="setPitch" :max="360"></el-slider>
         </li>
         <li>
           <p>俯仰角度：</p>
           <el-slider
             v-model="pitch"
-            @change="setPitch"
+            @input="setPitch"
             :min="-90"
             :max="90"
           ></el-slider>
@@ -48,14 +57,16 @@
           <el-color-picker
             size="small"
             v-model="visibleAreaColor"
-            @change="setVisibleAreaColor"
+            @active-change="setVisibleAreaColor"
           ></el-color-picker>
         </li>
         <li>
           <p>可见区域透明度：</p>
           <el-slider
             v-model="visibleAreaColorAlpha"
-            @change="setVisibleAreaColorAlpha"
+            :max="1"
+            :step="0.1"
+            @input="setVisibleAreaColorAlpha"
           ></el-slider>
         </li>
         <li>
@@ -63,14 +74,16 @@
           <el-color-picker
             size="small"
             v-model="hiddenAreaColor"
-            @change="setHiddenAreaColor"
+            @active-change="setHiddenAreaColor"
           ></el-color-picker>
         </li>
         <li>
           <p>不可见区透明度：</p>
           <el-slider
             v-model="hiddenAreaColorAlpha"
-            @change="setHiddenAreaColorAlpha"
+            :max="1"
+            :step="0.1"
+            @input="setHiddenAreaColorAlpha"
           ></el-slider>
         </li>
       </ul>
@@ -100,6 +113,8 @@ export default {
   destroyed() {},
   methods: {
     startDraw() {
+      this.clear();
+      let that = this;
       if (!visualField) {
         visualField = new this.easy3d.analysis.VisualTool(window.viewer, {
           visibleAreaColor: this.visibleAreaColor,
@@ -110,7 +125,10 @@ export default {
           horizontalFov: this.horizontalFov,
         });
       }
-      visualField.startDraw();
+      visualField.startDraw(function (heading, distance) {
+        that.heading = heading;
+        that.distance = distance;
+      });
     },
     setHorizontalFov(val) {
       if (!visualField) return;
@@ -118,40 +136,50 @@ export default {
     },
     setVerticalFov(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setVerticalFov(val);
     },
     setDistance(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setDistance(val);
     },
     setHeading(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setHeading(val);
     },
     setPitch(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setPitch(val);
     },
     setVisibleAreaColor(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setVisibleAreaColor(val);
     },
     setVisibleAreaColorAlpha(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setVisibleAreaColorAlpha(val);
     },
     setHiddenAreaColor(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setHiddenAreaColor(val);
     },
     setHiddenAreaColorAlpha(val) {
       if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      visualField.setHiddenAreaColorAlpha(val);
     },
     clear() {
       if (!visualField) return;
       visualField.destroy();
       visualField = null;
+
+      this.horizontalFov = 120;
+      this.verticalFov = 60;
+      this.distance = 0;
+      this.heading = 0;
+      this.pitch = 0;
+      this.visibleAreaColor = "#00FF00";
+      this.visibleAreaColorAlpha = 0.5;
+      this.hiddenAreaColor = "#FF0000";
+      this.hiddenAreaColorAlpha = 0.5;
     },
   },
 };

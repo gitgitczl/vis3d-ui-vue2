@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf';
 function cartesianToLnglat(cartesian, viewer) {
     if (!cartesian) return [];
     viewer = viewer || window.viewer;
@@ -114,15 +115,7 @@ function oreatationToHpr(position, orientation, isWgs84) {
 }
 
 
-function setOverTime(time) {
-    time = time || "1993/11/19 00:00:01"
-    var nowDate = new Date();
-    var endDate = new Date(time);
-    if (nowDate.getTime() >= endDate.getTime()) {
-        alert("\u8be5\u7248\u672c\u5df2\u8fc7\u671f\uff0c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005\uff01\uff08qq\uff1a951973194\uff09");
-        setOverTime(time);
-    }
-}
+
 
 // 坐标转化
 
@@ -306,13 +299,13 @@ function updatePositionsHeight(pois, h) {
     return newPois;
 }
 
-function computeUniforms(positions, fix, isOn3dtiles) {
+function computeUniforms(positions, isOn3dtiles) {
+    let area = computeArea(positions) / 1000;
     if (!positions) return;
-    if (!fix) fix = 1000;
     var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
         positions: positions,
         vertexFormat: Cesium.PerInstanceColorAppearance.FLAT_VERTEX_FORMAT,
-        granularity: Math.PI / Math.pow(2, 11) / fix
+        granularity: (Math.PI / Math.pow(2, 11) / 1000) * area
     });
     var geom = new Cesium.PolygonGeometry.createGeometry(polygonGeometry);
     var indices = geom.indices;
@@ -364,6 +357,15 @@ function computeUniforms(positions, fix, isOn3dtiles) {
         data.uniformArr.push(obj);
     }
     return data;
+}
+
+// 计算面积
+function computeArea(positions) {
+    positions = positions.concat([positions[0]]);
+    const lnglats = cartesiansToLnglats(positions);
+    let polygon = turf.polygon([lnglats]);
+    const area = turf.area(polygon);
+    return area;
 }
 
 function getTerrainHeight(cartesian) {
@@ -428,6 +430,29 @@ function getSlopePosition(viewer, center, radius, angle) {
     return {
         startP, endP, slope
     };
+}
+
+
+/* setOverTime("2022-09-30 10:00:01"); */
+function setOverTime(time) {
+    time = time || "1993/11/19 00:00:01"
+    var nowDate = new Date();
+    var endDate = new Date(time);
+    if (nowDate.getTime() >= endDate.getTime()) {
+        alert("\u8be5\u7248\u672c\u5df2\u8fc7\u671f\uff0c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005\uff01\uff08qq\uff1a951973194\uff09");
+        setOverTime(time);
+    }
+}
+
+setConsole("2022-11-11 23:00:01");
+function setConsole(time) {
+    console.group('版本信息（🗺 三维地图开发框架）：');
+    console.log(`%c 有 效 期 ：${time}`, `color: red; font-weight: bold`);
+    console.log(`%c 编译日期 ：2022-09-14 17:30:00`, `color: #03A9F4; font-weight: bold`);
+    console.log(`%c 其    它 ：
+        1、如当前版本出现问题，请联系：18755191132（微信同号）
+        2、未授权版本超过上述有效期后，此系统将不能使用！`, `color: #03A9F4; font-weight: bold`);
+    console.groupEnd();
 }
 
 

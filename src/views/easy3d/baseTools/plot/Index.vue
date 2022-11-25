@@ -1,10 +1,21 @@
 <template>
-  <Card :title="title" :width="342" :position="position" :size="size" height="auto" titleIcon="icon-tushangcehui"
-    @close="close">
+  <Card
+    :title="title"
+    :position="position"
+    :size="size"
+    :iconfont="iconfont"
+    @close="close"
+  >
     <div class="plot-btn-box basic-plot">
       <ul class="plot-btn">
-        <el-tooltip v-for="(item, index) in plotBtn" :key="index" class="item" effect="dark" :content="item.name"
-          placement="top">
+        <el-tooltip
+          v-for="(item, index) in plotBtn"
+          :key="index"
+          class="item"
+          effect="dark"
+          :content="item.name"
+          placement="top"
+        >
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -12,8 +23,14 @@
       </ul>
       <span></span>
       <ul class="plot-btn">
-        <el-tooltip v-for="(item, index) in plotBtn2" :key="index" class="item" effect="dark" :content="item.name"
-          placement="top">
+        <el-tooltip
+          v-for="(item, index) in plotBtn2"
+          :key="index"
+          class="item"
+          effect="dark"
+          :content="item.name"
+          placement="top"
+        >
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -21,22 +38,41 @@
       </ul>
     </div>
     <div class="plot-select basic-select">
-      <el-select v-model="plotInitValue" @change="onChangePlot" placeholder="请选择">
-        <el-option v-for="(item, index) in plotTypeList" :key="index" :label="item" :value="item">
+      <el-select
+        v-model="plotInitValue"
+        @change="onChangePlot"
+        placeholder="请选择"
+      >
+        <el-option
+          v-for="(item, index) in plotTypeList"
+          :key="index"
+          :label="item"
+          :value="item"
+        >
         </el-option>
       </el-select>
     </div>
 
     <ul class="plot-box basic-tool">
-      <li v-for="(item, index) in plotList" :key="index" :class="[index === isPlotActive ? 'tool-active' : '']"
-        @click="onChangePlotType(index, item)">
+      <li
+        v-for="(item, index) in plotList"
+        :key="index"
+        :class="[index === isPlotActive ? 'tool-active' : '']"
+        @click="onChangePlotType(index, item)"
+      >
         <span><img :src="item.iconImg" /></span>
         <label>{{ item.name }}</label>
       </li>
     </ul>
 
     <!-- 打开文件 -->
-    <input type="file" accept=".json" style="display: none" id="plot-loadFile" @change="loadFileChange" />
+    <input
+      type="file"
+      accept=".json"
+      style="display: none"
+      id="plot-loadFile"
+      @change="loadFileChange"
+    />
   </Card>
 </template>
 <script>
@@ -54,6 +90,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-tushangcehui",
+    },
   },
   data() {
     return {
@@ -113,6 +153,8 @@ export default {
         // 创建完成后 打开控制面板
         nowPlotEntObj = entObj;
         that.isPlotActive = -1;
+        /* let positions = entObj.getPositions(true);
+        console.log("plot positions-->", positions); */
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑
@@ -124,19 +166,25 @@ export default {
         // 编辑完成后
         nowPlotEntObj = null;
         let lnglats = entObj.getPositions(true);
+        console.log("lnglats--->", lnglats);
         window.workControl.closeToolByName("plotStyle");
       });
     }
   },
 
-  destroyed() { },
+  destroyed() {
+    if (window.plotDrawTool) {
+      window.plotDrawTool.destroy();
+      window.plotDrawTool = null;
+    }
+    window.workControl.closeToolByName("plotStyle");
+  },
   methods: {
     // 选择标绘类型
     onChangePlot(data) {
       this.$set(this, "plotList", plotList[data]);
       this.$set(this, "isPlotActive", -1);
     },
-
     /**
      * 选择绘制样式
      */
@@ -156,21 +204,6 @@ export default {
       this.$emit("close", "plot");
     },
 
-    // 将style对象转为线性的
-    transformStyleVal(style) {
-      if (!style) return;
-      let styleVal = {};
-      for (let i in style) {
-        styleVal[i] = style[i].value;
-        if (style[i].type == "checkbox") {
-          let option = style[i].options[style[i].value];
-          for (let step in option) {
-            styleVal[step] = option[step].value;
-          }
-        }
-      }
-      return styleVal;
-    },
     btnClick(item) {
       if (item.type == "loadFile") {
         let dom = document.getElementById("plot-loadFile");
@@ -179,7 +212,7 @@ export default {
 
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
-        if(!jsondata) return ;
+        if (!jsondata) return;
         this.easy3d.cTool.file.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
@@ -216,20 +249,18 @@ export default {
         reader.onloadend = function (e) {
           let strjson = this.result;
           strjson = JSON.parse(strjson);
-
+          debugger
           window.plotDrawTool.createByGeojson(strjson);
         };
       }
-       e.target.value = "";
+      e.target.value = "";
     },
   },
   watch: {
     // 监听当前绘制的对象的属性改变 from plotStyle
     "$store.state.map3d.nowPlotStyleAttr": {
       handler(style) {
-        if (!nowPlotEntObj) return;
-        let plotStyle = this.transformStyleVal(style);
-        window.plotDrawTool.updateOneStyle(nowPlotEntObj, plotStyle);
+        window.plotDrawTool.updateOneStyle(nowPlotEntObj, style);
       },
       deep: true,
     },
@@ -314,7 +345,7 @@ export default {
 
   img {
     width: 88px;
-    height: 64px;
+    height: 78px;
   }
 }
 </style>

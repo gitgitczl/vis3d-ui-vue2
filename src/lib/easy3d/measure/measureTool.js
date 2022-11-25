@@ -27,7 +27,7 @@ class MeasureTool {
 
 	// 事件绑定
 	on(type, fun) {
-		if (type == "endMeasure") {
+		if (type == "end") {
 			this.endMeasureFun = fun;
 		}
 
@@ -45,6 +45,7 @@ class MeasureTool {
 		opt = opt || {};
 		if (!opt.type) return;
 		let ms;
+
 		if (this.nowMeasureObj && (
 			this.nowMeasureObj.state != "endCreate" &&
 			this.nowMeasureObj.state != "endEdit") &&
@@ -89,7 +90,9 @@ class MeasureTool {
 		this.nowMeasureObj = ms;
 		let that = this;
 		if (ms) {
+			this.changeCursor(true);
 			ms.start(function (res) {
+				that.changeCursor(false);
 				if (that.intoEdit) {
 					ms.startEdit();
 					if (that.startEditFun) that.startEditFun(ms);
@@ -111,6 +114,7 @@ class MeasureTool {
 			//单击开始绘制
 			if (!that.canEdit) return;
 			let pick = that.viewer.scene.pick(evt.position);
+			debugger
 			if (Cesium.defined(pick) && pick.id && pick.id.objId) {
 				// 选中实体
 				for (let i = 0; i < that.toolArr.length; i++) {
@@ -128,6 +132,7 @@ class MeasureTool {
 							that.lastMeasureObj = null;
 						}
 						// 开始编辑
+
 						that.toolArr[i].startEdit();
 						that.nowEditObj = that.toolArr[i];
 						if (that.startEditFun) that.startEditFun(that.nowEditObj); // 开始编辑
@@ -167,10 +172,17 @@ class MeasureTool {
 
 	clear() {
 		for (var i = 0; i < this.toolArr.length; i++) {
-			if (this.toolArr[i]) this.toolArr[i].destroy();
+			if (this.toolArr[i]) {
+				this.toolArr[i].endEdit();
+				this.toolArr[i].destroy();
+			}
 		}
 		this.toolArr = [];
-		this.nowMeasureObj = null; // 当前编辑对象
+		if (this.nowMeasureObj) {
+			this.nowMeasureObj.destroy();
+			this.nowMeasureObj = null; // 当前编辑对象
+		}
+		that.changeCursor(false);
 	}
 	destroy() {
 		this.clear();
@@ -187,6 +199,11 @@ class MeasureTool {
 		this.nowMeasureObj.setUnit(unit);
 	}
 
+	// 修改鼠标样式
+	changeCursor(isopen) {
+		let body = document.getElementsByTagName("body");
+		body[0].style.cursor = isopen ? "crosshair" : "default";
+	}
 }
 
 export default MeasureTool;

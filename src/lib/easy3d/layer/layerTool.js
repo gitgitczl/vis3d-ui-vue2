@@ -9,7 +9,7 @@ import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
 class LayerTool {
-    constructor(viewer) {
+    constructor(viewer, opt) {
         this.viewer = viewer;
         this._layerObjs = [];
     }
@@ -20,6 +20,8 @@ class LayerTool {
         let layerObj = null;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
+
+        // 自动设置图层的index
         switch (type) {
             case "xyz": //xyz格式切片
                 layerObj = new XYZLayer(this.viewer, opt);
@@ -56,7 +58,7 @@ class LayerTool {
                 break;
         }
         if (!layerObj) return;
-        if (layerObj.type == "3dtiles" || layerObj.type=="geojson") {
+        if (layerObj.type == "3dtiles" || layerObj.type == "geojson") {
             layerObj.load(function () {
                 if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
                 layerObj.setVisible(opt.show);
@@ -92,7 +94,7 @@ class LayerTool {
      * 获取当前图层对象
      * @param {Object} query 
      */
-    getLayerObj(query) {
+    /* getLayerObj(query) {
         let { key, value } = query;
         let obj = {};
         for (let i = 0; i < this._layerObjs.length; i++) {
@@ -104,7 +106,7 @@ class LayerTool {
                 break;
             }
         }
-    }
+    } */
 
     removeLayerObj(layerObj) {
         if (!layerObj) return;
@@ -197,7 +199,7 @@ class LayerTool {
         }
         return returnData;
     }
-    lowerLayer(opt) {
+    /* lowerLayer(opt) {
         if (!opt) return;
         if (opt instanceof String) {
             opt = {
@@ -240,7 +242,7 @@ class LayerTool {
         }
         let obj = this.getLayerObj(opt);
         if (obj && obj.layerObj) obj.layerObj.raiselayerToTop()
-    }
+    } */
 }
 
 export default LayerTool;

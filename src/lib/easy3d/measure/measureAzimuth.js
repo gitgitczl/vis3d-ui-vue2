@@ -15,25 +15,36 @@ class MeasureAzimutht extends BaseMeasure {
   }
 
   //开始测量
-  start(fun) {
+  start(callback) {
     let that = this;
     this.state = "startCreate";
-    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
+
     this.handler.setInputAction(function (evt) { //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (!cartesian) return;
       if (that.positions.length == 2) {
         that.positions.pop();
+        let point = that.createPoint(cartesian.clone());
+        point.wz = 1;
+        that.controlPoints.push(point);
+        that.state = "endCreate";
+        if (that.prompt) {
+          that.prompt.destroy();
+          that.prompt = null;
+        }
         if (that.handler) {
           that.handler.destroy();
           that.handler = null;
-          that.state = "endCreate";
         }
+
+        if (callback) callback(that.azimutht);
       }
 
       if (!that.polyline) {
-        that.polyline = that.createLine(that.positions);
-        that.polyline.polyline.width = 5;
+        that.polyline = that.createLine(that.positions, true);
+        that.polyline.objId = that.objId;
+        that.polyline.polyline.width = 6;
         that.polyline.polyline.material = new Cesium.PolylineArrowMaterialProperty(Cesium.Color.YELLOW);
       }
 
@@ -41,7 +52,10 @@ class MeasureAzimutht extends BaseMeasure {
       if (that.positions.length == 1) {
         that.mtx = Cesium.Transforms.eastNorthUpToFixedFrame(that.positions[0].clone());
         that.floatLabel = that.createLabel(cartesian, "");
-        if (fun) fun(that.azimutht);
+        let point = that.createPoint(cartesian.clone());
+        point.wz = 0;
+        that.controlPoints.push(point);
+
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -57,7 +71,7 @@ class MeasureAzimutht extends BaseMeasure {
 
       if (that.positions.length < 2) {
         that.positions.push(cartesian.clone());
-      }else{
+      } else {
         that.positions[1] = cartesian.clone();
       }
 
@@ -66,6 +80,62 @@ class MeasureAzimutht extends BaseMeasure {
         that.floatLabel.label.text = "方位角：" + that.azimutht.toFixed(2);
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+  }
+
+  startEdit(callback) {
+    if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
+    this.state = "startEdit";;
+    if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+    let that = this;
+    for (let i = 0; i < that.controlPoints.length; i++) {
+      let point = that.controlPoints[i];
+      if (point) point.show = true;
+    }
+    this.modifyHandler.setInputAction(function (evt) {
+      let pick = that.viewer.scene.pick(evt.position);
+      if (Cesium.defined(pick) && pick.id) {
+        if (!pick.id.objId)
+          that.modifyPoint = pick.id;
+        that.forbidDrawWorld(true);
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+    this.modifyHandler.setInputAction(function (evt) {
+      if (that.positions.length < 1 || !that.modifyPoint) return;
+      let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
+      if (!cartesian) return;
+      that.modifyPoint.position.setValue(cartesian.clone());
+      if (that.modifyPoint.wz == 0) {
+        that.floatLabel.position.setValue(cartesian.clone());
+        that.mtx = Cesium.Transforms.eastNorthUpToFixedFrame(that.positions[0].clone());
+      }
+      that.positions[that.modifyPoint.wz] = cartesian.clone();
+      that.azimutht = that.getAzimuthtAndCenter(that.mtx, that.positions);
+      that.floatLabel.label.text = "方位角：" + that.azimutht.toFixed(2);
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+    this.modifyHandler.setInputAction(function (evt) {
+      if (!that.modifyPoint) return;
+      that.modifyPoint = null;
+      that.lastPosition = null;
+      that.nextPosition = null;
+      that.forbidDrawWorld(false);
+      if (callback) callback();
+      that.state = "endEdit";
+    }, Cesium.ScreenSpaceEventType.LEFT_UP);
+  }
+
+  endEdit() {
+    let that = this;
+    this.state = "endEdit";;
+    if (this.modifyHandler) {
+      this.modifyHandler.destroy();
+      this.modifyHandler = null;
+    }
+    for (let i = 0; i < that.controlPoints.length; i++) {
+      let point = that.controlPoints[i];
+      if (point) point.show = false;
+    }
   }
 
 

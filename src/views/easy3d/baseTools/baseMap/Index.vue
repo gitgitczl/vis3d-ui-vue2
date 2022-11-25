@@ -1,11 +1,11 @@
 <template>
   <Card
-    :width="342"
     height="auto"
     :title="title"
     @close="close"
     :size="size"
-    titleIcon="icon-cengshu"
+    :position="position"
+    :iconfont="iconfont"
   >
     <ul class="basemap-box basic-tool">
       <li
@@ -19,7 +19,9 @@
       </li>
     </ul>
     <div class="basic-checkbox basemap-checkbox">
-      <el-checkbox v-model="isShowTerrain">显示地形</el-checkbox>
+      <el-checkbox v-model="isShowTerrain" @change="changeTerrain"
+        >显示地形</el-checkbox
+      >
     </div>
   </Card>
 </template>
@@ -35,6 +37,10 @@ export default {
     title: "",
     position: {},
     size: {},
+    iconfont: {
+      type: String,
+      default: "icon-ditufuwu",
+    },
   },
   data() {
     return {
@@ -47,6 +53,7 @@ export default {
     let lys = this.baseMapList.filter((layer) => {
       return layer.show == true;
     });
+
     this.nowShowLayerId = lys[0].id;
   },
   destroyed() {},
@@ -61,7 +68,7 @@ export default {
 
       let tempList = this.baseMapList.map((item) => {
         let temp = {};
-        if (item.type === data.type) {
+        if (item.id === data.id) {
           temp = Object.assign({}, item, { show: true });
         } else {
           temp = Object.assign({}, item, { show: false });
@@ -73,7 +80,7 @@ export default {
       window.mapViewer.baseLayerTool.hideAll();
       window.mapViewer.baseLayerTool.showById(data.id);
     },
-    setTerrainVisible() {
+    changeTerrain() {
       window.mapViewer.setTerrainVisible(this.isShowTerrain);
     },
   },
@@ -96,9 +103,6 @@ export default {
     color: #6d748a;
     cursor: pointer;
     margin-right: 16px;
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
     img {
       width: 90px;
       height: 80px;

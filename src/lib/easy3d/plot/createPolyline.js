@@ -120,12 +120,11 @@ class CreatePolyline extends BasePlot {
         if (callBack) callBack(this.entity);
         for (let i = 0; i < positions.length; i++) {
             let newP = positions[i];
-            if (this.style.clampToGround) {
-                let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
-                ctgc.height = this.viewer.scene.sampleHeight(ctgc);
-                newP = Cesium.Cartographic.toCartesian(ctgc);
-            }
+
             let point = this.createPoint(newP);
+            if (this.style.clampToGround) {
+                point.point.heightReference = 1;
+            }
             point.wz = this.controlPoints.length;
             this.controlPoints.push(point);
         }
@@ -143,7 +142,7 @@ class CreatePolyline extends BasePlot {
         }
 
         this.entity.polyline.material = material;
-        this.entity.polyline.clampToGround = Number(style.clampToGround);
+        this.entity.polyline.clampToGround = Boolean(style.clampToGround);
         if (style.width) this.entity.polyline.width = style.width || 3;
         this.style = Object.assign(this.style, style);
     }
@@ -174,7 +173,8 @@ class CreatePolyline extends BasePlot {
         obj.colorAlpha = color.alpha;
         obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
         obj.width = polyline.width._value;
-        obj.clampToGround = polyline.clampToGround ? polyline.clampToGround.getValue() : false;
+        let clampToGround = polyline.clampToGround ? polyline.clampToGround.getValue() : false;
+        obj.clampToGround = Boolean(clampToGround);
         return obj;
     }
 

@@ -41,7 +41,7 @@
         "clampToGround": {
             "name": "是否贴地",
             "value": true,
-            "type": "radio"
+            "type": "radio-boolean"
         },
         "width": {
             "name": "宽度",
@@ -55,7 +55,7 @@
         },
         "colorAlpha": {
             "name": "透明度",
-            "value": true,
+            "value": 1,
             "type": "slider",
             "min": 0,
             "max": 1,
@@ -73,9 +73,6 @@
                         "value": true,
                         "type": "input-number"
                     }
-                },
-                "common": {
-                    "name": "普通"
                 }
             }
         }
@@ -84,43 +81,44 @@
         "heightReference": {
             "name": "是否贴地",
             "value": true,
-            "type": "radio"
+            "type": "radio-number"
         },
         "fill": {
             "name": "是否填充",
             "value": true,
-            "type": "radio"
+            "type": "radio-boolean"
         },
-        "materail": {
+        "color": {
+            "name": "颜色",
+            "value": "#ffffff",
+            "type": "color-picker"
+        },
+        "colorAlpha": {
+            "name": "透明度",
+            "value": 1,
+            "type": "slider",
+            "min": 0,
+            "max": 1,
+            "step": 0.01
+        },
+        "material": {
             "name": "材质",
             "type": "checkbox",
             "value": "common",
             "options": {
                 "common": {
-                    "name": "普通",
-                    "color": {
-                        "name": "颜色",
-                        "value": "#ffffff",
-                        "type": "color-picker"
-                    },
-                    "colorAlpha": {
-                        "name": "透明度",
-                        "value": 1,
-                        "type": "slider",
-                        "min": 0,
-                        "max": 1,
-                        "step": 0.01
-                    }
+                    "name": "普通"
                 }
             }
         },
         "outline": {
             "name": "轮廓线",
-            "value": "show",
+            "value": "hide",
             "type": "checkbox",
             "options": {
                 "show": {
                     "name": "显示",
+                    "value" : true,
                     "outlineColor": {
                         "name": "轮廓线颜色",
                         "value": "#ffffff",
@@ -143,7 +141,8 @@
                     }
                 },
                 "hide": {
-                    "name": "隐藏"
+                    "name": "隐藏",
+                    "value" : false
                 }
             }
         }
@@ -152,7 +151,7 @@
         "heightReference": {
             "name": "是否贴地",
             "value": true,
-            "type": "radio"
+            "type": "radio-number"
         },
         "color": {
             "name": "颜色",
@@ -161,7 +160,7 @@
         },
         "colorAlpha": {
             "name": "透明度",
-            "value": true,
+            "value": 1,
             "type": "slider",
             "min": 0,
             "max": 1,
@@ -175,17 +174,86 @@
             "maxVal": 99999999
         }
     },
-    "arrow": {
+    "label": {
+        "text" : {
+            "name": "标注名称",
+            "value": "--",
+            "type": "input-text"
+        },
         "heightReference": {
             "name": "是否贴地",
             "value": true,
-            "type": "radio"
+            "type": "radio-number"
         },
-        "fill": {
-            "name": "是否填充",
-            "value": true,
-            "type": "radio"
+        "fillColor": {
+            "name": "颜色",
+            "value": "#FCFEF7",
+            "type": "color-picker"
         },
+        "fillColorAlpha": {
+            "name": "透明度",
+            "type": "slider",
+            "value" : 1,
+            "min": 0,
+            "max": 1,
+            "step": 0.01
+        },
+        "scale": {
+            "name": "缩放比例",
+            "value": 1,
+            "type": "input-number",
+            "minVal": 0,
+            "maxVal": 99999999
+        },
+        "outlineColor": {
+            "name": "轮廓线颜色",
+            "value": "#ffffff",
+            "type": "color-picker"
+        },
+        "outlineWidth": {
+            "name": "轮廓线宽度",
+            "value": 1,
+            "type": "input-number",
+            "minVal": 0,
+            "maxVal": 999
+        },
+        "outlineColorAlpha": {
+            "name": "轮廓线透明度",
+            "value": 1,
+            "type": "slider",
+            "min": 0,
+            "max": 1,
+            "step": 0.01
+        },
+        "showBackground": {
+            "name": "展示背景色",
+            "value": "show",
+            "type": "checkbox",
+            "options": {
+                "show": {
+                    "name": "显示",
+                    "value" : true,
+                    "backgroundColor": {
+                        "name": "背景色",
+                        "value": "#ffffff",
+                        "type": "color-picker"
+                    },
+                    "backgroundColorAlpha": {
+                        "name": "背景色透明度",
+                        "type": "slider",
+                        "min": 0,
+                        "max": 1,
+                        "step": 0.01
+                    }
+                },
+                "hide": {
+                    "name": "隐藏",
+                    "value" : false
+                }
+            }
+        }
+    },
+    "arrow": {
         "color": {
             "name": "颜色",
             "value": "#ffffff",
@@ -204,7 +272,7 @@
         "heightReference": {
             "name": "是否贴地",
             "value": true,
-            "type": "radio"
+            "type": "radio-number"
         },
         "heading": {
             "name": "偏转角",

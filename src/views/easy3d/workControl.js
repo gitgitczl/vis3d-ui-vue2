@@ -1,5 +1,5 @@
 // 模块控制器
-export default  {
+export default {
     components: [],
     toolsState: {},  // 记录模块状态 true 打开 / false 关闭
     componentsArr: [],
@@ -21,9 +21,11 @@ export default  {
                 let module = modules[i];
                 const workName = module.default.name;
                 let attr = toolsObj[workName];
+                if (!attr) continue;
                 attr.module = module.default;
                 that.componentsArr.push(attr);
             }
+
             if (fun) fun(that.componentsArr)
         });
     },
@@ -73,6 +75,9 @@ export default  {
                 break;
             case "monomer":
                 this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
+                break;
+            case "help":
+                this.components.push(import("@/views/easy3d/baseTools/help/Index.vue"));
                 break;
             default: ;
         }

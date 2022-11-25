@@ -4,7 +4,7 @@ import router from './router/index.js';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
-import less from 'less'
+/* import less from 'less' */
 import easy3d from "@/lib/easy3d/easy3d.export.js"
 // 本地加密类库
 /* import "@/lib/easy3d-min/easy3d.css"
@@ -36,7 +36,6 @@ Vue.config.productionTip = false
 Vue.prototype.axios = axios
 
 Vue.use(ElementUI);
-Vue.use(less)
 
 new Vue({
   router,

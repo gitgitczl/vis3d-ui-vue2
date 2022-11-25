@@ -52,18 +52,18 @@ class RoamTool {
         let roam = null;
 
         let roamAttr = {
-            times: opt.times,
+            alltimes: opt.alltimes,
             speed: opt.speed,
             endRoamCallback: this.endRoamFun,
             roamingCallback: this.roamingFun,
             viewType: opt.viewType
         }
-        if (!opt.times && !opt.speed) roamAttr.times = 60; // 不设置速度和时长 默认以60s时长飞完
+        if (!opt.alltimes && !opt.speed) roamAttr.alltimes = 60; // 不设置速度和时长 默认以60s时长飞完
 
         roamAttr = Object.assign(opt, roamAttr);
 
         let that = this;
-        switch (roamType) {
+        switch (Number(roamType)) {
             case 1:
                 // 飞行漫游
                 if (!opt.height) {
@@ -126,7 +126,7 @@ class RoamTool {
         let newPositions = [];
         positions.forEach(position => {
             let ctgc = Cesium.Cartographic.fromCartesian(position.clone());
-            ctgc.height = height;
+            ctgc.height = Number(height);
             let p = Cesium.Cartographic.toCartesian(ctgc);
             newPositions.push(p);
         });

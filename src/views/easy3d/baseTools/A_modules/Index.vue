@@ -4,7 +4,7 @@
     :position="position"
     :size="size"
     height="auto"
-    titleIcon="icon-tushangcehui"
+    iconfont="icon-tushangcehui"
     @close="close"
   >
   </Card>

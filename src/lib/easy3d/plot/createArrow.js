@@ -66,8 +66,11 @@ class CreateArrow extends BasePlot {
 				that.state = "startCreate";
 				return;
 			}
-			if (that.positions.length >= that.maxPointNum) {
+			if (that.positions.length == that.maxPointNum) {
 				that.prompt.update(evt.endPosition, "双击结束");
+			} else if (that.positions.length > that.maxPointNum) {
+				that.end(callBack);
+				return;
 			} else {
 				that.prompt.update(evt.endPosition, "单击新增，不少于" + that.minPointNum + "个点</br>" + "双击结束");
 			}
@@ -83,12 +86,10 @@ class CreateArrow extends BasePlot {
 
 			if (that.positions.length >= 2 && !Cesium.defined(that.polyline)) that.polyline = that.createPolyline();
 
-			if (that.positions.length >= that.minPointNum) {
-				if (!Cesium.defined(that.entity)) {
-					that.entity = that.createPolygon();
-					that.entity.objId = that.objId;
-					that.polyline.show = false;
-				}
+			if (that.positions.length >= that.minPointNum && !Cesium.defined(that.entity)) {
+				that.entity = that.createEntity();
+				that.entity.objId = that.objId;
+				that.polyline.show = false;
 			}
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
@@ -96,41 +97,36 @@ class CreateArrow extends BasePlot {
 			if (!that.entity) return;
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer, [that.entity]);
 			if (!cartesian) return;
-			if (that.positions.length >= that.minPointNum) { //结束
-
-				if (!that.movePush) { // 双击结束
-					that.positions.pop();
-					that.movePush = false;
-					that.viewer.entities.remove(that.controlPoints[that.controlPoints.length - 1]);
-					that.controlPoints.pop();
-				}
-
-				if (that.prompt) {
-					that.prompt.destroy();
-					that.prompt = null;
-				}
-
-				that.state = "endCreate";
-				that.handler.destroy();
-				if (callBack) callBack(that.entity);
-			}
+			if (that.positions.length >= that.minPointNum) that.end(callBack);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+	}
+	end(callBack) {
+		let that = this;
+		if (!that.movePush) { // 双击结束
+			that.positions.pop();
+			that.movePush = false;
+			that.viewer.entities.remove(that.controlPoints[that.controlPoints.length - 1]);
+			that.controlPoints.pop();
+		}
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+		that.handler.destroy();
+		that.state = "endCreate";
+		if (callBack) callBack(that.entity);
 	}
 	createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
 		this.state = "startCreate";
 		let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : cUtil.lnglatsToCartesians(lnglatArr);
 		if (!positions) return;
-		this.entity = this.createPolygon();
+		this.entity = this.createEntity();
 		this.positions = positions;
 		for (let i = 0; i < positions.length; i++) {
 			let newP = positions[i];
-			if (this.style.heightReference) {
-				let ctgc = Cesium.Cartographic.fromCartesian(positions[i]);
-				ctgc.height = this.viewer.scene.sampleHeight(ctgc);
-				newP = Cesium.Cartographic.toCartesian(ctgc);
-			}
 			let point = this.createPoint(newP);
+			point.point.heightReference = this.style.heightReference;
 			point.ctgc = ctgc;
 			point.wz = this.controlPoints.length;
 			this.controlPoints.push(point);
@@ -143,57 +139,128 @@ class CreateArrow extends BasePlot {
 	getStyle() {
 		if (!this.entity) return;
 		let obj = {};
-		let polygon = this.entity.polygon;
-		let color = polygon.material.color.getValue();
+		let entity = undefined;
+		if (this.arrowPlot.onlyLine) {
+			entity = this.entity.polyline;
+		} else {
+			entity = this.entity.polygon;
+			obj.fill = entity.fill ? entity.fill.getValue() : false;
+		}
+		let color = entity.material.color.getValue();
 		obj.colorAlpha = color.alpha;
 		obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
-		obj.fill = polygon.fill ? polygon.fill.getValue() : false;
-		if (polygon.heightReference) {
-			let heightReference = polygon.heightReference.getValue();
-			obj.heightReference = Boolean(heightReference);
+
+		if (this.arrowPlot.onlyLine) {
+			let heightReference = entity.clampToGround.getValue();
+			obj.heightReference = Number(heightReference);
+		} else {
+			let heightReference = entity.heightReference.getValue();
+			obj.heightReference = Number(heightReference);
 		}
-
 		return obj;
-
 	}
 	// 设置相关样式
 	setStyle(style) {
 		if (!style) return;
-		// 由于官方api中的outline限制太多 此处outline为重新构建的polyline
-		if (style.heightReference != undefined) this.entity.polygon.heightReference = Number(style.heightReference);
 		let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
 		let material = color.withAlpha(style.colorAlpha || 1);
-		this.entity.polygon.material = material;
-		if (style.fill != undefined) this.entity.polygon.fill = style.fill;
+		if (this.arrowPlot.onlyLine) {
+			this.entity.polyline.material = material;
+			this.entity.polyline.clampToGround = Boolean(style.heightReference);
+		} else if (this.arrowPlot.hasLine) {
+			this.entity.polyline.material = material;
+			this.entity.polygon.material = material;
+			this.entity.polyline.clampToGround = Boolean(style.heightReference);
+			this.entity.polygon.heightReference = Number(style.heightReference);
+		} else {
+			if (style.fill != undefined) this.entity.polygon.fill = style.fill;
+			this.entity.polygon.material = material;
+			this.entity.polygon.heightReference = Number(style.heightReference);
+		}
 		this.style = Object.assign(this.style, style);
 	}
 
 	// 构建态势标绘面
-	createPolygon() {
+	createEntity() {
 		let that = this;
 		this.style.color = this.style.color || Cesium.Color.WHITE;
 		this.style.outlineColor = this.style.outlineColor || Cesium.Color.BLACK;
-		let polygonObj = {
-			polygon: {
-				hierarchy: new Cesium.CallbackProperty(function () {
-					let newPosition = that.arrowPlot.startCompute(that.positions);
-					if (that.arrowPlot.spliceWZ != undefined) {
-						newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
-					}
-					return new Cesium.PolygonHierarchy(newPosition)
-				}, false),
-				heightReference: Number(this.style.heightReference),
-				show: true,
-				fill: this.style.fill || true,
-				material: this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1)
+		let color = this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1);
+		let entityObj = undefined;
+		if (that.arrowPlot.hasLine) { // 线面混合
+			entityObj = {
+				polygon: {
+					hierarchy: new Cesium.CallbackProperty(function () {
+						var newPosition = that.arrowPlot.startCompute(that.positions);
+						if (that.arrowPlot.spliceWZ !== null) {
+							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
+						}
+						return new Cesium.PolygonHierarchy(newPosition)
+					}, false),
+					heightReference: this.style.heightReference == undefined ? 0 : 1,
+					material: color
+				},
+				polyline: {
+					positions: new Cesium.CallbackProperty(function () {
+						var newPosition = that.arrowPlot.startCompute(that.positions);
+						if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
+							var arr = [];
+							for (var i = 0; i < that.arrowPlot.lineWZ.length; i++) {
+								arr.push(newPosition[that.arrowPlot.lineWZ[i] - 1]);
+							}
+							return arr;
+						} else {
+							return newPosition;
+						}
+					}, false),
+					material: color,
+					clampToGround: this.style.heightReference == undefined ? false : true,
+					width: 3
+				}
 			}
+		} else if (that.arrowPlot.onlyLine) { // 只有线
+			entityObj = {
+				polyline: {
+					positions: new Cesium.CallbackProperty(function () {
+						var newPosition = that.arrowPlot.startCompute(that.positions);
+						if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
+							var arr = [];
+							for (var i = 0; i < that.arrowPlot.lineWZ.length; i++) {
+								arr.push(newPosition[that.arrowPlot.lineWZ[i] - 1]);
+							}
+							return arr;
+						} else {
+							return newPosition;
+						}
+					}, false),
+					material: color,
+					clampToGround: this.style.heightReference == undefined ? false : true,
+					width: 3
+				}
+			}
+		} else { // 只有面
+			entityObj = {
+				polygon: {
+					hierarchy: new Cesium.CallbackProperty(function () {
+						let newPosition = that.arrowPlot.startCompute(that.positions);
+						if (that.arrowPlot.spliceWZ != undefined) {
+							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
+						}
+						return new Cesium.PolygonHierarchy(newPosition)
+					}, false),
+					heightReference: Number(this.style.heightReference),
+					show: true,
+					fill: this.style.fill || true,
+					material: color
+				}
+			}
+			/* if (!this.style.heightReference) {
+					entityObj.polygon.height = 0; // 不贴地 必设
+					entityObj.polygon.perPositionHeight = true; // 启用点的真实高度
+				} */
 		}
 
-		if (!this.style.heightReference) {
-			polygonObj.polygon.height = 0; // 不贴地 必设
-			polygonObj.polygon.perPositionHeight = true; // 启用点的真实高度
-		}
-		return this.viewer.entities.add(polygonObj);
+		return this.viewer.entities.add(entityObj);
 	}
 	createPolyline() {
 		let that = this;
@@ -246,7 +313,7 @@ class CreateArrow extends BasePlot {
 		this.forbidDrawWorld(false);
 	}
 
-	
+
 }
 
 

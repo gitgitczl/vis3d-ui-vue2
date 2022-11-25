@@ -175,7 +175,6 @@ MeasureSlopePolygon.prototype = {
 				var radians_north = Math.acos(arc);
 				var dg = Cesium.Math.toDegrees(radians_north);
 				dg = dg > 90 ? (180 - dg) : dg;
-				console.log("坡度：" + dg);
 				var color = that.getColor(dg);
 				var instance = new Cesium.GeometryInstance({
 					geometry: Cesium.PolygonGeometry.fromPositions({

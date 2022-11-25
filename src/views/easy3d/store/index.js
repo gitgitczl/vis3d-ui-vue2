@@ -33,6 +33,7 @@ const easy3dStore = {
     },
 
     setNowPlotStyleAttr: (state, nowPlotStyleAttr) => {
+      
       state.nowPlotStyleAttr = nowPlotStyleAttr
     },
 
