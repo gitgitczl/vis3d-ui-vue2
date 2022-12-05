@@ -307,6 +307,16 @@ window.mapConfig = {
             z: 10
           }
         },
+
+        {
+          name: "党政大楼",
+          type: "3dtiles",
+          url: "http://localhost/dzdl/tileset.json",
+          show: false,
+          maximumScreenSpaceError: 16,
+          maximumMemoryUsage: 1024
+        }
+
       ],
     },
   ],
