@@ -7,7 +7,7 @@
     :position="position"
   >
     <div class="analysis-tomain" @click="tomain" v-show="analysisName !== ''">
-      <a><<</a> <span>{{ analysisName }}</span>
+      <span>{{ analysisName }}</span>
     </div>
     <ul class="analysis-box basic-tool" v-show="analysisName == ''">
       <li
@@ -202,14 +202,14 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #6d748a;
     cursor: pointer;
     margin-right: 16px;
     &:nth-child(3n) {
       margin-right: 0;
     }
     i {
-      font-size: 20px;
+      font-size: 26px;
+      margin-bottom: 10px;
     }
     label {
       cursor: pointer;
