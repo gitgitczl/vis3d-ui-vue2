@@ -10,7 +10,7 @@
 
     var fsSource = '';
 
-    if (isPointLight) {
+    if (isPointLight) { 
         fsSource += '#define USE_CUBE_MAP_SHADOW\n';
     } else if (usesDepthTexture) {
         fsSource += '#define USE_SHADOW_DEPTH_TEXTURE\n';

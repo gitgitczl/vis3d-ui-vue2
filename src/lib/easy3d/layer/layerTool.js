@@ -72,7 +72,7 @@ class LayerTool {
 
         opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         opt.alpha = opt.alpha == undefined ? 1 : opt.alpha;
-        layerObj.attr = opt; // 绑定属性文件
+        layerObj.attr = opt; // 绑定属性文件 与mapConfig.js进行关联
         return layerObj;
     }
     getLayerObjById(id) {

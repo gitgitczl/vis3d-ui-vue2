@@ -161,6 +161,8 @@ export default {
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.objId);
         window.workControl.openToolByName("plotStyle");
+
+        
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
@@ -249,7 +251,7 @@ export default {
         reader.onloadend = function (e) {
           let strjson = this.result;
           strjson = JSON.parse(strjson);
-          debugger
+          debugger;
           window.plotDrawTool.createByGeojson(strjson);
         };
       }

@@ -97,6 +97,9 @@ class Prompt {
         this.containerH = this.viewer.container.offsetHeight;
         this.containerLeft = this.viewer.container.offsetLeft;
         this.containerTop = this.viewer.container.offsetTop;
+
+        this.contentW = Math.ceil(Number(this.promptDom.offsetWidth)); // 宽度
+        this.contentH = this.promptDom.offsetHeight; // 高度
     }
     // 销毁
     destroy() {
@@ -148,6 +151,8 @@ class Prompt {
             this.position = px.clone();
             px = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, px);
         }
+        this.contentW = Math.ceil(Number(this.promptDom.offsetWidth)); // 宽度
+        this.contentH = this.promptDom.offsetHeight; // 高度
         if (px) this.setByPX(px);
         if (html) this.setContent(html);
     }
@@ -207,8 +212,8 @@ class Prompt {
                 this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0))) + "px";
                 this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0))) + "px";
             } else {
-                this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(contentW) / 2) + "px";
-                this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(contentH)) + "px";
+                this.promptDom.style.left = ((Number(opt.x) + Number(this.opt.offset.x || 0)) - Number(this.contentW) / 2) + "px";
+                this.promptDom.style.top = ((Number(opt.y) + Number(this.opt.offset.y || 0)) - Number(this.contentH)) + "px";
             }
         }
     }

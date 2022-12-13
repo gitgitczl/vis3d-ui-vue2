@@ -10,13 +10,12 @@ class ZoomTool {
     }
     // 向前移动
     forward() {
-
         let amount;
         if (this.backwardAmount) {
             amount = this.backwardAmount;
             this.backwardAmount = null;
         } else {
-            amount = this.computeLength() || 10000;
+            amount = this.computeLength() || 0;
             amount = amount * this.step;
         }
         this.viewer.camera.moveForward(amount);
@@ -39,7 +38,15 @@ class ZoomTool {
     computeLength() {
         this.position = this.viewer.camera.position;
         const lnglat = Cesium.Cartographic.fromCartesian(this.position);
-        const height = lnglat.height;
+        let height = lnglat.height;
+        // 求出相机和地形的高度差
+        let cdir = Cesium.Cartesian3.negate(this.position.clone(), new Cesium.Cartesian3());
+        Cesium.Cartesian3.normalize(cdir.clone(), cdir);
+        let ray = new Cesium.Ray(this.position.clone(), cdir.clone());
+        let intersec = this.viewer.scene.globe.pick(ray, this.viewer.scene);
+        if (!intersec) return undefined;
+        let cctgc = Cesium.Cartographic.fromCartesian(intersec);
+        height = lnglat.height - cctgc.height;
 
         let dir = this.viewer.camera.direction;
         dir = Cesium.Cartesian3.normalize(dir, new Cesium.Cartesian3())

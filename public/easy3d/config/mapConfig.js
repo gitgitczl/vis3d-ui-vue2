@@ -1,16 +1,16 @@
 window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
-    cameraView: {
-      "x": 109.7884118470029,
-      "y": 39.590384952017764,
-      "z": 1565.7899788867958,
-      "heading": 331.1978494043747,
-      "pitch": -8.45296669256617,
-      "roll": 0.00043210090111595544,
-      duration: 0,
-    },
-    errorRender: true, // 是否开启崩溃刷新
+    cameraView:{
+      "x" : 117.11652300702349,
+      "y" : 31.822531554698113,
+      "z" : 249.22424831865297,
+      "heading" : 92.73801048659865,
+      "pitch" : -78.63126631978243,
+      "roll" : 359.9999069885447,
+      "duration" : 0
+      },
+    errorRender: false, // 是否开启崩溃刷新
     debugShowFramesPerSecond : false, // 是否显示帧数
     worldAnimate: false,
     bottomLnglatTool: true, // 经纬度及相机位置提示
@@ -306,6 +306,26 @@ window.mapConfig = {
           center: {
             z: 10
           }
+        },
+
+        {
+          name: "中国声谷",
+          type: "3dtiles",
+          url: "http://localhost/zhantingData/3dtile/tileset.json",
+          show: false,
+          maximumScreenSpaceError: 16,
+          maximumMemoryUsage: 1024,
+          center: {
+            z: -2
+          }
+        },
+        {
+          name: "变电站",
+          type: "3dtiles",
+          url: "http://192.168.1.232:9999/TorGlobe_new_data/bdz/tileset.json",
+          show: false,
+          maximumScreenSpaceError: 16,
+          maximumMemoryUsage: 1024
         },
       ],
     },

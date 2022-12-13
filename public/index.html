@@ -10,13 +10,27 @@
     三维基础框架
   </title>
   <link rel="stylesheet" href="easy3d/font/iconfont.css">
+  <style>
+    #trailer {
+      position: absolute;
+      top: 120px;
+      left: 20px;
+      width: 540px;
+      height: 400px;
+    }
+  </style>
 </head>
 <!-- 引入地图相关配置文件 -->
 <script src="easy3d/config/mapConfig.js"></script>
 <script src="easy3d/config/workConfig.js"></script>
 
 <body>
-  <div id="app"></div>
+  <div id="app">
+  </div>
+
+  <video id="trailer" style="display: none;" muted="muted" autoplay="autoplay" loop="loop" crossorigin="" controls="">
+    <source src="./video/shenggu.mp4" type="video/mp4">
+  </video>
 </body>
 
 </html>
