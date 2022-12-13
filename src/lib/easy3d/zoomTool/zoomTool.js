@@ -28,7 +28,7 @@ class ZoomTool {
             amount = this.forwardAmount;
             this.forwardAmount = null;
         } else {
-            amount = this.computeLength() || 10000;
+            amount = this.computeLength() || 0;
             amount = amount * this.step;
         }
         this.viewer.camera.moveBackward(amount);
