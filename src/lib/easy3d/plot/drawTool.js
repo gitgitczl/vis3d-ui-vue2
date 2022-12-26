@@ -61,8 +61,11 @@ class DrawTool {
     } else {
     }
   }
-  canEdit(isOpen) {
-    this.canEdit = isOpen;
+  openEdit() {
+    this.canEdit = true;
+  }
+  closeEdit() {
+    this.canEdit = false;
   }
   start(opt) {
     if (!opt || !opt.type) {

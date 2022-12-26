@@ -3,13 +3,12 @@ import BasePlot from "./basePlot";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 class CreatePolyline extends BasePlot {
-    constructor(viewer, opt) {
-        super(viewer, opt);
-        opt = opt || {};
-        super(viewer, opt);
+    constructor(viewer, style) {
+        super(viewer, style);
+        style = style || {};
         this.movePush = false;
         this.type = "polyline";
-        this.maxPointNum = opt.maxPointNum || Number.MAX_VALUE; // 最多点数
+        this.maxPointNum = style.maxPointNum || Number.MAX_VALUE; // 最多点数
     }
 
     start(callBack) {

@@ -1,10 +1,9 @@
 // 所有标绘类的父类
 import cUtil from "../cUtil";
 class BasePlot {
-    constructor(viewer, opt) {
+    constructor(viewer, style) {
         this.viewer = viewer;
-        opt = opt || {};
-        this.style = opt || {};
+        this.style = style || {};
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
