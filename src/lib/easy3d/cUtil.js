@@ -1,7 +1,7 @@
 import * as turf from '@turf/turf';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 /**
- * Cesium世界坐标转经纬度
+ * 世界坐标转经纬度
  * @param { Cartesian3 } cartesian 世界坐标
  * @param { Viewer } viewer 当前viewer对象
  * @returns { Array } 经纬度坐标
@@ -52,7 +52,7 @@ function lnglatsToCartesians(lnglats) {
 /**
  * 视角定位方法
  * @param {Object} opt 定位参数
- * @param {Cartesian3} opt.center 当前定位中心点
+ * @param {Cartesian3|Array} opt.center 当前定位中心点
  * @param {Number} opt.heading 当前定位偏转角度 默认为0 
  * @param {Number} opt.pitch 当前定位仰俯角 默认为-60
  * @param {Number} opt.range 当前定位距离 默认为1000米

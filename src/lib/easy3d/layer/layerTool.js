@@ -8,7 +8,15 @@ import TMSLayer from "./tmsLayer.js";
 import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
+/**
+ * 图层控制类
+ * @class
+ */
 class LayerTool {
+    /**
+     * @param {Viewer} viewer 当前viewer对象 
+     * @param {Object} [opt] 其他参数
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this._layerObjs = [];
@@ -16,6 +24,15 @@ class LayerTool {
     get layers() {
         return this._layerObjs;
     }
+
+    /**
+     * 新增图层
+     * @param {Object} opt 图层属性
+     * @param {String | Number} [opt.id] 图层id，如果不传入，则自动生成
+     * @param {String} opt.type 图层的类别
+     * @param {String} opt.alpha 图层的透明度
+     * @returns {Object} 图层对象
+     */
     add(opt) {
         let layerObj = null;
         opt = JSON.parse(JSON.stringify(opt || {}));
@@ -75,6 +92,12 @@ class LayerTool {
         layerObj.attr = opt; // 绑定属性文件 与mapConfig.js进行关联
         return layerObj;
     }
+
+    /**
+     * 根据id获取当前图层对象
+     * @param {String | Number} id 
+     * @returns {Object} layerObj为图层对象，index为图层对象在数组中位置
+     */
     getLayerObjById(id) {
         if (!id) return;
         let obj = {};
@@ -108,10 +131,19 @@ class LayerTool {
         }
     } */
 
+    /**
+     * 移除图层对象
+     * @param {Object} layerObj 图层对象
+     */
     removeLayerObj(layerObj) {
         if (!layerObj) return;
         this.removeLayerObjById(layerObj.id);
     }
+
+    /**
+     * 根据id移除图层对象
+     * @param {String | Number} id 图层对象id
+    */
     removeLayerObjById(id) {
         if (!id) return;
         let lyropt = this.getLayerObjById(id);
@@ -120,17 +152,30 @@ class LayerTool {
             this._layerObjs.splice(lyropt.index, 1);
         }
     }
+
+    /**
+     * 移除所有图层对象
+     */
     removeAll() {
         for (let i = 0; i < this._layerObjs.length; i++) {
             this._layerObjs[i].remove();
         }
         this._layerObjs = [];
     }
+
+    /**
+     * 销毁
+     */
     destroy() {
         this.removeAll();
         this._layerObjs = [];
         delete this._layerObjs
     }
+
+    /**
+     * 根据id隐藏图层
+     * @param {String | Number} id 图层对象id
+     */
     hideById(id) {
         if (!id) return;
         let layerOpt = this.getLayerObjById(id);
@@ -139,6 +184,11 @@ class LayerTool {
             layerOpt.layerObj.attr.show = false;
         }
     }
+
+    /**
+     * 根据id显示图层
+     * @param {String | Number} id 图层对象id
+     */
     showById(id) {
         if (!id) return;
         let layerOpt = this.getLayerObjById(id);
@@ -148,6 +198,11 @@ class LayerTool {
         }
     }
 
+    /**
+     * 根据id设置图层显示隐藏
+     * @param {String | Number} id 图层对象id
+     * @param {Boolean} isShow 是否显示 
+     */
     setVisible(id, isShow) {
         if (!id) return;
         if (isShow) {
@@ -156,20 +211,31 @@ class LayerTool {
             this.hideById(id);
         }
     }
-    // 缩放到某个
+    
+    /**
+     * 根据图层对象id，缩放到某个图层
+     * @param {String | Number} id 图层对象id
+    */
     zoomTo(id) {
         if (!id) return;
         let layobj = this.getLayerObjById(id) || {};
         if (layobj && layobj.layerObj)
             layobj.layerObj.zoomTo();
     }
+
+    /**
+     * 隐藏所有图层
+    */
     hideAll() {
         for (let i = 0; i < this._layerObjs.length; i++) {
             this._layerObjs[i].hide();
         }
     }
 
-    // 获取当前所有显示的图层
+    /**
+     * 获取当前所有显示的图层
+     * @returns {Array} 图层对象数组
+    */
     getAllshow() {
         let arr = [];
         for (let i = 0; i < this._layerObjs.length; i++) {
@@ -179,6 +245,11 @@ class LayerTool {
         }
         return arr;
     }
+
+    /**
+     * 获取当前所有隐藏的图层
+     * @returns {Array} 图层对象数组
+    */
     getAllhide() {
         let arr = [];
         for (let i = 0; i < this._layerObjs.length; i++) {
@@ -188,7 +259,13 @@ class LayerTool {
         }
         return arr;
     }
-    // 根据字段来进行查询
+
+    /**
+     * 根据图层属性字段来进行查询
+     * @param {String} field 字段名称
+     * @param {String} val 字段值
+     * @returns {Array} 符合查询条件的图层对象数组
+    */
     getLayerObjByField(field, val) {
         if (!field) return;
         let returnData = [];

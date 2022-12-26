@@ -2,7 +2,7 @@
     "source": {
         "include": [
             "./src/lib/easy3d/cUtil.js",
-            "./src/lib/easy3d/cTool.js"
+            "./src/lib/easy3d/layer/layerTool.js"
         ],
         "includePattern": ".+\\.js(doc|x)?$",
         "exclude": ["./apidoc/"]
