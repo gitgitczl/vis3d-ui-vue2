@@ -1,0 +1,21 @@
+{
+    "source": {
+        "include": [
+            "./src/lib/easy3d/cUtil.js",
+            "./src/lib/easy3d/cTool.js"
+        ],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "exclude": ["./apidoc/"]
+    },
+    "plugins": [],
+    "opts": {
+        "template": "templates/default",
+        "encoding": "utf8",
+        "destination": "./apidoc/",
+        "recurse": true
+    },
+    "templates": {
+        "cleverLinks": true,
+        "monospaceLinks": true
+    }
+}

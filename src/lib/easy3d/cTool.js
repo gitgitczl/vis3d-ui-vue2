@@ -1,5 +1,10 @@
 /*Cesium无关的常用小工具 */
 // 图片下载 实现截屏
+/**
+ * 以图片方式下载文件
+ * @param {*} canvas 截屏的canvas对象
+ * @param {*} name 下载文件名称
+ */
 function downloadCanvasIamge(canvas, name) {
     // 通过选择器获取canvas元素
     var url = canvas.toDataURL('image/png')

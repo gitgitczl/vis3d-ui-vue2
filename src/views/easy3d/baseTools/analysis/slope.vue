@@ -29,10 +29,10 @@ export default {
         let newps = that.lerpPositions(positions);
         newps.slopPositions.forEach((p, index) => {
           let obj = cUtil.getSlopePosition(
-            window.viewer,
             p.clone(),
             newps.radius,
-            30
+            30,
+            window.viewer
           );
           let color = that.getColorBySlop(obj.slope);
           let line = that.createArrow([obj.startP, obj.endP], color);

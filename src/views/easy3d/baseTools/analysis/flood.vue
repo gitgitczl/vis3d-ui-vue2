@@ -77,7 +77,11 @@ export default {
     window.floodDrawTool.on("endEdit", function (entObj, ent) {
       // 编辑完成后
       polygonPositions = entObj.getPositions();
-      let uniformData = cUtil.computeUniforms(polygonPositions);
+      let uniformData = cUtil.computeUniforms(
+        polygonPositions,
+        false,
+        window.viewer
+      );
       that.minHeight = Number(uniformData.minHeight).toFixed(2);
       that.maxHeight = Number(uniformData.maxHeight).toFixed(2);
     });
@@ -150,7 +154,7 @@ export default {
           perPositionHeight: true,
           extrudedHeight: new Cesium.CallbackProperty(function () {
             return that.nowHeight;
-          }, false)
+          }, false),
         },
       });
     },

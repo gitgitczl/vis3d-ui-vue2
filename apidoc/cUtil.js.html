@@ -1,4 +1,32 @@
-import * as turf from '@turf/turf';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cUtil.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cUtil.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import * as turf from '@turf/turf';
 import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 /**
  * Cesium世界坐标转经纬度
@@ -24,10 +52,10 @@ function cartesianToLnglat(cartesian, viewer) {
  * @returns { Array } 经纬度坐标数组
  */
 function cartesiansToLnglats(cartesians, viewer) {
-    if (!cartesians || cartesians.length < 1) return;
+    if (!cartesians || cartesians.length &lt; 1) return;
     viewer = viewer || window.viewer;
     var arr = [];
-    for (var i = 0; i < cartesians.length; i++) {
+    for (var i = 0; i &lt; cartesians.length; i++) {
         arr.push(cartesianToLnglat(cartesians[i], viewer));
     }
     return arr;
@@ -40,9 +68,9 @@ function cartesiansToLnglats(cartesians, viewer) {
  * @example cUtil.lnglatsToCartesians([[117,40],[118.41]])
  */
 function lnglatsToCartesians(lnglats) {
-    if (!lnglats || lnglats.length < 1) return;
+    if (!lnglats || lnglats.length &lt; 1) return;
     var arr = [];
-    for (var i = 0; i < lnglats.length; i++) {
+    for (var i = 0; i &lt; lnglats.length; i++) {
         var c3 = Cesium.Cartesian3.fromDegrees(lnglats[i][0], lnglats[i][1], lnglats[i][2] || 0);
         arr.push(c3);
     }
@@ -238,7 +266,7 @@ function lerpPositions(positions, granularity) {
     });
     if (!surfacePositions) return;
     var arr = [];
-    for (var i = 0; i < surfacePositions.length; i += 3) {
+    for (var i = 0; i &lt; surfacePositions.length; i += 3) {
         var cartesian = Cesium.Cartesian3.unpack(surfacePositions, i); //分组
         arr.push(cartesian);
     }
@@ -281,7 +309,7 @@ function getCirclePoints(center, aimP, angle) {
     let dis = Cesium.Cartesian3.distance(center.clone(), aimP.clone());
     let circlePositions = [];
     angle = angle || 60;
-    for (let i = 0; i < 360; i += angle) {
+    for (let i = 0; i &lt; 360; i += angle) {
         // 旋转矩阵
         var hpr = new Cesium.HeadingPitchRoll(
             Cesium.Math.toRadians(i),
@@ -319,7 +347,7 @@ function computeAngle(p1, p2) {
     var bearing = Math.atan2(y, x);
 
     bearing = bearing * 180.0 / Math.PI;
-    if (bearing < -180) {
+    if (bearing &lt; -180) {
         bearing = bearing + 360;
     }
     return bearing;
@@ -334,7 +362,7 @@ function computeAngle(p1, p2) {
 function updatePositionsHeight(pois, h) {
     if (!pois || h == undefined) return;
     var newPois = [];
-    for (var i = 0; i < pois.length; i++) {
+    for (var i = 0; i &lt; pois.length; i++) {
         var c3 = pois[i];
         var ct = cartesianToLnglat(c3);
         var newC3 = Cesium.Cartesian3.fromDegrees(ct[0], ct[1], h);
@@ -366,7 +394,7 @@ function computeUniforms(positions, isOn3dtiles, viewer) {
     data.uniformArr = [];
     data.minHeight = Number.MAX_VALUE;
     data.maxHeight = Number.MIN_VALUE;
-    for (var index = 0; index < indices.length; index = index + 3) {
+    for (var index = 0; index &lt; indices.length; index = index + 3) {
         var obj = {};
         var first = indices[index];
         var second = indices[index + 1];
@@ -402,7 +430,7 @@ function computeUniforms(positions, isOn3dtiles, viewer) {
         if (data.minHeight > obj.height) {
             data.minHeight = obj.height;
         }
-        if (data.maxHeight < obj.height) {
+        if (data.maxHeight &lt; obj.height) {
             data.maxHeight = obj.height;
         }
         obj.area = computeAreaOfTriangle(cartesian1, cartesian2, cartesian3);
@@ -485,7 +513,7 @@ function getSlopePosition(center, radius, angle, viewer) {
     let minH = Number.MAX_VALUE;
     let centerH = getTerrainHeight(center.clone());
     let step = -1;
-    for (let i = 0; i < positions.length; i++) {
+    for (let i = 0; i &lt; positions.length; i++) {
         let h = getTerrainHeight(positions[i]);
         if (minH > h) {
             minH = h;
@@ -494,7 +522,7 @@ function getSlopePosition(center, radius, angle, viewer) {
     }
     let startP;
     let endP;
-    if (minH < centerH) {
+    if (minH &lt; centerH) {
         startP = center.clone();
         endP = positions[step].clone();
     } else {
@@ -504,8 +532,8 @@ function getSlopePosition(center, radius, angle, viewer) {
     }
     let startCgtc = Cesium.Cartographic.fromCartesian(startP);
     let endCgtc = Cesium.Cartographic.fromCartesian(endP);
-    startP = Cesium.Cartesian3.fromRadians(startCgtc.longitude, startCgtc.latitude, minH < centerH ? centerH : minH);
-    endP = Cesium.Cartesian3.fromRadians(endCgtc.longitude, endCgtc.latitude, minH < centerH ? minH : centerH);
+    startP = Cesium.Cartesian3.fromRadians(startCgtc.longitude, startCgtc.latitude, minH &lt; centerH ? centerH : minH);
+    endP = Cesium.Cartesian3.fromRadians(endCgtc.longitude, endCgtc.latitude, minH &lt; centerH ? minH : centerH);
     let dis = Cesium.Cartesian3.distance(startP, endP);
     let height = Math.abs(centerH - minH);
     let sinAngle = height / dis;
@@ -561,3 +589,26 @@ export default {
     computeAngle: computeAngle
 }
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#cartesianToLnglat">cartesianToLnglat</a></li><li><a href="global.html#cartesiansToLnglats">cartesiansToLnglats</a></li><li><a href="global.html#computeAngle">computeAngle</a></li><li><a href="global.html#computeArea">computeArea</a></li><li><a href="global.html#computeAreaOfTriangle">computeAreaOfTriangle</a></li><li><a href="global.html#computeUniforms">computeUniforms</a></li><li><a href="global.html#downloadCanvasIamge">downloadCanvasIamge</a></li><li><a href="global.html#flyTo">flyTo</a></li><li><a href="global.html#get3dtilesHeight">get3dtilesHeight</a></li><li><a href="global.html#getCameraView">getCameraView</a></li><li><a href="global.html#getCirclePoints">getCirclePoints</a></li><li><a href="global.html#getIntersectPosition">getIntersectPosition</a></li><li><a href="global.html#getSlopePosition">getSlopePosition</a></li><li><a href="global.html#getTerrainHeight">getTerrainHeight</a></li><li><a href="global.html#lerpPositions">lerpPositions</a></li><li><a href="global.html#lnglatsToCartesians">lnglatsToCartesians</a></li><li><a href="global.html#oreatationToHpr">oreatationToHpr</a></li><li><a href="global.html#setCameraView">setCameraView</a></li><li><a href="global.html#updatePositionsHeight">updatePositionsHeight</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Dec 26 2022 17:26:19 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

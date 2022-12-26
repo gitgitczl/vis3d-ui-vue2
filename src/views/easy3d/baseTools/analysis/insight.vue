@@ -87,11 +87,11 @@ export default {
                 cc.height = (cc.height || 0) + 1;
                 let position = Cesium.Cartographic.toCartesian(cc);
                 let point = that.easy3d.cUtil.getIntersectPosition(
-                  window.viewer,
                   {
                     startPoint: center,
                     endPoint: position,
-                  }
+                  },
+                  window.viewer
                 );
                 that.createLine(center, position, point);
               }
@@ -120,10 +120,13 @@ export default {
           let ctgc_aim = Cesium.Cartographic.fromCartesian(positions[1]);
           ctgc_aim.height = ctgc_aim.height + 1;
           let aim = Cesium.Cartographic.toCartesian(ctgc_aim);
-          let point = that.easy3d.cUtil.getIntersectPosition(window.viewer, {
-            startPoint: center,
-            endPoint: aim,
-          });
+          let point = that.easy3d.cUtil.getIntersectPosition(
+            {
+              startPoint: center,
+              endPoint: aim,
+            },
+            window.viewer
+          );
           that.createLine(center, aim, point);
         },
       });

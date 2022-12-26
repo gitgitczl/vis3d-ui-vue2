@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --open --host 0.0.0.0",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "jsdoc" : "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@turf/turf": "^6.5.0",

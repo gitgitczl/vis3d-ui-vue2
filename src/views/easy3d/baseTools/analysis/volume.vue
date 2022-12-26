@@ -137,7 +137,11 @@ export default {
       this.fillTotalV = 0;
     },
     flfxStartCompute(h) {
-      let uniformData = cUtil.computeUniforms(polygonPositions);
+      let uniformData = cUtil.computeUniforms(
+        polygonPositions,
+        false,
+        window.viewer
+      );
       let minh = uniformData.minHeight;
       let maxh = uniformData.maxHeight;
       if (h) {
@@ -150,13 +154,13 @@ export default {
       }
 
       this.createWall(polygonPositions, minh, maxh);
-      this.digTotalV = this.digV(uniformData,minh);
-      this.fillTotalV = this.fillV(uniformData,maxh);
+      this.digTotalV = this.digV(uniformData, minh);
+      this.fillTotalV = this.fillV(uniformData, maxh);
       // 构建标准面
       this.createBZM(polygonPositions, h || uniformData.minHeight);
     },
     // 挖方体积
-    digV(data,minh) {
+    digV(data, minh) {
       if (!data) return;
       var uniforms = data.uniformArr;
       if (!uniforms || uniforms.length == 0 || !minh) return;
@@ -172,7 +176,7 @@ export default {
       return totalV;
     },
     // 填方体积
-    fillV(data,maxh) {
+    fillV(data, maxh) {
       if (!data) return;
       var uniforms = data.uniformArr;
       if (!uniforms || uniforms.length == 0 || !maxh) return;
