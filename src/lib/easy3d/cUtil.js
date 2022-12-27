@@ -9,8 +9,8 @@ import * as turf from '@turf/turf';
 let cUtil = {};
 /**
  * 世界坐标转经纬度
- * @param { Cartesian3 } cartesian 世界坐标
- * @param { Viewer } viewer 当前viewer对象
+ * @param {Cesium.Cartesian3 } cartesian 世界坐标
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns { Array } 经纬度坐标
  */
 cUtil.cartesianToLnglat = function (cartesian, viewer) {
@@ -25,8 +25,8 @@ cUtil.cartesianToLnglat = function (cartesian, viewer) {
 
 /**
  * 世界坐标数组转经纬度数组
- * @param {Cartesian3[]} cartesians 世界坐标数组
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Cartesian3[]} cartesians 世界坐标数组
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns { Array } 经纬度坐标数组
  */
 cUtil.cartesiansToLnglats = function (cartesians, viewer) {
@@ -42,7 +42,7 @@ cUtil.cartesiansToLnglats = function (cartesians, viewer) {
 /**
  * 经纬度坐标数组转世界坐标数组
  * @param {Array[]} lnglats 经纬度坐标数组
- * @returns {Cartesian3[]} cartesians 世界坐标数组
+ * @returns {Cesium.Cartesian3[]} cartesians 世界坐标数组
  * @example cUtil.lnglatsToCartesians([[117,40],[118.41]])
  */
 cUtil.lnglatsToCartesians = function (lnglats) {
@@ -62,7 +62,7 @@ cUtil.lnglatsToCartesians = function (lnglats) {
  * @param {Number} opt.heading 当前定位偏转角度 默认为0 
  * @param {Number} opt.pitch 当前定位仰俯角 默认为-60
  * @param {Number} opt.range 当前定位距离 默认为1000米
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  */
 cUtil.flyTo = function (opt, viewer) {
     if (!viewer) return;
@@ -95,7 +95,7 @@ cUtil.flyTo = function (opt, viewer) {
 
 /**
  * 获取当相机姿态
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns {Object} cameraView 当前相机姿态
  */
 cUtil.getCameraView = function (viewer) {
@@ -122,7 +122,7 @@ cUtil.getCameraView = function (viewer) {
  * 设置相机姿态 一般和getCameraView搭配使用
  * @param {Object} cameraView 相机姿态参数
  * @param {Number} cameraView.duration 定位所需时间
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  */
 cUtil.setCameraView = function (obj, viewer) {
     viewer = viewer || window.viewer;
@@ -142,8 +142,8 @@ cUtil.setCameraView = function (obj, viewer) {
 
 /**
  * 由四元数计算偏转角（heading）、仰俯角（pitch）、翻滚角（roll）
- * @param {Cartesian3} position 中心点坐标
- * @param {Quaternion} orientation 四元数
+ * @param {Cesium.Cartesian3} position 中心点坐标
+ * @param {Cesium.Quaternion} orientation 四元数
  * @param {Boolean} toDegrees true，转化为度 / false，转为弧度
  * @returns {Object} hpr 姿态参数
  */
@@ -232,9 +232,9 @@ cUtil.gcj2wgs = function (arrdata) {
 
 /**
  * 坐标插值方法
- * @param {Cartesian3[]} positions 世界坐标数组
+ * @param {Cesium.Cartesian3[]} positions 世界坐标数组
  * @param {Number} [granularity] 插值粒度，默认为0.00001，值越小，插值越多
- * @returns {Cartesian3[]} newPositions 转换后世界坐标数组
+ * @returns {Cesium.Cartesian3[]} newPositions 转换后世界坐标数组
  */
 cUtil.lerpPositions = function (positions, granularity) {
     if (!positions || positions.length == 0) return;
@@ -255,10 +255,10 @@ cUtil.lerpPositions = function (positions, granularity) {
 /**
  * 由两点计算和地形以及模型的交点
  * @param {Object} obj 坐标参数
- * @param {Cartesian3} obj.startPoint 起点坐标
- * @param {Cartesian3} obj.endPoint 终点坐标
- * @param {Viewer} viewer 当前viewer对象
- * @returns {Cartesian3} 交点坐标
+ * @param {Cesium.Cartesian3 } obj.startPoint 起点坐标
+ * @param {Cesium.Cartesian3 } obj.endPoint 终点坐标
+ * @param {Cesium.Viewer} viewer 当前viewer对象
+ * @returns {Cesium.Cartesian3 } 交点坐标
  */
 cUtil.getIntersectPosition = function (obj, viewer) {
     let p1 = obj.startPoint;
@@ -278,10 +278,10 @@ cUtil.getIntersectPosition = function (obj, viewer) {
 
 /**
  * 由中心点、圆上某点以及角度 计算圆上其它点坐标 
- * @param {Cartesian3} center 圆的中心点 
- * @param {Cartesian3} aimP 圆上某点
+ * @param {Cesium.Cartesian3 } center 圆的中心点 
+ * @param {Cesium.Cartesian3 } aimP 圆上某点
  * @param {Number} [angle] 间隔角度，默认为60° 
- * @returns {Cartesian3[]} 圆上点坐标数组
+ * @returns {Cesium.Cartesian3[]} 圆上点坐标数组
  */
 cUtil.getCirclePointsByAngle = function (center, aimP, angle) {
     let dis = Cesium.Cartesian3.distance(center.clone(), aimP.clone());
@@ -311,12 +311,12 @@ cUtil.getCirclePointsByAngle = function (center, aimP, angle) {
 
 /**
  * 由中心点、半径以及角度 计算圆上其它点坐标 
- * @param {Cartesian3} center 圆的中心点 
+ * @param {Cesium.Cartesian3 } center 圆的中心点 
  * @param {Number} radius 半径长度
  * @param {Number} [angle] 间隔角度，默认为60° 
- * @returns {Cartesian3[]} 圆上点坐标数组
+ * @returns {Cesium.Cartesian3[]} 圆上点坐标数组
  */
-cUtil.getCirclePointsByRadius = function(center, radius, angle) {
+cUtil.getCirclePointsByRadius = function (center, radius, angle) {
     if (!center || !radius) return;
     angle = angle || 60;
     let positions = [];
@@ -361,9 +361,9 @@ cUtil.computeAngle = function (p1, p2) {
 
 /**
  * 修改当前世界坐标数组中坐标的高度
- * @param {Cartesian3[]} positions 世界坐标数组 
+ * @param {Cesium.Cartesian3[]} positions 世界坐标数组 
  * @param {Number} h 坐标高度 
- * @returns {Cartesian3[]} newPoisitions 修改高度后的世界坐标数组 
+ * @returns {Cesium.Cartesian3[]} newPoisitions 修改高度后的世界坐标数组 
  */
 cUtil.updatePositionsHeight = function (pois, h) {
     if (!pois || h == undefined) return;
@@ -379,9 +379,9 @@ cUtil.updatePositionsHeight = function (pois, h) {
 
 /**
  * 对世界坐标数组进行面状插值
- * @param {Cartesian3[]} positions 世界坐标数组
+ * @param {Cesium.Cartesian3[]} positions 世界坐标数组
  * @param {Boolean} isOn3dtiles 是否在模型上 
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns {Object} data 返回值，包含uniformArr（对象数组，每个对象中包含当前片元面积及高度），minHeight（当前范围内最小高度），maxHeight（当前范围内最大高度）
  * 
  */
@@ -447,8 +447,8 @@ cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
 
 /**
  * 计算面积
- * @param {Cartesian3[]} positions 世界坐标数组
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Cartesian3[]} positions 世界坐标数组
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns {Number} area，面积
  */
 cUtil.computeArea = function (positions, viewer) {
@@ -461,8 +461,8 @@ cUtil.computeArea = function (positions, viewer) {
 
 /**
  * 获取地形高度
- * @param {Cartesian3} position 当前点坐标
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Cartesian3 } position 当前点坐标
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns {Number} height，当前坐标点的地形高度
  */
 cUtil.getTerrainHeight = function (position, viewer) {
@@ -472,8 +472,8 @@ cUtil.getTerrainHeight = function (position, viewer) {
 
 /**
  * 获取高度，包含地形和模型上的高度
- * @param {Cartesian3} position 当前点坐标
- * @param {Viewer} viewer 当前viewer对象
+ * @param {Cesium.Cartesian3 } position 当前点坐标
+ * @param {Cesium.Viewer} viewer 当前viewer对象
  * @returns {Number} height，当前坐标点的高度
  */
 cUtil.get3dtilesHeight = function (position, viewer) {
@@ -483,9 +483,9 @@ cUtil.get3dtilesHeight = function (position, viewer) {
 
 /**
  * 计算当前三角形面积
- * @param {Cartesian3} pos1 当前点坐标1
- * @param {Cartesian3} pos2 当前点坐标2
- * @param {Cartesian3} pos3 当前点坐标3
+ * @param {Cesium.Cartesian3 } pos1 当前点坐标1
+ * @param {Cesium.Cartesian3 } pos2 当前点坐标2
+ * @param {Cesium.Cartesian3 } pos3 当前点坐标3
  * @returns {Number} area，面积
  */
 cUtil.computeAreaOfTriangle = function (pos1, pos2, pos3) {
@@ -504,10 +504,10 @@ cUtil.computeAreaOfTriangle = function (pos1, pos2, pos3) {
 
 /**
  * 计算地形坡度
- * @param {Cartesian3} center 
+ * @param {Cesium.Cartesian3 } center 
  * @param {Number} [radius] 坡度半径 
  * @param {Number} [angle] 插值角度 
- * @param {Viewer} viewer 当前viewer对象 
+ * @param {Cesium.Viewer} viewer 当前viewer对象 
  * @returns {Object} 返回坡度起始点坐标、终点坐标以及坡度值
  */
 cUtil.getSlopePosition = function (center, radius, angle, viewer) {

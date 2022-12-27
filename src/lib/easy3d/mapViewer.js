@@ -148,7 +148,7 @@ class MapViewer {
         this.opt = opt || {};
 
         /**
-        * @property {Viewer} 地图viewer对象
+        * @property {Cesium.Viewer} 地图viewer对象
         */
         this._viewer = null;
 

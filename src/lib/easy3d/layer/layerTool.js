@@ -15,7 +15,7 @@ import WMSLayer from "./wmsLayer";
  */
 class LayerTool {
     /**
-     * @param {Viewer} viewer 当前viewer对象 
+     * @param {Cesium.Viewer} viewer 当前viewer对象 
      * @param {Object} [opt] 其他参数
      */
     constructor(viewer, opt) {

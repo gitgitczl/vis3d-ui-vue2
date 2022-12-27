@@ -1,3 +1,4 @@
+import { param } from "jquery";
 import cUtil from "../cUtil";
 // 图层管理父类
 /**
@@ -5,16 +6,33 @@ import cUtil from "../cUtil";
  * @class
  */
 class BaseLayer {
+    /**
+     * 
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} opt 基础配置
+     * @param {String | Number} opt.id 地图服务id
+     * @param {String} opt.url 地图服务地址
+     * @param {Array} opt.rectangle 地图服务范围 [117,40,118,41]
+     * @param {Number} opt.minimumLevel 地图服务最小层级
+     * @param {Number} opt.maximumLevel 地图服务最大层级
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.opt = opt || {};
+        /**
+         * @property {String | Number} id 图层id
+         */
         this.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         if (!opt.url && opt.type != "tdt" && opt.type != "grid") {
             console.log("缺少服务地址！", opt);
             return;
         }
-        // 所加载的范围
+
+        /**
+         * @property {Object} providerAttr 服务相关配置
+         */
         this.providerAttr = {};
+
         if (this.opt.rectangle) {
             this.opt.rectangle = new Cesium.Rectangle(
                 Cesium.Math.toRadians(this.opt.rectangle[0]),
@@ -38,7 +56,15 @@ class BaseLayer {
         }
 
         this.providerAttr = Object.assign(this.opt, this.providerAttr);
+
+        /**
+         * @property {Cesium.ImageryLayer} layer 图层
+         */
         this._layer = null;
+
+        /**
+         * @property {Cesium.ImageryProvider} provider 图层
+         */
         this._provider = {};
     }
 
@@ -46,7 +72,9 @@ class BaseLayer {
         return this._layer;
     }
 
-    // 定义方法
+    /**
+     * 加载
+     */
     load() {
         if (!this._provider || this._provider == {}) return;
         let options = {
@@ -68,10 +96,16 @@ class BaseLayer {
         return this._layer;
     }
 
+     /**
+     * 移除
+     */
     remove() {
         if (this._layer) this.viewer.imageryLayers.remove(this._layer);
     }
 
+     /**
+     * 展示
+     */
     show() {
         if (this._layer) {
             this._layer.show = true;
@@ -79,6 +113,9 @@ class BaseLayer {
         }
     }
 
+     /**
+     * 隐藏
+     */
     hide() {
         if (this._layer) {
             this._layer.show = false;
@@ -86,6 +123,9 @@ class BaseLayer {
         }
     }
 
+    /**
+     * @param {Boolean} visible 是否显示
+     */
     setVisible(visible) {
         visible = visible == undefined ? true : visible;
         if (visible) {
@@ -95,6 +135,9 @@ class BaseLayer {
         }
     }
 
+    /**
+     * 缩放至图层
+     */
     zoomTo() {
         if (this.opt.view) {
             cUtil.setCameraView(this.opt.view);
@@ -103,7 +146,10 @@ class BaseLayer {
         }
     }
 
-    // 设置透明度
+    /**
+     * 设置透明度
+     * @param {Number} alpha 透明度（0~1）
+     */
     setAlpha(alpha) {
         if (!this._layer) return;
         alpha = alpha == undefined ? 1 : alpha;
@@ -122,8 +168,6 @@ class BaseLayer {
     raiselayerToTop() {
         if (this._layer) this.viewer.imageryLayers.raiseToTop(this._layer);
     }
-
-
 
 }
 
