@@ -77,7 +77,7 @@ export default {
           let ctgc_center = Cesium.Cartographic.fromCartesian(positions[0]);
           ctgc_center.height = ctgc_center.height + 2;
           let center = Cesium.Cartographic.toCartesian(ctgc_center);
-          let pnts = that.easy3d.cUtil.getCirclePoints(center, positions[1], 6);
+          let pnts = that.easy3d.cUtil.getCirclePointsByAngle(center, positions[1], 6);
           if (window.viewer.scene.sampleHeightSupported) {
             // 求出表面高度
             var promise = window.viewer.scene.sampleHeightMostDetailed(pnts);

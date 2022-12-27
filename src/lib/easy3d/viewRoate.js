@@ -49,6 +49,7 @@ let easy3dView = {
             this.angle = angle;
         }
     },
+    
     viewPoint: {
         removeEventLis: null,
         initHeading: 0,

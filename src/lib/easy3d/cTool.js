@@ -1,76 +1,53 @@
-/*Cesium无关的常用小工具 */
-// 图片下载 实现截屏
 /**
- * 以图片方式下载文件
- * @param {*} canvas 截屏的canvas对象
- * @param {*} name 下载文件名称
+ * 常用工具、和地图无关的方法
+ * @exports cTool
+ * @alias cTool
  */
-function downloadCanvasIamge(canvas, name) {
-    // 通过选择器获取canvas元素
-    var url = canvas.toDataURL('image/png')
-    console.log(url);
-    // 生成一个a元素
-    var a = document.createElement('a')
-    // 创建一个单击事件
-    var event = new MouseEvent('click')
-    // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
-    a.download = name || '下载图片名称'
-    // 将生成的URL设置为a.href属性
-    a.href = url
-    // 触发a的单击事件
-    a.dispatchEvent(event)
+let cTool = {}
+/**
+ * 文本或json等下载方法
+ * @param {String} fileName 文件名称，后缀需要加类型，如.txt / .json等
+ * @param {String} datastr 文本字符串
+ * @example cTool.file.downloadFile("测试.json",JSON.stringify(data));
+*/
+cTool.downloadFile = function (fileName, datastr) {
+    var blob = new Blob([datastr]);
+    this._download(fileName, blob);
 }
 
-let file = {
-    //============内部私有属性及方法============
-    _download(fileName, blob) {
-        var aLink = document.createElement('a');
-        aLink.download = fileName;
-        aLink.href = URL.createObjectURL(blob);
-        document.body.appendChild(aLink);
-        aLink.click();
-        document.body.removeChild(aLink);
-    },
+/**
+ * 图片下载方法
+ * @param {String} fileName 图片名称
+ * @param {Canvas} canvas dom canvas对象
+*/
+cTool.downloadImage = function (fileName, canvas) {
+    var base64 = canvas.toDataURL("image/png");
+    var blob = base64Img2Blob(base64);
+    _download(fileName + '.png', blob);
+}
 
-    //下载保存文件
-    downloadFile(fileName, string) {
-        var blob = new Blob([string]);
-        this._download(fileName, blob);
-    },
+function _download(fileName, blob) {
+    var aLink = document.createElement('a');
+    aLink.download = fileName;
+    aLink.href = URL.createObjectURL(blob);
+    document.body.appendChild(aLink);
+    aLink.click();
+    document.body.removeChild(aLink);
+}
 
-    //下载导出图片
-    downloadImage(name, canvas) {
-        var base64 = canvas.toDataURL("image/png");
-        var blob = this.base64Img2Blob(base64);
-        this._download(name + '.png', blob);
-    },
+function base64Img2Blob(code) {
+    var parts = code.split(';base64,');
+    var contentType = parts[0].split(':')[1];
+    var raw = window.atob(parts[1]);
+    var rawLength = raw.length;
 
-    base64Img2Blob(code) {
-        var parts = code.split(';base64,');
-        var contentType = parts[0].split(':')[1];
-        var raw = window.atob(parts[1]);
-        var rawLength = raw.length;
-
-        var uInt8Array = new Uint8Array(rawLength);
-        for (var i = 0; i < rawLength; ++i) {
-            uInt8Array[i] = raw.charCodeAt(i);
-        }
-        return new Blob([uInt8Array], {
-            type: contentType
-        });
+    var uInt8Array = new Uint8Array(rawLength);
+    for (var i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
     }
+    return new Blob([uInt8Array], {
+        type: contentType
+    });
 }
 
-// 验证 
-let test = {
-    isPositiveNumber(val){ // 正则表达式 >=0
-        let reg = /^[1-9]*[1-9][0-9]*$/;
-        return reg.test(val)
-    }
-}
-
-export default {
-    downloadCanvasIamge: downloadCanvasIamge,
-    file : file,
-    test : test
-}
+export default cTool;

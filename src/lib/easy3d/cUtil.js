@@ -1,15 +1,22 @@
 import * as turf from '@turf/turf';
+
+/**
+ * 三维基础方法
+ * @example cUtil.getCameraView(viewer);
+ * @exports cUtil
+ * @alias cUtil
+ */
+let cUtil = {};
 /**
  * 世界坐标转经纬度
  * @param { Cartesian3 } cartesian 世界坐标
  * @param { Viewer } viewer 当前viewer对象
  * @returns { Array } 经纬度坐标
  */
-function cartesianToLnglat(cartesian, viewer) {
+cUtil.cartesianToLnglat = function (cartesian, viewer) {
     if (!cartesian) return [];
     viewer = viewer || window.viewer;
-    var ellipsoid = viewer.scene.globe.ellipsoid;
-    var lnglat = ellipsoid.cartesianToCartographic(cartesian);
+    var lnglat = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian);
     var lat = Cesium.Math.toDegrees(lnglat.latitude);
     var lng = Cesium.Math.toDegrees(lnglat.longitude);
     var hei = lnglat.height;
@@ -22,12 +29,12 @@ function cartesianToLnglat(cartesian, viewer) {
  * @param {Viewer} viewer 当前viewer对象
  * @returns { Array } 经纬度坐标数组
  */
-function cartesiansToLnglats(cartesians, viewer) {
+cUtil.cartesiansToLnglats = function (cartesians, viewer) {
     if (!cartesians || cartesians.length < 1) return;
     viewer = viewer || window.viewer;
     var arr = [];
     for (var i = 0; i < cartesians.length; i++) {
-        arr.push(cartesianToLnglat(cartesians[i], viewer));
+        arr.push(cUtil.cartesianToLnglat(cartesians[i], viewer));
     }
     return arr;
 }
@@ -38,7 +45,7 @@ function cartesiansToLnglats(cartesians, viewer) {
  * @returns {Cartesian3[]} cartesians 世界坐标数组
  * @example cUtil.lnglatsToCartesians([[117,40],[118.41]])
  */
-function lnglatsToCartesians(lnglats) {
+cUtil.lnglatsToCartesians = function (lnglats) {
     if (!lnglats || lnglats.length < 1) return;
     var arr = [];
     for (var i = 0; i < lnglats.length; i++) {
@@ -57,7 +64,7 @@ function lnglatsToCartesians(lnglats) {
  * @param {Number} opt.range 当前定位距离 默认为1000米
  * @param {Viewer} viewer 当前viewer对象
  */
-function flyTo(opt, viewer) {
+cUtil.flyTo = function (opt, viewer) {
     if (!viewer) return;
     opt = opt || {};
     let center = opt.center;
@@ -91,7 +98,7 @@ function flyTo(opt, viewer) {
  * @param {Viewer} viewer 当前viewer对象
  * @returns {Object} cameraView 当前相机姿态
  */
-function getCameraView(viewer) {
+cUtil.getCameraView = function (viewer) {
     viewer = viewer || window.viewer;
     var camera = viewer.camera;
     var position = camera.position;
@@ -117,7 +124,7 @@ function getCameraView(viewer) {
  * @param {Number} cameraView.duration 定位所需时间
  * @param {Viewer} viewer 当前viewer对象
  */
-function setCameraView(obj, viewer) {
+cUtil.setCameraView = function (obj, viewer) {
     viewer = viewer || window.viewer;
     if (!obj) return;
     var position = obj.destination || Cesium.Cartesian3.fromDegrees(obj.x, obj.y, obj.z); // 兼容cartesian3和xyz
@@ -140,7 +147,7 @@ function setCameraView(obj, viewer) {
  * @param {Boolean} toDegrees true，转化为度 / false，转为弧度
  * @returns {Object} hpr 姿态参数
  */
-function oreatationToHpr(position, orientation, toDegrees) {
+cUtil.oreatationToHpr = function (position, orientation, toDegrees) {
     if (!position || !orientation) return;
     let matrix3Scratch = new Cesium.Matrix3();
     var mtx3 = Cesium.Matrix3.fromQuaternion(orientation, matrix3Scratch);
@@ -179,7 +186,7 @@ function transformJD(lng, lat) {
     ret += (150.0 * Math.sin(lng / 12.0 * PI) + 300.0 * Math.sin(lng / 30.0 * PI)) * 2.0 / 3.0;
     return ret;
 }
-function wgs2gcj(arrdata) {
+cUtil.wgs2gcj = function (arrdata) {
     var lng = Number(arrdata[0]);
     var lat = Number(arrdata[1]);
     var dlat = transformWD(lng - 105.0, lat - 35.0);
@@ -199,7 +206,7 @@ function wgs2gcj(arrdata) {
 
 };
 
-function gcj2wgs(arrdata) {
+cUtil.gcj2wgs = function (arrdata) {
     var lng = Number(arrdata[0]);
     var lat = Number(arrdata[1]);
     var dlat = transformWD(lng - 105.0, lat - 35.0);
@@ -229,7 +236,7 @@ function gcj2wgs(arrdata) {
  * @param {Number} [granularity] 插值粒度，默认为0.00001，值越小，插值越多
  * @returns {Cartesian3[]} newPositions 转换后世界坐标数组
  */
-function lerpPositions(positions, granularity) {
+cUtil.lerpPositions = function (positions, granularity) {
     if (!positions || positions.length == 0) return;
     var surfacePositions = Cesium.PolylinePipeline.generateArc({ //将线进行插值
         positions: positions,
@@ -253,7 +260,7 @@ function lerpPositions(positions, granularity) {
  * @param {Viewer} viewer 当前viewer对象
  * @returns {Cartesian3} 交点坐标
  */
-function getIntersectPosition(obj, viewer) {
+cUtil.getIntersectPosition = function (obj, viewer) {
     let p1 = obj.startPoint;
     let p2 = obj.endPoint;
     if (!p1 || !p2) {
@@ -274,9 +281,9 @@ function getIntersectPosition(obj, viewer) {
  * @param {Cartesian3} center 圆的中心点 
  * @param {Cartesian3} aimP 圆上某点
  * @param {Number} [angle] 间隔角度，默认为60° 
- * @returns {Cartesian3[]} circlePositions，圆上点坐标
+ * @returns {Cartesian3[]} 圆上点坐标数组
  */
-function getCirclePoints(center, aimP, angle) {
+cUtil.getCirclePointsByAngle = function (center, aimP, angle) {
     let dis = Cesium.Cartesian3.distance(center.clone(), aimP.clone());
     let circlePositions = [];
     angle = angle || 60;
@@ -303,12 +310,40 @@ function getCirclePoints(center, aimP, angle) {
 }
 
 /**
+ * 由中心点、半径以及角度 计算圆上其它点坐标 
+ * @param {Cartesian3} center 圆的中心点 
+ * @param {Number} radius 半径长度
+ * @param {Number} [angle] 间隔角度，默认为60° 
+ * @returns {Cartesian3[]} 圆上点坐标数组
+ */
+cUtil.getCirclePointsByRadius = function(center, radius, angle) {
+    if (!center || !radius) return;
+    angle = angle || 60;
+    let positions = [];
+    // 局部坐标系到世界坐标系的矩阵
+    let mtx4 = Cesium.Transforms.eastNorthUpToFixedFrame(center.clone());
+    // 世界到局部
+    const mtx4_inverse = Cesium.Matrix4.inverse(mtx4, new Cesium.Matrix4());
+    const local_center = Cesium.Matrix4.multiplyByPoint(mtx4_inverse, center.clone(), new Cesium.Cartesian3());
+    let rposition = Cesium.Cartesian3.add(local_center, new Cesium.Cartesian3(radius, 0, 0), new Cesium.Cartesian3());
+    for (let i = 0; i <= 360; i += angle) {
+        const radians = Cesium.Math.toRadians(i);
+        const mtx3 = Cesium.Matrix3.fromRotationZ(radians);
+        let newPosition = Cesium.Matrix3.multiplyByVector(mtx3, rposition.clone(), new Cesium.Cartesian3());
+        newPosition = Cesium.Matrix4.multiplyByPoint(mtx4, newPosition.clone(), new Cesium.Cartesian3());
+        positions.push(newPosition);
+    }
+    return positions;
+}
+
+
+/**
  * 计算两点连线夹角
  * @param {Cartographic} p1 
  * @param {Cartographic} p2 
  * @returns {Number} bearing 角度
  */
-function computeAngle(p1, p2) {
+cUtil.computeAngle = function (p1, p2) {
     var lng_a = p1.longitude;
     var lat_a = p1.latitude;
     var lng_b = p2.longitude;
@@ -330,12 +365,12 @@ function computeAngle(p1, p2) {
  * @param {Number} h 坐标高度 
  * @returns {Cartesian3[]} newPoisitions 修改高度后的世界坐标数组 
  */
-function updatePositionsHeight(pois, h) {
+cUtil.updatePositionsHeight = function (pois, h) {
     if (!pois || h == undefined) return;
     var newPois = [];
     for (var i = 0; i < pois.length; i++) {
         var c3 = pois[i];
-        var ct = cartesianToLnglat(c3);
+        var ct = cUtil.cartesianToLnglat(c3);
         var newC3 = Cesium.Cartesian3.fromDegrees(ct[0], ct[1], h);
         newPois.push(newC3);
     }
@@ -350,7 +385,7 @@ function updatePositionsHeight(pois, h) {
  * @returns {Object} data 返回值，包含uniformArr（对象数组，每个对象中包含当前片元面积及高度），minHeight（当前范围内最小高度），maxHeight（当前范围内最大高度）
  * 
  */
-function computeUniforms(positions, isOn3dtiles, viewer) {
+cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
     let area = computeArea(positions) / 1000;
     if (!positions) return;
     var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
@@ -375,27 +410,27 @@ function computeUniforms(positions, isOn3dtiles, viewer) {
             2]);
         var h1;
         if (!isOn3dtiles) {
-            h1 = getTerrainHeight(cartesian1, viewer);
+            h1 = cUtil.getTerrainHeight(cartesian1, viewer);
         } else {
-            h1 = get3dtilesHeight(cartesian1, viewer);
+            h1 = cUtil.get3dtilesHeight(cartesian1, viewer);
         }
         var cartesian2 = new Cesium.Cartesian3(attrPosition.values[second * 3], geom
             .attributes.position.values[second * 3 + 1], attrPosition.values[second *
             3 + 2]);
         var h2;
         if (!isOn3dtiles) {
-            h2 = getTerrainHeight(cartesian2, viewer);
+            h2 = cUtil.getTerrainHeight(cartesian2, viewer);
         } else {
-            h2 = get3dtilesHeight(cartesian2, viewer);
+            h2 = cUtil.get3dtilesHeight(cartesian2, viewer);
         }
         var cartesian3 = new Cesium.Cartesian3(geom.attributes.position.values[third * 3], geom
             .attributes.position.values[third * 3 + 1], attrPosition.values[third * 3 +
             2]);
         var h3;
         if (!isOn3dtiles) {
-            h3 = getTerrainHeight(cartesian3, viewer);
+            h3 = cUtil.getTerrainHeight(cartesian3, viewer);
         } else {
-            h3 = get3dtilesHeight(cartesian3, viewer);
+            h3 = cUtil.get3dtilesHeight(cartesian3, viewer);
         }
         obj.height = (h1 + h2 + h3) / 3;
         if (data.minHeight > obj.height) {
@@ -416,9 +451,9 @@ function computeUniforms(positions, isOn3dtiles, viewer) {
  * @param {Viewer} viewer 当前viewer对象
  * @returns {Number} area，面积
  */
-function computeArea(positions, viewer) {
+cUtil.computeArea = function (positions, viewer) {
     positions = positions.concat([positions[0]]);
-    const lnglats = cartesiansToLnglats(positions, viewer);
+    const lnglats = cUtil.cartesiansToLnglats(positions, viewer);
     let polygon = turf.polygon([lnglats]);
     const area = turf.area(polygon);
     return area;
@@ -430,7 +465,7 @@ function computeArea(positions, viewer) {
  * @param {Viewer} viewer 当前viewer对象
  * @returns {Number} height，当前坐标点的地形高度
  */
-function getTerrainHeight(position, viewer) {
+cUtil.getTerrainHeight = function (position, viewer) {
     if (!position || !viewer) return;
     return viewer.scene.globe.getHeight(Cesium.Cartographic.fromCartesian(position));
 }
@@ -441,7 +476,7 @@ function getTerrainHeight(position, viewer) {
  * @param {Viewer} viewer 当前viewer对象
  * @returns {Number} height，当前坐标点的高度
  */
-function get3dtilesHeight(position, viewer) {
+cUtil.get3dtilesHeight = function (position, viewer) {
     if (!position || !viewer) return;
     return viewer.scene.sampleHeight(Cesium.Cartographic.fromCartesian(position));
 }
@@ -453,7 +488,7 @@ function get3dtilesHeight(position, viewer) {
  * @param {Cartesian3} pos3 当前点坐标3
  * @returns {Number} area，面积
  */
-function computeAreaOfTriangle(pos1, pos2, pos3) {
+cUtil.computeAreaOfTriangle = function (pos1, pos2, pos3) {
     if (!pos1 || !pos2 || !pos3) {
         console.log("传入坐标有误！");
         return 0;
@@ -465,6 +500,8 @@ function computeAreaOfTriangle(pos1, pos2, pos3) {
     return Math.sqrt(S * (S - a) * (S - b) * (S - c));
 }
 
+
+
 /**
  * 计算地形坡度
  * @param {Cartesian3} center 
@@ -473,19 +510,19 @@ function computeAreaOfTriangle(pos1, pos2, pos3) {
  * @param {Viewer} viewer 当前viewer对象 
  * @returns {Object} 返回坡度起始点坐标、终点坐标以及坡度值
  */
-function getSlopePosition(center, radius, angle, viewer) {
+cUtil.getSlopePosition = function (center, radius, angle, viewer) {
     if (!viewer || !center) return;
-    let positions = getCirclePointsByRadius({
+    let positions = cUtil.getCirclePointsByRadius({
         center: center,
         radius: radius || 10,
         angle: angle || 10
     }, viewer);
 
     let minH = Number.MAX_VALUE;
-    let centerH = getTerrainHeight(center.clone());
+    let centerH = cUtil.getTerrainHeight(center.clone());
     let step = -1;
     for (let i = 0; i < positions.length; i++) {
-        let h = getTerrainHeight(positions[i]);
+        let h = cUtil.getTerrainHeight(positions[i]);
         if (minH > h) {
             minH = h;
             step = i;
@@ -539,23 +576,5 @@ function setConsole(time) {
 }
 
 
-
-export default {
-    getSlopePosition: getSlopePosition,
-    updatePositionsHeight: updatePositionsHeight,
-    computeUniforms: computeUniforms,
-    cartesianToLnglat: cartesianToLnglat,
-    cartesiansToLnglats: cartesiansToLnglats,
-    lnglatsToCartesians: lnglatsToCartesians,
-    flyTo: flyTo,
-    getCameraView: getCameraView,
-    setCameraView: setCameraView,
-    wgs2gcj: wgs2gcj,
-    gcj2wgs: gcj2wgs,
-    lerpPositions: lerpPositions,
-    oreatationToHpr: oreatationToHpr,
-    getIntersectPosition: getIntersectPosition,
-    getCirclePoints: getCirclePoints,
-    computeAngle: computeAngle
-}
+export default cUtil;
 
