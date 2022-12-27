@@ -8,6 +8,7 @@ import TMSLayer from "./tmsLayer.js";
 import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
+
 /**
  * 图层控制类
  * @class
@@ -19,9 +20,12 @@ class LayerTool {
      */
     constructor(viewer, opt) {
         this.viewer = viewer;
+        /**
+         * @property {Array} layerObjs 图层对象数组
+         */
         this._layerObjs = [];
     }
-    get layers() {
+    get layerObjs() {
         return this._layerObjs;
     }
 
@@ -29,7 +33,7 @@ class LayerTool {
      * 新增图层
      * @param {Object} opt 图层属性
      * @param {String | Number} [opt.id] 图层id，如果不传入，则自动生成
-     * @param {String} opt.type 图层的类别
+     * @param {String} opt.type 图层的类别（xyz、wfs、geojson、mapserver、arcgiscache、tdt、singleImage、tms、3dtiles、wms、grid）
      * @param {String} opt.alpha 图层的透明度
      * @returns {Object} 图层对象
      */
@@ -37,7 +41,7 @@ class LayerTool {
         let layerObj = null;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
-
+        
         // 自动设置图层的index
         switch (type) {
             case "xyz": //xyz格式切片

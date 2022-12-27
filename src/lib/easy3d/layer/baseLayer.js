@@ -1,5 +1,9 @@
 import cUtil from "../cUtil";
 // 图层管理父类
+/**
+ * 图层基类
+ * @class
+ */
 class BaseLayer {
     constructor(viewer, opt) {
         this.viewer = viewer;

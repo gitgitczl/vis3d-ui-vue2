@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Source: cUtil.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>cUtil.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Source: cUtil.js</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LayerTool.html">LayerTool</a><ul class='methods'><li data-type='method'><a href="LayerTool.html#.add#add">add</a></li><li data-type='method'><a href="LayerTool.html#.destroy#destroy">destroy</a></li><li data-type='method'><a href="LayerTool.html#.getAllhide#getAllhide">getAllhide</a></li><li data-type='method'><a href="LayerTool.html#.getAllshow#getAllshow">getAllshow</a></li><li data-type='method'><a href="LayerTool.html#.getLayerObjByField#getLayerObjByField">getLayerObjByField</a></li><li data-type='method'><a href="LayerTool.html#.getLayerObjById#getLayerObjById">getLayerObjById</a></li><li data-type='method'><a href="LayerTool.html#.hideAll#hideAll">hideAll</a></li><li data-type='method'><a href="LayerTool.html#.hideById#hideById">hideById</a></li><li data-type='method'><a href="LayerTool.html#.removeAll#removeAll">removeAll</a></li><li data-type='method'><a href="LayerTool.html#.removeLayerObj#removeLayerObj">removeLayerObj</a></li><li data-type='method'><a href="LayerTool.html#.removeLayerObjById#removeLayerObjById">removeLayerObjById</a></li><li data-type='method'><a href="LayerTool.html#.setVisible#setVisible">setVisible</a></li><li data-type='method'><a href="LayerTool.html#.showById#showById">showById</a></li><li data-type='method'><a href="LayerTool.html#.zoomTo#zoomTo">zoomTo</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#cartesianToLnglat">cartesianToLnglat</a></li><li><a href="global.html#cartesiansToLnglats">cartesiansToLnglats</a></li><li><a href="global.html#computeAngle">computeAngle</a></li><li><a href="global.html#computeArea">computeArea</a></li><li><a href="global.html#computeAreaOfTriangle">computeAreaOfTriangle</a></li><li><a href="global.html#computeUniforms">computeUniforms</a></li><li><a href="global.html#flyTo">flyTo</a></li><li><a href="global.html#get3dtilesHeight">get3dtilesHeight</a></li><li><a href="global.html#getCameraView">getCameraView</a></li><li><a href="global.html#getCirclePoints">getCirclePoints</a></li><li><a href="global.html#getIntersectPosition">getIntersectPosition</a></li><li><a href="global.html#getSlopePosition">getSlopePosition</a></li><li><a href="global.html#getTerrainHeight">getTerrainHeight</a></li><li><a href="global.html#layerType">layerType</a></li><li><a href="global.html#lerpPositions">lerpPositions</a></li><li><a href="global.html#lnglatsToCartesians">lnglatsToCartesians</a></li><li><a href="global.html#oreatationToHpr">oreatationToHpr</a></li><li><a href="global.html#setCameraView">setCameraView</a></li><li><a href="global.html#updatePositionsHeight">updatePositionsHeight</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">cUtil.js</h1>
+    
 
     
 
@@ -27,7 +46,6 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import * as turf from '@turf/turf';
-import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 /**
  * 世界坐标转经纬度
  * @param { Cartesian3 } cartesian 世界坐标
@@ -571,7 +589,6 @@ function setConsole(time) {
 
 export default {
     getSlopePosition: getSlopePosition,
-    getCirclePointsByRadius: getCirclePointsByRadius,
     updatePositionsHeight: updatePositionsHeight,
     computeUniforms: computeUniforms,
     cartesianToLnglat: cartesianToLnglat,
@@ -596,19 +613,21 @@ export default {
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LayerTool.html">LayerTool</a></li></ul><h3>Global</h3><ul><li><a href="global.html#cartesianToLnglat">cartesianToLnglat</a></li><li><a href="global.html#cartesiansToLnglats">cartesiansToLnglats</a></li><li><a href="global.html#computeAngle">computeAngle</a></li><li><a href="global.html#computeArea">computeArea</a></li><li><a href="global.html#computeAreaOfTriangle">computeAreaOfTriangle</a></li><li><a href="global.html#computeUniforms">computeUniforms</a></li><li><a href="global.html#flyTo">flyTo</a></li><li><a href="global.html#get3dtilesHeight">get3dtilesHeight</a></li><li><a href="global.html#getCameraView">getCameraView</a></li><li><a href="global.html#getCirclePoints">getCirclePoints</a></li><li><a href="global.html#getIntersectPosition">getIntersectPosition</a></li><li><a href="global.html#getSlopePosition">getSlopePosition</a></li><li><a href="global.html#getTerrainHeight">getTerrainHeight</a></li><li><a href="global.html#lerpPositions">lerpPositions</a></li><li><a href="global.html#lnglatsToCartesians">lnglatsToCartesians</a></li><li><a href="global.html#oreatationToHpr">oreatationToHpr</a></li><li><a href="global.html#setCameraView">setCameraView</a></li><li><a href="global.html#updatePositionsHeight">updatePositionsHeight</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Dec 26 2022 21:00:52 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a> on Tue Dec 27 2022 14:11:40 GMT+0800 (中国标准时间) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

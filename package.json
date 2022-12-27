@@ -12,6 +12,7 @@
     "axios": "^0.26.1",
     "cesium": "~1.91.0",
     "core-js": "^3.6.5",
+    "docdash": "^2.0.0",
     "easygis-3d": "^1.0.0",
     "element-ui": "^2.15.6",
     "hammerjs": "^2.0.8",

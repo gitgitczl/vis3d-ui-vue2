@@ -1,5 +1,4 @@
 import * as turf from '@turf/turf';
-import Cartesian3 from 'cesium/Source/Core/Cartesian3';
 /**
  * 世界坐标转经纬度
  * @param { Cartesian3 } cartesian 世界坐标
@@ -543,7 +542,6 @@ function setConsole(time) {
 
 export default {
     getSlopePosition: getSlopePosition,
-    getCirclePointsByRadius: getCirclePointsByRadius,
     updatePositionsHeight: updatePositionsHeight,
     computeUniforms: computeUniforms,
     cartesianToLnglat: cartesianToLnglat,

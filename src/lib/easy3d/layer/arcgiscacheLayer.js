@@ -1,5 +1,9 @@
 // arcgis 自定义切片
 import BaseLayer from './baseLayer';
+/**
+ * arcgis切片类型图层
+ * @augments BaseLayer
+ */
 class ArcgiscacheLayer extends BaseLayer {
     constructor(viewer, opt) {
         super(viewer, opt);
@@ -15,7 +19,7 @@ class ArcgiscacheLayer extends BaseLayer {
                 return numStr;
             };
         }
-
+        
         let customTags = {
             //小写
             "arc_x": function arc_x(imageryProvider, x, y, level) {

@@ -2,14 +2,15 @@
     "source": {
         "include": [
             "./src/lib/easy3d/cUtil.js",
-            "./src/lib/easy3d/layer/layerTool.js"
+            "./src/lib/easy3d/layer/layerTool.js",
+            "./src/lib/easy3d/static/layerType.js"
         ],
         "includePattern": ".+\\.js(doc|x)?$",
         "exclude": ["./apidoc/"]
     },
     "plugins": [],
     "opts": {
-        "template": "templates/default",
+        "template": "node_modules/docdash",
         "encoding": "utf8",
         "destination": "./apidoc/",
         "recurse": true
