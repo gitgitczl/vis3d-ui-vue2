@@ -1,16 +1,36 @@
 // arcgis 自定义切片
 import BaseLayer from './baseLayer';
 /**
- * arcgis切片类型图层
+ * arcgis 切片类型图层（一般由arcmap切片后的数据发布）
+ * @class
  * @augments BaseLayer
+ * @example 
+ * let arcgisLayer = new easy3d.ArcgiscacheLayer(viewer,{
+    url: "http://112.86.147.194:9009/data/demnewtile/L{arc_z}/R{arc_y}/C{arc_x}.png",
+    minimumLevel: 1,
+    maximumLevel: 19,
+    minimumTerrainLevel: 1,
+    view: {
+        x: 118.73263653438936,
+        y: 31.971959788539053,
+        z: 6643.463555185671,
+        heading: 341.6647257262609,
+        pitch: -36.54290725763041,
+        roll: 359.9323408763138,
+    },
+});
+arcgisLayer.load();
  */
 class ArcgiscacheLayer extends BaseLayer {
     /**
-     * 
-     * @param {Object} opt 基础配置，可将
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} opt 基础配置
+     * @param {String} opt.url 模型服务地址
      * @param {Number} opt.minimumLevel 地图服务最小层级
      * @param {Number} opt.maximumLevel 地图服务最大层级
-     * 
+     * @param {Number} [opt.tileWidth=256] 服务切片宽度
+     * @param {Number} [opt.tileHeight=256] 服务切片高度
+     * @param {Boolean} [opt.enablePickFeatures=true] 是否可通过鼠标拾取元素
      */
     constructor(viewer, opt) {
         super(viewer, opt);
@@ -60,7 +80,6 @@ class ArcgiscacheLayer extends BaseLayer {
         })
         this._provider = new Cesium.UrlTemplateImageryProvider(pattr);;
     }
-
 }
 
 export default ArcgiscacheLayer;

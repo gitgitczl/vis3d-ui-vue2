@@ -1,7 +1,25 @@
 // 天地图服务加载
 // 加载当前在线的天地图服务 目前支持以下几种
 import BaseLayer from './baseLayer';
+/**
+ * 天地图在线服务加载
+ * @class
+ * @augments BaseLayer
+ * 
+ */
 class TDTLayer extends BaseLayer {
+    /**
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} opt 基础配置
+     * @param {String | String[]} [opt.keys] 天地图服务密钥（需在天地图官网申请）
+     * @param {String} layerName 天地图图层名称（vec（矢量底图）/ cva（矢量注记）/ img（影像底图）/ ter（地形晕渲）cta（地形注记）/ ibo（全球境界）/ eva（矢量英文注记）/ eia（影像英文注记））
+     * @param {String | Number} crs 坐标系EPSG（4326/3857）
+     * @param {Number} opt.minimumLevel 地图服务最小层级
+     * @param {Number} opt.maximumLevel 地图服务最大层级
+     * @param {Number} [opt.tileWidth=256] 服务切片宽度
+     * @param {Number} [opt.tileHeight=256] 服务切片高度
+     * @param {Boolean} [opt.enablePickFeatures=true] 是否可通过鼠标拾取元素
+    */
     constructor(viewer, opt) {
         // 内置keys
         const keys = [
@@ -64,7 +82,6 @@ class TDTLayer extends BaseLayer {
         pattr = Object.assign(this.providerAttr || {}, pattr);
         this._provider = new Cesium.WebMapTileServiceImageryProvider(pattr);
     }
-
 }
 
 export default TDTLayer;

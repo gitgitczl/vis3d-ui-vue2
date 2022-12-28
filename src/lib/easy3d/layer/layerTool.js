@@ -8,6 +8,9 @@ import TMSLayer from "./tmsLayer.js";
 import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
+import WMTSLayer from "./wmtsLayer";
+
+
 
 /**
  * 图层控制类
@@ -71,6 +74,9 @@ class LayerTool {
                 break;
             case "wms":// 模型
                 layerObj = new WMSLayer(this.viewer, opt);
+                break;
+            case "wmts":// 模型
+                layerObj = new WMTSLayer(this.viewer, opt);
                 break;
             case "grid":// 网格图层
                 layerObj = new GridLayer(this.viewer, opt);

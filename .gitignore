@@ -2,7 +2,7 @@
 node_modules
 /dist
 .svn
-/apidoc
+apidoc
 
 
 # local env files

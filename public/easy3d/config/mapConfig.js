@@ -154,7 +154,7 @@ window.mapConfig = {
           type: "grid",
           url: "./easy3d/images/layer/world.jpg",
           iconImg: "./easy3d/images/layer/world.jpg",
-          show: 1,
+          show: false,
           glowColor : "#FF0000",
           alpha: 1,
         },

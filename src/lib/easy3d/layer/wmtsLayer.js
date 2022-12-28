@@ -1,10 +1,10 @@
 import BaseLayer from './baseLayer';
 /**
- * 加载OGC标准的wms服务
+ * 加载OGC标准的wmts服务
  * @class
  * @augments BaseLayer
  * @example 
- * let wmsLayer = new easy3d.WMSLayer(viewer,{
+ * let wmtsLayer = new easy3d.WMTSLayer(viewer,{
     url : 'http://localhost:8080/geoserver/wms',
     layers : 'xian:satellite16', 
     parameters: {
@@ -23,18 +23,18 @@ import BaseLayer from './baseLayer';
         roll: 359.9323408763138,
     },
 });
-wmsLayer.load();
+wmtsLayer.load();
  */
-class WMSLayer extends BaseLayer {
+class WMTSLayer extends BaseLayer {
     /**
     * @param {Cesium.Viewer} viewer 地图viewer对象 
     * @param {Object} opt 基础配置
     * @param {String} opt.url 模型服务地址
-    * @param {String} opt.layers wms服务中图层名称
-    * @param {Object} opt.parameters 地图获取功能GetMap所需要的参数
-    * @param {Boolean} [opt.enablePickFeatures=true] 是否可通过鼠标拾取元素
-    * @param {String} [opt.crs] CRS定义，WMS版本 >= 1.3.0
-    * @param {String} [opt.srs] SRS定义，WMS版本为1.1.0 或 1.1.1
+    * @param {String} opt.layer 服务中图层名称
+    * @param {String} opt.style 样式设置
+    * @param {String} opt.tileMatrixSetID 
+    * @param {Array} opt.tileMatrixLabels 
+    * @param {String} [opt.format='image/jpeg'] 切片类型
     * @param {Number} opt.minimumLevel 地图服务最小层级
     * @param {Number} opt.maximumLevel 地图服务最大层级
     * @param {Number} [opt.tileWidth=256] 服务切片宽度
@@ -42,12 +42,12 @@ class WMSLayer extends BaseLayer {
     */
     constructor(viewer, opt) {
         super(viewer, opt);
-        this.type = "wms";
+        this.type = "wmts";
         if (!this.providerAttr.layers) {
             console.log("当前服务缺少 layers 参数！", this.providerAttr);
         }
-        this._provider = new Cesium.WebMapServiceImageryProvider(this.providerAttr);
+        this._provider = new Cesium.WebMapTileServiceImageryProvider(this.providerAttr);
     }
 }
 
-export default WMSLayer;
+export default WMTSLayer;

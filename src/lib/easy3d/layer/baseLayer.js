@@ -11,6 +11,7 @@ class BaseLayer {
      * @param {Object} opt 基础配置，可将
      * @param {String | Number} opt.id 地图服务id
      * @param {String} opt.url 地图服务地址
+     * @param {Object} [opt.view] 图层定位视角
      * @param {Array} [opt.rectangle] 地图服务范围 [117,40,118,41]
      * @param {Number|Function} [opt.alpha=1.0] 图层透明度
      * @param {Number|Function} [opt.nightAlpha=1.0] 在晚上的图层透明度

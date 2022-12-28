@@ -14,6 +14,7 @@ import TMSLayer from "./layer/tmsLayer.js";
 import XYZLayer from "./layer/xyzLayer.js";
 import TilesetLayer from "./layer/tilesetLayer";
 import WMSLayer from "./layer/wmsLayer";
+import WMTSLayer from "./layer/wmtsLayer";
 
 
 
@@ -67,7 +68,7 @@ export default {
   MapViewer,
   DrawTool,
 
-  ArcgiscacheLayer, MapserverLayer, GridLayer, GeojsonLayer, TDTLayer, SingleImageLayer, TMSLayer, XYZLayer, TilesetLayer, WMSLayer,
+  ArcgiscacheLayer, MapserverLayer, GridLayer, GeojsonLayer, TDTLayer, SingleImageLayer, TMSLayer, XYZLayer, TilesetLayer, WMSLayer, WMTSLayer,
 
   LayerTool,
 

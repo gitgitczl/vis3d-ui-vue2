@@ -1,6 +1,11 @@
 // wfs geojson 格式 均可使用此类
 import cUtil from "../cUtil"
 import BaseLayer from './baseLayer';
+/**
+ * geojson类型图层数据加载
+ * @class
+ * @augments BaseLayer
+ */
 class GeojsonLayer extends BaseLayer{
     constructor(viewer, opt) {
         super(viewer, opt);
