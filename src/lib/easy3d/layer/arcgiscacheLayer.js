@@ -5,6 +5,13 @@ import BaseLayer from './baseLayer';
  * @augments BaseLayer
  */
 class ArcgiscacheLayer extends BaseLayer {
+    /**
+     * 
+     * @param {Object} opt 基础配置，可将
+     * @param {Number} opt.minimumLevel 地图服务最小层级
+     * @param {Number} opt.maximumLevel 地图服务最大层级
+     * 
+     */
     constructor(viewer, opt) {
         super(viewer, opt);
         this.type = "arcgiscache";

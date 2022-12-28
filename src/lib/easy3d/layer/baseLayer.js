@@ -3,22 +3,41 @@ import cUtil from "../cUtil";
 // 图层管理父类
 /**
  * 图层基类
- * @class
+ * @description 图层类父类
  */
 class BaseLayer {
     /**
-     * 
      * @param {Cesium.Viewer} viewer 地图viewer对象 
-     * @param {Object} opt 基础配置
+     * @param {Object} opt 基础配置，可将
      * @param {String | Number} opt.id 地图服务id
      * @param {String} opt.url 地图服务地址
-     * @param {Array} opt.rectangle 地图服务范围 [117,40,118,41]
-     * @param {Number} opt.minimumLevel 地图服务最小层级
-     * @param {Number} opt.maximumLevel 地图服务最大层级
+     * @param {Array} [opt.rectangle] 地图服务范围 [117,40,118,41]
+     * @param {Number|Function} [opt.alpha=1.0] 图层透明度
+     * @param {Number|Function} [opt.nightAlpha=1.0] 在晚上的图层透明度
+     * @param {Number|Function} [opt.dayAlpha=1.0] 在白天的图层透明度
+     * @param {Number|Function} [opt.brightness=1.0] 图层亮度
+     * @param {Number|Function} [opt.contrast=1.0] 图层对比度
+     * @param {Number|Function} [opt.hue=0.0] 图层色调
+     * @param {Number|Function} [opt.saturation=1.0] 图层饱和度
+     * @param {Number|Function} [opt.gamma=1.0] 
+     * @param {Boolean} [opt.show=true] 是否显示
+     * @param {Number} [opt.maximumAnisotropy=maximum supported] 
+     * @param {Number} [opt.minimumTerrainLevel] 显示该图层的最小地形层级
+     * @param {Number} [opt.maximumTerrainLevel] 显示该图层的最大地形层级
+     * @param {String} [opt.colorToAlpha] 颜色转透明度
+     * @param {Number} [opt.colorToAlphaThreshold=0.004] 
+     * 
      */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.opt = opt || {};
+        // 定义imageryLayer基础参数种类
+        const layerAttrs = [
+            'rectangle','alpha','nightAlpha','dayAlpha','brightness','contrast',
+            'hue','saturation','gamma','show','maximumAnisotropy','minimumTerrainLevel','maximumTerrainLevel',
+            'colorToAlpha','colorToAlphaThreshold'
+        ]
+
         /**
          * @property {String | Number} id 图层id
          */
@@ -29,33 +48,34 @@ class BaseLayer {
         }
 
         /**
-         * @property {Object} providerAttr 服务相关配置
+         * @property {Object} providerAttr provider相关配置
          */
         this.providerAttr = {};
 
+        /**
+         * @property {Object} imageryLayerAttr imageryLayer相关配置
+         */
+        this.imageryLayerAttr = {};
+
         if (this.opt.rectangle) {
-            this.opt.rectangle = new Cesium.Rectangle(
+            let trectangle = new Cesium.Rectangle(
                 Cesium.Math.toRadians(this.opt.rectangle[0]),
                 Cesium.Math.toRadians(this.opt.rectangle[1]),
                 Cesium.Math.toRadians(this.opt.rectangle[2]),
                 Cesium.Math.toRadians(this.opt.rectangle[3]));
-            this.providerAttr.rectangle = this.opt.rectangle; // 控制加载的范围
+            this.providerAttr.rectangle = trectangle;
+            this.imageryLayerAttr.rectangle = trectangle;
         }
-        // 控制加载的层级
-        if (this.opt.minimumLevel) this.providerAttr.minimumLevel = this.opt.minimumLevel;
-        if (this.opt.maximumLevel) this.providerAttr.maximumLevel = this.opt.maximumLevel;
+
         this.providerAttr.url = opt.url;
-        if (this.opt.srs == "EPSG:3857") {
-            this.opt.tilingScheme = new Cesium.WebMercatorTilingScheme();
-        } else if (this.opt.srs == "EPSG:4490") {
-
-        } else if (this.opt.srs == "EPSG:4326") {
-            this.opt.tilingScheme = new Cesium.GeographicTilingScheme();
-        } else {
-
-        }
-
-        this.providerAttr = Object.assign(this.opt, this.providerAttr);
+        // 从opt中过滤出provider的参数
+        for(let field in this.opt){
+            if(layerAttrs.indexOf(field)==-1){
+                this.providerAttr[field] = this.opt[field];
+            }else{
+                this.imageryLayerAttr[field] = this.opt[field];
+            }
+        }        
 
         /**
          * @property {Cesium.ImageryLayer} layer 图层
@@ -66,6 +86,16 @@ class BaseLayer {
          * @property {Cesium.ImageryProvider} provider 图层
          */
         this._provider = {};
+
+        /*  if (this.opt.srs == "EPSG:3857") {
+            this.opt.tilingScheme = new Cesium.WebMercatorTilingScheme();
+        } else if (this.opt.srs == "EPSG:4490") {
+
+        } else if (this.opt.srs == "EPSG:4326") {
+            this.opt.tilingScheme = new Cesium.GeographicTilingScheme();
+        } else {
+
+        } */
     }
 
     get layer() {
@@ -77,16 +107,7 @@ class BaseLayer {
      */
     load() {
         if (!this._provider || this._provider == {}) return;
-        let options = {
-            rectangle: this.opt.rectangle,
-            /*  cutoutRectangle : this.opt.rectangle, */
-            alpha: this.opt.alpha || 1, // 控制显示的层级
-            show: this.opt.show == undefined ? true : this.opt.show
-        }
-        if (this.opt.minimumTerrainLevel) options.minimumTerrainLevel = this.opt.minimumTerrainLevel; // 控制显示的层级
-        if (this.opt.maximumTerrainLevel) options.maximumTerrainLevel = this.opt.maximumTerrainLevel;  // 控制显示的层级
-        /* options = Object.assign(this.opt, options); */
-        this._layer = new Cesium.ImageryLayer(this._provider, options);
+        this._layer = new Cesium.ImageryLayer(this._provider, this.imageryLayerAttr);
         /* this.viewer.imageryLayers.add(this._layer, this.opt.index); */
         this.viewer.imageryLayers.add(this._layer);
         this._layer.attr = this.opt; // 保存配置信息
@@ -96,16 +117,16 @@ class BaseLayer {
         return this._layer;
     }
 
-     /**
-     * 移除
-     */
+    /**
+    * 移除
+    */
     remove() {
         if (this._layer) this.viewer.imageryLayers.remove(this._layer);
     }
 
-     /**
-     * 展示
-     */
+    /**
+    * 展示
+    */
     show() {
         if (this._layer) {
             this._layer.show = true;
@@ -113,9 +134,9 @@ class BaseLayer {
         }
     }
 
-     /**
-     * 隐藏
-     */
+    /**
+    * 隐藏
+    */
     hide() {
         if (this._layer) {
             this._layer.show = false;

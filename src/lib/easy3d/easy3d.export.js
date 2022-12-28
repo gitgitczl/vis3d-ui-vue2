@@ -3,6 +3,20 @@ import "./easy3d.css";
 import cUtil from "./cUtil";
 import cTool from "./cTool";
 import DrawTool from "./plot/drawTool";
+
+import ArcgiscacheLayer from "./layer/arcgiscacheLayer.js";
+import MapserverLayer from './layer/mapserverLayer.js';
+import GridLayer from "./layer/gridLayer.js";
+import GeojsonLayer from "./layer/geojsonLayer.js";
+import TDTLayer from "./layer/tdtLayer.js";
+import SingleImageLayer from "./layer/singleImageLayer.js";
+import TMSLayer from "./layer/tmsLayer.js";
+import XYZLayer from "./layer/xyzLayer.js";
+import TilesetLayer from "./layer/tilesetLayer";
+import WMSLayer from "./layer/wmsLayer";
+
+
+
 import LayerTool from "./layer/layerTool";
 import "./prompt/prompt.css";
 import Prompt from "./prompt/prompt";
@@ -52,7 +66,11 @@ export default {
   cTool,
   MapViewer,
   DrawTool,
+
+  ArcgiscacheLayer, MapserverLayer, GridLayer, GeojsonLayer, TDTLayer, SingleImageLayer, TMSLayer, XYZLayer, TilesetLayer, WMSLayer,
+
   LayerTool,
+
   MeasureTool,
   Prompt,
   gadgets,
