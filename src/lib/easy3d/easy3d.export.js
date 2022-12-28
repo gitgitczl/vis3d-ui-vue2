@@ -17,7 +17,6 @@ import WMSLayer from "./layer/wmsLayer";
 import WMTSLayer from "./layer/wmtsLayer";
 
 
-
 import LayerTool from "./layer/layerTool";
 import "./prompt/prompt.css";
 import Prompt from "./prompt/prompt";

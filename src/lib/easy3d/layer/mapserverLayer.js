@@ -25,6 +25,10 @@ class MapserverLayer extends BaseLayer {
      */
     constructor(viewer, opt) {
         super(viewer, opt);
+
+        /**
+        * @property {String} type 类型
+        */
         this.type = "mapserver";
         this._provider = new Cesium.ArcGisMapServerImageryProvider(this.providerAttr);
     }

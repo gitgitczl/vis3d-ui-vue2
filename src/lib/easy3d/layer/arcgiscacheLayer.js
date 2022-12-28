@@ -34,6 +34,9 @@ class ArcgiscacheLayer extends BaseLayer {
      */
     constructor(viewer, opt) {
         super(viewer, opt);
+        /**
+         * @property {String} type 类型
+         */
         this.type = "arcgiscache";
         if (!Cesium.UrlTemplateImageryProvider.prototype.padLeft0) {
             Cesium.UrlTemplateImageryProvider.prototype.padLeft0 = function (numStr, n) {

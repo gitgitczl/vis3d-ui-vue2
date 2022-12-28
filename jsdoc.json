@@ -4,15 +4,22 @@
             "./src/lib/easy3d/cUtil.js",
             "./src/lib/easy3d/cTool.js",
             "./src/lib/easy3d/mapViewer.js",
+            
             "./src/lib/easy3d/layer/baseLayer.js",
-            "./src/lib/easy3d/layer/mapserverLayer.js",
             "./src/lib/easy3d/layer/arcgiscacheLayer.js",
-            "./src/lib/easy3d/layer/tdtLayer.js",
+            "./src/lib/easy3d/layer/geojsonLayer.js",
             "./src/lib/easy3d/layer/gridLayer.js",
-            "./src/lib/easy3d/layer/tmsLayer.js",
-            "./src/lib/easy3d/layer/tilesetLayer.js",
+            "./src/lib/easy3d/layer/mapserverLayer.js",
             "./src/lib/easy3d/layer/singleImageLayer.js",
+            "./src/lib/easy3d/layer/tdtLayer.js",
+            "./src/lib/easy3d/layer/tilesetLayer.js",
+            "./src/lib/easy3d/layer/tmsLayer.js",
+            "./src/lib/easy3d/layer/wmsLayer.js",
+            "./src/lib/easy3d/layer/wmtsLayer.js",
+            "./src/lib/easy3d/layer/xyzLayer.js",
+            
             "./src/lib/easy3d/layer/layerTool.js",
+
             "./src/lib/easy3d/static/layerType.js"
         ],
         "includePattern": ".+\\.js(doc|x)?$",

@@ -25,9 +25,13 @@ class GridLayer extends BaseLayer {
     * @param {Number} [opt.canvasSize==256] 渲染的canvas尺寸
     */
     constructor(viewer, opt) {
-        debugger
         super(viewer, opt);
+
+        /**
+        * @property {String} type 类型
+        */
         this.type = "grid";
+        
         const color = Cesium.Color.fromCssColorString(opt.color || '#33FFFF');
         const glowColor = Cesium.Color.fromCssColorString(opt.glowColor || '#33FFFF');
         const backgroundColor = Cesium.Color.fromCssColorString(opt.backgroundColor || '#CCCCCC');

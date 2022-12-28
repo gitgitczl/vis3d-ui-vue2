@@ -30,9 +30,13 @@ class TDTLayer extends BaseLayer {
             "56b81006f361f6406d0e940d2f89a39c"
         ];
         super(viewer, opt);
+
+        /**
+        * @property {String} type 类型
+        */
         this.type = "tdt";
         this.opt = opt || {};
-        // 设定key 
+        
         if (!this.opt.keys || this.opt.keys.length == 0) {
             let random = Math.random() * keys.length;
             random = Math.floor(random);

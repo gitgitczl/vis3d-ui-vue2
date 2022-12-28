@@ -32,7 +32,11 @@ class TMSLayer extends BaseLayer {
      */
     constructor(viewer, opt) {
         super(viewer, opt);
-        this.type = "tmsLayer";
+
+        /**
+        * @property {String} type 类型
+        */
+        this.type = "tms";
         this._provider = new Cesium.TileMapServiceImageryProvider(this.opt);
     }
 }

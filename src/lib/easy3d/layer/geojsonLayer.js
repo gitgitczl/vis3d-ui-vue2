@@ -2,16 +2,77 @@
 import cUtil from "../cUtil"
 import BaseLayer from './baseLayer';
 /**
- * geojson类型图层数据加载
+ * geojson/wfs类型图层数据加载
  * @class
  * @augments BaseLayer
+ * @example
+ * let geojsonLayer = new easy3d.GeojsonLayer(viewer,{
+ *  show: false,
+    url: "data/area.json",
+    alpha: 0.5,
+    style: {
+    point: {
+        color: "#00FFFF",
+
+        colorAlpha: 1,
+        outlineWidth: 1,
+        outlineColor: "#000000",
+        outlineColorAlpha: 1,
+        pixelSize: 20,
+    },
+    polyline: {
+        color: "#FFFF00",
+        colorAlpha: 1,
+        width: 3,
+        clampToGround: 1,
+    },
+    polygon: {
+        heightReference: 1,
+        fill: true,
+        color: {
+        conditions: "random",
+        type: "color", // 随机数返回值类型 number / color(16进制颜色)
+        },
+        colorAlpha: 1,
+        outline: true,
+        outlineWidth: 1,
+        outlineColor: "#FFFF00",
+        outlineColorAlpha: 1,
+    },
+    },
+
+    tooltip: [
+    {
+        field: "name",
+        fieldName: "名称",
+    },
+    {
+        field: "ADCODE99",
+        fieldName: "编号",
+    },
+    ];
+  geojsonLayer.load();
  */
-class GeojsonLayer extends BaseLayer{
+class GeojsonLayer extends BaseLayer {
+    /**
+     * 
+     * @param {Cesium.viewer} viewer 地图viewer对象 
+     * @param {Object} opt 基础配置
+     * @param {String} opt.url 模型服务地址
+     * @param {Object} [opt.style] 要素样式
+     * @param {typeName} [opt.typeName] 图层名称
+     */
     constructor(viewer, opt) {
         super(viewer, opt);
+        /**
+         * @property {String} type 类型
+         */
         this.type = "geojson";
+
         this.viewer = viewer;
+
         this.opt = opt || {};
+
         let defaultStyleVal = {
             "point": {
                 "color": "#00FFFF",
@@ -38,17 +99,37 @@ class GeojsonLayer extends BaseLayer{
                 "outlineColorAlpha": 1
             }
         };
+
+        /**
+         * @property {Object} style 要素样式
+         */
         this.style = Object.assign(defaultStyleVal, opt.style || {});
         this.url = this.opt.url || "";
         if (this.url.indexOf("WFS") != -1) { // wfs服务
             this.url = this.opt.url + `?service=WFS&version=1.0.0&request=GetFeature&typeName=${this.opt.typeName}&maxFeatures=50&outputFormat=application%2Fjson`;
         }
+
+        /**
+         * @property {Cesium.CustomDataSource} _layer entity集合
+         */
         this._layer = new Cesium.CustomDataSource(this.opt.typeName || ("geojson" + (new Date().getTime())));
         this._layer.attr = this.opt; // 绑定配置信息
         this.viewer.dataSources.add(this._layer);
     }
 
-    // 加载
+    /**
+     *
+     * @callback loadcallback
+     * @param {number} responseCode
+     * @param {string} responseMessage
+     */
+
+
+    /**
+     * 图层加载
+     * @param {loadcallback} fun 加载完成后的回调函数
+    */
+   
     load(fun) {
         let that = this;
         let resourece = Cesium.Resource.fetchJson({
@@ -120,9 +201,13 @@ class GeojsonLayer extends BaseLayer{
                 }
             }
 
-            if(fun) fun();
+            if (fun) fun();
         })
     }
+    
+    /**
+     * 缩放至图层
+     */
     zoomTo() {
         if (!this._layer) return;
         if (this._layer.attr.view) {
@@ -131,20 +216,29 @@ class GeojsonLayer extends BaseLayer{
             this.viewer.zoomTo(this._layer.entities)
         }
     }
-    // 移除
+
+    /**
+    * 移除
+    */
     remove() {
         if (this._layer) {
             this.viewer.dataSources.remove(this._layer);
         }
     }
-    // 显示
+    
+    /**
+    * 展示
+    */
     show() {
         if (this._layer) {
             this._layer.show = true;
             this._layer.attr.show = true;
         }
     }
-    // 隐藏
+    
+    /**
+    * 隐藏
+    */
     hide() {
         if (this._layer) {
             this._layer.attr.show = false;
@@ -168,8 +262,6 @@ class GeojsonLayer extends BaseLayer{
             <table>${html}</table>
         `;
     }
-
-
 
     getStyleValue(key, value, conditions) {
         let styleValue = null;
@@ -219,6 +311,10 @@ class GeojsonLayer extends BaseLayer{
         });
     }
 
+    /**
+     * 设置透明度
+     * @param {Number} alpha 透明度（0~1）
+     */
     createPoint(position, style, properties) {
         style = this.getNewStyle(style, properties);
         let color = null;

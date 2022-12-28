@@ -42,6 +42,10 @@ class WMSLayer extends BaseLayer {
     */
     constructor(viewer, opt) {
         super(viewer, opt);
+
+        /**
+        * @property {String} type 类型
+        */
         this.type = "wms";
         if (!this.providerAttr.layers) {
             console.log("当前服务缺少 layers 参数！", this.providerAttr);

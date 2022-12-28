@@ -47,6 +47,10 @@ class TilesetLayer {
     constructor(viewer, opt) {
         super(viewer, opt);
         this.opt = opt || {};
+
+        /**
+        * @property {String} type 类型
+        */
         this.type = "3dtiles";
         if (!this.opt.url) {
             console.log("缺少服务地址！", opt);
