@@ -1,7 +1,4 @@
-/* 以下构建属性 均是在geojson的基础上进行拓展的
-    如构建properties：
-    properties
- */
+
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import CreateBillboard from './createBillboard.js'
@@ -14,7 +11,32 @@ import CreateRectangle from './createRectangle'
 import CreatePolyline from './createPolyline.js'
 import CreateArrow from "./createArrow";
 import cUtil from '../cUtil.js'
+/**
+ * 绘制控制类
+ * @class
+ * @example
+ * let drawTool = new easy3d.DrawTool(window.viewer, {
+    canEdit: true,
+  });
+  plotDrawTool.on("endCreate", function (entObj, ent) {});
+  plotDrawTool.start({
+      "name": "面",
+      "type": "polygon",
+      "style": {
+          "color": "#0000ff",
+          "outline": true,
+          "outlineColor": "#ff0000",
+          "heightReference": 1
+      }
+  })
+ */
 class DrawTool {
+  /**
+   * 
+   * @param {Cesium.viewer} viewer 地图viewer对象 
+   * @param {Object} obj 相关属性配置
+   * @param {Boolean} obj.canEdit 是否可编辑
+   */
   constructor(viewer, obj) {
     if (!viewer) {
       console.warn("缺少必要参数！--viewer");
@@ -22,13 +44,21 @@ class DrawTool {
     }
     obj = obj || {};
     this.viewer = viewer;
-    this.toolArr = [];
+    /**
+     * 标绘对象数组
+     * @property {Array} entityObjArr
+     */
+    this.entityObjArr = [];
     this.handler = null;
     this.removeHandler = new Cesium.ScreenSpaceEventHandler(
       this.viewer.scene.canvas
     );
     /* this.show = obj.drawEndShow == undefined ? true : obj.drawEndShow; */
-    this.nowEditObj = null; // 当前编辑对象
+
+    /**
+     * @property {Object} nowEditObj 当前编辑对象
+     */
+    this.nowEditObj = null;
 
     this.startEditFun = null;
     this.endEditFun = null;
@@ -40,11 +70,20 @@ class DrawTool {
     this.bindEdit();
     this.bindRemove();
     this.deletePrompt = null;
+
+    /**
+     * @property {Boolear} canEdit 绘制的对象，是否可编辑
+     */
     this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;; // 是否可以编辑
     this.lastEntityObj = null;
     this.lastStartEntityObj = null;
   }
-  // 相关事件绑定
+
+  /** 
+   * 事件绑定
+   * @param {String} type 事件类型（startEdit 开始编辑时 / endEdit 编辑结束时 / remove 删除对象时 / endCreate 创建完成后）
+   * @param {Function} fun 绑定函数
+  */
   on(type, fun) {
     if (type == "startEdit") {
       // 开始编辑事件
@@ -61,17 +100,33 @@ class DrawTool {
     } else {
     }
   }
+
+  /**
+   * 开启编辑功能
+   */
   openEdit() {
+    this.endEdit();
     this.canEdit = true;
   }
+
+  /**
+  * 关闭编辑功能
+  */
   closeEdit() {
     this.canEdit = false;
   }
+
+  /**
+   * 开始绘制
+   * @param {Object} opt 相关属性
+   * @param {String} opt.type 绘制类型 polyline、polygon、billboard、circle、rectangle、gltfModel、point、label、arrow
+   * @param {Object} opt.style 当前绘制对象的样式配置，具体配置见{@link style};
+   * @returns {Object} entityObj 当前绘制对象
+   */
   start(opt) {
     if (!opt || !opt.type) {
       return;
     }
-
     opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
     let that = this;
     this.endEdit(); // 绘制前  结束编辑
@@ -87,7 +142,7 @@ class DrawTool {
     const fireEdit = opt.fireEdit == undefined ? true : opt.fireEdit;
     // 开始绘制
     entityObj.start(function (entity) {
-      that.toolArr.push(entityObj);
+      that.entityObjArr.push(entityObj);
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
       if (opt.success) opt.success(entityObj, entity);
       if (that.endCreateFun) that.endCreateFun(entityObj, entity);
@@ -105,6 +160,10 @@ class DrawTool {
     this.lastStartEntityObj = entityObj;
     return entityObj;
   }
+
+  /**
+   * 结束当前操作
+  */
   end() {
     if (this.lastStartEntityObj && this.lastStartEntityObj.state == "startCreate") { // 禁止一次绘制多个
       this.lastStartEntityObj.destroy();
@@ -112,14 +171,11 @@ class DrawTool {
     }
     this.endEdit();
   }
-  // 取消当前的状态
-  cancel() {
-    if (this.lastStartEntityObj && (this.lastStartEntityObj.state != "endCreate" || this.lastStartEntityObj.state != "endEdit")) {
-      this.lastStartEntityObj.destroy();
-      this.lastStartEntityObj = null;
-    }
-  }
-  // 开始编辑某个
+
+  /**
+  * 开始编辑绘制对象
+  * @param {Object} entityObj 绘制的对象
+ */
   startEditOne(entityObj) {
     if (!this.canEdit) return;
     if (this.lastEntityObj) {
@@ -137,13 +193,27 @@ class DrawTool {
       this.lastEntityObj = entityObj;
     }
   }
-  // 修改某个的样式
+
+  /**
+   * 修改绘制对象的样式
+   * @param {Object} entityObj 绘制的对象
+   * @param {Object} style 样式
+  */
   updateOneStyle(entityObj, style) {
     if (entityObj) {
       entityObj.setStyle(style);
     }
   }
-  // 根据坐标来创建
+
+  /**
+   * 根据坐标构建绘制对象
+   * @param {Object} opt 绘制的对象
+   * @param {Cesium.Cartesian3[] | Array} opt.positions 坐标数组
+   * @param {Object} opt.style 当前绘制对象的样式配置，具体配置见{@link style};
+   * @param {Funtion} opt.success 创建完成的回调函数
+   * @param {Boolean} [opt.show] 创建完成后，是否展示
+   * @param {Boolean} [opt.fireEdit] 创建完成后，是否进入编辑状态
+  */
   createByPositions(opt) {
     opt = opt || {};
     if (!opt) opt = {};
@@ -153,9 +223,8 @@ class DrawTool {
     let entityObj = this.createByType(opt);
     if (!entityObj) return;
     entityObj.attr = opt; // 保存开始绘制时的属性
-    debugger
     entityObj.createByPositions(opt.positions, function (entity) {
-      that.toolArr.push(entityObj);
+      that.entityObjArr.push(entityObj);
       entityObj.setStyle(opt.style); // 设置相关样式
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
       if (opt.success) opt.success(entityObj, entity);
@@ -170,7 +239,11 @@ class DrawTool {
     });
     return entityObj;
   }
-  // 根据geojson构建entity
+  
+  /**
+   * 由geojson格式数据创建对象
+   * @param {Object} data geojson格式数据
+  */
   createByGeojson(data) {
     let { features } = data;
     for (let i = 0; i < features.length; i++) {
@@ -204,15 +277,19 @@ class DrawTool {
       })
     }
   }
-  // 转为geojson
+  
+  /**
+   * 转为geojson格式
+   * @returns {Object} featureCollection geojson格式数据
+   */
   toGeojson() {
     let featureCollection = {
       type: "FeatureCollection",
       features: [],
     };
-    if (this.toolArr.length == 0) return null;
-    for (let i = 0; i < this.toolArr.length; i++) {
-      let item = this.toolArr[i];
+    if (this.entityObjArr.length == 0) return null;
+    for (let i = 0; i < this.entityObjArr.length; i++) {
+      let item = this.entityObjArr[i];
       let coordinates = item.getPositions(true);
       let style = item.getStyle();
       let geoType = this.transType(item.type);
@@ -269,17 +346,19 @@ class DrawTool {
     return geoType;
   }
 
-
+  /**
+   * 销毁
+   */
   destroy() {
     // 取消当前绘制
     if (this.lastStartEntityObj) {
       this.lastStartEntityObj.destroy();
       this.lastStartEntityObj = null;
     }
-    for (let i = 0; i < this.toolArr.length; i++) {
-      this.toolArr[i].destroy();
+    for (let i = 0; i < this.entityObjArr.length; i++) {
+      this.entityObjArr[i].destroy();
     }
-    this.toolArr = [];
+    this.entityObjArr = [];
     this.nowEditObj = null;
 
     if (this.handler) {
@@ -292,32 +371,50 @@ class DrawTool {
       this.removeHandler = null;
     }
   }
+
+  /**
+   * 移除某个绘制对象
+   * @param {Object} entityObj 绘制对象
+   */
   removeOne(entityObj) {
     if (!entityObj) return;
     this.removeById(entityObj.objId);
   }
+
+  /**
+   * 移除全部绘制对象
+   */
   removeAll() {
     // 取消当前绘制
     if (this.lastStartEntityObj) {
       this.lastStartEntityObj.destroy();
       this.lastStartEntityObj = null;
     }
-    for (let i = 0; i < this.toolArr.length; i++) {
-      let obj = this.toolArr[i];
+    for (let i = 0; i < this.entityObjArr.length; i++) {
+      let obj = this.entityObjArr[i];
       obj.destroy();
     }
-    this.toolArr = [];
+    this.entityObjArr = [];
     this.nowEditObj = null;
   }
-  // 是否包含某个对象
+
+   /**
+   * 是否包含某个对象
+   * @param {Object} entityObj 绘制对象
+   */
   hasEntityObj(entityObj) {
     if (!entityObj) return false;
     let obj = this.getEntityObjByObjId(entityObj.objId);
     return obj != {} ? true : false;
   }
+
+   /**
+   * 根据id移除创建的对象
+   * @param {String | Number} id 对象id
+   */
   removeById(id) {
     let obj = this.getEntityObjByObjId(id);
-    this.toolArr.splice(obj.index, 1);
+    this.entityObjArr.splice(obj.index, 1);
     // 触发on绑定的移除事件
     if (this.removeFun)
       this.removeFun(obj.entityObj, obj.entityObj.getEntity());
@@ -325,20 +422,33 @@ class DrawTool {
       obj.entityObj.destroy();
     }
   }
+
+   /**
+   * 根据id缩放至绘制的对象
+   * @param {String} id 对象id
+   */
   zoomToById(id) {
     let obj = this.getEntityObjByObjId(id);
     if (obj.entityObj) {
       obj.entityObj.zoomTo();
     }
   }
-  // 根据标绘对象绑定的属性获取标绘对象 id : 123456
-  getEntityObjByAttr(arg1, arg2) {
+  
+
+  /**
+   * 根据属性字段获取对象
+   * @param {String} fieldName 属性字段名称
+   * @param {String} [fieldValue] 属性值，若不填，则默认以id进行查询
+   * @returns {Object} obj 对象在数组中位置以及对象
+   */
+
+  getEntityObjByField(fieldName, fieldValue) {
     let obj = {};
-    if (!arg2) {
+    if (!fieldValue) {
       // 如果缺少第二个参数 则默认以attr.id进行查询
-      for (let i = 0; i < this.toolArr.length; i++) {
-        let item = this.toolArr[i];
-        if (item.attr.id == arg1) {
+      for (let i = 0; i < this.entityObjArr.length; i++) {
+        let item = this.entityObjArr[i];
+        if (item.attr.id == fieldName) {
           obj.entityObj = item;
           obj.index = i;
           break;
@@ -346,9 +456,9 @@ class DrawTool {
       }
     } else {
       // 否则 以键值对的形式进行查询
-      for (let ind = 0; ind < this.toolArr.length; ind++) {
-        let item = this.toolArr[ind];
-        if (item.attr[arg1] == arg2) {
+      for (let ind = 0; ind < this.entityObjArr.length; ind++) {
+        let item = this.entityObjArr[ind];
+        if (item.attr[fieldName] == fieldValue) {
           obj.entityObj = item;
           obj.index = ind;
           break;
@@ -358,17 +468,26 @@ class DrawTool {
     return obj;
   }
 
+  /**
+   * 根据id设置对象的显示隐藏
+   * @param {String | Number} id 对象id
+   * @param {Boolean} visible 是否展示
+   */
   setVisible(id, visible) {
-    let obj = this.getEntityObjByAttr("id", id);
+    let obj = this.getEntityObjByField("id", id);
     if (obj.entityObj) obj.entityObj.setVisible(visible);
   }
 
-  // 根据标绘对象的optid 获取标会对象
+  /**
+   * 根据id获取对象
+   * @param {String | Number} id 对象id
+   * @returns {Object} obj 对象在数组中位置以及对象
+   */
   getEntityObjByObjId(id) {
     if (!id) return;
     let obj = {};
-    for (let i = 0; i < this.toolArr.length; i++) {
-      let item = this.toolArr[i];
+    for (let i = 0; i < this.entityObjArr.length; i++) {
+      let item = this.entityObjArr[i];
       if (item.objId == id) {
         obj.entityObj = item;
         obj.index = i;
@@ -388,12 +507,12 @@ class DrawTool {
       let pick = that.viewer.scene.pick(evt.position);
       if (Cesium.defined(pick) && pick.id) {
         // 选中实体
-        for (let i = 0; i < that.toolArr.length; i++) {
+        for (let i = 0; i < that.entityObjArr.length; i++) {
           if (
-            pick.id.objId == that.toolArr[i].objId &&
-            (that.toolArr[i].state != "startCreate" ||
-              that.toolArr[i].state != "creating" ||
-              that.toolArr[i].state != "endEdit")
+            pick.id.objId == that.entityObjArr[i].objId &&
+            (that.entityObjArr[i].state != "startCreate" ||
+              that.entityObjArr[i].state != "creating" ||
+              that.entityObjArr[i].state != "endEdit")
           ) {
             if (that.lastEntityObj) {
               // 结束除当前选中实体的所有编辑操作
@@ -407,10 +526,10 @@ class DrawTool {
               that.lastEntityObj = null;
             }
             // 开始编辑
-            that.toolArr[i].startEdit();
-            that.nowEditObj = that.toolArr[i];
+            that.entityObjArr[i].startEdit();
+            that.nowEditObj = that.entityObjArr[i];
             if (that.startEditFun) that.startEditFun(that.nowEditObj, pick.id); // 开始编辑
-            that.lastEntityObj = that.toolArr[i];
+            that.lastEntityObj = that.entityObjArr[i];
             break;
           }
         }
@@ -429,15 +548,10 @@ class DrawTool {
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
-  // 关闭编辑功能
-  closeEdit() {
-    this.endEdit();
-    this.canEdit = false;
-  }
-  // 开启编辑功能
-  openEdit() {
-    this.canEdit = true;
-  }
+  
+  /**
+   * 结束编辑
+   */
   endEdit() {
     if (this.lastEntityObj) {
       // 结束除当前选中实体的所有编辑操作
@@ -450,8 +564,8 @@ class DrawTool {
       }
       this.lastEntityObj = null;
     }
-    for (let i = 0; i < this.toolArr.length; i++) {
-      this.toolArr[i].endEdit();
+    for (let i = 0; i < this.entityObjArr.length; i++) {
+      this.entityObjArr[i].endEdit();
     }
   }
   // 绑定删除事件
@@ -480,7 +594,7 @@ class DrawTool {
           that.removeFun(entObj, entObj.getEntity());
         }
         entObj.destroy();
-        that.toolArr.splice(that.deleteEntityObj.index, 1);
+        that.entityObjArr.splice(that.deleteEntityObj.index, 1);
       });
     }
 
@@ -495,16 +609,16 @@ class DrawTool {
       let pick = that.viewer.scene.pick(evt.position);
       if (Cesium.defined(pick) && pick.id) {
         // 选中实体
-        for (let i = 0; i < that.toolArr.length; i++) {
+        for (let i = 0; i < that.entityObjArr.length; i++) {
           if (
-            pick.id.objId == that.toolArr[i].objId &&
-            (that.toolArr[i].state == "endCreate" ||
-              that.toolArr[i].state == "startEdit" ||
-              that.toolArr[i].state == "endEdit")
+            pick.id.objId == that.entityObjArr[i].objId &&
+            (that.entityObjArr[i].state == "endCreate" ||
+              that.entityObjArr[i].state == "startEdit" ||
+              that.entityObjArr[i].state == "endEdit")
           ) {
             // 结束编辑或结束构建才给删
             that.deleteEntityObj = {
-              entityObj: that.toolArr[i],
+              entityObj: that.entityObjArr[i],
               index: i,
             };
             remove(evt.position);
@@ -521,8 +635,13 @@ class DrawTool {
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
-  getAll() {
-    return this.toolArr;
+
+  /**
+   * 获取当前所有对象
+   * @returns {Array} entityObjArr
+   */
+  getEntityObjArr() {
+    return this.entityObjArr;
   }
   createByType(opt) {
     let entityObj = undefined;

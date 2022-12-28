@@ -1,6 +1,15 @@
 // 所有标绘类的父类
 import cUtil from "../cUtil";
+/**
+ * 标绘基类
+ * @class
+ */
 class BasePlot {
+    /**
+     * 
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} style 样式属性 
+     */
     constructor(viewer, style) {
         this.viewer = viewer;
         this.style = style || {};

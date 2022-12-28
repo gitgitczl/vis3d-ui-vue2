@@ -17,10 +17,13 @@
             "./src/lib/easy3d/layer/wmsLayer.js",
             "./src/lib/easy3d/layer/wmtsLayer.js",
             "./src/lib/easy3d/layer/xyzLayer.js",
-            
             "./src/lib/easy3d/layer/layerTool.js",
+            "./src/lib/easy3d/static/layerType.js",
 
-            "./src/lib/easy3d/static/layerType.js"
+            "./src/lib/easy3d/plot/drawTool.js",
+            "./src/lib/easy3d/static/style.js"
+
+
         ],
         "includePattern": ".+\\.js(doc|x)?$",
         "exclude": ["./apidoc/"]
