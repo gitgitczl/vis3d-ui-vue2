@@ -11,33 +11,99 @@
  *          ...  同ModelGraphics中配置
  */
 import cUtil from "../cUtil";
+/**
+ * 漫游类
+ * @class
+ * 
+ */
 class Roam {
+  /**
+   * @param {Cesium.Viewer} viewer 地图viewer对象
+   * @param {Object} opt 
+   * @param {Date} [opt.startTime] 漫游开始时间
+   * @param {Cesium.Cartesian3[] | Array} [opt.positions] 路线坐标
+   * @param {Functioin} [opt.endRoamCallback] 结束漫游时的回调函数
+   * @param {Functioin} [opt.roamingCallback] 漫游过程中的回调函数
+   * @param {Number} [opt.alltimes] 漫游总时长（s）
+   * @param {Number} [opt.speed] 漫游速度（m/s）
+   */
   constructor(viewer, opt) {
-    console.log("漫游对象属性--》", opt);
     this.viewer = viewer;
+    /**
+     * @property {Number} objId 唯一标识
+     */
     this.objId = Number(
       new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)
     );
+
     this.opt = opt || {};
+
+    /**
+     * @property {Cesium.JulianDate} startTime 开始时间
+     */
     this.startTime = opt.startTime
       ? Cesium.JulianDate.fromDate(opt.startTime, new Cesium.JulianDate())
       : this.viewer.clock.currentTime.clone();
+
+    /**
+     * @property {Cesium.JulianDate} endTime 结束时间
+     */
     this.endTime = null;
     if (!this.opt.positions) {
       console.log("缺少漫游坐标");
       return;
     }
+
+    /**
+     *  @property {Cesium.Cartesian3[]} positions 漫游坐标
+     */
     this.positions = this.transfromPositions(this.opt.positions);
+
+    /**
+     * @property {Number} clockSpeed 播放速度
+     */
     this.clockSpeed = 1;
+
+    /**
+     * @property {Cesium.JulianDate} stopTime 暂停时间
+     */
     this.stopTime = null;
+
+    /**
+     * @property {Number} alldistance 漫游总距离
+     */
     this.alldistance = 0;
+
+    /**
+     * @property {Number} alltimes 漫游时间
+     */
     this.alltimes = 0;
+
+    /**
+     * @property {Number} distanceED 已漫游距离
+     */
     this.distanceED = -1;
+
+    /**
+     * @property {Number} timesED 已漫游时间
+     */
     this.timesED = -1;
+
+    /**
+     * @property {Number} speed 漫游速度
+     */
     this.speed = 0;
-    this.viewType = "none"; // 漫游视角
+
+    /**
+     * @property {String} viewType 漫游视角（no~不固定视角/gs~跟随视角/dy~第一视角/sd~上帝视角）
+     */
+    this.viewType = "no";
     this.rendHandler = null;
-    this.isLockView = false; // 是否锁定视角
+
+    /**
+     * @property {Boolean} isLockView 是否锁定视角
+     */
+    this.isLockView = false; 
     this.viewXYZ = {
       // 锁定时视角参数
       x: 0,
@@ -47,7 +113,7 @@ class Roam {
 
     this.endRoamCallback = opt.endRoamCallback;
     this.roamingCallback = opt.roamingCallback;
-    this.fixType = this.opt.fixType || (this.opt.alltimes ? "0" : "1"); // 0 表示固定时长漫游 1 表示固定速度漫游
+    this.fixType = this.opt.alltimes ? "0" : "1" // 0 表示固定时长漫游 1 表示固定速度漫游
 
     this.init();
     this.setViewType(opt.viewType); // 初始化时 设置视角
@@ -79,12 +145,19 @@ class Roam {
   }
 
   // 修改漫游的路径
+  /**
+   * 
+   * @param {Cesium.Cartesian3[] | Array} positions 路线坐标
+   */
   setPositions(positions) {
     this.destroy();
     this.positions = positions;
     this.init();
   }
-  // 开始漫游
+  
+  /**
+   * 开始漫游
+   */
   start() {
     if (this.roamEntity) this.roamEntity.show = true;
     this.clockSpeed = 1;
@@ -94,7 +167,10 @@ class Roam {
     this.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
     this.computeCamera(); // 设置视角
   }
-  // 结束漫游
+
+  /**
+   * 结束漫游
+   */
   end() {
     if (this.roamEntity) this.roamEntity.show = false;
     this.viewer.clock.currentTime = this.endTime;
@@ -109,25 +185,38 @@ class Roam {
     }
     if (this.endRoamCallback) this.endRoamCallback(this.opt);
   }
-  // 暂停漫游
+
+  /**
+   * 暂停漫游
+   */
   stop() {
     this.stopTime = this.viewer.clock.currentTime.clone();
     this.viewer.clock.shouldAnimate = false;
     if (this.roamingFun) this.roamingFun();
   }
-  // 继续漫游
+
+   /**
+   * 继续漫游
+   */
   goon() {
     if (!this.stopTime) return;
     this.viewer.clock.currentTime = this.stopTime.clone();
     this.viewer.clock.shouldAnimate = true;
     this.stopTime = null;
   }
-  // 播放速度
+
+  /**
+   * 设置播放速度
+   * @param {Number} speed 播放速度
+   */
   setSpeed(speed) {
     this.clockSpeed = speed;
     this.viewer.clock.multiplier = this.clockSpeed;
   }
-  // 销毁
+
+  /**
+   * 销毁
+   */
   destroy() {
     if (this.roamEntity) {
       this.viewer.entities.remove(this.roamEntity);
@@ -365,7 +454,10 @@ class Roam {
     };
   }
 
-  // 设置漫游视角
+  /**
+   * 设置漫游视角
+   * @param {String} viewType 漫游视角（no~不固定视角/gs~跟随视角/dy~第一视角/sd~上帝视角）
+   */
   setViewType(viewType) {
     this.viewType = viewType;
     console.log("setViewType===>", this.isLockView);
@@ -396,14 +488,23 @@ class Roam {
         this.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
     }
   }
-  // 设置自定义跟随视角
+
+  /**
+   * 设置自定义跟随视角
+   * @param {Object} viewXYZ 视角参数
+   * @param {Number} viewXYZ.x x方向偏移距离
+   * @param {Number} viewXYZ.y y方向偏移距离
+   * @param {Number} viewXYZ.x z方向偏移距离
+   */
   setTrackView(viewXYZ) {
     this.isLockView = true;
-    console.log("setTrackView===>", this.isLockView);
     this.viewXYZ = viewXYZ;
   }
 
-  // 获取当前漫游的属性
+  /**
+   * 获取当前漫游的属性
+   * @returns {Object} attr 当前漫游属性
+   */
   getAttr() {
     let attr = {
       viewType: this.viewType,

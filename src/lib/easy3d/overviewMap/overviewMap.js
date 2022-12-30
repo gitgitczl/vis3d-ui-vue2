@@ -1,10 +1,27 @@
 
 import * as L from "leaflet";
 import 'leaflet/dist/leaflet.css'
+/**
+ * 鹰眼图
+ * @description 鹰眼图，依赖于二维开源框架leaflet
+ * @class
+ */
 class OverviewMap {
+    /**
+     * 
+     * @param {Cesium.Viewer} viewer 
+     * @param {Object} opt 
+     * @param {Object} opt.style 鹰眼图样式
+     * @param {Number} opt.style.height 鹰眼图窗口高度
+     * @param {Number} opt.style.width 鹰眼图窗口宽度
+     * @param {Number} opt.style.bottom 鹰眼图窗口bottom属性
+     * @param {Number} opt.style.right 鹰眼图窗口right属性
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.opt = opt || {};
+
+
         let defaulteStyle = {
             height: 150,
             width: 200,
@@ -58,12 +75,12 @@ class OverviewMap {
     sceneRenderHandler() {
         let rectangle = this.viewer.camera.computeViewRectangle();
         let extend = {};
-        if(rectangle){
+        if (rectangle) {
             extend.ymin = Cesium.Math.toDegrees(rectangle.south);
             extend.ymax = Cesium.Math.toDegrees(rectangle.north);
             extend.xmin = Cesium.Math.toDegrees(rectangle.west);
             extend.xmax = Cesium.Math.toDegrees(rectangle.east);
-        }else{
+        } else {
             extend.ymin = -90;
             extend.ymax = 90;
             extend.xmin = -180;
@@ -90,21 +107,34 @@ class OverviewMap {
         }
     }
 
-    //关闭鹰眼图
+    /**
+     * 关闭鹰眼图
+     */
     hide() {
         if (this.mapEle)
             this.mapEle.style.display = "none";
     }
-    //打开鹰眼图
+
+    /**
+     * 打开鹰眼图
+     */
     show() {
         if (this.map && this.mapEle)
             this.mapEle.style.display = "block";
     }
-    //设置矩形框样式
+
+    /**
+     * 设置鹰眼图窗口内部矩形框样式
+     * @param {Object} style 样式属性
+     */
     setStyle(style) {
         if (!style) return;
         this.showStyle = style;
     }
+
+    /**
+     * 销毁
+     */
     destroy() {
         if (this.mapEle) {
             document.body.removeChild(this.mapEle);

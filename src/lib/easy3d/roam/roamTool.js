@@ -1,5 +1,16 @@
 import Roam from "./roam";
+
+/**
+ * 漫游控制类
+ * @class
+ * @description 漫游控制类，通过此类对象，可直接添加漫游对象，并对添加的漫游对象进行控制，而不用多次new Roam。
+ */
 class RoamTool {
+    /**
+     * 
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} opt 基础配置
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.opt = opt || {};
@@ -11,13 +22,24 @@ class RoamTool {
         this.goonRoamFun = null;
         this.endCreateFun = null;
 
+        /**
+         * 漫游对象数组
+         * @property {Array} roamList 漫游对象数组
+         */
         this.roamList = [];
+        
+        /**
+         * @property {Array} nowStartRoam 当前正在漫游对象
+         */
         this.nowStartRoam = null;
     }
 
-    // 事件绑定
+    /** 
+     * 事件绑定
+     * @param {String} type 事件类型（startRoam 开始漫游时 / endRoam 结束当前漫游时 / roaming 漫游过程中 / stopRoam 漫游暂停时 / goonRoam 继续漫游时 / endCreate 漫游路线绘制完成时）
+     * @param {Function} fun 绑定函数
+     */
     on(type, fun) {
-        let that = this;
         if (type == "startRoam") {
             this.startRoamFun = fun;
         }
@@ -44,7 +66,16 @@ class RoamTool {
 
     }
 
-    // 创建漫游
+    /**
+     * 
+     * @param {Object} opt 
+     * @param {Number} [opt.roamType=0] 漫游类型（1~飞行漫游/2~贴地漫游/0~普通漫游）
+     * @param {Number} [opt.alltimes=60] 漫游时长，和speed互斥
+     * @param {Number} [opt.speed] 漫游速度，和alltimes互斥
+     * @param {String} [opt.viewType='no'] 漫游时视角类型
+     * @param {Number} opt.height 坐标高度
+     * @param {Function} callback 线路绘制完成后的回调，回调函数参数为当前创建的漫游对象
+     */
     create(opt, callback) {
         opt = opt || {};
         let { roamType, positions } = opt;
@@ -149,7 +180,12 @@ class RoamTool {
         });
     }
 
-    // 根据构建时指定的属性获取当前漫游对象
+    /**
+     * 根据构建时指定的属性获取当前漫游对象
+     * @param {String} fieldName 字段名称
+     * @param {String} fieldValue 字段值
+     * @returns {Array} 漫游对象数组
+     */
     getRoamByField(fieldName, fieldValue) {
         if (!fieldName) return [];
         let arr = [];
@@ -165,6 +201,10 @@ class RoamTool {
         return arr;
     }
 
+    /**
+     * 根据id移除漫游对象
+     * @param {String | Number} roamId 漫游对象id
+     */
     removeRoamById(roamId) {
         if (!roamId) return;
         for (let i = this.roamList.length - 1; i >= 0; i--) {
@@ -177,13 +217,20 @@ class RoamTool {
         }
     }
 
+    /**
+     * 移除漫游对象
+     * @param {Object} roam 漫游对象
+     */
     removeRoam(roam) {
         if (!roam) return;
         let roamId = roam.objId;
         this.removeRoamById(roamId);
     }
 
-    // 开始漫游
+    /**
+     * 开始漫游
+     * @param {Object} roam 漫游对象
+     */
     startRoam(roam) {
         this.endRoam();
         let roamId = roam.objId;
@@ -198,6 +245,9 @@ class RoamTool {
         }
     }
 
+    /**
+     * 结束当前漫游
+     */
     endRoam() {
         if (this.nowStartRoam) {
             this.nowStartRoam.end();
@@ -205,12 +255,19 @@ class RoamTool {
         }
     }
 
+    /**
+     * 获取当前漫游的对象属性
+     * @returns {Object} 漫游属性
+     */
     getNowroamAttr() {
         if (!this.nowStartRoam) return {};
         let attr = Object.assign(this.nowStartRoam.attr, this.nowStartRoam.getAttr());
         return attr;
     }
 
+    /**
+     * 销毁
+     */
     destroy() {
         for (let i = this.roamList.length - 1; i >= 0; i--) {
             let roam = this.roamList[i];
@@ -219,7 +276,9 @@ class RoamTool {
         this.roamList = [];
     }
 
-    // 转化为json
+    /**
+     * 转化为json
+     */
     toJson() {
         let arr = [];
         for (let i = this.roamList.length - 1; i >= 0; i--) {

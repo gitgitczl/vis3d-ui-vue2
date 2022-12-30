@@ -49,7 +49,12 @@
             "./src/lib/easy3d/measure/measureTool.js",
 
             "./src/lib/easy3d/prompt/prompt.js",
-            "./src/lib/easy3d/popupTooltip/popupTooltip.js"
+            "./src/lib/easy3d/popupTooltip/popupTooltip.js",
+
+            "./src/lib/easy3d/overviewMap/overviewMap.js",
+
+            "./src/lib/easy3d/roam/roamTool.js",
+            "./src/lib/easy3d/roam/roam.js"
 
         ],
         "includePattern": ".+\\.js(doc|x)?$",
