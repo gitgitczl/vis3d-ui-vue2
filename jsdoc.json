@@ -4,7 +4,7 @@
             "./src/lib/easy3d/cUtil.js",
             "./src/lib/easy3d/cTool.js",
             "./src/lib/easy3d/mapViewer.js",
-            
+
             "./src/lib/easy3d/layer/baseLayer.js",
             "./src/lib/easy3d/layer/arcgiscacheLayer.js",
             "./src/lib/easy3d/layer/geojsonLayer.js",
@@ -34,7 +34,23 @@
             "./src/lib/easy3d/plot/createRectangle.js",
 
             "./src/lib/easy3d/lnglatTool/lnglatNavigation.js",
-            "./src/lib/easy3d/mapNavgation/CesiumNavigation.js"
+            "./src/lib/easy3d/mapNavgation/CesiumNavigation.js",
+            
+            "./src/lib/easy3d/measure/baseMeasure.js",
+            "./src/lib/easy3d/measure/measureAzimuth.js",
+            "./src/lib/easy3d/measure/measureGroundDistance.js",
+            "./src/lib/easy3d/measure/measureHeight.js",
+            "./src/lib/easy3d/measure/measureLnglat.js",
+            "./src/lib/easy3d/measure/measureSection.js",
+            "./src/lib/easy3d/measure/measureSlope.js",
+            "./src/lib/easy3d/measure/measureSpaceArea.js",
+            "./src/lib/easy3d/measure/measureSpaceDistance.js",
+            "./src/lib/easy3d/measure/measureTriangle.js",
+            "./src/lib/easy3d/measure/measureTool.js",
+
+            "./src/lib/easy3d/prompt/prompt.js",
+            "./src/lib/easy3d/popupTooltip/popupTooltip.js"
+
         ],
         "includePattern": ".+\\.js(doc|x)?$",
         "exclude": ["./apidoc/"]

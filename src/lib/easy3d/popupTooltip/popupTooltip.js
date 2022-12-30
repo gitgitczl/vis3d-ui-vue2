@@ -1,14 +1,26 @@
 // 绑定所有entity的气泡窗
 import Prompt from "../prompt/prompt"
 import "../prompt/prompt.css";
+/**
+ * 弹窗类
+ * @class
+ * @example 
+ * let popupTooltip = new easy3d.PopupTooltipTool(viewer);
+popupTooltip.autoBindTooltip();
+popupTooltip.autoBindPopup();
+ */
 class PopupTooltipTool {
-    constructor(viewer, opt) {
+    /**
+     * @param {Cesium.Viewer} viewer 
+     */
+    constructor(viewer) {
         this.viewer = viewer;
-        this.opt = opt || {};
+        /**
+         * @property {Boolean} [toolOpen=true] 是否开启弹窗工具
+         */
         this.toolOpen = true;
         this.popupHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.tooltipHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
-
         this.lastTooltipPromptEnt = undefined;
         this.defaultVal = {
             type: 2,
@@ -17,6 +29,9 @@ class PopupTooltipTool {
     }
 
     // 点击气泡窗
+    /**
+     * 绑定点击弹出气泡窗
+     */
     autoBindPopup() {
         let that = this;
         this.popupHandler.setInputAction(function (evt) { //单击开始绘制
@@ -60,7 +75,10 @@ class PopupTooltipTool {
             ent.popupPrompt.setVisible(isvisible);
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }
-    // 鼠标移入气泡窗
+
+    /**
+     * 绑定鼠标移入气泡窗
+     */
     autoBindTooltip() {
         let that = this;
         this.popupHandler.setInputAction(function (evt) { //单击开始绘制
@@ -130,10 +148,17 @@ class PopupTooltipTool {
         }
         return new Prompt(this.viewer, defaultVal);
     }
-    // 关闭
+    
+    /**
+     * 关闭弹窗
+     */
     close() {
         this.toolOpen = false;
     }
+
+    /**
+     * 打开弹窗
+     */
     open() {
         this.toolOpen = true;
     }

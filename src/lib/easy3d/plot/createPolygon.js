@@ -7,6 +7,7 @@ import cUtil from '../cUtil';
  * 面标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreatePolygon
  */
 class CreatePolygon extends BasePlot {
 	constructor(viewer, style) {

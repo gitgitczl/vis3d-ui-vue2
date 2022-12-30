@@ -6,6 +6,7 @@ import Prompt from '../prompt/prompt.js'
  * 线标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreatePolyline
  */
 class CreatePolyline extends BasePlot {
     constructor(viewer, style) {

@@ -7,6 +7,7 @@ import cUtil from '../cUtil';
  * 小模型（gltf、glb）标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreateGltfModel
  */
 class CreateGltfModel extends BasePlot {
   constructor(viewer, style) {

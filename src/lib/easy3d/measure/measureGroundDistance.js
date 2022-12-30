@@ -1,7 +1,13 @@
-//贴地距离量算js
+// 贴地距离量算js
 import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+/**
+ * 贴地距离测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureGroundDistance 
+ */
 class MeasureGroundDistance extends BaseMeasure {
 	constructor(viewer, opt) {
 		super(viewer, opt);
@@ -97,7 +103,7 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.floatLable.label.text = that.formateLength(distance, that.unit);
 				that.floatLable.position.setValue(cartesian);
 				that.floatLable.distance = distance;
-				if(distance) that.floatDistance = distance;
+				if (distance) that.floatDistance = distance;
 				/* if (that.fun) that.fun(distance); */
 			});
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
@@ -239,6 +245,9 @@ class MeasureGroundDistance extends BaseMeasure {
 		}, Cesium.ScreenSpaceEventType.LEFT_UP);
 	}
 
+	/**
+	 * 结束编辑
+	 */
 	endEdit() {
 		let that = this;
 		this.state = "endEdit";;
@@ -253,7 +262,9 @@ class MeasureGroundDistance extends BaseMeasure {
 	}
 
 
-	//清除测量结果
+	/**
+	 * 销毁
+	 */
 	destroy() {
 		if (this.polyline) {
 			this.viewer.entities.remove(this.polyline);

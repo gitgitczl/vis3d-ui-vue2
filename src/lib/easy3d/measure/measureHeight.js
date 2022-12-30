@@ -2,6 +2,12 @@
 import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+/**
+ * 高度测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureHeight 
+ */
 class MeasureHeight extends BaseMeasure {
   constructor(viewer, opt) {
     super(viewer, opt);

@@ -3,6 +3,7 @@ import BaseLayer from './baseLayer';
  * 加载OGC标准的wmts服务
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.WMTSLayer
  * @example 
  * let wmtsLayer = new easy3d.WMTSLayer(viewer,{
     url : 'http://localhost:8080/geoserver/wms',

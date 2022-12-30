@@ -2,6 +2,13 @@
 import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+
+/**
+ * 三角测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureTriangle 
+ */
 class MeasureTriangle extends BaseMeasure {
     constructor(viewer, opt) {
         super(viewer, opt);
@@ -17,8 +24,7 @@ class MeasureTriangle extends BaseMeasure {
         this.horizonLine = null;
         this.firstPosition = null;
         this.endPosition = null;
-
-        this.midPosition = undefined; // 直角坐标
+        this.midPosition = undefined; 
         this.lowPosition = undefined;
         this.highPosition = undefined;
 

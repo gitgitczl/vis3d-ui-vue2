@@ -2,19 +2,44 @@
 import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+/**
+ * 方位角测量类
+ * @class 
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureAzimutht 
+ */
 class MeasureAzimutht extends BaseMeasure {
+  /**
+   * 
+   * @param {Cesium.Viewer} viewer 地图viewer对象 
+   * @param {Object} opt 基础配置
+   */
   constructor(viewer, opt) {
     super(viewer, opt);
+
+    /**
+     * @property {Object} style 绘制样式（polyline），具体配置见{@link style};
+     */
     this.style = opt.style || {};
-    //线
+
+    /**
+     * @property {Cesium.Entity} polyline 线
+     */
     this.polyline = null;
     this.floatLabel = null;
+
+    /**
+    * @property {Cesium.Cartesian3[]} positions 线坐标数组
+    */
     this.positions = [];
     this.mtx = null;
     this.azimutht = null;
   }
 
-  //开始测量
+  /**
+   * 开始绘制
+   * @param {Function} callback 绘制成功后回调函数
+  */
   start(callback) {
     let that = this;
     this.state = "startCreate";
@@ -83,6 +108,11 @@ class MeasureAzimutht extends BaseMeasure {
 
   }
 
+  /**
+   * 
+   * 开始编辑
+   * @param {Function} callback 编辑成功后回调函数
+   */
   startEdit(callback) {
     if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
     this.state = "startEdit";;
@@ -125,6 +155,9 @@ class MeasureAzimutht extends BaseMeasure {
     }, Cesium.ScreenSpaceEventType.LEFT_UP);
   }
 
+  /**
+   * 结束编辑
+   */
   endEdit() {
     let that = this;
     this.state = "endEdit";;
@@ -139,7 +172,9 @@ class MeasureAzimutht extends BaseMeasure {
   }
 
 
-  //清除测量结果
+  /**
+  * 销毁
+  */
   destroy() {
     if (this.polyline) {
       this.viewer.entities.remove(this.polyline);

@@ -3,6 +3,7 @@ import BaseLayer from './baseLayer';
  * xyz切片类型图层
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.XYZLayer
  */
 class XYZLayer extends BaseLayer{
      /**

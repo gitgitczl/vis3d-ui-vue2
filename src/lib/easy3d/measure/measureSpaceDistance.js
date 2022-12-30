@@ -3,11 +3,22 @@ import MeasureGroundDistance from "./measureGroundDistance";
 import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+
+/**
+ * 空间距离测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureSpaceDistance 
+ */
 class MeasureSpaceDistance extends BaseMeasure {
 	constructor(viewer, opt) {
 		super(viewer, opt);
 		this.unitType = "length";
-		this.type = "spaceDistance"
+		this.type = "spaceDistance";
+
+		/**
+		 * @property {Number} allDistance 总长度
+		 */
 		this.allDistance = 0;
 		this.labels = [];
 		this.positions = [];

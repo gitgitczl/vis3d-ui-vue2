@@ -5,6 +5,7 @@ import BaseLayer from './baseLayer';
  * 天地图在线服务加载
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.TDTLayer
  * 
  */
 class TDTLayer extends BaseLayer {

@@ -5,6 +5,7 @@ import BaseLayer from './baseLayer';
  * geojson/wfs类型图层数据加载
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.GeojsonLayer
  * @example
  * let geojsonLayer = new easy3d.GeojsonLayer(viewer,{
  *  show: false,

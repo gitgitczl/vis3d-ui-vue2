@@ -3,6 +3,7 @@ import BaseLayer from './baseLayer';
 /**
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.GridLayer
  * @example 
  *      let gridLayer = new easy3d.GridLayer(viewer,{
                 show: true,

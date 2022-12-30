@@ -14,6 +14,7 @@ import WMTSLayer from "./wmtsLayer";
 
 /**
  * 图层控制类
+ * @description 图层控制类，通过此类对象，可直接添加相关类型图层，并对添加的图层对象进行控制，而不用多次new 不同类型的图层对象。
  * @class
  */
 class LayerTool {

@@ -8,6 +8,7 @@ import arrowAlgorithm from "./arrowAlgorithm";
  * 军事标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreateArrow
  */
 class CreateArrow extends BasePlot {
 	constructor(viewer, situationType, style) {

@@ -13,6 +13,7 @@ import CreateArrow from "./createArrow";
 import cUtil from '../cUtil.js'
 /**
  * 绘制控制类
+ * 
  * @class
  * @example
  * let drawTool = new easy3d.DrawTool(window.viewer, {

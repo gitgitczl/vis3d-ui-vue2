@@ -3,6 +3,7 @@ import BaseLayer from './baseLayer';
  * tms类型图层（一般由arcmap切片后的数据发布）
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.TMSLayer
  * @example 
  * let tmsLayer = new easy3d.TMSLayer(viewer,{
     url: "",

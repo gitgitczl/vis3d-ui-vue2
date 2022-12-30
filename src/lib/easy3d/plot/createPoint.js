@@ -7,6 +7,7 @@ import cUtil from "../cUtil";
  * 点标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreatePoint
  */
 class CreatePoint extends BasePlot {
 	constructor(viewer, style) {

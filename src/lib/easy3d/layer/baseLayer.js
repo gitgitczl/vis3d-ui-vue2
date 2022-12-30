@@ -3,7 +3,9 @@ import cUtil from "../cUtil";
 // 图层管理父类
 /**
  * 图层基类
- * @description 图层类父类
+ * @description 图层基类，一般不直接实例化
+ * @alias BaseLayer
+ * @class
  */
 class BaseLayer {
     /**

@@ -4,6 +4,7 @@ import BaseLayer from './baseLayer';
  * arcgis 切片类型图层（一般由arcmap切片后的数据发布）
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.ArcgiscacheLayer
  * @example 
  * let arcgisLayer = new easy3d.ArcgiscacheLayer(viewer,{
     url: "http://112.86.147.194:9009/data/demnewtile/L{arc_z}/R{arc_y}/C{arc_x}.png",

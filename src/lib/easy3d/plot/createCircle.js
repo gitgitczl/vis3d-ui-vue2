@@ -6,6 +6,7 @@ import BasePlot from './basePlot';
  * 圆标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreateCircle
  */
 class CreateCircle extends BasePlot {
   constructor(viewer, style) {

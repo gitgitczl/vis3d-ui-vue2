@@ -6,6 +6,7 @@ import BasePlot from './basePlot';
  * 图标标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreateBillboard
  */
 class CreateBillboard extends BasePlot {
 	constructor(viewer, style) {

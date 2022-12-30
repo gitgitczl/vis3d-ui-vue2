@@ -1,6 +1,13 @@
 //经纬度 测量js
 import BaseMeasure from "./baseMeasure";
 import cUtil from "../cUtil";
+
+/**
+ * 坐标测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureLnglat 
+ */
 class MeasureLnglat extends BaseMeasure {
     constructor(viewer, opt) {
         super(viewer, opt);

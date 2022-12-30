@@ -3,6 +3,7 @@ import BaseLayer  from "./baseLayer";
  * 单张图片图层（一般由arcmap切片后的数据发布）
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.SingleImageLayer
  * @example 
  * let singleLayer = new easy3d.SingleImageLayer(viewer,{
     url: "./easy3d/images/layer/world.jpg",

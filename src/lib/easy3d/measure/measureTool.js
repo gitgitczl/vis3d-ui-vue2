@@ -8,7 +8,16 @@ import MeasureAzimutht from './measureAzimuth';
 import MeasureSection from './measureSection';
 import MeasureSlope from './measureSlope';
 
+/**
+ * 量算控制类
+ * @description 量算控制类，通过此类对象，可进行不同类型的量算操作，而不用多次new 不同类型的量算对象。
+ * @class
+ */
 class MeasureTool {
+	/**
+	 * @param {Cesium.viewer} viewer 地图viewer对象
+	 * @param {Object} obj 基础配置 
+	 */
 	constructor(viewer, obj) {
 		if (!viewer) {
 			console.warn("缺少必要参数！--viewer");
@@ -16,16 +25,36 @@ class MeasureTool {
 		}
 		obj = obj || {};
 		this.viewer = viewer;
-		this.nowMeasureObj = null; // 当前测量对象
-		this.toolArr = [];
+
+		/**
+		 * @property {Object} nowMeasureObj 当前测量对象
+		 */
+		this.nowMeasureObj = null;
+
+		/**
+		 * @property {Array} measureObjArr 测量对象数组
+		 */
+		this.measureObjArr = [];
 		this.lastMeasureObj = null;
 		this.handler = null;
+
+		/**
+		 * @property {Boolean} [canEdit=true] 测量对象是否可编辑
+		 */
 		this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;
+
+		/**
+		 * @property {Boolean} [intoEdit=true] 绘制完成后，是否进入编辑状态（当canEdit==true，才起作用）
+		 */
 		this.intoEdit = obj.intoEdit == undefined ? true : obj.intoEdit;
 		this.bindEdit();
 	}
 
-	// 事件绑定
+	/** 
+	 * 事件绑定
+	 * @param {String} type 事件类型（startEdit 开始编辑时 / endEdit 编辑结束时 / end 创建完成后）
+	 * @param {Function} fun 绑定函数
+	 */
 	on(type, fun) {
 		if (type == "end") {
 			this.endMeasureFun = fun;
@@ -41,6 +70,11 @@ class MeasureTool {
 
 	}
 
+	/**
+	 * 开始量算
+	 * @param {Object} opt 
+	 * @param {Number} opt.type 量算类型（1~空间距离测量/2~贴地距离测量/3~空间面积测量/4~高度测量/5~三角测量/6~坐标量算/7~方位角测量/8~剖面测量/9~单点坡度）
+	 */
 	start(opt) {
 		opt = opt || {};
 		if (!opt.type) return;
@@ -101,11 +135,13 @@ class MeasureTool {
 				if (opt.success) opt.success(ms, res)
 				if (that.endMeasureFun) that.endMeasureFun(ms, res);
 			});
-			this.toolArr.push(ms);
+			this.measureObjArr.push(ms);
 		}
 	}
 
-	// 绑定编辑
+	/**
+	 * 绑定编辑
+	 */
 	bindEdit() {
 		let that = this;
 		// 如果是线 面 则需要先选中
@@ -117,11 +153,11 @@ class MeasureTool {
 			debugger
 			if (Cesium.defined(pick) && pick.id && pick.id.objId) {
 				// 选中实体
-				for (let i = 0; i < that.toolArr.length; i++) {
+				for (let i = 0; i < that.measureObjArr.length; i++) {
 					if (
-						pick.id.objId == that.toolArr[i].objId &&
-						(that.toolArr[i].state == "endCreate" ||
-							that.toolArr[i].state == "endEdit")
+						pick.id.objId == that.measureObjArr[i].objId &&
+						(that.measureObjArr[i].state == "endCreate" ||
+							that.measureObjArr[i].state == "endEdit")
 					) {
 						if (that.lastMeasureObj) {
 							// 结束除当前选中实体的所有编辑操作
@@ -133,10 +169,10 @@ class MeasureTool {
 						}
 						// 开始编辑
 
-						that.toolArr[i].startEdit();
-						that.nowEditObj = that.toolArr[i];
+						that.measureObjArr[i].startEdit();
+						that.nowEditObj = that.measureObjArr[i];
 						if (that.startEditFun) that.startEditFun(that.nowEditObj); // 开始编辑
-						that.lastMeasureObj = that.toolArr[i];
+						that.lastMeasureObj = that.measureObjArr[i];
 						break;
 					}
 				}
@@ -153,6 +189,9 @@ class MeasureTool {
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 	}
 
+	/**
+	 * 结束编辑
+	 */
 	endEdit() {
 		if (this.lastMeasureObj) {
 			// 结束除当前选中实体的所有编辑操作
@@ -165,25 +204,32 @@ class MeasureTool {
 			}
 			this.lastMeasureObj = null;
 		}
-		for (let i = 0; i < this.toolArr.length; i++) {
-			this.toolArr[i].endEdit();
+		for (let i = 0; i < this.measureObjArr.length; i++) {
+			this.measureObjArr[i].endEdit();
 		}
 	}
 
+	/**
+	 * 清除
+	 */
 	clear() {
-		for (var i = 0; i < this.toolArr.length; i++) {
-			if (this.toolArr[i]) {
-				this.toolArr[i].endEdit();
-				this.toolArr[i].destroy();
+		for (var i = 0; i < this.measureObjArr.length; i++) {
+			if (this.measureObjArr[i]) {
+				this.measureObjArr[i].endEdit();
+				this.measureObjArr[i].destroy();
 			}
 		}
-		this.toolArr = [];
+		this.measureObjArr = [];
 		if (this.nowMeasureObj) {
 			this.nowMeasureObj.destroy();
 			this.nowMeasureObj = null; // 当前编辑对象
 		}
 		that.changeCursor(false);
 	}
+
+	/**
+	 * 销毁
+	*/
 	destroy() {
 		this.clear();
 		if (this.handler) {
@@ -193,13 +239,18 @@ class MeasureTool {
 
 	}
 
-	// 设置单位
+	/**
+	 * 设置单位
+	*/
 	setUnit(unit) {
 		if (!unit) return;
 		this.nowMeasureObj.setUnit(unit);
 	}
 
-	// 修改鼠标样式
+	/**
+	 * 修改鼠标样式
+	 * @param {Boolean} isopen false为默认鼠标样式
+	*/
 	changeCursor(isopen) {
 		let body = document.getElementsByTagName("body");
 		body[0].style.cursor = isopen ? "crosshair" : "default";

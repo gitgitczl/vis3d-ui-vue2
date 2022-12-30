@@ -1,17 +1,44 @@
 import * as turf from '@turf/turf'
+/**
+ * 量算基类
+ * @description 量算基类，一般不直接实例化，而实例化其子类（见下方Classes）
+ * @class
+ * @alias BaseMeasure
+ */
 class BaseMeasure {
+    /**
+     * @param {Cesium.Viewer} viewer 地图viewer对象
+     * @param {Object} opt 基础配置 
+     */
     constructor(viewer, opt) {
         opt = opt || {};
         this.viewer = viewer;
+
+        /**
+         * @property {String} objId 唯一标识id
+         */
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
-        this.state = null;  // 标识当前状态 no startCreate creating endCreate startEdit endEdit editing
+
+        /**
+         * @property {String} state 标识当前状态 no startCreate creating endCreate startEdit endEdit editing
+         */
+        this.state = null;  
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.floatLable = null;
+        /**
+         * 
+         * @property {String} unit 单位
+         */
         this.unit = opt.unit;
+
         this.controlPoints = [];
         this.pointStyle = {};
         this.modifyPoint = null;
+
+        /**
+         * @property {Object} promptStyle 鼠标弹窗样式
+         */
         this.promptStyle = opt.prompt || {
             show: true,
             offset: {
@@ -39,7 +66,6 @@ class BaseMeasure {
                 clampToGround: clampToGround
             }
         });
-
         return ent;
     }
 
@@ -68,6 +94,10 @@ class BaseMeasure {
         });
     }
 
+    /**
+     * 设置单位
+     * @param {String} unit 
+     */
     setUnit(unit) {
         if (!unit) return;
         this.unit = unit;
@@ -302,7 +332,32 @@ class BaseMeasure {
         });
     }
 
+    /**
+     * 销毁
+     */
+    destroy(){
 
+    }
+
+    /**
+	 * 结束编辑
+	 */
+	endEdit(){}
+
+    /**
+     * 
+     * 开始编辑
+     * @param {Function} callback 编辑成功后回调函数
+     */
+    startEdit(){
+
+    }
+
+    /**
+     * 开始绘制
+     * @param {Function} callback 绘制成功后回调函数
+     */
+    start(){}
 
 }
 

@@ -2,7 +2,9 @@
 import cUtil from "../cUtil";
 /**
  * 标绘基类
+ * @description 标绘基类，一般不直接实例化，而实例化其子类（见下方Classes）
  * @class
+ * @alias BasePlot
  */
 class BasePlot {
     /**

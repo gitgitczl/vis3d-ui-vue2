@@ -4,6 +4,7 @@ import BaseLayer from './baseLayer.js';
  * mapserver 类型图层
  * @class
  * @augments BaseLayer
+ * @alias BaseLayer.MapserverLayer
  * @example 
  *      let mapserverLayer = new easy3d.MapserverLayer(viewer,{
  *              url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",

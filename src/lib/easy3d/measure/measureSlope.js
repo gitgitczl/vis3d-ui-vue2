@@ -1,5 +1,12 @@
-//坡度测量
+// 坡度测量
 import BaseMeasure from "./baseMeasure";
+
+/**
+ * 坡度测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureSlope 
+ */
 class MeasureSlope extends BaseMeasure{
     constructor(viewer, opt) {
         if (!opt) opt = {};

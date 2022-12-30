@@ -1,22 +1,29 @@
 
-// 鼠标提示框
+/**
+ * 气泡窗类
+ * @class
+ * 
+*/
 class Prompt {
     /**
-     * opt
-     *      type : 1  位置变化提示框  默认为1
-     *             2  固定坐标提示框
-     *      position: 固定坐标提示框的坐标 cartesian3 / [101,30] 
-     *      anchor ： true 是否显示下方锚点
-     *      closeBtn: true 是否显示关闭按钮
-     *      content ： 弹窗内容
-     *      close ： 点击退出回调函数
-     *      offset :  偏移参数
-     *          x:
-     *          y
-     *      style：
-     *          background ： 弹窗背景色 默认为white
-     *          boxShadow : 弹窗阴影
-    */
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} opt 
+     * @param {Boolean} opt.show 是否显示 
+     * @param {Number} [opt.type=1] 1~位置变化提示框 / 2~固定坐标提示框
+     * @param {Cesium.Cartesian3 | Array} opt.position 固定坐标提示框的坐标（ cartesian3 / [101,30] ），type为1时，可不设置此参数
+     * @param {Boolean} [opt.anchor=true] 是否显示锚点
+     * @param {Boolean} [opt.closeBtn=true] 是否显示关闭按钮
+     * @param {String} opt.content 弹窗内容
+     * @param {Function} [opt.close] 关闭弹窗时的回调函数
+     * @param {Object} [opt.offset] 偏移参数
+     * @param {Number} [opt.offset.x] 横坐标偏移像素单位
+     * @param {Number} [opt.offset.y] 纵坐标偏移像素单位
+     * @param {Object} [opt.style] 弹窗面板样式
+     * @param {String} [opt.style.background='white'] 背景色
+     * @param {String} [opt.style.boxShadow] 弹窗阴影（css属性）
+     * @param {String} [opt.style.color] 弹窗颜色
+     * 
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         if (!this.viewer) return;
@@ -37,10 +44,19 @@ class Prompt {
                 color: "white"
             }
         }
+
         this.opt = Object.assign(defaultOpt, opt);
 
+        /**
+         * @property {Object} attr 相关属性
+         */
+        this.attr = this.opt;
         // ====================== 创建弹窗内容 start ======================
         const mapid = this.viewer.container.id;
+
+        /**
+         * @property {Boolearn} isShow 当前显示状态
+         */
         this.isShow = this.opt.show == undefined ? true : this.opt.show; // 是否显示
         let anchorHtml = ``;
         let closeHtml = ``;
@@ -72,6 +88,7 @@ class Prompt {
                 ${closeHtml}
         `;
         // 构建弹窗元素 
+
         this.promptDiv = window.document.createElement("div");
         this.promptDiv.className = "easy3d-prompt";
         this.promptDiv.id = promptId;
@@ -86,6 +103,10 @@ class Prompt {
                 if (that.close) that.close();
             })
         }
+
+        /**
+         * @property {Object} promptDom 弹窗div
+         */
         this.promptDom = window.document.getElementById(promptId);
 
         this.position = this.transPosition(this.opt.position);
@@ -98,10 +119,20 @@ class Prompt {
         this.containerLeft = this.viewer.container.offsetLeft;
         this.containerTop = this.viewer.container.offsetTop;
 
+        /**
+        * @property {Number} contentW 弹窗宽度
+        */
         this.contentW = Math.ceil(Number(this.promptDom.offsetWidth)); // 宽度
+
+        /**
+         * @property {Number} contentH 弹窗高度
+         */
         this.contentH = this.promptDom.offsetHeight; // 高度
     }
-    // 销毁
+    
+    /**
+     * 销毁
+     */
     destroy() {
         if (this.promptDiv) {
             window.document.getElementById(this.viewer.container.id).removeChild(this.promptDiv);
@@ -146,6 +177,11 @@ class Prompt {
         }, this);
     }
 
+    /**
+     * 
+     * @param {Cesium.Cartesian3 | Object} px 弹窗坐标
+     * @param {String} html 弹窗内容
+     */
     update(px, html) {
         if (px instanceof Cesium.Cartesian3) {
             this.position = px.clone();
@@ -182,6 +218,10 @@ class Prompt {
         return res && isin;
     }
 
+    /**
+     * 是否可见
+     * @param {Boolean} isShow true可见，false不可见
+     */
     setVisible(isShow) {
         let isin = this.isInView(this.position);
         if (isin && isShow) {
@@ -192,17 +232,34 @@ class Prompt {
             if (this.promptDom) this.promptDom.style.display = "none";
         }
     }
+
+    /**
+     * 显示
+     */
     show() {
         this.setVisible(true);
     }
+
+    /**
+     * 隐藏
+     */
     hide() {
         this.setVisible(false);
     }
+
+    /**
+     * 设置弹窗内容
+     * @param {String} content 内容 
+     */
     setContent(content) {
         let pc = window.document.getElementById(`prompt-content-${this.opt.id}`);
         pc.innerHTML = content;
     }
 
+    /**
+     * 设置弹窗坐标
+     * @param {Object} opt 屏幕坐标
+     */
     setByPX(opt) {
         if (!opt) return;
         if (this.promptDom) {

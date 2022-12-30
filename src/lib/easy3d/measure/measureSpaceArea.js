@@ -3,6 +3,12 @@ import BaseMeasure from "./baseMeasure";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 
+/**
+ * 空间面积测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureSpaceArea 
+ */
 class MeasureSpaceArea extends BaseMeasure {
 	constructor(viewer, opt) {
 		super(viewer, opt);

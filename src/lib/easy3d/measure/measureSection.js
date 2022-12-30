@@ -1,5 +1,12 @@
 //剖面分析js
 import BaseMeasure from "./baseMeasure";
+
+/**
+ * 剖面测量类
+ * @class
+ * @augments BaseMeasure
+ * @alias BaseMeasure.MeasureSection 
+ */
 class MeasureSection extends BaseMeasure {
 	constructor(viewer, opt) {
 		super(viewer, opt);

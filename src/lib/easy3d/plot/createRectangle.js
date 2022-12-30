@@ -7,6 +7,7 @@ import BasePlot from './basePlot';
  * 矩形标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.BasePlot
  */
 class CreateRectangle extends BasePlot{
   constructor(viewer, style) {

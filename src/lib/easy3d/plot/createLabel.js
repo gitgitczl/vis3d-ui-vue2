@@ -6,6 +6,7 @@ import cUtil from "../cUtil";
  * 文字标绘类
  * @class
  * @augments BasePlot
+ * @alias BasePlot.CreateLabel
  */
 class CreateLabel extends BasePlot {
   constructor(viewer, style) {
