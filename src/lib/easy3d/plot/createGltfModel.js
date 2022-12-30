@@ -2,6 +2,12 @@ import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
 import cUtil from '../cUtil';
+
+/**
+ * 小模型（gltf、glb）标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreateGltfModel extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
@@ -21,7 +27,9 @@ class CreateGltfModel extends BasePlot {
       maximumScale: 120
     }
     this.style = Object.assign(defaultStyle, style || {});
-
+    /**
+     * @property {String} modelUri 模型地址
+     */
     this.modelUri = style.uri;
     this.entity = null;
   }
@@ -164,6 +172,13 @@ class CreateGltfModel extends BasePlot {
     if (style.heightReference != undefined) this.entity.model.heightReference.setValue(Number(style.heightReference));
     this.style = Object.assign(this.style, style);
   }
+
+  /**
+   * 设置模型姿态
+   * @param {Number} h 偏转角
+   * @param {Number} p 仰俯角
+   * @param {Number} r 翻滚角
+   */
   setOrientation(h, p, r) {
     h = h || 0;
     p = p || 0;

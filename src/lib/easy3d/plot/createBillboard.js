@@ -2,9 +2,15 @@ import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import cUtil from '../cUtil.js'
 import BasePlot from './basePlot';
+/**
+ * 图标标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreateBillboard extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
+
 		this.type = "billboard";
 		this.viewer = viewer;
 		let defaultStyle = {
@@ -12,15 +18,24 @@ class CreateBillboard extends BasePlot {
 			scale: 1
 		}
 		this.style = Object.assign({}, defaultStyle, style || {});
+
 		this.entity = null;
 		if (!this.style.hasOwnProperty("image")) {
 			console.log("未设置billboard的参数！");
 		}
+
+		/**
+		 * @property {Cesium.Cartesian3} 图标坐标
+		 */
 		this.position = null;
 	}
 
+	/**
+	 * 开始绘制
+	 * @param {Function} callback 绘制成功后回调函数
+	*/
 	start(callBack) {
-		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
 		this.handler.setInputAction(function (evt) { //单击开始绘制
@@ -44,6 +59,29 @@ class CreateBillboard extends BasePlot {
 			that.state = "startCreate";
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 	}
+
+	/**
+	 * 结束绘制
+	 * @param {Function} callback 结束绘制后回调函数
+	*/
+	end() {
+		let that = this;
+		if (that.handler) {
+			that.handler.destroy();
+			that.handler = null;
+		}
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+		that.state = "endCreate";
+	}
+
+	/**
+	 * 通过坐标数组构建
+	 * @param {Array} lnglatArr 经纬度坐标数组
+	 * @callback {Function} callBack 绘制成功后回调函数
+	*/
 	createByPositions(lnglatArr, callBack) {
 		if (!lnglatArr) return;
 		this.state = "startCreate";
@@ -60,7 +98,11 @@ class CreateBillboard extends BasePlot {
 		if (callBack) callBack(this.entity);
 		this.state = "endCreate";
 	}
-	// 设置相关样式
+	
+	/**
+	 * 设置相关样式
+	 * @param {Object} style 样式 
+	 */
 	setStyle(style) {
 		if (!style) return;
 		let billboard = this.entity.billboard;
@@ -74,8 +116,8 @@ class CreateBillboard extends BasePlot {
 			}
 			billboard.heightReference = heightReference;
 		}
-		if (style.heightReference != undefined) 
-			billboard.heightReference = (style.heightReference == undefined ? 1 : Number(this.style.heightReference)) ; // 如果直接设置为true 会导致崩溃
+		if (style.heightReference != undefined)
+			billboard.heightReference = (style.heightReference == undefined ? 1 : Number(this.style.heightReference)); // 如果直接设置为true 会导致崩溃
 		if (style.scale != undefined) billboard.scale = Number(style.scale);
 		if (style.color) {
 			let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
@@ -84,7 +126,11 @@ class CreateBillboard extends BasePlot {
 		}
 		this.style = Object.assign(this.style, style);
 	}
-	// 获取相关样式
+	
+	/**
+	 * 获取样式
+	 * @returns {Object} 样式
+	*/
 	getStyle() {
 		let obj = {};
 		let billboard = this.entity.billboard;
@@ -102,6 +148,10 @@ class CreateBillboard extends BasePlot {
 		}
 		return obj;
 	}
+
+	/**
+	 * 开始编辑 
+	 */
 	startEdit() {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
 		this.state = "startEdit";
@@ -134,6 +184,11 @@ class CreateBillboard extends BasePlot {
 			}
 		}, Cesium.ScreenSpaceEventType.LEFT_UP);
 	}
+
+	 /**
+     * 结束编辑
+     * @param {Function} callback 回调函数
+     */
 	endEdit(callback) {
 		if (this.modifyHandler) {
 			this.modifyHandler.destroy();
@@ -159,6 +214,9 @@ class CreateBillboard extends BasePlot {
 		return billboard;
 	}
 
+	/**
+	 * 移除
+	*/
 	remove() {
 		if (this.entity) {
 			this.state = "no";
@@ -167,11 +225,15 @@ class CreateBillboard extends BasePlot {
 		}
 	}
 
-	// 方法重写
+	
 	getPositions(isWgs84) {
-		return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position ;
+		return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position;
 	}
 
+	/**
+	 * 设置图标坐标
+	 * @param {Cesium.Cartesian3 | Array} p 坐标
+	*/
 	setPosition(p) {
 		let position = null;
 		if (p instanceof Cesium.Cartesian3) {

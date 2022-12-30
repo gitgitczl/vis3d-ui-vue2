@@ -21,9 +21,20 @@
             "./src/lib/easy3d/static/layerType.js",
 
             "./src/lib/easy3d/plot/drawTool.js",
-            "./src/lib/easy3d/static/style.js"
+            "./src/lib/easy3d/static/style.js",
+            "./src/lib/easy3d/plot/basePlot.js",
+            "./src/lib/easy3d/plot/createArrow.js",
+            "./src/lib/easy3d/plot/createBillboard.js",
+            "./src/lib/easy3d/plot/createCircle.js",
+            "./src/lib/easy3d/plot/createLabel.js",
+            "./src/lib/easy3d/plot/createGltfModel.js",
+            "./src/lib/easy3d/plot/createPoint.js",
+            "./src/lib/easy3d/plot/createPolygon.js",
+            "./src/lib/easy3d/plot/createPolyline.js",
+            "./src/lib/easy3d/plot/createRectangle.js",
 
-
+            "./src/lib/easy3d/lnglatTool/lnglatNavigation.js",
+            "./src/lib/easy3d/mapNavgation/CesiumNavigation.js"
         ],
         "includePattern": ".+\\.js(doc|x)?$",
         "exclude": ["./apidoc/"]

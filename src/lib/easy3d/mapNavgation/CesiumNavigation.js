@@ -10,10 +10,31 @@ var CesiumEvent = Event
 /**
  * @alias CesiumNavigation
  * @constructor
- *
- * @param {Viewer|CesiumWidget} viewerCesiumWidget The Viewer or CesiumWidget instance
+ * @example
+ * new CesiumNavigation(viewer, {
+        enableCompass: true, // 罗盘
+        enableZoomControls: true, // 缩放控制器
+        enableDistanceLegend: true, // 比例尺
+        enableCompassOuterRing: true, // 罗盘外环
+        view: { // 初始化视角
+          "x": 109.7884118470029,
+          "y": 39.590384952017764,
+          "z": 1565.7899788867958,
+          "heading": 331.1978494043747,
+          "pitch": -8.45296669256617,
+          "roll": 0.00043210090111595544
+        }
+    });
+
+ * @param {Cesium.Viewer} viewerCesiumWidget 地图viewer对象 
+ * @param {Object} options 相关配置
+ * @param {Boolear} [options.enableCompass=true] 是否创建罗盘
+ * @param {Boolear} [options.enableZoomControls=true] 是否创建缩放控制器
+ * @param {Boolear} [options.enableDistanceLegend=true] 是否创建比例尺
+ * @param {Boolear} [options.enableCompassOuterRing=true] 是否创建罗盘外环
+ * @param {Object} [options.view] 初始化视角
  */
-var CesiumNavigation = function (viewerCesiumWidget) {
+var CesiumNavigation = function (viewerCesiumWidget, options) {
   initialize.apply(this, arguments)
   this._onDestroyListeners = []
 }
@@ -36,6 +57,9 @@ CesiumNavigation.prototype.getNavigationLocked = function () {
   return this._navigationLocked
 }
 
+/**
+ * 销毁
+ */
 CesiumNavigation.prototype.destroy = function () {
   if (defined(this.navigationViewModel)) {
     this.navigationViewModel.destroy()
@@ -71,8 +95,7 @@ CesiumNavigation.prototype.addOnDestroyListener = function (callback) {
 }
 
 /**
- * @param {Viewer|CesiumWidget} viewerCesiumWidget The Viewer or CesiumWidget instance
- * @param options
+ 
  */
 function initialize(viewerCesiumWidget, options) {
   if (!defined(viewerCesiumWidget)) {

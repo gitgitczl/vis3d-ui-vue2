@@ -45,8 +45,8 @@ class DrawTool {
     obj = obj || {};
     this.viewer = viewer;
     /**
-     * 标绘对象数组
-     * @property {Array} entityObjArr
+     * 
+     * @property {Array} entityObjArr 标绘对象数组
      */
     this.entityObjArr = [];
     this.handler = null;

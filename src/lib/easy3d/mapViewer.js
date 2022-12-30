@@ -29,6 +29,7 @@ class MapViewer {
      * 
      * @param {String} domId 地图div容器id
      * @param {mapViewer.opt} opt 
+     * @param {Object} opt.map 地图配置
      * @example
      *  const mapConfig = {
             baseServer: "http://localhost:1119/",

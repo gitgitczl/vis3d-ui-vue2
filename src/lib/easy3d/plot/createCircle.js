@@ -1,11 +1,15 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import cUtil from '../cUtil.js'
-//绘制圆
 import BasePlot from './basePlot';
-class CreateCircle extends BasePlot{
+/**
+ * 圆标绘类
+ * @class
+ * @augments BasePlot
+ */
+class CreateCircle extends BasePlot {
   constructor(viewer, style) {
-    super(viewer,style);
+    super(viewer, style);
     this.type = "circle";
     this.objId = Number(
       new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)
@@ -13,18 +17,33 @@ class CreateCircle extends BasePlot{
     this.viewer = viewer;
     this.style = style;
     this.floatPoint = null;
+
+    /**
+     * @property {Cesium.Entity} centerPoint 圆中心点
+     */
     this.centerPoint = null;
+
+    /**
+     * @property {Cesium.Cartesian3} position 圆中心点坐标
+     */
     this.position = null;
     this.floatPosition = null;
+
+    /**
+     * @property {Number} 圆半径
+     */
     this.radius = 0.001;
     this.modifyPoint = null;
     this.pointArr = [];
   }
 
-
+  /**
+   * 开始绘制
+   * @param {Function} callback 绘制成功后回调函数
+  */
   start(callBack) {
     if (!this.prompt && this.promptStyle.show)
-      this.prompt = new Prompt(this.viewer,this.promptStyle);
+      this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
     let that = this;
     this.handler.setInputAction(function (evt) {
@@ -47,7 +66,7 @@ class CreateCircle extends BasePlot{
           if (that.handler) {
             that.handler.destroy();
             that.handler = null;
-        }
+          }
           if (that.floatPoint) that.floatPoint.show = false;
           if (that.centerPoint) that.centerPoint.show = false;
           if (that.prompt) {
@@ -76,6 +95,12 @@ class CreateCircle extends BasePlot{
       that.radius = Cesium.Cartesian3.distance(cartesian, that.position);
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
+
+  /**
+   * 通过坐标数组构建
+   * @param {Array} lnglatArr 经纬度坐标数组
+   * @callback {Function} callBack 绘制成功后回调函数
+  */
   createByPositions(lnglatArr, callback) {
     if (!lnglatArr || lnglatArr.length < 1) return;
     this.state = "startCreate";
@@ -106,6 +131,11 @@ class CreateCircle extends BasePlot{
     this.state = "endCreate";
     if (callback) callback(this.entity);
   }
+
+  /**
+    * 开始编辑
+    * @param {Function} callback 回调函数
+    */
   startEdit(callback) {
     if (this.state == "startEdit" || this.state == "editing" || !this.entity)
       return;
@@ -168,6 +198,11 @@ class CreateCircle extends BasePlot{
       that.state = "editing";
     }, Cesium.ScreenSpaceEventType.LEFT_UP);
   }
+
+  /**
+    * 结束编辑
+    * @param {Function} callback 回调函数
+    */
   endEdit(callback) {
     if (this.floatPoint) this.floatPoint.show = false;
     if (this.centerPoint) this.centerPoint.show = false;

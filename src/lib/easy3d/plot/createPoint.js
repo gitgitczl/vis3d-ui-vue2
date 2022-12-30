@@ -1,7 +1,13 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
-import cUtil from "../cUtil"
+import cUtil from "../cUtil";
+
+/**
+ * 点标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreatePoint extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);
@@ -14,6 +20,9 @@ class CreatePoint extends BasePlot {
 		}
 		this.style = Object.assign(defaultStyle, style || {});
 		
+		/**
+		 * @property {Cesium.Cartesian3} 坐标
+		 */
 		this.position = null;
 	}
 

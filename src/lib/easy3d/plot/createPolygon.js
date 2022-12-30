@@ -2,6 +2,12 @@ import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot'
 import cUtil from '../cUtil';
+
+/**
+ * 面标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreatePolygon extends BasePlot {
 	constructor(viewer, style) {
 		super(viewer, style);

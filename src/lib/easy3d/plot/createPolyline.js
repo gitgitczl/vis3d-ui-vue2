@@ -2,12 +2,20 @@
 import BasePlot from "./basePlot";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+/**
+ * 线标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreatePolyline extends BasePlot {
     constructor(viewer, style) {
         super(viewer, style);
         style = style || {};
         this.movePush = false;
         this.type = "polyline";
+        /**
+         * @property {Number} [maxPointNum=Number.MAX_VALUE] 线的最大点位数量
+        */
         this.maxPointNum = style.maxPointNum || Number.MAX_VALUE; // 最多点数
     }
 

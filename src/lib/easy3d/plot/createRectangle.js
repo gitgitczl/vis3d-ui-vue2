@@ -2,17 +2,39 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
+
+/**
+ * 矩形标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreateRectangle extends BasePlot{
   constructor(viewer, style) {
     super(viewer, style);
     this.type = "rectangle";
     this.viewer = viewer;
     this.style = style;
+
+    /**
+     * @property {Cesium.Entity} rightdownPoint 右下角实体点
+     */
     this.rightdownPoint = null;
+
+     /**
+     * @property {Cesium.Entity} leftupPoint 左上角实体点
+     */
     this.leftupPoint = null;
+
+    /**
+     * @property {Cesium.Cartesian3} leftup 左上角点坐标
+     */
     this.leftup = null;
+
+     /**
+     * @property {Cesium.Cartesian3} rightdown 右下角点坐标
+     */
     this.rightdown = null;
-    this.radius = 0;
+
     this.modifyPoint = null;
     this.pointArr = [];
   }
@@ -30,7 +52,7 @@ class CreateRectangle extends BasePlot{
         that.rightdownPoint = that.createPoint(cartesian.clone());
         that.rightdown = cartesian.clone();
         that.rightdownPoint.typeAttr = "rightdown";
-        that.entity = that.createRectangle(that.leftup, that.radius);
+        that.entity = that.createRectangle();
       } else {
         if (!that.entity) {
           return;
@@ -63,7 +85,6 @@ class CreateRectangle extends BasePlot{
         that.rightdown = cartesian.clone();
         that.state = "creating";
       }
-      that.radius = Cesium.Cartesian3.distance(cartesian, that.leftup);
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
   startEdit(callback) {
@@ -97,7 +118,6 @@ class CreateRectangle extends BasePlot{
         that.rightdown = cartesian
         that.rightdownPoint.position.setValue(that.rightdown);
       }
-      that.radius = Cesium.Cartesian3.distance(that.rightdown, that.leftup);
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.modifyHandler.setInputAction(function (evt) {

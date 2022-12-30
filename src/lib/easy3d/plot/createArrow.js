@@ -4,16 +4,31 @@ import BasePlot from './basePlot'
 import arrowAlgorithm from "./arrowAlgorithm";
 
 /* 构建军事标绘 */
+/**
+ * 军事标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreateArrow extends BasePlot {
 	constructor(viewer, situationType, style) {
 		super(viewer, style);
+
+		/**
+		 * @property {String} type 标绘类型
+		 */
 		this.type = "arrow";
 		if (!situationType) {
 			console.log("缺少箭头类型")
 			return;
 		}
+		/**
+		 * @property {String} situationType 箭头类型（1~攻击箭头/2~攻击箭头平尾/3~攻击箭头燕尾/4~闭合曲面/5~钳击箭头/6~单尖直箭头/7~粗单尖直箭头/8~集结地/9~弓形面/10~粗直箭头/11~矩形棋/12~扇形/13~三角旗/14~曲线旗/15~曲线/16~单线箭头）
+		 */
 		this.situationType = situationType;
+
+
 		this.arrowObj = getSituationByType(situationType);
+
 		if (!this.arrowObj) return;
 		this.minPointNum = this.arrowObj.minPointNum;
 		if (this.minPointNum == 1) {
@@ -21,26 +36,40 @@ class CreateArrow extends BasePlot {
 			return;
 		}
 		this.maxPointNum = this.arrowObj.maxPointNum == -1 ? this.minPointNum : this.arrowObj.maxPointNum;
-		//获取计算坐标的对象
+
+		/**
+		 * @property {Object} arrowPlot 箭头标绘对象
+		 */
 		this.arrowPlot = this.arrowObj.arrowPlot;
 		if (!this.arrowPlot) {
 			console.warn("计算坐标类有误！");
 			return;
 		}
 
-		this.type = "arrow";
 		this.viewer = viewer;
+
+		/**
+		 * @property {Cesium.Entity} entity 箭头实体
+		 */
 		this.entity = null;
+
 		this.polyline = null;
 		let defaultStyle = {
 			outlineColor: "#000000",
 			outlineWidth: 2
 		}
+
+		/**
+		 * @property {Object} style 样式
+		*/
 		this.style = Object.assign(defaultStyle, style || {});
 		this.outline = null;
-
 	}
 
+	/**
+	 * 开始绘制
+	 * @param {Function} callback 绘制成功后回调函数
+	*/
 	start(callBack) {
 		let that = this;
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
@@ -100,6 +129,11 @@ class CreateArrow extends BasePlot {
 			if (that.positions.length >= that.minPointNum) that.end(callBack);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
+
+	/**
+	 * 结束绘制
+	 * @param {Function} callback 结束绘制后回调函数
+	*/
 	end(callBack) {
 		let that = this;
 		if (!that.movePush) { // 双击结束
@@ -116,6 +150,12 @@ class CreateArrow extends BasePlot {
 		that.state = "endCreate";
 		if (callBack) callBack(that.entity);
 	}
+
+	/**
+	 * 通过坐标数组构建
+	 * @param {Array} lnglatArr 经纬度坐标数组
+	 * @callback {Function} callBack 绘制成功后回调函数
+	*/
 	createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
 		this.state = "startCreate";
@@ -136,6 +176,11 @@ class CreateArrow extends BasePlot {
 
 		if (callBack) callBack(this.entity);
 	}
+
+	/**
+	 * 获取样式
+	 * @returns {Object} 样式
+	*/
 	getStyle() {
 		if (!this.entity) return;
 		let obj = {};
@@ -159,7 +204,11 @@ class CreateArrow extends BasePlot {
 		}
 		return obj;
 	}
-	// 设置相关样式
+
+	/**
+	 * 设置相关样式
+	 * @param {Object} style 样式 
+	 */
 	setStyle(style) {
 		if (!style) return;
 		let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color);
@@ -276,6 +325,9 @@ class CreateArrow extends BasePlot {
 		});
 	}
 
+	/**
+	 * 销毁
+	 */
 	destroy() {
 		if (this.handler) {
 			this.handler.destroy();
@@ -312,12 +364,7 @@ class CreateArrow extends BasePlot {
 		}
 		this.forbidDrawWorld(false);
 	}
-
-
 }
-
-
-
 
 function getSituationByType(type) {
 	type = Number(type);
@@ -340,7 +387,7 @@ function getSituationByType(type) {
 	playObj.canPlay = false; // 是否可以自动播放
 	switch (type) {
 		case 1:
-			arrowPlot = new arrowAlgorithm.AttackArrow(); //攻击箭头
+			arrowPlot = new arrowAlgorithm.AttackArrow(); // 攻击箭头
 			minPointNum = 3;
 			maxPointNum = 999;
 			playObj.canPlay = true;
@@ -445,7 +492,7 @@ function getSituationByType(type) {
 			playObj.canPlay = false;
 			break;
 		case 14:
-			arrowPlot = new arrowAlgorithm.CurveFlag(); //扇形
+			arrowPlot = new arrowAlgorithm.CurveFlag(); //曲线旗
 			minPointNum = 2;
 			maxPointNum = 2;
 			arrowPlot.hasLine = true;

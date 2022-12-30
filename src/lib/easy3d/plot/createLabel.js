@@ -1,16 +1,21 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
-import cUtil from "../cUtil"
+import cUtil from "../cUtil";
+/**
+ * 文字标绘类
+ * @class
+ * @augments BasePlot
+ */
 class CreateLabel extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
     this.type = "label";
-    this.objId = Number(
-      new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)
-    );
     this.viewer = viewer;
     this.style = style;
+    /**
+     * @property {Cesium.Cartesian3} 坐标
+     */
     this.position = null;
   }
 

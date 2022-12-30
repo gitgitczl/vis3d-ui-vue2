@@ -6,30 +6,67 @@ import cUtil from "../cUtil";
  */
 class BasePlot {
     /**
-     * 
      * @param {Cesium.Viewer} viewer 地图viewer对象 
      * @param {Object} style 样式属性 
      */
     constructor(viewer, style) {
         this.viewer = viewer;
+
+        /**
+         * @property {Object} style 样式
+         */
         this.style = style || {};
+
+        /**
+         * @property {String | Number} objId 唯一id
+         */
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+
+        /**
+         * @property {String} type 类型
+         */
+        this.type = '';
+        /**
+         *@property {Cesium.Cartesian3[]} positions 坐标数组
+         */
         this.positions = [];
-        this.state = null;  // 标识当前状态 no startCreate creating endCreate startEdit endEdit editing
+
+        /**
+         *@property {String} state 标识当前状态 no startCreate creating endCreate startEdit endEdit editing
+         */
+        this.state = null;  //
+
+        /**
+         * @property {Object} prompt 鼠标提示框
+         */
         this.prompt = null; // 初始化鼠标提示框
         this.controlPoints = []; // 控制点
         this.modifyPoint = null;
+
+        /**
+		 * 图标entity对象
+		 * @property {Cesium.Entity} entity entity对象
+		*/
+
         this.entity = null;
         this.pointStyle = {};
-        this.promptStyle = opt.prompt || {
+
+        /**
+         * @property {Object} promptStyle 鼠标提示框样式
+         */
+        this.promptStyle = style.prompt || {
             show: true
         }
         this.properties = {};
     }
 
-    // 坐标拾取
+    /**
+     * 
+     * @param {Object} px 像素坐标 
+     * @returns {Cesium.Cartesian3} 世界坐标
+     */
     getCatesian3FromPX(px) {
         let picks = this.viewer.scene.drillPick(px);
         this.viewer.scene.render();
@@ -51,22 +88,34 @@ class BasePlot {
         return cartesian;
     }
 
-    // 获取标绘对象
+    /**
+     * 
+     * @returns {Cesium.Entity} 实体对象
+     */
     getEntity() {
         return this.entity;
     }
 
-    // 获取坐标数组
+    /**
+     * 
+     * @param {Boolean} isWgs84 是否转化为经纬度
+     * @returns {Array} 坐标数组
+     */
     getPositions(isWgs84) {
         return isWgs84 ? cUtil.cartesiansToLnglats(this.positions, this.viewer) : this.positions;
     }
 
-    // 绑定自定义属性到entity上
+    /**
+     * 设置自定义属性
+     * @param {Object} prop 属性 
+     */
     setOwnProp(prop) {
         if (this.entity) this.entity.ownProp = prop;
     }
 
-    // 移除
+    /**
+     * 移除当前entity对象
+     */
     remove() {
         if (this.entity) {
             this.state = "no";
@@ -75,9 +124,12 @@ class BasePlot {
         }
     }
 
-    // 显示隐藏
-    setVisible(vis) {
-        this.entity.show = vis;
+    /**
+     * 设置entity对象的显示隐藏
+     * @param {Boolean} visible 
+     */
+    setVisible(visible) {
+        if (this.entity) this.entity.show = visible;
     }
 
     // 操作控制
@@ -88,7 +140,9 @@ class BasePlot {
         this.viewer.scene.screenSpaceCameraController.enableInputs = !isForbid;
     }
 
-    // 销毁
+    /**
+     * 销毁
+     */
     destroy() {
         if (this.handler) {
             this.handler.destroy();
@@ -119,7 +173,11 @@ class BasePlot {
         this.forbidDrawWorld(false);
     }
 
-    startEdit(callback) {
+    /**
+     * 
+     * 开始编辑
+     */
+    startEdit() {
         if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
         this.state = "startEdit";;
         if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -156,6 +214,13 @@ class BasePlot {
             that.state = "editing";
         }, Cesium.ScreenSpaceEventType.LEFT_UP);
     }
+
+    /**
+     * 结束编辑
+     * @param {Function} callback 回调函数
+     * @example
+     *  plotObj.endEdit(function(entity){})
+     */
     endEdit(callback) {
         for (let i = 0; i < this.controlPoints.length; i++) {
             let point = this.controlPoints[i];
@@ -260,6 +325,9 @@ class BasePlot {
         this.properties.attr = attr || {};
     }
 
+    /**
+     * 缩放至当前绘制的对象
+    */
     zoomTo() {
         if (this.entity) {
             this.viewer.zoomTo(this.entity);

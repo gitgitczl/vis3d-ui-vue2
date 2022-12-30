@@ -1,5 +1,13 @@
-// 底部鼠标及相机坐标信息
+/**
+ * 底部鼠标及相机信息提示栏
+ * @class
+ */
 class LatlngNavigation {
+    /**
+     * 
+     * @param {Cesium.viewer} viewer 地图viewer对象 
+     * @param {Object} [opt] 其它配置 
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.moveHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -21,6 +29,10 @@ class LatlngNavigation {
             that.setHtml({ lng, lat, height }, cameraV);
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
+
+    /**
+     * 销毁
+     */
     destroy() {
         if (this.moveHandler) {
             this.moveHandler.destroy();
@@ -106,7 +118,6 @@ class LatlngNavigation {
             "roll": Cesium.Math.toDegrees(roll)
         };
     }
-
 
 }
 
