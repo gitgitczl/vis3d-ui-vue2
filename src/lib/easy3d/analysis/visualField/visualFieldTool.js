@@ -110,6 +110,7 @@ class visualFieldTool {
                 let c1 = Cesium.Cartographic.fromCartesian(startPosition.clone());
                 let c2 = Cesium.Cartographic.fromCartesian(endPosition.clone());
                 let angle = that.computeAngle(c1, c2);
+
                 
                 vfPrimitive.heading = angle;
                 vfPrimitive.attr.heading = angle;
@@ -155,6 +156,8 @@ class visualFieldTool {
             let c1 = Cesium.Cartographic.fromCartesian(startPosition.clone());
             let c2 = Cesium.Cartographic.fromCartesian(cartesian.clone());
             let angle = that.computeAngle(c1, c2);
+
+            console.log("angle-->",angle);
             vfPrimitive.heading = angle;
             vfPrimitive.attr.heading = angle;
 
