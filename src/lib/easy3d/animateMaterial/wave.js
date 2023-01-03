@@ -1,4 +1,22 @@
-// 锥体扫描
+/**
+ * 波纹材质
+ * @constructor
+ * @param {Object} opt 基础配置
+ * @param {Cesium.Color} opt.color 颜色
+ * @param {Number} [opt.duration=1000] 时间间隔（ms）
+ * @example
+ * var redEllipse = viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(103.0, 40.0),
+    ellipse: {
+      semiMinorAxis: 250000.0,
+      semiMajorAxis: 400000.0,
+      material: new easy3d.AnimateWave({
+        duration: 2000,
+        color: Cesium.Color.RED,
+      }),
+    },
+  });
+ */
 function AnimateWave(opt) {
     this._definitionChanged = new Cesium.Event();
     this._color = undefined;

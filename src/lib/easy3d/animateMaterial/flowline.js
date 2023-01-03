@@ -7,6 +7,19 @@
  * @param {Number} [opt.duration=1000] 时间间隔（ms）
  * @param {String} opt.image 材质图片
  * @param {Cesium.Cartesian2} [opt.repeat=new Cesium.Cartesian2(1.0, 1.0)] 平铺
+ * @example
+ * var line3 = viewer.entities.add({
+    name: "飞行弧线",
+    polyline: {
+      positions: points4,
+      width: 15,
+      material: new easy3d.FlowLineMaterial({
+        image: "../img/texture/rightarrow.png",
+        repeat: new Cesium.Cartesian2(100, 1),
+        duration: 2500
+      })
+    }
+  });
  */
 function FlowLineMaterial(opt) {
     this.defaultColor = new Cesium.Color(0, 0, 0, 0);
@@ -28,7 +41,7 @@ FlowLineMaterial.prototype.getValue = function (time, result) {
     if (!Cesium.defined(result)) {
         result = {};
     }
-    result.color = Cesium.Property.getValueOrClonedDefault(this._color, time, this.defaultColor, result.color);
+    result.color = Cesium.Property.getValueOrClonedDefault(this.color, time, this.defaultColor, result.color);
     result.image = this.url;
     if (this._time === undefined) {
         this._time = new Date().getTime();

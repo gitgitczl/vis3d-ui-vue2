@@ -328,7 +328,7 @@ class VisualTool {
      * 根据startDraw中传入的字段属性来获取对应vfPrimitives
      * @param {String} [fieldName='id'] 字段名 
      * @param {String} fieldVlue 字段值
-     * @returns {Array} vfprimitives 可视域对象数组
+     * @returns {Array} vfprimitives，可视域对象数组
      */
     getVfPrimitiveByField(fieldName, fieldVlue) {
         fieldName = fieldName || 'id';
@@ -341,7 +341,7 @@ class VisualTool {
     /**
      * 根据id属性来获取对应vfPrimitive
      * @param {String} id 唯一id 
-     * @returns {Object} vpObj vpObj.vfPrimitive 可视域 / vpObj.index 在数组中位置
+     * @returns {Object} vpObj（vpObj.vfPrimitive 可视域 / vpObj.index 在数组中位置）
      */
     getVfPrimitiveById(id) {
         let vpObj = {};

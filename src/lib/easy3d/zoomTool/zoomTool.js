@@ -1,14 +1,32 @@
-// 缩放工具
+/**
+ * 缩放工具
+ * @class
+ * 
+ */
 class ZoomTool {
+    /**
+     * 
+     * @param {Cesium.Viewer} viewer 地图viewer对象
+     * @param {Object} opt 基础配置
+     * @param {Object} opt.step 缩放步长
+     */
     constructor(viewer, opt) {
         this.viewer = viewer;
         this.opt = opt || {};
+        /**
+         * @property {Number} step 缩放步长
+         */
         this.step = this.opt.step || 0.5;
         this.forwardAmount = null;
         this.backwardAmount = null;
+        /**
+         * @property {Cesium.Cartesian3} position 相机位置
+         */
         this.position = null;
     }
-    // 向前移动
+    /**
+     * 向前移动
+     */
     forward() {
         let amount;
         if (this.backwardAmount) {
@@ -21,7 +39,9 @@ class ZoomTool {
         this.viewer.camera.moveForward(amount);
         this.forwardAmount = amount;
     }
-    // 向后移动
+    /**
+     * 向后移动
+     */
     backward() {
         let amount;
         if (this.forwardAmount) {

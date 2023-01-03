@@ -4,7 +4,6 @@
             "./src/lib/easy3d/cUtil.js",
             "./src/lib/easy3d/cTool.js",
             "./src/lib/easy3d/mapViewer.js",
-
             "./src/lib/easy3d/layer/baseLayer.js",
             "./src/lib/easy3d/layer/arcgiscacheLayer.js",
             "./src/lib/easy3d/layer/geojsonLayer.js",
@@ -19,7 +18,6 @@
             "./src/lib/easy3d/layer/xyzLayer.js",
             "./src/lib/easy3d/layer/layerTool.js",
             "./src/lib/easy3d/static/layerType.js",
-
             "./src/lib/easy3d/plot/drawTool.js",
             "./src/lib/easy3d/static/style.js",
             "./src/lib/easy3d/plot/basePlot.js",
@@ -32,10 +30,8 @@
             "./src/lib/easy3d/plot/createPolygon.js",
             "./src/lib/easy3d/plot/createPolyline.js",
             "./src/lib/easy3d/plot/createRectangle.js",
-
             "./src/lib/easy3d/lnglatTool/lnglatNavigation.js",
             "./src/lib/easy3d/mapNavgation/CesiumNavigation.js",
-            
             "./src/lib/easy3d/measure/baseMeasure.js",
             "./src/lib/easy3d/measure/measureAzimuth.js",
             "./src/lib/easy3d/measure/measureGroundDistance.js",
@@ -47,33 +43,46 @@
             "./src/lib/easy3d/measure/measureSpaceDistance.js",
             "./src/lib/easy3d/measure/measureTriangle.js",
             "./src/lib/easy3d/measure/measureTool.js",
-
             "./src/lib/easy3d/prompt/prompt.js",
             "./src/lib/easy3d/popupTooltip/popupTooltip.js",
-
             "./src/lib/easy3d/overviewMap/overviewMap.js",
-
             "./src/lib/easy3d/roam/roamTool.js",
             "./src/lib/easy3d/roam/roam.js",
-
             "./src/lib/easy3d/weather/fog.js",
             "./src/lib/easy3d/weather/snow.js",
             "./src/lib/easy3d/weather/rain.js",
-            "./src/lib/easy3d/weather/weather.js"
+            "./src/lib/easy3d/weather/weather.js",
 
+            "./src/lib/easy3d/analysis/limitHeight/limitHeight.js",
+            "./src/lib/easy3d/analysis/sunshine/sunshine.js",
+            "./src/lib/easy3d/analysis/visualField/visualTool.js",
+            "./src/lib/easy3d/analysis/visualField/visualField.js",
+
+            "./src/lib/easy3d/animateMaterial/flowline.js",
+            "./src/lib/easy3d/animateMaterial/flyline.js",
+            "./src/lib/easy3d/animateMaterial/wall.js",
+            "./src/lib/easy3d/animateMaterial/wave.js",
+
+            "./src/lib/easy3d/zoomTool/zoomTool.js"
         ],
         "includePattern": ".+\\.js(doc|x)?$",
-        "exclude": ["./apidoc/"]
+        "exclude": [
+            "./apidoc/"
+        ]
     },
     "plugins": [],
     "opts": {
         "template": "node_modules/docdash",
+
         "encoding": "utf8",
         "destination": "./apidoc/",
         "recurse": true
     },
     "templates": {
-        "cleverLinks": true,
-        "monospaceLinks": true
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": false
+        }
     }
 }
