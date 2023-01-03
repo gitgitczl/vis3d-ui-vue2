@@ -1,7 +1,15 @@
-// 精灵线
-function Spriteline1MaterialProperty(duration, image) {
+/**
+ * 精灵线
+ * @constructor
+ * @param {Object} opt 基础配置
+ * @param {Cesium.Color} opt.color 颜色
+ * @param {Number} [opt.duration=1000] 时间间隔（ms）
+ * @param {String} opt.image 材质图片
+ */
+function Spriteline1MaterialProperty(opt) {
+    let { duration, image } = opt;
     this._definitionChanged = new Cesium.Event()
-    this.duration = duration
+    this.duration = duration || 1000;
     this.image = image
     this._time = performance.now()
 }

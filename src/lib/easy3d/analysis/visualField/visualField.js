@@ -1,6 +1,45 @@
 // 可视域核心类 注 cesium中采用的大部分为透视投影相机
+/**
+ * 可视域类
+ * @description 此处可视域是自定义了geometry 然后自己构建了阴影贴图的效果
+ * @class
+ * @example
+ *  vfPrimitive = new VisualField(that.viewer, {
+    cameraOptions: {
+        viewerPosition: startPosition.clone(),
+        visibleAreaColor: visibleAreaColor,
+        visibleAreaColorAlpha: visibleAreaColorAlpha,
+        hiddenAreaColor: hiddenAreaColor,
+        hiddenAreaColorAlpha: hiddenAreaColorAlpha,
+        horizontalFov: horizontalFov,
+        verticalFov: verticalFov
+    }
+});
+that.viewer.scene.primitives.add(vfPrimitive);
+ */
 import getPostStageFragmentShader from "./shader";
 class VisualField {
+
+    /**
+     * 
+     * @param {Cesium.Viewer} viewer 地图viewer对象 
+     * @param {Object} options  基础配置
+     * @param {Object} options.cameraOptions  视锥体参数
+     * @param {Cesium.Cartesian3} options.cameraOptions.viewerPosition 视锥体顶点位置
+     * @param {Number} [options.cameraOptions.heading=0]  视锥体偏转角
+     * @param {Number} [options.cameraOptions.pitch=0]  视锥体仰俯角
+     * @param {Number} [options.cameraOptions.horizontalFov=120]  水平张角
+     * @param {Number} [options.cameraOptions.verticalFov=60]  垂直张角
+     * @param {Number} [options.cameraOptions.distance=100]  视锥体长度
+     * @param {String} options.cameraOptions.visibleAreaColor  可见区域颜色
+     * @param {Number} [options.cameraOptions.visibleAreaColorAlpha=1]  可见区域颜色透明度
+     * @param {String} options.cameraOptions.hiddenAreaColor  不可见区域颜色
+     * @param {Number} [options.cameraOptions.hiddenAreaColorAlpha=1]  不可见区域颜色透明度
+     * @param {Boolean} [options.enabled=120]  是否开启阴影贴图
+     * @param {Number} [options.size=2048]  阴影贴图的大小
+     * @param {Boolearn} [options.softShadows=false]  
+     * @param {Cesium.Color} [options.outlineColor=Cesium.Color.YELLOW]  锥体边框线颜色
+     */
     constructor(viewer, options) {
         if (!Cesium.defined(viewer)) {
             throw new Cesium.DeveloperError('缺少地图对象！');
@@ -8,31 +47,58 @@ class VisualField {
         this.options = options || {};
         this._scene = viewer.scene;
         let cameraOptions = options.cameraOptions || {};
-        // 是否开启点光源贴图
+
+        /**
+         * @property {Boolearn} _enabled 是否开启点阴影贴图
+         */
         this._enabled = Cesium.defaultValue(options.enabled, true);
-        // 定义相机目标位置
+
+         /**
+         * @property {Cesium.Cartesian3} _viewerPosition 视锥体顶点位置
+         */
         this._viewerPosition = Cesium.defaultValue(cameraOptions.viewerPosition, new Cesium.Cartesian3.fromDegrees(0, 0, 0));
-        // 定义相机的方向
+        
+         /**
+         * @property {Number} _heading 偏转角
+         */
         this._heading = Cesium.defaultValue(cameraOptions.heading, 0);
-        // 定义相机的仰俯角
+
+        /**
+         * @property {Number} _heading 仰俯角
+         */
         this._pitch = Cesium.defaultValue(cameraOptions.pitch, 0);
-        // 水平视角范围
-        this._horizontalFov = Cesium.defaultValue(cameraOptions.horizontalFov, 179.9);
-        // 垂直视角范围
+
+          /**
+         * @property {Number} _horizontalFov 水平视角范围
+         */
+        this._horizontalFov = Cesium.defaultValue(cameraOptions.horizontalFov, 120);
+
+        /**
+         * @property {Number} _verticalFov 垂直视角范围
+         */
         this._verticalFov = Cesium.defaultValue(cameraOptions.verticalFov, 60);
-        // 视锥体长度 即距远平面的距离
+
+        /**
+         * @property {Number} _distance 视锥体长度
+         */
         this._distance = Cesium.defaultValue(cameraOptions.distance, 100);
-        // 可见地区颜色 
+        
+        /**
+         * @property {Cesium.Color} _visibleAreaColor 可见区域颜色
+         */
         this._visibleAreaColor = cameraOptions.visibleAreaColor instanceof Cesium.Color ? cameraOptions.visibleAreaColor : Cesium.Color.fromCssColorString(cameraOptions.visibleAreaColor);
         // 可见区域颜色透明度
         this._visibleAreaColorAlpha = cameraOptions.visibleAreaColorAlpha == undefined ? 1 : cameraOptions.visibleAreaColorAlpha;
-        // 不可见地区颜色
+
+        /**
+         * @property {Cesium.Color} _hiddenAreaColor不可见区域颜色
+         */
         this._hiddenAreaColor = cameraOptions.hiddenAreaColor instanceof Cesium.Color ? cameraOptions.hiddenAreaColor : Cesium.Color.fromCssColorString(cameraOptions.hiddenAreaColor);
         // 不可见地区颜色透明度
         this._hiddenAreaColorAlpha = cameraOptions.hiddenAreaColorAlpha == undefined ? 1 : cameraOptions.hiddenAreaColorAlpha;
-        // 点光源中的像素大小尺寸
+        // 阴影贴图的像素大小尺寸
         this._size = Cesium.defaultValue(options.size, 2048);
-        // 点光源中的柔和阴影
+        // 阴影贴图的柔和阴影
         this._softShadows = Cesium.defaultValue(options.softShadows, false);
         // 屏蔽距离误差
         this._bugDistance = this._distance + 0.000001 * this._horizontalFov - 0.000001 * this._verticalFov;
@@ -494,6 +560,9 @@ class VisualField {
         if (this._lightCameraPrimitive) this._lightCameraPrimitive.update(frameState);
     }
 
+    /**
+     * 销毁
+     */
     destroy() {
         if (Cesium.defined(this._stage)) {
             this._scene.postProcessStages.remove(this._stage);

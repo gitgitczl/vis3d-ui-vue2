@@ -1,3 +1,11 @@
+/**
+ * 飞线材质
+ * @constructor
+ * @param {Object} opt 基础配置
+ * @param {Cesium.Color} opt.color 颜色
+ * @param {Number} [opt.duration=1000] 时间间隔（ms）
+ * @param {String} opt.image 材质图片
+ */
 function FlyLineMaterial(opt) {
     this.defaultColor = new Cesium.Color(0, 0, 0, 0);
     this._definitionChanged = new Cesium.Event();
