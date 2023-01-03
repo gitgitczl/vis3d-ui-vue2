@@ -55,7 +55,7 @@
 
             "./src/lib/easy3d/analysis/limitHeight/limitHeight.js",
             "./src/lib/easy3d/analysis/sunshine/sunshine.js",
-            "./src/lib/easy3d/analysis/visualField/visualTool.js",
+            "./src/lib/easy3d/analysis/visualField/visualFieldTool.js",
             "./src/lib/easy3d/analysis/visualField/visualField.js",
 
             "./src/lib/easy3d/animateMaterial/flowline.js",

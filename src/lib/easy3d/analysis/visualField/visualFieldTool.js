@@ -7,7 +7,7 @@ import "../../prompt/prompt.css";
  * @description 可视域控制类，通过此类对象，可直接添加可视域，并对添加的可视域进行控制，而不用单独创建可视域。
  * @class 
  */
-class VisualTool {
+class visualFieldTool {
 
     /**
      * @param {Cesium.Viewer} viewer 地图viewer对象
@@ -29,6 +29,28 @@ class VisualTool {
          * @property {Array} vfPrimitiveArr 可视域对象数组
          */
         this.vfPrimitiveArr = [];
+    }
+
+    /** 
+   * 事件绑定
+   * @param {String} type 事件类型（startEdit 开始编辑时 / endEdit 编辑结束时 / remove 删除对象时 / endCreate 创建完成后）
+   * @param {Function} fun 绑定函数
+  */
+    on(type, fun) {
+        if (type == "startEdit") {
+            // 开始编辑事件
+            this.startEditFun = fun;
+        } else if (type == "endEdit") {
+            // 结束编辑事件
+            this.endEditFun = fun;
+        } else if (type == "remove") {
+            // 移除事件
+            this.removeFun = fun;
+        } else if (type == "endCreate") {
+            // 绘制完成事件
+            this.endCreateFun = fun;
+        } else {
+        }
     }
 
     /**
@@ -56,12 +78,12 @@ class VisualTool {
         opt = Object.assign(defaultStyle, opt || {});
         opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0)); // 给个默认id
 
-        let visibleAreaColor = this.opt.visibleAreaColor;
-        let hiddenAreaColor = this.opt.hiddenAreaColor;
-        let visibleAreaColorAlpha = this.opt.visibleAreaColorAlpha;
-        let hiddenAreaColorAlpha = this.opt.hiddenAreaColorAlpha;
-        let verticalFov = this.opt.verticalFov;
-        let horizontalFov = this.opt.horizontalFov;
+        let visibleAreaColor = opt.visibleAreaColor;
+        let hiddenAreaColor = opt.hiddenAreaColor;
+        let visibleAreaColorAlpha = opt.visibleAreaColorAlpha;
+        let hiddenAreaColorAlpha = opt.hiddenAreaColorAlpha;
+        let verticalFov = opt.verticalFov;
+        let horizontalFov = opt.horizontalFov;
         let startPosition = undefined;
         let endPosition = undefined;
 
@@ -88,6 +110,7 @@ class VisualTool {
                 let c1 = Cesium.Cartographic.fromCartesian(startPosition.clone());
                 let c2 = Cesium.Cartographic.fromCartesian(endPosition.clone());
                 let angle = that.computeAngle(c1, c2);
+                
                 vfPrimitive.heading = angle;
                 vfPrimitive.attr.heading = angle;
 
@@ -138,7 +161,6 @@ class VisualTool {
             let distance = Cesium.Cartesian3.distance(startPosition.clone(), cartesian.clone());
             vfPrimitive.distance = distance;
             vfPrimitive.attr.distance = distance;
-
 
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
@@ -368,6 +390,15 @@ class VisualTool {
         this.vfPrimitiveArr.splice(vpObj.index, 1);
     }
 
+    /**
+     * 删除单个可视域
+     * @param {Object} vfPrimitive 可视域对象
+     */
+    removeOne(vfPrimitive){
+        if(!vfPrimitive) return;
+        this.removeVfPrimitiveById(vfPrimitive.attr.id);
+    }
+
 }
 
-export default VisualTool;
+export default visualFieldTool;

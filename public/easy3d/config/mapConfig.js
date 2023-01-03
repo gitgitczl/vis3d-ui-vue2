@@ -8,10 +8,10 @@ window.mapConfig = {
       "heading": 331.1978494043747,
       "pitch": -8.45296669256617,
       "roll": 0.00043210090111595544,
-      duration: 0,
+      "duration": 0,
     },
-    errorRender: true, // 是否开启崩溃刷新
-    debugShowFramesPerSecond : false, // 是否显示帧数
+    errorRender: false, // 是否开启崩溃刷新
+    debugShowFramesPerSecond : true, // 是否显示帧数
     worldAnimate: false,
     bottomLnglatTool: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能

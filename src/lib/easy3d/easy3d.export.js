@@ -41,7 +41,8 @@ import OverviewMap from "./overviewMap/overviewMap";
 import LayerSplit from "./layerSplit/layerSplit";
 
 // 引入分析模块
-import VisualTool from "./analysis/visualField/visualTool";
+import visualFieldTool from "./analysis/visualField/visualFieldTool";
+import VisualField from "./analysis/visualField/visualField";
 import Sunshine from "./analysis/sunshine/sunshine";
 import LimitHeight from "./analysis/limitHeight/limitHeight";
 
@@ -50,7 +51,8 @@ import MapViewer from "./mapViewer";
 import weather from "./weather/weather"
 
 let analysis = {
-  VisualTool: VisualTool,
+  visualFieldTool: visualFieldTool,
+  VisualField : VisualField,
   Sunshine: Sunshine,
   LimitHeight: LimitHeight,
 };

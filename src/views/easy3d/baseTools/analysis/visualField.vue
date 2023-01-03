@@ -93,7 +93,8 @@
 
 <script>
 /* 可视域分析 */
-let visualField = null;
+let visualFieldTool = null;
+let vfPrimitive = undefined;
 export default {
   name: "VisualField",
   data() {
@@ -115,60 +116,73 @@ export default {
     startDraw() {
       this.clear();
       let that = this;
-      if (!visualField) {
-        visualField = new this.easy3d.analysis.VisualTool(window.viewer, {
+      if (!visualFieldTool) {
+        visualFieldTool = new this.easy3d.analysis.visualFieldTool(
+          window.viewer
+        );
+      }
+
+      if (vfPrimitive) {
+        visualFieldTool.removeOne(vfPrimitive);
+        vfPrimitive = undefined;
+      }
+
+      visualFieldTool.startDraw(
+        {
           visibleAreaColor: this.visibleAreaColor,
           visibleAreaColorAlpha: this.visibleAreaColorAlpha,
           hiddenAreaColor: this.hiddenAreaColor,
           hiddenAreaColorAlpha: this.visibleAreaColorAlpha,
           verticalFov: this.verticalFov,
           horizontalFov: this.horizontalFov,
-        });
-      }
-      visualField.startDraw(function (heading, distance) {
-        that.heading = heading;
-        that.distance = distance;
-      });
+        },
+        function (vp) {
+          vfPrimitive = vp;
+          let { heading, distance } = vp.attr;
+          that.heading = heading;
+          that.distance = distance;
+        }
+      );
     },
     setHorizontalFov(val) {
-      if (!visualField) return;
-      visualField.setHorizontalFov(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setHorizontalFov(vfPrimitive, val);
     },
     setVerticalFov(val) {
-      if (!visualField) return;
-      visualField.setVerticalFov(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setVerticalFov(vfPrimitive, val);
     },
     setDistance(val) {
-      if (!visualField) return;
-      visualField.setDistance(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setDistance(vfPrimitive, val);
     },
     setHeading(val) {
-      if (!visualField) return;
-      visualField.setHeading(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setHeading(vfPrimitive, val);
     },
     setPitch(val) {
-      if (!visualField) return;
-      visualField.setPitch(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setPitch(vfPrimitive, val);
     },
     setVisibleAreaColor(val) {
-      if (!visualField) return;
-      visualField.setVisibleAreaColor(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setVisibleAreaColor(vfPrimitive, val);
     },
     setVisibleAreaColorAlpha(val) {
-      if (!visualField) return;
-      visualField.setVisibleAreaColorAlpha(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setVisibleAreaColorAlpha(vfPrimitive, val);
     },
     setHiddenAreaColor(val) {
-      if (!visualField) return;
-      visualField.setHiddenAreaColor(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setHiddenAreaColor(vfPrimitive, val);
     },
     setHiddenAreaColorAlpha(val) {
-      if (!visualField) return;
-      visualField.setHiddenAreaColorAlpha(val);
+      if (!visualFieldTool) return;
+      visualFieldTool.setHiddenAreaColorAlpha(vfPrimitive, val);
     },
     clear() {
-      if (!visualField) return;
-      visualField.destroy();
+      if (!visualFieldTool) return;
+      visualFieldTool.destroy();
       visualField = null;
 
       this.horizontalFov = 120;
