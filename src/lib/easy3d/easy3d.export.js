@@ -39,10 +39,7 @@ import RoamTool from "./roam/roamTool";
 import ZoomTool from "./zoomTool/zoomTool";
 import OverviewMap from "./overviewMap/overviewMap";
 import LayerSplit from "./layerSplit/layerSplit";
-// 引入天气
-import fog from "./weather/fog";
-import rain from "./weather/rain";
-import snow from "./weather/snow";
+
 // 引入分析模块
 import VisualTool from "./analysis/visualField/visualTool";
 import Sunshine from "./analysis/sunshine/sunshine";
@@ -50,6 +47,7 @@ import LimitHeight from "./analysis/limitHeight/limitHeight";
 
 import MapViewer from "./mapViewer";
 
+import weather from "./weather/weather"
 
 let analysis = {
   VisualTool: VisualTool,
@@ -57,12 +55,6 @@ let analysis = {
   LimitHeight: LimitHeight,
 };
 
-// 自定义天气
-let weather = {
-  fog: fog,
-  rain: rain,
-  snow: snow,
-};
 
 import registerAnimate from "./animateMaterial/animate";
 // 注册自定义材质

@@ -1,19 +1,49 @@
 import VisualField from "./visualField";
 import Prompt from "../../prompt/prompt";
 import "../../prompt/prompt.css";
+
+/**
+ * 可视域控制类
+ * @description 可视域控制类，通过此类对象，可直接添加可视域，并对添加的可视域进行控制，而不用单独创建可视域。
+ * @class 
+ */
 class VisualTool {
+
+    /**
+     * @param {Cesium.Viewer} viewer 地图viewer对象
+     
+     * 
+     */
     constructor(viewer, opt) {
         if (!Cesium.defined(viewer)) {
             throw new Cesium.DeveloperError('缺少地图对象！');
         }
         this.viewer = viewer;
         this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+
         this.prompt = null;
 
-        this.startPosition = null;
-        this.endPosition = null;
         this.vfPrimitive = null;
 
+        /**
+         * @property {Array} vfPrimitiveArr 可视域对象数组
+         */
+        this.vfPrimitiveArr = [];
+    }
+
+    /**
+     * 绘制可视域
+     * @param {Object} opt 当前可视域的配置 
+     * @param {String} [opt.visibleAreaColorAlpha="#00FF00"] 可见区域颜色
+     * @param {Number} [opt.visibleAreaColorAlpha=1] 可见区域颜色透明度
+     * @param {String} [opt.hiddenAreaColorAlpha="#FF0000"] 不可见区域颜色
+     * @param {Number} [opt.hiddenAreaColorAlpha=1] 不可见区域颜色透明度
+     * @param {Number} [opt.verticalFov=60] 视锥体水平张角
+    *  @param {Number} [opt.horizontalFov=120] 视锥体垂直张角
+     * @param {Function} fun 绘制成功后的回调函数fun(vfPrimitive)
+     */
+    startDraw(opt, fun) {
+        let that = this;
         // 默认样式
         let defaultStyle = {
             visibleAreaColor: "#00FF00",
@@ -23,31 +53,30 @@ class VisualTool {
             verticalFov: 60,
             horizontalFov: 120
         }
-        this.opt = Object.assign(defaultStyle, opt || {});
+        opt = Object.assign(defaultStyle, opt || {});
+        opt.id =  opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0)); // 给个默认id
 
-        this.visibleAreaColor = this.opt.visibleAreaColor;
-        this.hiddenAreaColor = this.opt.hiddenAreaColor;
-        this.visibleAreaColorAlpha = this.opt.visibleAreaColorAlpha;
-        this.hiddenAreaColorAlpha = this.opt.hiddenAreaColorAlpha;
+        let visibleAreaColor = this.opt.visibleAreaColor;
+        let hiddenAreaColor = this.opt.hiddenAreaColor;
+        let visibleAreaColorAlpha = this.opt.visibleAreaColorAlpha;
+        let hiddenAreaColorAlpha = this.opt.hiddenAreaColorAlpha;
+        let verticalFov = this.opt.verticalFov;
+        let horizontalFov = this.opt.horizontalFov;
+        let startPosition = undefined;
+        let endPosition = undefined;
 
-        this.heading = this.opt.heading || 0;
-        this.pitch = this.opt.pitch || 0;
-        this.verticalFov = this.opt.verticalFov;
-        this.horizontalFov = this.opt.horizontalFov;
-        this.distance = 0;
-    }
+        let vfPrimitive = undefined; // 当前绘制的视锥体
 
-    startDraw(fun) {
-        let that = this;
         if (!this.prompt) this.prompt = new Prompt(this.viewer, this.promptStyle);
+
         this.handler.setInputAction(function (evt) {
             // 单击开始绘制
             let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
             if (!cartesian) return;
-            if (!that.startPosition) {
-                that.startPosition = cartesian.clone();
+            if (!startPosition) {
+                startPosition = cartesian.clone();
             } else {
-                that.endPosition = cartesian.clone();
+                endPosition = cartesian.clone();
                 if (that.handler) {
                     that.handler.destroy();
                     that.handler = null;
@@ -56,117 +85,163 @@ class VisualTool {
                     that.prompt.destroy();
                     that.prompt = null;
                 }
-                let c1 = Cesium.Cartographic.fromCartesian(that.startPosition.clone());
-                let c2 = Cesium.Cartographic.fromCartesian(that.endPosition.clone());
+                let c1 = Cesium.Cartographic.fromCartesian(startPosition.clone());
+                let c2 = Cesium.Cartographic.fromCartesian(endPosition.clone());
                 let angle = that.computeAngle(c1, c2);
-                that.heading = angle;
-                that.vfPrimitive.heading = angle;
+                vfPrimitive.heading = angle;
+                vfPrimitive.attr.heading = angle;
 
-                let distance = Cesium.Cartesian3.distance(that.startPosition.clone(), that.endPosition.clone());
-                that.distance = distance;
-                that.vfPrimitive.distance = distance;
-                if (fun) fun(angle, distance);
+                let distance = Cesium.Cartesian3.distance(startPosition.clone(), endPosition.clone());
+                vfPrimitive.distance = distance;
+                vfPrimitive.attr.distance = distance;
+
+                // 绘制完成后 置为空
+                startPosition = undefined;
+                endPosition = undefined;
+
+                if (fun) fun(vfPrimitive);
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
         this.handler.setInputAction(function (evt) {
             // 移动时绘制线
-            if (!that.startPosition) {
+            if (!startPosition) {
                 that.prompt.update(evt.endPosition, "单击开始绘制");
                 return;
             }
             that.prompt.update(evt.endPosition, "再次单击结束");
             let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
             if (!cartesian) return;
-            if (!that.vfPrimitive) {
-                that.vfPrimitive = new VisualField(that.viewer, {
+            if (!vfPrimitive) {
+                vfPrimitive = new VisualField(that.viewer, {
                     cameraOptions: {
-                        viewerPosition: that.startPosition.clone(),
-                        visibleAreaColor: that.visibleAreaColor,
-                        visibleAreaColorAlpha: that.visibleAreaColorAlpha,
-                        hiddenAreaColor: that.hiddenAreaColor,
-                        hiddenAreaColorAlpha: that.hiddenAreaColorAlpha,
-                        horizontalFov: that.horizontalFov,
-                        verticalFov: that.verticalFov
+                        viewerPosition: startPosition.clone(),
+                        visibleAreaColor: visibleAreaColor,
+                        visibleAreaColorAlpha: visibleAreaColorAlpha,
+                        hiddenAreaColor: hiddenAreaColor,
+                        hiddenAreaColorAlpha: hiddenAreaColorAlpha,
+                        horizontalFov: horizontalFov,
+                        verticalFov: verticalFov
                     }
                 });
-                that.viewer.scene.primitives.add(that.vfPrimitive);
+                that.viewer.scene.primitives.add(vfPrimitive);
+                that.vfPrimitiveArr.push(vfPrimitive);
+
+                vfPrimitive.attr = opt; // 属性绑定
             }
 
-            let c1 = Cesium.Cartographic.fromCartesian(that.startPosition.clone());
+            let c1 = Cesium.Cartographic.fromCartesian(startPosition.clone());
             let c2 = Cesium.Cartographic.fromCartesian(cartesian.clone());
             let angle = that.computeAngle(c1, c2);
-            that.heading = angle;
-            that.vfPrimitive.heading = angle;
+            vfPrimitive.heading = angle;
+            vfPrimitive.attr.heading = angle;
 
-            let distance = Cesium.Cartesian3.distance(that.startPosition.clone(), cartesian.clone());
-            that.distance = distance;
-            that.vfPrimitive.distance = distance;
+            let distance = Cesium.Cartesian3.distance(startPosition.clone(), cartesian.clone());
+            vfPrimitive.distance = distance;
+            vfPrimitive.attr.distance = distance;
+
 
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
 
-    // 设置可视区域颜色
-    setVisibleAreaColor(val) {
+    /**
+     * 设置可视区域颜色 
+     * @param {Object} vfPrimitive 可视域对象 
+     * @param {String} val 可视区域颜色
+     */
+    setVisibleAreaColor(vfPrimitive, val) {
         if (!val) return;
         this.visibleAreaColor = val;
-        if (this.vfPrimitive) this.vfPrimitive.visibleAreaColor = val;
+        if (vfPrimitive) vfPrimitive.visibleAreaColor = val;
     }
-    // 设置可视区域颜色透明度
-    setVisibleAreaColorAlpha(val) {
+
+    /**
+     * 设置可视区域颜色透明度
+     * @param {Object} vfPrimitive 可视域对象 
+     * @param {Number} val 可视区域颜色透明度
+     */
+    setVisibleAreaColorAlpha(vfPrimitive, val) {
         if (!val) return;
         this.visibleAreaColorAlpha = Number(val);
-        if (this.vfPrimitive) this.vfPrimitive.visibleAreaColorAlpha = Number(val);
+        if (vfPrimitive) vfPrimitive.visibleAreaColorAlpha = Number(val);
     }
 
-    // 设置不可视区域颜色
-    setHiddenAreaColor(val) {
+    /**
+     * 设置不可视区域颜色
+     * @param {Object} vfPrimitive 可视域对象 
+     * @param {String} val 不可视区域颜色
+     */
+    setHiddenAreaColor(vfPrimitive, val) {
         if (!val) return;
         this.hiddenAreaColor = val;
-        if (this.vfPrimitive) this.vfPrimitive.hiddenAreaColor = val;
+        if (vfPrimitive) vfPrimitive.hiddenAreaColor = val;
     }
 
-    // 设置不可视区域颜色透明度
-    setHiddenAreaColorAlpha(val) {
+    /**
+     * 设置不可视区域颜色透明度
+     * @param {Object} vfPrimitive 可视域对象 
+    * @param {Number} val 不可视区域颜色透明度
+    */
+    setHiddenAreaColorAlpha(vfPrimitive, val) {
         if (!val) return;
         this.hiddenAreaColorAlpha = Number(val);
-        if (this.vfPrimitive) this.vfPrimitive.hiddenAreaColorAlpha = Number(val);
+        if (vfPrimitive) vfPrimitive.hiddenAreaColorAlpha = Number(val);
     }
 
-    // 设置锥体长度
-    setDistance(val) {
+    /**
+     * 设置设置锥体长度
+     * @param {Object} vfPrimitive 可视域对象 
+    * @param {Number} val 锥体长度
+    */
+    setDistance(vfPrimitive, val) {
         if (!val) return;
         this.distance = Number(val);
-        if (this.vfPrimitive) this.vfPrimitive.distance = Number(val);
+        if (vfPrimitive) vfPrimitive.distance = Number(val);
     }
 
-    // 设置垂直张角
-    setVerticalFov(val) {
+    /**
+     * 设置垂直张角
+     * @param {Object} vfPrimitive 可视域对象 
+    * @param {Number} val 垂直张角
+    */
+    setVerticalFov(vfPrimitive, val) {
         if (!val) return;
         this.verticalFov = Number(val);
-        if (this.vfPrimitive) this.vfPrimitive.verticalFov = Number(val);
+        if (vfPrimitive) vfPrimitive.verticalFov = Number(val);
     }
 
-    // 设置水平张角
-    setHorizontalFov(val) {
+    /**
+     * 设置水平张角
+     * @param {Object} vfPrimitive 可视域对象 
+    * @param {Number} val 水平张角
+    */
+    setHorizontalFov(vfPrimitive, val) {
         if (!val) return;
         let value = Number(val);
         value = value >= 180 ? 179 : value; // 水平张角不超过180
         this.horizontalFov = Number(value);
-        if (this.vfPrimitive) this.vfPrimitive.horizontalFov = Number(value);
+        if (vfPrimitive) vfPrimitive.horizontalFov = Number(value);
     }
 
-    // 设置锥体姿态 -- 偏转角
-    setHeading(val) {
+    /**
+    * 设置偏转角
+    * @param {Object} vfPrimitive 可视域对象 
+   * @param {Number} val 偏转角
+   */
+    setHeading(vfPrimitive, val) {
         if (!val) return;
         this.heading = 0;
-        if (this.vfPrimitive) this.vfPrimitive.heading = Number(val);
+        if (vfPrimitive) vfPrimitive.heading = Number(val);
     }
 
-    // 设置锥体姿态 -- 仰俯角
-    setPitch(val) {
+    /**
+    * 设置仰俯角
+    * @param {Object} vfPrimitive 可视域对象 
+    * @param {Number} val 仰俯角
+    */
+    setPitch(vfPrimitive, val) {
         if (!val) return;
         this.pitch = Number(val);
-        if (this.vfPrimitive) this.vfPrimitive.pitch = Number(val);
+        if (vfPrimitive) vfPrimitive.pitch = Number(val);
     }
 
     // 计算两点朝向
@@ -210,12 +285,21 @@ class VisualTool {
         return cartesian;
     }
 
+    /**
+    * 清除可视域
+    */
     clear() {
-        if (this.vfPrimitive) {
-            this.viewer.scene.primitives.remove(this.vfPrimitive);
-            this.vfPrimitive = null;
+        for (let i = 0; i < this.vfPrimitiveArr.length; i++) {
+            let vfPrimitive = this.vfPrimitiveArr[i];
+            this.viewer.scene.primitives.remove(vfPrimitive);
+            vfPrimitive = null;
         }
+        this.vfPrimitiveArr = [];
     }
+
+    /**
+     * 销毁
+    */
     destroy() {
         this.clear();
         if (this.handler) {
@@ -227,6 +311,17 @@ class VisualTool {
             this.prompt = null;
         }
     }
+
+    /**
+     * 根据startDraw中传入的字段属性来获取对应VfPrimitive
+     * @param {String} [fieldName='id'] 字段名 
+     * @param {String} fieldVlue 字段值
+     * @returns {Array} vfprimitives 可视域对象数组
+     */
+    getVfPrimitiveByField(fieldName, fieldVlue) {
+
+    }
+
 }
 
 export default VisualTool;

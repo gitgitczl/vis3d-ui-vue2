@@ -1,7 +1,20 @@
-//定义下雪场景 着色器
-export default {
+/**
+ * 下雨场景
+ * @property {Boolean} isActivate 是否激活
+ * @property {Function} activate 开启场景
+ * @property {Function} disable 关闭场景
+ */
+let rain = {
     rainProcs: null,
+    /** 
+     * 是否开启
+     * @property {Boolearn} isActivate 是否开启
+     * 
+     */
     isActivate: false,
+     /**
+     * 激活
+     */
     activate: function () {
         if (this.isActivate) return;
         this.isActivate = true;
@@ -12,6 +25,9 @@ export default {
         });
         viewer.scene.postProcessStages.add(this.rainProcs);
     },
+    /**
+     * 销毁释放
+     */
     disable: function () {
         if (!this.isActivate) return;
         this.isActivate = false;
@@ -50,3 +66,5 @@ export default {
         ";
     }
 }
+
+export default rain;

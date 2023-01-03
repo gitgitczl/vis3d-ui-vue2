@@ -1,10 +1,22 @@
 
-//定义下雪场景 着色器
-export default {
-    snowProcs:null,
-    isActivate:false,
-    activate:function(){
-        if(this.isActivate) return;
+/**
+ * 下雪场景
+ * @property {Boolean} isActivate 是否激活
+ * @property {Function} activate 开启场景
+ * @property {Function} disable 关闭场景
+ */
+let snow = {
+    snowProcs: null,
+    /**
+     * 是否激活
+     */
+    isActivate: false,
+
+    /**
+     * 激活
+     */
+    activate: function () {
+        if (this.isActivate) return;
         this.isActivate = true;
         var fs_snow = this.initSnow();
         this.snowProcs = new Cesium.PostProcessStage({
@@ -13,15 +25,19 @@ export default {
         });
         viewer.scene.postProcessStages.add(this.snowProcs);
     },
-    disable:function(){
-        if(!this.isActivate) return;
+
+    /**
+     * 销毁释放
+     */
+    disable: function () {
+        if (!this.isActivate) return;
         this.isActivate = false;
-        if(this.snowProcs){
+        if (this.snowProcs) {
             viewer.scene.postProcessStages.remove(this.snowProcs);
             this.snowProcs = null;
         }
     },
-    initSnow:function(){
+    initSnow: function () {
         return "uniform sampler2D colorTexture;\n\
                 varying vec2 v_textureCoordinates;\n\
                 \n\
@@ -55,3 +71,5 @@ export default {
             ";
     }
 }
+
+export default snow;

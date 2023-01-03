@@ -54,7 +54,12 @@
             "./src/lib/easy3d/overviewMap/overviewMap.js",
 
             "./src/lib/easy3d/roam/roamTool.js",
-            "./src/lib/easy3d/roam/roam.js"
+            "./src/lib/easy3d/roam/roam.js",
+
+            "./src/lib/easy3d/weather/fog.js",
+            "./src/lib/easy3d/weather/snow.js",
+            "./src/lib/easy3d/weather/rain.js",
+            "./src/lib/easy3d/weather/weather.js"
 
         ],
         "includePattern": ".+\\.js(doc|x)?$",

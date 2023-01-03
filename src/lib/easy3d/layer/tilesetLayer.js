@@ -45,7 +45,8 @@ class TilesetLayer {
     tilesetLayer.load();
      */
     constructor(viewer, opt) {
-        super(viewer, opt);
+        /* super(viewer, opt); */
+        this.viewer = viewer;
         this.opt = opt || {};
 
         /**

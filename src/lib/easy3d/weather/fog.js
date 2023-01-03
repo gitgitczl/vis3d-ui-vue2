@@ -1,8 +1,23 @@
-//定义下雪场景 着色器
-export default {
+/**
+ * 雾场景
+ * @property {Boolean} isActivate 是否激活
+ * @property {Function} activate 开启场景
+ * @property {Function} disable 关闭场景
+ */
+let fog = {
     fogProcs: null,
+    /**
+    * 是否激活
+    */
     isActivate: false,
-    fogVal:0.50,
+    /**
+     * 能见度（0-1）
+     */
+    fogVal: 0.50,
+    /**
+     * 激活
+     * @function
+     */
     activate: function () {
         if (this.isActivate) return;
         this.isActivate = true;
@@ -15,6 +30,9 @@ export default {
         });
         viewer.scene.postProcessStages.add(this.fogProcs);
     },
+    /**
+     * 销毁释放
+     */
     disable: function () {
         if (!this.isActivate) return;
         this.isActivate = false;
@@ -35,10 +53,12 @@ export default {
             "\n" +
             "      vec4 depthcolor = texture2D(depthTexture, v_textureCoordinates);\n" +
             "\n" +
-            "      float f=(depthcolor.r-0.22)/"+this.fogVal+";\n" +
+            "      float f=(depthcolor.r-0.22)/" + this.fogVal + ";\n" +
             "      if(f<0.0) f=0.0;\n" +
             "      else if(f>1.0) f=1.0;\n" +
             "      gl_FragColor = mix(origcolor,fogcolor,f);\n" +
             "   }";
     }
 }
+
+export default fog;

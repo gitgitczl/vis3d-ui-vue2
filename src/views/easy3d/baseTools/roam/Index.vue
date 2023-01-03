@@ -275,7 +275,7 @@ export default {
         nowEditEntityObj = entObj;
         // 不显示漫游列表
         that.isShowList = false;
-        let roams = roamTool.getRoamByField("plotId", entObj.objId);
+        let roams = roamTool.getRoamByField("plotId", entObj.attr.id);
         if (!roams[0]) return;
         // 获取当前漫游对象属性 表单赋值
         let roamAttr = roams[0].roam.getAttr();
@@ -315,9 +315,9 @@ export default {
           name: that.nowRoamAttr.name,
           mark: that.nowRoamAttr.mark || "无",
           typeName: roamTypeNmae,
-          plotId: entObj.objId,
+          plotId: entObj.attr.id,
         };
-        let roams = roamTool.getRoamByField("plotId", entObj.objId);
+        let roams = roamTool.getRoamByField("plotId", entObj.attr.id);
 
         if (roams[0]) {
           // ====== 编辑 更新列表中数据 ======
@@ -340,7 +340,7 @@ export default {
         let attr = {};
         let positions = entObj.getPositions(false);
         attr.positions = positions;
-        attr.plotId = entObj.objId; // 和标绘关联
+        attr.plotId = entObj.attr.id; // 和标绘关联
         let roamAttr = Object.assign(attr, that.nowRoamAttr);
         // 设置漫游模型
         let entityAttr = that.modelList.filter((model) => {
@@ -409,7 +409,7 @@ export default {
         window.nowRoam = roams[0].roam;
       }
       // 隐藏对应线
-      let eo = roamDrawTool.getEntityObjByObjId(attr.plotId);
+      let eo = roamDrawTool.getEntityObjById(attr.plotId);
       if (eo.entityObj) eo.entityObj.setVisible(false);
       lastRouteObj = eo;
     },
@@ -417,7 +417,7 @@ export default {
       // 开始编辑 当前所有漫游
       roamTool.endRoam();
       // 隐藏对应线
-      let eo = roamDrawTool.getEntityObjByObjId(attr.plotId);
+      let eo = roamDrawTool.getEntityObjById(attr.plotId);
       if (eo.entityObj) {
         roamDrawTool.startEditOne(eo.entityObj);
       }

@@ -120,6 +120,7 @@ export default {
 
   mounted() {
     let plotEntityObjId = this.$store.state.map3d.plotEntityObjId;
+    debugger
     this.setAttr(plotEntityObjId);
   },
 
@@ -129,8 +130,7 @@ export default {
     },
     setAttr(id) {
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
-      debugger
-      let nowPlotEntityObj = window.plotDrawTool.getEntityObjByObjId(id) || {};
+      let nowPlotEntityObj = window.plotDrawTool.getEntityObjById(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
       if (!entityObj) return;
       this.plotStyleAttr = plotStyle[entityObj.attr.styleType];

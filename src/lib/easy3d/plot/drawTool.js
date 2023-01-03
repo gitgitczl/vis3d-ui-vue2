@@ -405,7 +405,7 @@ class DrawTool {
    */
   hasEntityObj(entityObj) {
     if (!entityObj) return false;
-    let obj = this.getEntityObjByObjId(entityObj.objId);
+    let obj = this.getEntityObjById(entityObj.objId);
     return obj != {} ? true : false;
   }
 
@@ -414,7 +414,7 @@ class DrawTool {
    * @param {String | Number} id 对象id
    */
   removeById(id) {
-    let obj = this.getEntityObjByObjId(id);
+    let obj = this.getEntityObjById(id);
     this.entityObjArr.splice(obj.index, 1);
     // 触发on绑定的移除事件
     if (this.removeFun)
@@ -429,7 +429,7 @@ class DrawTool {
    * @param {String} id 对象id
    */
   zoomToById(id) {
-    let obj = this.getEntityObjByObjId(id);
+    let obj = this.getEntityObjById(id);
     if (obj.entityObj) {
       obj.entityObj.zoomTo();
     }
@@ -484,12 +484,12 @@ class DrawTool {
    * @param {String | Number} id 对象id
    * @returns {Object} obj 对象在数组中位置以及对象
    */
-  getEntityObjByObjId(id) {
+  getEntityObjById(id) {
     if (!id) return;
     let obj = {};
     for (let i = 0; i < this.entityObjArr.length; i++) {
       let item = this.entityObjArr[i];
-      if (item.objId == id) {
+      if (item.attr.id == id) {
         obj.entityObj = item;
         obj.index = i;
         break;
