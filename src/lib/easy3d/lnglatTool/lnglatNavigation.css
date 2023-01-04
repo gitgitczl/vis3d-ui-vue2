@@ -9,7 +9,7 @@
 }
 
 @media screen and (max-width:900px) {
-    .easy3d-lnglatNavigation {
+    .easy3d-lnglatNavigation{
         display: none;
     }
 }

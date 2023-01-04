@@ -2,16 +2,16 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x": 109.7884118470029,
-      "y": 39.590384952017764,
-      "z": 1565.7899788867958,
-      "heading": 331.1978494043747,
-      "pitch": -8.45296669256617,
-      "roll": 0.00043210090111595544,
+      "x": 117.14532335931926,
+      "y": 31.80044599763115,
+      "z": 2352.9519727092984,
+      "heading": 1.9619033536211412,
+      "pitch": -54.87331947992363,
+      "roll": 0.004195037386755997,
       "duration": 0,
     },
     errorRender: false, // 是否开启崩溃刷新
-    debugShowFramesPerSecond : true, // 是否显示帧数
+    debugShowFramesPerSecond: true, // 是否显示帧数
     worldAnimate: false,
     bottomLnglatTool: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能
@@ -155,7 +155,7 @@ window.mapConfig = {
           url: "./easy3d/images/layer/world.jpg",
           iconImg: "./easy3d/images/layer/world.jpg",
           show: false,
-          glowColor : "#FF0000",
+          glowColor: "#FF0000",
           alpha: 1,
         },
         {

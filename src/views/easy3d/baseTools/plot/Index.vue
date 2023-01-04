@@ -161,8 +161,6 @@ export default {
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.attr.id);
         window.workControl.openToolByName("plotStyle");
-
-        
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
