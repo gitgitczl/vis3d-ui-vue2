@@ -28,10 +28,14 @@ var CesiumEvent = Event
 
  * @param {Cesium.Viewer} viewerCesiumWidget 地图viewer对象 
  * @param {Object} options 相关配置
- * @param {Boolear} [options.enableCompass=true] 是否创建罗盘
- * @param {Boolear} [options.enableZoomControls=true] 是否创建缩放控制器
- * @param {Boolear} [options.enableDistanceLegend=true] 是否创建比例尺
- * @param {Boolear} [options.enableCompassOuterRing=true] 是否创建罗盘外环
+ * @param {Boolean} [options.enableCompass=true] 是否创建罗盘
+ * @param {Object} [options.compass] 罗盘样式设置
+ * @param {Object} [options.compass.style=='leftBottom'] 罗盘位置
+ * @param {Boolean} [options.enableZoomControls=true] 是否创建缩放控制器
+ * @param {Boolean} [options.enableDistanceLegend=true] 是否创建比例尺
+ * @param {Object} [options.distanceLegend] 比例尺样式设置
+ * @param {Object} [options.distanceLegend.style=='leftBottom'] 比例尺位置
+ * @param {Boolean} [options.enableCompassOuterRing=true] 是否创建罗盘外环
  * @param {Object} [options.view] 初始化视角
  */
 var CesiumNavigation = function (viewerCesiumWidget, options) {
@@ -123,7 +127,7 @@ function initialize(viewerCesiumWidget, options) {
   this.distanceLegendDiv.setAttribute('id', 'distanceLegendDiv')
 
   let distanceStyleAttr = (options.distanceLegend && options.distanceLegend.style) || "leftBottom";
-  distanceStyleAttr = (typeof (distanceStyleAttr) == "string") ? getDistanceStyleByType(distanceStyleAttr) : distanceStyleAttr;
+  distanceStyleAttr = (typeof (distanceStyleAttr) == "string") ? getDistanceStyleByAttr(distanceStyleAttr) : distanceStyleAttr;
 
   this.distanceLegendViewModel = DistanceLegendViewModel.create({
     container: this.distanceLegendDiv,
@@ -137,8 +141,8 @@ function initialize(viewerCesiumWidget, options) {
   this.navigationDiv.setAttribute('id', 'navigationDiv')
   container.appendChild(this.navigationDiv)
 
-  let compassStyleAttr = (options.distanceLegend && options.distanceLegend.style) || "leftBottom";
-  compassStyleAttr = (typeof (compassStyleAttr) == "string") ? getCompassStyleByType(compassStyleAttr) : compassStyleAttr;
+  let compassStyleAttr = (options.compass && options.compass.style) || "leftBottom";
+  compassStyleAttr = (typeof (compassStyleAttr) == "string") ? getCompassStyleByAttr(compassStyleAttr) : compassStyleAttr;
 
   this.navigationViewModel = NavigationViewModel.create({
     container: this.navigationDiv,
@@ -151,7 +155,7 @@ function initialize(viewerCesiumWidget, options) {
   registerKnockoutBindings();
 }
 
-function getDistanceStyleByType(type) {
+function getDistanceStyleByAttr(type) {
   type = type || "leftBottom";
   let defaultStyle = {};
   if (type == "leftBottom") {
@@ -169,17 +173,19 @@ function getDistanceStyleByType(type) {
       right: "20px",
       bottom: "4px",
     }
-  } else {
+  } else if (type == "rightTop") {
     defaultStyle = {
       right: "20px",
       top: "20px"
     }
+  } else {
+    defaultStyle = type
   }
   defaultStyle.zIndex = 99999;
   return defaultStyle;
 }
 
-function getCompassStyleByType(type) {
+function getCompassStyleByAttr(type) {
   type = type || "rightTop";
   let defaultStyle = {};
   if (type == "leftBottom") {
@@ -197,11 +203,13 @@ function getCompassStyleByType(type) {
       right: "20px",
       bottom: "60px",
     }
-  } else {
+  } else if (type == "rightTop") {
     defaultStyle = {
       right: "20px",
       top: "20px"
     }
+  } else {
+    defaultStyle = type
   }
   defaultStyle.zIndex = 99999;
   return defaultStyle;

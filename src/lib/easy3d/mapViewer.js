@@ -405,8 +405,20 @@ class MapViewer {
     openNavigationTool() {
         new CesiumNavigation(this._viewer, {
             enableCompass: true, // 罗盘
+            /* compass: {
+                style: {
+                    top: "120px",
+                    left: "120px"
+                }
+            }, */
             enableZoomControls: true, // 缩放控制器
             enableDistanceLegend: true, // 比例尺
+           /*  distanceLegend: {
+                style: {
+                    top: "120px",
+                    left: "120px"
+                }
+            }, */
             enableCompassOuterRing: true, // 罗盘外环
             view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView,
         });
