@@ -1,4 +1,4 @@
-.easy3d-lnglatNavigation ul{
+.easy3d-lnglatNavigation ul {
     position: absolute;
     width: 100%;
     box-sizing: border-box;
@@ -7,14 +7,21 @@
     align-items: center;
     justify-content: flex-end;
 }
-.easy3d-lnglatNavigation li{
+
+@media screen and (max-width:900px) {
+    .easy3d-lnglatNavigation {
+        display: none;
+    }
+}
+
+.easy3d-lnglatNavigation li {
     margin-right: 15px;
 }
 
-.easy3d-lnglatNavigation{
+.easy3d-lnglatNavigation {
     position: absolute;
     bottom: 0px;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 30px;
     line-height: 30px;

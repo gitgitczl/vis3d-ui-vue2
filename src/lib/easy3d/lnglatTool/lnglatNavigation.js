@@ -118,7 +118,6 @@ class LatlngNavigation {
             "roll": Cesium.Math.toDegrees(roll)
         };
     }
-
 }
 
 export default LatlngNavigation;
