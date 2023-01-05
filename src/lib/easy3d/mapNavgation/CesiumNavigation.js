@@ -61,6 +61,51 @@ CesiumNavigation.prototype.getNavigationLocked = function () {
   return this._navigationLocked
 }
 
+// CesiumNavigation.prototype.bindObserver = function () {
+//   let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+//   let dom_legend = document.querySelector('.distance-legend');
+//   let dom_compass = document.querySelector('.compass');
+//   let dom_controls = document.querySelector('.navigation-controls');
+
+
+  
+//   let observer = new MutationObserver((mutationList) => {
+//     let width_legend = getComputedStyle(dom_legend).getPropertyValue('width');
+//     let height_legend = getComputedStyle(dom_legend).getPropertyValue('height');
+
+//     let width_compass = getComputedStyle(dom_compass).getPropertyValue('width');
+//     let height_compass = getComputedStyle(dom_compass).getPropertyValue('height');
+
+//     let width_controls = getComputedStyle(dom_controls).getPropertyValue('width');
+//     let height_controls = getComputedStyle(dom_controls).getPropertyValue('height')
+
+//     width_legend = parseInt(width_legend);
+//     if (width_legend <= 180) {
+//       dom_legend.style.display = "none";
+//     } else {
+//       dom_legend.style.display = "flex";
+//     }
+
+//     width_compass = parseInt(width_compass);
+//     height_compass = parseInt(height_compass);
+//     if (width_compass <= 180 || height_compass <=180) {
+//       dom_compass.style.display = "none";
+//     } else {
+//       dom_legend.style.display = "flex";
+//     }
+
+//     width_controls = parseInt(width_controls);
+//     height_controls = parseInt(height_controls);
+//     if (width_controls <= 180) {
+//       dom_legend.style.display = "none";
+//     } else {
+//       dom_legend.style.display = "flex";
+//     }
+
+//   })
+//   observer.observe(element, { attributes: true, attributeFilter: ['style'], attributeOldValue: true })
+// }
+
 /**
  * 销毁
  */

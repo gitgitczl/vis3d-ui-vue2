@@ -28,6 +28,7 @@ let cesium = require('cesium/Cesium.js');
 var widgets = require('cesium/Widgets/widgets.css');
 
 Vue.prototype.Cesium = window.Cesium = cesium;
+
 Vue.prototype.easy3d = window.easy3d = easy3d;
 window.cUtil = easy3d.cUtil;
 Vue.prototype.widgets = widgets

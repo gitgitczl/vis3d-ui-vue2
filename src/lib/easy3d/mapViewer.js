@@ -209,6 +209,12 @@ class MapViewer {
 
         this.viewer.scene.debugShowFramesPerSecond =
             this.opt.map.debugShowFramesPerSecond;
+
+        // 亮度设置
+        var stages = this.viewer.scene.postProcessStages;
+        this.viewer.scene.brightness = this.viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary.createBrightnessStage());
+        this.viewer.scene.brightness.enabled = true;
+        this.viewer.scene.brightness.uniforms.brightness = Number(1.3);
     }
 
     get viewer() {
@@ -413,12 +419,12 @@ class MapViewer {
             }, */
             enableZoomControls: true, // 缩放控制器
             enableDistanceLegend: true, // 比例尺
-           /*  distanceLegend: {
-                style: {
-                    top: "120px",
-                    left: "120px"
-                }
-            }, */
+            /*  distanceLegend: {
+                 style: {
+                     top: "120px",
+                     left: "120px"
+                 }
+             }, */
             enableCompassOuterRing: true, // 罗盘外环
             view: this.viewer.mapConfig.map && this.viewer.mapConfig.map.cameraView,
         });
