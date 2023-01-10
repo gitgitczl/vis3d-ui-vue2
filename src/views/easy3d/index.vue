@@ -1,6 +1,6 @@
 <template>
   <div class="map-box" ref="mapbox">
-    <div class="test"><div id="mapContainer"></div></div>
+    <div id="mapContainer"></div>
     <Head />
     <!-- 侧边工具栏 -->
     <Sidebar v-show="isshowPanel"></Sidebar>
@@ -172,15 +172,6 @@ export default {
   height: 100%;
 }
 
-.test {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  resize: both; 
-  border: 1px solid red;
-  margin: 10px;
-}
 
 #mapContainer {
   width: 100%;
@@ -189,9 +180,6 @@ export default {
   padding: 0;
   margin: 0;
   position: absolute;
-  overflow: hidden;
-  resize: both; 
-  border: 1px solid red;
   
 }
 </style>
