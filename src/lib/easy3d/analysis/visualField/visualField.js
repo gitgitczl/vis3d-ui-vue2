@@ -1,7 +1,7 @@
 // 可视域核心类 注 cesium中采用的大部分为透视投影相机
 /**
  * 可视域类
- * @description 此处可视域是自定义了geometry 然后自己构建了阴影贴图的效果
+ * @description 此处可视域是自定义了geometry 然后构建了阴影贴图的效果
  * @class
  * @example
  *  vfPrimitive = new VisualField(that.viewer, {
@@ -292,8 +292,8 @@ class VisualField {
         this._lightCamera.setView({
             destination: this._viewerPosition,
             orientation: {
-                heading: Cesium.Math.toRadians(0),
-                pitch: Cesium.Math.toRadians(0)
+                heading: Cesium.Math.toRadians(this._heading),
+                pitch: Cesium.Math.toRadians(this._pitch)
             }
         });
         // 构建视锥体

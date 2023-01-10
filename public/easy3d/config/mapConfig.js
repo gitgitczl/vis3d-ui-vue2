@@ -2,15 +2,15 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x": 117.14532335931926,
-      "y": 31.80044599763115,
-      "z": 2352.9519727092984,
-      "heading": 1.9619033536211412,
-      "pitch": -54.87331947992363,
-      "roll": 0.004195037386755997,
+      "x": 109.75825473364834,
+      "y": 38.2822825260681,
+      "z": 1176.0650423862223,
+      "heading": 246.98172760363414,
+      "pitch": -31.628457477368176,
+      "roll": 359.9996887280527,
       "duration": 0,
     },
-    brightness : 1.0, // 亮度设置
+    brightness: 1.0, // 亮度设置
     errorRender: false, // 是否开启崩溃刷新
     debugShowFramesPerSecond: true, // 是否显示帧数
     worldAnimate: false,
@@ -244,11 +244,11 @@ window.mapConfig = {
           name: "城区模型",
           type: "3dtiles",
           url: "http://8.141.58.76:6814/data/3dtiles/tileset.json",
-          show: false,
+          show: true,
           center: {
             z: 45,
           },
-          maximumScreenSpaceError: 1,
+          maximumScreenSpaceError: 16,
         }
 
       ],
