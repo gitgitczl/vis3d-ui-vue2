@@ -61,7 +61,7 @@
           ></el-color-picker>
         </li>
         <li>
-          <p>可见区域透明度：</p>
+          <p>可见透明度：</p>
           <el-slider
             v-model="visibleAreaColorAlpha"
             :max="1"
@@ -78,7 +78,7 @@
           ></el-color-picker>
         </li>
         <li>
-          <p>不可见区透明度：</p>
+          <p>不可见透明度：</p>
           <el-slider
             v-model="hiddenAreaColorAlpha"
             :max="1"
@@ -183,7 +183,7 @@ export default {
     clear() {
       if (!visualFieldTool) return;
       visualFieldTool.destroy();
-      visualField = null;
+      visualFieldTool = null;
 
       this.horizontalFov = 120;
       this.verticalFov = 60;

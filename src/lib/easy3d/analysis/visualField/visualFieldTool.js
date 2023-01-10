@@ -19,7 +19,7 @@ class visualFieldTool {
             throw new Cesium.DeveloperError('缺少地图对象！');
         }
         this.viewer = viewer;
-        this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+        this.handler = undefined;
 
         this.prompt = null;
 
@@ -90,7 +90,7 @@ class visualFieldTool {
         let vfPrimitive = undefined; // 当前绘制的视锥体
 
         if (!this.prompt) this.prompt = new Prompt(this.viewer, this.promptStyle);
-
+        if(!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.handler.setInputAction(function (evt) {
             // 单击开始绘制
             let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
