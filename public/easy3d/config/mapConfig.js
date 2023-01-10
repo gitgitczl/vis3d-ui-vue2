@@ -10,6 +10,7 @@ window.mapConfig = {
       "roll": 0.004195037386755997,
       "duration": 0,
     },
+    brightness : 1.0, // 亮度设置
     errorRender: false, // 是否开启崩溃刷新
     debugShowFramesPerSecond: true, // 是否显示帧数
     worldAnimate: false,

@@ -176,6 +176,11 @@ class MapViewer {
         this.bottomLnglatTool = null;
 
         /**
+         * @property {CesiumNavigation} compassTool 指北针
+         */
+        this.compassTool = null;
+
+        /**
          * @property {PopupTooltipTool}  popupTooltipTool 鼠标提示工具
          */
         this.popupTooltipTool = null;
@@ -207,14 +212,21 @@ class MapViewer {
             }, this);
         }
 
+        // 开启窗口大小监听
+        /*  if(this.opt.map.openSizeListener){
+             this.openSizeListener();
+         } */
+
         this.viewer.scene.debugShowFramesPerSecond =
             this.opt.map.debugShowFramesPerSecond;
 
         // 亮度设置
-        var stages = this.viewer.scene.postProcessStages;
-        this.viewer.scene.brightness = this.viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary.createBrightnessStage());
-        this.viewer.scene.brightness.enabled = true;
-        this.viewer.scene.brightness.uniforms.brightness = Number(1.3);
+        if (this.opt.map.brightness != undefined) {
+            var stages = this.viewer.scene.postProcessStages;
+            this.viewer.scene.brightness = this.viewer.scene.brightness || stages.add(Cesium.PostProcessStageLibrary.createBrightnessStage());
+            this.viewer.scene.brightness.enabled = true;
+            this.viewer.scene.brightness.uniforms.brightness = Number(this.opt.map.brightness);
+        }
     }
 
     get viewer() {
@@ -409,7 +421,7 @@ class MapViewer {
     }
 
     openNavigationTool() {
-        new CesiumNavigation(this._viewer, {
+        this.compassTool = new CesiumNavigation(this._viewer, {
             enableCompass: true, // 罗盘
             /* compass: {
                 style: {
@@ -456,6 +468,40 @@ class MapViewer {
             this._viewer.destroy();
             this._viewer = null;
         }
+    }
+
+    /**
+     * 添加地图窗口大小监听
+     * @param {Function} callback 
+     */
+    openSizeListener(callback) {
+        let that = this;
+        var obdom = document.getElementById(this.domId);
+        var MutationObserver = window.MutationObserver || window.webkitMutationObserver || window.MozMutationObserver;
+        let oldBottomLnglatToolVisible = false;
+        var mutationObserver = new MutationObserver(function (mutations) {
+            let width = window.getComputedStyle(obdom).getPropertyValue('width');
+            let height = window.getComputedStyle(obdom).getPropertyValue('height');
+            width = window.parseInt(width);
+            height = window.parseInt(height);
+            if (that.bottomLnglatTool) {
+                let res = width > 1000;
+                that.bottomLnglatTool.setVisible(res);
+            }
+
+            if (that.compassTool) {
+                that.compassTool.setVisible(height > 300);
+            }
+
+            if (callback) callback(width, height)
+        })
+
+        mutationObserver.observe(obdom, {
+            childList: false, // 子节点的变动（新增、删除或者更改）
+            attributes: true, // 属性的变动
+            characterData: false, // 节点内容或节点文本的变动
+            subtree: false // 是否将观察器应用于该节点的所有后代节点
+        })
     }
 }
 

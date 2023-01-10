@@ -68,7 +68,7 @@ CesiumNavigation.prototype.getNavigationLocked = function () {
 //   let dom_controls = document.querySelector('.navigation-controls');
 
 
-  
+
 //   let observer = new MutationObserver((mutationList) => {
 //     let width_legend = getComputedStyle(dom_legend).getPropertyValue('width');
 //     let height_legend = getComputedStyle(dom_legend).getPropertyValue('height');
@@ -105,6 +105,19 @@ CesiumNavigation.prototype.getNavigationLocked = function () {
 //   })
 //   observer.observe(element, { attributes: true, attributeFilter: ['style'], attributeOldValue: true })
 // }
+
+/**
+ * 是否显示
+ * @param {Boolean} visible 
+ */
+CesiumNavigation.prototype.setVisible = function (visible) {
+  let dom_legend = document.querySelector('.distance-legend');
+  let dom_compass = document.querySelector('.compass');
+  let dom_controls = document.querySelector('.navigation-controls');
+
+  dom_compass.style.display = visible ? "block" : "none";
+  dom_controls.style.display = visible ? "block" : "none";
+}
 
 /**
  * 销毁

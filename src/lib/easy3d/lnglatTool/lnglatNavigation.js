@@ -13,7 +13,6 @@ class LatlngNavigation {
         this.moveHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.initHtml();
         this.bindMouseMoveHandler();
-        this.bindObserver();
         this.ellipsoid = this.viewer.scene.globe.ellipsoid;
     }
 
@@ -45,6 +44,23 @@ class LatlngNavigation {
         const mapDom = document.getElementById(id);
         mapDom.removeChild(doms[0]);
     }
+
+    /**
+     * 控制坐标显示隐藏
+     * @param {Boolean} visible true显示/false隐藏
+     */
+    setVisible(visible) {
+        let doms = document.getElementsByClassName("easy3d-lnglatNavigation");
+        if (!doms[0]) return;
+        let dom = doms[0];
+        /* const display = dom.style.display;
+        debugger
+        const displayVisible = display == "block" ? true : false; */
+        console.log(visible);
+        dom.style.display = visible ? "block" : "none";;
+
+    }
+
     initHtml() {
         const id = this.viewer.container.id;
         const mapDom = document.getElementById(id);
@@ -118,27 +134,6 @@ class LatlngNavigation {
             "pitch": Cesium.Math.toDegrees(pitch),
             "roll": Cesium.Math.toDegrees(roll)
         };
-    }
-
-    /**
-     * 添加样式监听
-     */
-    bindObserver() {
-        let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-        let element = document.querySelector('.easy3d-lnglatNavigation');
-        let observer = new MutationObserver((mutationList) => {
-            let width = getComputedStyle(element).getPropertyValue('width')
-            let height = getComputedStyle(element).getPropertyValue('height')
-            // 当宽度小于800px 就隐藏当前的工具条 
-            width = parseInt(width);
-            height = parseInt(height);
-            if (width <= 900 || height < 60) {
-                element.style.display = "none";
-            } else {
-                element.style.display = "flex";
-            }
-        })
-        observer.observe(element, { attributes: true, attributeFilter: ['style'], attributeOldValue: true })
     }
 }
 

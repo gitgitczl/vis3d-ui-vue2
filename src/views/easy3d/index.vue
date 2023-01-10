@@ -57,6 +57,10 @@ export default {
     ));
     window.viewer = mapViewer._viewer;
 
+    mapViewer.openSizeListener(function (w, d) {
+      console.log("w--d",w,d);
+    }); // 开启窗口尺寸大小监听
+
     this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
 
@@ -79,7 +83,6 @@ export default {
     if (!zoomTool) {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
-
   },
   destroyed() {
     if (window.viewer) {
@@ -174,5 +177,8 @@ export default {
   padding: 0;
   margin: 0;
   position: absolute;
+  overflow: hidden;
+  resize: both;
+  border: 1px solid red;
 }
 </style>
