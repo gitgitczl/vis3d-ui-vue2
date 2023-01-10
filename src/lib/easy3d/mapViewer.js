@@ -478,7 +478,6 @@ class MapViewer {
         let that = this;
         var obdom = document.getElementById(this.domId);
         var MutationObserver = window.MutationObserver || window.webkitMutationObserver || window.MozMutationObserver;
-        let oldBottomLnglatToolVisible = false;
         var mutationObserver = new MutationObserver(function (mutations) {
             let width = window.getComputedStyle(obdom).getPropertyValue('width');
             let height = window.getComputedStyle(obdom).getPropertyValue('height');

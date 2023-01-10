@@ -12,7 +12,7 @@ window.mapConfig = {
     },
     brightness : 1.0, // 亮度设置
     errorRender: false, // 是否开启崩溃刷新
-    debugShowFramesPerSecond: true, // 是否显示帧数
+    debugShowFramesPerSecond: false, // 是否显示帧数
     worldAnimate: false,
     bottomLnglatTool: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能

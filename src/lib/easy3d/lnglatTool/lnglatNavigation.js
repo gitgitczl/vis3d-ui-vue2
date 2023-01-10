@@ -54,9 +54,7 @@ class LatlngNavigation {
         if (!doms[0]) return;
         let dom = doms[0];
         /* const display = dom.style.display;
-        debugger
         const displayVisible = display == "block" ? true : false; */
-        console.log(visible);
         dom.style.display = visible ? "block" : "none";;
 
     }

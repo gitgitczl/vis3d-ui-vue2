@@ -1,6 +1,6 @@
 <template>
   <div class="map-box" ref="mapbox">
-    <div id="mapContainer"></div>
+    <div class="test"><div id="mapContainer"></div></div>
     <Head />
     <!-- 侧边工具栏 -->
     <Sidebar v-show="isshowPanel"></Sidebar>
@@ -57,9 +57,10 @@ export default {
     ));
     window.viewer = mapViewer._viewer;
 
-    mapViewer.openSizeListener(function (w, d) {
+    // 开启窗口尺寸大小监听
+    /* mapViewer.openSizeListener(function (w, d) {
       console.log("w--d",w,d);
-    }); // 开启窗口尺寸大小监听
+    });  */
 
     this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
@@ -170,6 +171,17 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+.test {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  resize: both; 
+  border: 1px solid red;
+  margin: 10px;
+}
+
 #mapContainer {
   width: 100%;
   height: 100%;
@@ -178,7 +190,8 @@ export default {
   margin: 0;
   position: absolute;
   overflow: hidden;
-  resize: both;
+  resize: both; 
   border: 1px solid red;
+  
 }
 </style>
