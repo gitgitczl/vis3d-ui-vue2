@@ -29,12 +29,11 @@ class SingleImageLayer extends BaseLayer{
      */
     constructor(viewer, opt) {
         super(viewer,opt);
-        
         /**
         * @property {String} type 类型
         */
         this.type = "singleImage";
-        this._provider = new Cesium.SingleTileImageryProvider(this.opt);
+        this._provider = new Cesium.SingleTileImageryProvider(this.providerAttr);
     }
 }
 

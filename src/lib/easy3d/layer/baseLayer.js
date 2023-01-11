@@ -32,13 +32,14 @@ class BaseLayer {
      * 
      */
     constructor(viewer, opt) {
+
         this.viewer = viewer;
         this.opt = opt || {};
         // 定义imageryLayer基础参数种类
         const layerAttrs = [
-            'rectangle','alpha','nightAlpha','dayAlpha','brightness','contrast',
-            'hue','saturation','gamma','show','maximumAnisotropy','minimumTerrainLevel','maximumTerrainLevel',
-            'colorToAlpha','colorToAlphaThreshold'
+            'alpha', 'nightAlpha', 'dayAlpha', 'brightness', 'contrast',
+            'hue', 'saturation', 'gamma', 'show', 'maximumAnisotropy', 'minimumTerrainLevel', 'maximumTerrainLevel',
+            'colorToAlpha', 'colorToAlphaThreshold'
         ]
 
         /**
@@ -67,19 +68,24 @@ class BaseLayer {
                 Cesium.Math.toRadians(this.opt.rectangle[2]),
                 Cesium.Math.toRadians(this.opt.rectangle[3]));
             this.providerAttr.rectangle = trectangle;
-            this.imageryLayerAttr.rectangle = trectangle;
+            // this.imageryLayerAttr.rectangle = trectangle;
         }
 
         this.providerAttr.url = opt.url;
         // 从opt中过滤出provider的参数
-        for(let field in this.opt){
-            if(layerAttrs.indexOf(field)==-1){
+
+        let optFields = Object.keys(this.opt);
+        for (let ind = 0; ind < optFields.length; ind++) {
+            let field = optFields[ind];
+            if (field == "rectangle") continue;
+            if (layerAttrs.indexOf(field) == -1) {
                 this.providerAttr[field] = this.opt[field];
-            }else{
+            } else {
                 this.imageryLayerAttr[field] = this.opt[field];
             }
-        }        
+        }
 
+        debugger
         /**
          * @property {Cesium.ImageryLayer} layer 图层
          */
@@ -109,6 +115,7 @@ class BaseLayer {
      * 加载
      */
     load() {
+        debugger
         if (!this._provider || this._provider == {}) return;
         this._layer = new Cesium.ImageryLayer(this._provider, this.imageryLayerAttr);
         /* this.viewer.imageryLayers.add(this._layer, this.opt.index); */

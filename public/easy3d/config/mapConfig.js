@@ -38,7 +38,7 @@ window.mapConfig = {
     terrain: {
       // "url": "http://localhost/erdsterrain",
       url: "http://data.marsgis.cn/terrain",
-      show: true,
+      show: false,
     },
   },
   baseLayers: [
@@ -47,7 +47,7 @@ window.mapConfig = {
       type: "singleImage",
       url: "./easy3d/images/layer/world.jpg",
       iconImg: "./easy3d/images/layer/world.jpg",
-      show: false,
+      show: true,
       alpha: 1,
       rectangle: [-180, -90, 180, 90],
     },
@@ -56,7 +56,7 @@ window.mapConfig = {
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      show: true,
+      show: false,
     },
     /*  {
             "name": "中国",

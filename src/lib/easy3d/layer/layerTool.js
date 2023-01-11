@@ -45,7 +45,7 @@ class LayerTool {
         let layerObj = null;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
-
+        
         // 自动设置图层的index
         switch (type) {
             case "xyz": //xyz格式切片
