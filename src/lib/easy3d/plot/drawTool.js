@@ -132,7 +132,9 @@ class DrawTool {
     let that = this;
     this.endEdit(); // 绘制前  结束编辑
 
-    if (this.lastStartEntityObj && this.lastStartEntityObj.state == "startCreate") { // 禁止一次绘制多个
+    if (this.lastStartEntityObj && (
+      this.lastStartEntityObj.state == "startCreate" || 
+      this.lastStartEntityObj.state == "creating")) { // 禁止一次绘制多个
       this.lastStartEntityObj.destroy();
       this.lastStartEntityObj = null;
     }
@@ -240,7 +242,7 @@ class DrawTool {
     });
     return entityObj;
   }
-  
+
   /**
    * 由geojson格式数据创建对象
    * @param {Object} data geojson格式数据
@@ -278,7 +280,7 @@ class DrawTool {
       })
     }
   }
-  
+
   /**
    * 转为geojson格式
    * @returns {Object} featureCollection geojson格式数据
@@ -399,20 +401,20 @@ class DrawTool {
     this.nowEditObj = null;
   }
 
-   /**
-   * 是否包含某个对象
-   * @param {Object} entityObj 绘制对象
-   */
+  /**
+  * 是否包含某个对象
+  * @param {Object} entityObj 绘制对象
+  */
   hasEntityObj(entityObj) {
     if (!entityObj) return false;
     let obj = this.getEntityObjById(entityObj.objId);
     return obj != {} ? true : false;
   }
 
-   /**
-   * 根据id移除创建的对象
-   * @param {String | Number} id 对象id
-   */
+  /**
+  * 根据id移除创建的对象
+  * @param {String | Number} id 对象id
+  */
   removeById(id) {
     let obj = this.getEntityObjById(id);
     this.entityObjArr.splice(obj.index, 1);
@@ -424,17 +426,17 @@ class DrawTool {
     }
   }
 
-   /**
-   * 根据id缩放至绘制的对象
-   * @param {String} id 对象id
-   */
+  /**
+  * 根据id缩放至绘制的对象
+  * @param {String} id 对象id
+  */
   zoomToById(id) {
     let obj = this.getEntityObjById(id);
     if (obj.entityObj) {
       obj.entityObj.zoomTo();
     }
   }
-  
+
 
   /**
    * 根据属性字段获取对象
@@ -549,7 +551,7 @@ class DrawTool {
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
   }
-  
+
   /**
    * 结束编辑
    */
