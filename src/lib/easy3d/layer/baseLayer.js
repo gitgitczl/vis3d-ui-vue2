@@ -68,7 +68,7 @@ class BaseLayer {
                 Cesium.Math.toRadians(this.opt.rectangle[2]),
                 Cesium.Math.toRadians(this.opt.rectangle[3]));
             this.providerAttr.rectangle = trectangle;
-            // this.imageryLayerAttr.rectangle = trectangle;
+            this.imageryLayerAttr.rectangle = trectangle;
         }
 
         this.providerAttr.url = opt.url;
@@ -85,7 +85,6 @@ class BaseLayer {
             }
         }
 
-        debugger
         /**
          * @property {Cesium.ImageryLayer} layer 图层
          */
@@ -115,7 +114,6 @@ class BaseLayer {
      * 加载
      */
     load() {
-        debugger
         if (!this._provider || this._provider == {}) return;
         this._layer = new Cesium.ImageryLayer(this._provider, this.imageryLayerAttr);
         /* this.viewer.imageryLayers.add(this._layer, this.opt.index); */

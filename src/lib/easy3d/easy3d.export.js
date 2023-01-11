@@ -50,6 +50,9 @@ import MapViewer from "./mapViewer";
 
 import weather from "./weather/weather"
 
+// 版本信息控制
+import easy3dVERSION from "./easy3d.version.js"
+
 let analysis = {
   visualFieldTool: visualFieldTool,
   VisualField : VisualField,

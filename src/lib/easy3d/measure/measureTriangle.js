@@ -278,8 +278,6 @@ class MeasureTriangle extends BaseMeasure {
 
 
     setUnit(unit) {
-        debugger
-
         if (this.heightfloatLabel) {
             let text1 = this.formateLength(this.heightfloatLabel.length, unit);
             this.heightfloatLabel.label.text = "高度差：" + text1;

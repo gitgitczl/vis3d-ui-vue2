@@ -11,6 +11,7 @@ import LatlngNavigation from "./lnglatTool/lnglatNavigation";
 import CesiumNavigation from "./mapNavgation/CesiumNavigation";
 import "./mapNavgation/styles/cesium-navigation.css";
 import easy3dView from "./viewRoate";
+
 /**
  * 定义mapViewer.opt参数
  * @typedef {Object} mapViewer.opt
@@ -190,8 +191,11 @@ class MapViewer {
         this.loadbaseLayers();
         this.loadOperateLayers();
 
-        this.terrainUrl = "";
+
         let { terrain } = this.opt.map;
+        debugger
+        this.terrainUrl = terrain && terrain.url;
+
         if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
 
         if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();

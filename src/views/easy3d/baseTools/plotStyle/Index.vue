@@ -120,7 +120,6 @@ export default {
 
   mounted() {
     let plotEntityObjId = this.$store.state.map3d.plotEntityObjId;
-    debugger
     this.setAttr(plotEntityObjId);
   },
 

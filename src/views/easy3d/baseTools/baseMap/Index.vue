@@ -55,6 +55,12 @@ export default {
     });
 
     this.nowShowLayerId = lys[0].id;
+    this.isShowTerrain =
+      !window.viewer.scene.terrainProvider ||
+      window.viewer.scene.terrainProvider instanceof
+        Cesium.EllipsoidTerrainProvider
+        ? false
+        : true;
   },
   destroyed() {},
   methods: {

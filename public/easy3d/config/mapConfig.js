@@ -11,8 +11,8 @@ window.mapConfig = {
       "duration": 0,
     },
     brightness: 1.0, // 亮度设置
-    errorRender: false, // 是否开启崩溃刷新
-    debugShowFramesPerSecond: true, // 是否显示帧数
+    errorRender: true, // 是否开启崩溃刷新
+    debugShowFramesPerSecond: false, // 是否显示帧数
     worldAnimate: false,
     bottomLnglatTool: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能
@@ -36,9 +36,8 @@ window.mapConfig = {
       terrainExaggeration: 1,
     },
     terrain: {
-      // "url": "http://localhost/erdsterrain",
       url: "http://data.marsgis.cn/terrain",
-      show: false,
+      show: true,
     },
   },
   baseLayers: [
@@ -47,7 +46,7 @@ window.mapConfig = {
       type: "singleImage",
       url: "./easy3d/images/layer/world.jpg",
       iconImg: "./easy3d/images/layer/world.jpg",
-      show: true,
+      show: false,
       alpha: 1,
       rectangle: [-180, -90, 180, 90],
     },
@@ -56,7 +55,7 @@ window.mapConfig = {
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      show: false,
+      show: true,
     },
     /*  {
             "name": "中国",
