@@ -76,8 +76,8 @@ class DrawTool {
      * @property {Boolear} canEdit 绘制的对象，是否可编辑
      */
     this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;; // 是否可以编辑
-    this.lastEntityObj = null;
-    this.lastStartEntityObj = null;
+    this.nowDrawEntityObj = null; // 当前绘制的对象
+    this.nowEditEntityObj = null; // 当前编辑的对象
   }
 
   /** 
@@ -132,11 +132,11 @@ class DrawTool {
     let that = this;
     this.endEdit(); // 绘制前  结束编辑
 
-    if (this.lastStartEntityObj && (
-      this.lastStartEntityObj.state == "startCreate" || 
-      this.lastStartEntityObj.state == "creating")) { // 禁止一次绘制多个
-      this.lastStartEntityObj.destroy();
-      this.lastStartEntityObj = null;
+    if (this.nowDrawEntityObj && (
+      this.nowDrawEntityObj.state == "startCreate" ||
+      this.nowDrawEntityObj.state == "creating")) { // 禁止一次绘制多个
+      this.nowDrawEntityObj.destroy();
+      this.nowDrawEntityObj = null;
     }
     let entityObj = this.createByType(opt);
     if (!entityObj) return;
@@ -145,6 +145,8 @@ class DrawTool {
     const fireEdit = opt.fireEdit == undefined ? true : opt.fireEdit;
     // 开始绘制
     entityObj.start(function (entity) {
+      // 绘制完成后
+      that.nowDrawEntityObj = undefined;
       that.entityObjArr.push(entityObj);
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
       if (opt.success) opt.success(entityObj, entity);
@@ -155,12 +157,12 @@ class DrawTool {
       // 如果可以编辑 则绘制完成打开编辑
       if (that.canEdit && fireEdit) {
         entityObj.startEdit();
+        that.nowEditEntityObj = entityObj;
         if (that.startEditFun) that.startEditFun(entityObj, entity);
-        that.lastEntityObj = entityObj;
       }
     });
 
-    this.lastStartEntityObj = entityObj;
+    this.nowDrawEntityObj = entityObj;
     return entityObj;
   }
 
@@ -168,9 +170,9 @@ class DrawTool {
    * 结束当前操作
   */
   end() {
-    if (this.lastStartEntityObj && this.lastStartEntityObj.state == "startCreate") { // 禁止一次绘制多个
-      this.lastStartEntityObj.destroy();
-      this.lastStartEntityObj = null;
+    if (this.lastEntityObj && this.lastEntityObj.state == "startCreate") { // 禁止一次绘制多个
+      this.lastEntityObj.destroy();
+      this.lastEntityObj = null;
     }
     this.endEdit();
   }
@@ -181,19 +183,20 @@ class DrawTool {
  */
   startEditOne(entityObj) {
     if (!this.canEdit) return;
-    if (this.lastEntityObj) {
+    if (this.nowEditEntityObj) {
       // 结束除当前选中实体的所有编辑操作
-      this.lastEntityObj.endEdit();
+      this.nowEditEntityObj.endEdit();
       if (this.endEditFun) {
-        this.endEditFun(this.lastEntityObj, this.lastEntityObj.getEntity()); // 结束事件
+        this.endEditFun(this.nowEditEntityObj, this.nowEditEntityObj.getEntity()); // 结束事件
       }
-      this.lastEntityObj = null;
+      this.nowEditEntityObj = null;
     }
+
     if (entityObj) {
       entityObj.startEdit();
       if (this.startEditFun)
         this.startEditFun(entityObj, entityObj.getEntity());
-      this.lastEntityObj = entityObj;
+      this.nowEditEntityObj = entityObj;
     }
   }
 
@@ -237,7 +240,7 @@ class DrawTool {
       if (that.canEdit && opt.fireEdit) {
         entityObj.startEdit();
         if (that.startEditFun) that.startEditFun(entityObj, entity);
-        that.lastEntityObj = entityObj;
+        that.nowEditEntityObj = entityObj;
       }
     });
     return entityObj;
@@ -354,10 +357,15 @@ class DrawTool {
    */
   destroy() {
     // 取消当前绘制
-    if (this.lastStartEntityObj) {
-      this.lastStartEntityObj.destroy();
-      this.lastStartEntityObj = null;
+    if (this.nowEditEntityObj) {
+      this.nowEditEntityObj.destroy();
+      this.nowEditEntityObj = null;
     }
+    if (this.nowDrawEntityObj) {
+      this.nowDrawEntityObj.destroy();
+      this.nowDrawEntityObj = null;
+    }
+
     for (let i = 0; i < this.entityObjArr.length; i++) {
       this.entityObjArr[i].destroy();
     }
@@ -389,10 +397,16 @@ class DrawTool {
    */
   removeAll() {
     // 取消当前绘制
-    if (this.lastStartEntityObj) {
-      this.lastStartEntityObj.destroy();
-      this.lastStartEntityObj = null;
+    if (this.nowDrawEntityObj) {
+      this.nowDrawEntityObj.destroy();
+      this.nowDrawEntityObj = null;
     }
+
+    if (this.nowEditEntityObj) {
+      this.nowEditEntityObj.destroy();
+      this.nowEditEntityObj = null;
+    }
+
     for (let i = 0; i < this.entityObjArr.length; i++) {
       let obj = this.entityObjArr[i];
       obj.destroy();
@@ -507,9 +521,9 @@ class DrawTool {
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       if (!that.canEdit) return;
+      if (that.nowDrawEntityObj) return;
       let pick = that.viewer.scene.pick(evt.position);
-      if (Cesium.defined(pick) && pick.id) {
-        // 选中实体
+      if (Cesium.defined(pick) && pick.id) { // 选中实体
         for (let i = 0; i < that.entityObjArr.length; i++) {
           if (
             pick.id.objId == that.entityObjArr[i].objId &&
@@ -517,36 +531,35 @@ class DrawTool {
               that.entityObjArr[i].state != "creating" ||
               that.entityObjArr[i].state != "endEdit")
           ) {
-            if (that.lastEntityObj) {
+            if (that.nowEditEntityObj) {
               // 结束除当前选中实体的所有编辑操作
-              that.lastEntityObj.endEdit();
+              that.nowEditEntityObj.endEdit();
               if (that.endEditFun) {
                 that.endEditFun(
-                  that.lastEntityObj,
-                  that.lastEntityObj.getEntity()
-                ); // 结束事件
+                  that.nowEditEntityObj,
+                  that.nowEditEntityObj.getEntity()
+                );
               }
-              that.lastEntityObj = null;
+              that.nowEditEntityObj = null;
             }
             // 开始编辑
             that.entityObjArr[i].startEdit();
             that.nowEditObj = that.entityObjArr[i];
             if (that.startEditFun) that.startEditFun(that.nowEditObj, pick.id); // 开始编辑
-            that.lastEntityObj = that.entityObjArr[i];
+            that.nowEditEntityObj = that.entityObjArr[i];
             break;
           }
         }
-      } else {
-        // 未选中实体 则结束全部绘制
-        if (that.lastEntityObj) {
-          that.lastEntityObj.endEdit();
+      } else {  // 未选中实体 则结束全部绘制
+        if (that.nowEditEntityObj) {
+          that.nowEditEntityObj.endEdit();
           if (that.endEditFun) {
             that.endEditFun(
-              that.lastEntityObj,
-              that.lastEntityObj.getEntity()
-            ); // 结束事件
+              that.nowEditEntityObj,
+              that.nowEditEntityObj.getEntity()
+            );
           }
-          that.lastEntityObj = null;
+          that.nowEditEntityObj = null;
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -556,16 +569,16 @@ class DrawTool {
    * 结束编辑
    */
   endEdit() {
-    if (this.lastEntityObj) {
+    if (this.nowEditEntityObj) {
       // 结束除当前选中实体的所有编辑操作
-      this.lastEntityObj.endEdit();
+      this.nowEditEntityObj.endEdit();
       if (this.endEditFun) {
         this.endEditFun(
-          this.lastEntityObj,
-          this.lastEntityObj.getEntity()
+          this.nowEditEntityObj,
+          this.nowEditEntityObj.getEntity()
         ); // 结束事件
       }
-      this.lastEntityObj = null;
+      this.nowEditEntityObj = null;
     }
     for (let i = 0; i < this.entityObjArr.length; i++) {
       this.entityObjArr[i].endEdit();
