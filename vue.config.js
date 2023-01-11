@@ -10,7 +10,7 @@ module.exports = {
     parallel: false,
     publicPath: "./", // 打包后资源的访问路径
     // 输出文件目录
-    outputDir: "dist",
+    outputDir: "easy3d-platform",
     lintOnSave: false, // 关闭eslint语法检测
     // webpack-dev-server 相关配置
     devServer: {
@@ -60,7 +60,7 @@ module.exports = {
                     },
                 ]),
                 new webpack.DefinePlugin({
-                    CESIUM_BASE_URL: JSON.stringify("/"),
+                    CESIUM_BASE_URL: JSON.stringify("./"),
                 }),
         ],
         module: {

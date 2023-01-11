@@ -245,7 +245,7 @@ window.mapConfig = {
           url: "http://8.141.58.76:6814/data/3dtiles/tileset.json",
           show: true,
           center: {
-            z: 45,
+            z: 10,
           },
           maximumScreenSpaceError: 16,
         }
