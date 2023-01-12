@@ -26,9 +26,9 @@ class CreatePolygon extends BasePlot {
 
 	start(callBack) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
-
 		this.state = "startCreate";
 		let that = this;
+		if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer, []);
 			if (!cartesian) return;
@@ -122,7 +122,7 @@ class CreatePolygon extends BasePlot {
 
 		that.viewer.trackedEntity = undefined;
 		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-		if (callBack) callBack(that.entity);
+		
 	}
 
 	/**
