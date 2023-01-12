@@ -47,6 +47,7 @@ class CreateCircle extends BasePlot {
       this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
     let that = this;
+    if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
@@ -62,18 +63,7 @@ class CreateCircle extends BasePlot {
         that.entity = that.createCircle(that.position, that.radius);
       } else {
         if (that.entity) {
-          that.floatPosition = cartesian.clone();
-          that.state = "endCreate";
-          if (that.handler) {
-            that.handler.destroy();
-            that.handler = null;
-          }
-          if (that.floatPoint) that.floatPoint.show = false;
-          if (that.centerPoint) that.centerPoint.show = false;
-          if (that.prompt) {
-            that.prompt.destroy();
-            that.prompt = null;
-          }
+          that.endCreate();
           if (callBack) callBack(that.entity);
         }
       }
@@ -198,6 +188,41 @@ class CreateCircle extends BasePlot {
       that.forbidDrawWorld(false);
       that.state = "editing";
     }, Cesium.ScreenSpaceEventType.LEFT_UP);
+  }
+
+  /**
+   * 结束绘制
+   * @param {Function} callback 结束绘制后回调函数
+  */
+  endCreate() {
+    let that = this;
+    that.floatPosition = cartesian.clone();
+    that.state = "endCreate";
+    if (that.handler) {
+      that.handler.destroy();
+      that.handler = null;
+    }
+    if (that.floatPoint) that.floatPoint.show = false;
+    if (that.centerPoint) that.centerPoint.show = false;
+    if (that.prompt) {
+      that.prompt.destroy();
+      that.prompt = null;
+    }
+  }
+
+  /**
+   * 当前步骤结束
+   */
+  done() {
+    if (this.state == "startCreate") {
+      this.destroy();
+    } else if (this.state == "creating") {
+      this.destroy();
+    } else if (this.state == "startEdit" || this.state == "editing") {
+      this.endEdit();
+    } else {
+
+    }
   }
 
   /**

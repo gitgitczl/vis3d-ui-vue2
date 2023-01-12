@@ -71,10 +71,11 @@ class CreateArrow extends BasePlot {
 	 * 开始绘制
 	 * @param {Function} callback 绘制成功后回调函数
 	*/
-	start(callBack) {
+	start(callback) {
 		let that = this;
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
+		if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		this.handler.setInputAction(function (evt) { //单机开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
@@ -99,7 +100,8 @@ class CreateArrow extends BasePlot {
 			if (that.positions.length == that.maxPointNum) {
 				that.prompt.update(evt.endPosition, "双击结束");
 			} else if (that.positions.length > that.maxPointNum) {
-				that.end(callBack);
+				that.endCreate();
+				if (callback) callback(that.entity);
 				return;
 			} else {
 				that.prompt.update(evt.endPosition, "单击新增，不少于" + that.minPointNum + "个点</br>" + "双击结束");
@@ -127,15 +129,13 @@ class CreateArrow extends BasePlot {
 			if (!that.entity) return;
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer, [that.entity]);
 			if (!cartesian) return;
-			if (that.positions.length >= that.minPointNum) that.end(callBack);
+			if (that.positions.length >= that.minPointNum) that.endCreate(callback);
+			if (callback) callback(that.entity);
+
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 
-	/**
-	 * 结束绘制
-	 * @param {Function} callback 结束绘制后回调函数
-	*/
-	end(callBack) {
+	endCreate() {
 		let that = this;
 		if (!that.movePush) { // 双击结束
 			that.positions.pop();
@@ -149,15 +149,33 @@ class CreateArrow extends BasePlot {
 		}
 		that.handler.destroy();
 		that.state = "endCreate";
-		if (callBack) callBack(that.entity);
+	}
+
+	/**
+	 * 当前步骤结束
+	 */
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			if (this.positions.length <= 2 && this.movePush == true) {
+				this.destroy();
+			} else {
+				this.endCreate();
+			}
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
 	}
 
 	/**
 	 * 通过坐标数组构建
 	 * @param {Array} lnglatArr 经纬度坐标数组
-	 * @callback {Function} callBack 绘制成功后回调函数
+	 * @callback {Function} callback 绘制成功后回调函数
 	*/
-	createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
+	createByPositions(lnglatArr, callback) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
 		this.state = "startCreate";
 		let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : cUtil.lnglatsToCartesians(lnglatArr);
@@ -175,7 +193,7 @@ class CreateArrow extends BasePlot {
 		this.state = "endCreate";
 		this.entity.objId = this.objId;
 
-		if (callBack) callBack(this.entity);
+		if (callback) callback(this.entity);
 	}
 
 	/**
@@ -240,7 +258,7 @@ class CreateArrow extends BasePlot {
 		if (that.arrowPlot.hasLine) { // 线面混合
 			entityObj = {
 				polygon: {
-					hierarchy: new Cesium.CallbackProperty(function () {
+					hierarchy: new Cesium.callbackProperty(function () {
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.spliceWZ !== null) {
 							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
@@ -251,7 +269,7 @@ class CreateArrow extends BasePlot {
 					material: color
 				},
 				polyline: {
-					positions: new Cesium.CallbackProperty(function () {
+					positions: new Cesium.callbackProperty(function () {
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
 							var arr = [];
@@ -271,7 +289,7 @@ class CreateArrow extends BasePlot {
 		} else if (that.arrowPlot.onlyLine) { // 只有线
 			entityObj = {
 				polyline: {
-					positions: new Cesium.CallbackProperty(function () {
+					positions: new Cesium.callbackProperty(function () {
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
 							var arr = [];
@@ -291,7 +309,7 @@ class CreateArrow extends BasePlot {
 		} else { // 只有面
 			entityObj = {
 				polygon: {
-					hierarchy: new Cesium.CallbackProperty(function () {
+					hierarchy: new Cesium.callbackProperty(function () {
 						let newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.spliceWZ != undefined) {
 							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
@@ -316,7 +334,7 @@ class CreateArrow extends BasePlot {
 		let that = this;
 		return this.viewer.entities.add({
 			polyline: {
-				positions: new Cesium.CallbackProperty(function () {
+				positions: new Cesium.callbackProperty(function () {
 					return that.positions
 				}, false),
 				clampToGround: Boolean(this.style.clampToGround),

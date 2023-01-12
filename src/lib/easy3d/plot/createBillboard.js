@@ -39,6 +39,7 @@ class CreateBillboard extends BasePlot {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
+		if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
@@ -57,7 +58,7 @@ class CreateBillboard extends BasePlot {
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			that.prompt.update(evt.endPosition, "单击新增");
-			that.state = "startCreate";
+			that.state = "creating";
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 	}
 
@@ -65,7 +66,7 @@ class CreateBillboard extends BasePlot {
 	 * 结束绘制
 	 * @param {Function} callback 结束绘制后回调函数
 	*/
-	end() {
+	endCreate() {
 		let that = this;
 		if (that.handler) {
 			that.handler.destroy();
@@ -76,6 +77,21 @@ class CreateBillboard extends BasePlot {
 			that.prompt = null;
 		}
 		that.state = "endCreate";
+	}
+
+	/**
+	 * 当前步骤结束
+	 */
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			this.destroy();
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
 	}
 
 	/**

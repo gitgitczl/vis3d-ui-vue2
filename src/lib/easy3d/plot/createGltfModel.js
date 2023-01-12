@@ -38,27 +38,20 @@ class CreateGltfModel extends BasePlot {
   start(callBack) {
     if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
-
     let that = this;
+    if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) { //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (cartesian) {
         that.entity.position = cartesian;
         that.position = cartesian.clone();
       }
-      that.state = "endCreate";
-      if (that.handler) {
-        that.handler.destroy();
-        that.handler = null;
-      }
-      if (that.prompt) {
-        that.prompt.destroy();
-        that.prompt = null;
-      }
+      that.endCreate();
       if (callBack) callBack(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     this.handler.setInputAction(function (evt) { //单击开始绘制
       that.prompt.update(evt.endPosition, "单击新增");
+      that.state = "creating";
       let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer, [that.entity]);
       if (!cartesian) return;
       if (!that.entity) {
@@ -114,6 +107,35 @@ class CreateGltfModel extends BasePlot {
       that.state = "editing";
     }, Cesium.ScreenSpaceEventType.LEFT_UP);
   }
+
+  endCreate() {
+    let that = this;
+    that.state = "endCreate";
+    if (that.handler) {
+      that.handler.destroy();
+      that.handler = null;
+    }
+    if (that.prompt) {
+      that.prompt.destroy();
+      that.prompt = null;
+    }
+  }
+
+  /**
+	 * 当前步骤结束
+	 */
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			this.destroy();
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
+	}
+
   endEdit(callback) {
     if (this.modifyHandler) {
       this.modifyHandler.destroy();

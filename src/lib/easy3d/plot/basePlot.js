@@ -23,8 +23,8 @@ class BasePlot {
          * @property {String | Number} objId 唯一id
          */
         this.objId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
-        this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
-        this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+        this.handler = undefined;
+        this.modifyHandler = undefined;
 
         /**
          * @property {String} type 类型
@@ -48,9 +48,9 @@ class BasePlot {
         this.modifyPoint = null;
 
         /**
-		 * 图标entity对象
-		 * @property {Cesium.Entity} entity entity对象
-		*/
+         * 图标entity对象
+         * @property {Cesium.Entity} entity entity对象
+        */
 
         this.entity = null;
         this.pointStyle = {};
@@ -235,6 +235,20 @@ class BasePlot {
         }
         this.forbidDrawWorld(false);
         this.state = "endEdit";
+    }
+
+    /**
+     * 结束创建
+     */
+    endCreate() {
+        
+    }
+
+    /**
+     * 在当前步骤结束
+     */
+    done() {
+
     }
 
 

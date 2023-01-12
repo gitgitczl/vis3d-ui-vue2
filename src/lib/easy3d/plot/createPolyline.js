@@ -20,10 +20,15 @@ class CreatePolyline extends BasePlot {
         this.maxPointNum = style.maxPointNum || Number.MAX_VALUE; // 最多点数
     }
 
+    /**
+     * 开始绘制
+     * @param {Function} callBack 绘制完成之后的回调函数 
+     */
     start(callBack) {
         if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
         this.state = "startCreate";
         let that = this;
+        if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.handler.setInputAction(function (evt) { //单击开始绘制
             let cartesian = that.getCatesian3FromPX(evt.position, that.viewer, [that.entity]);
             if (!cartesian) return;
@@ -38,17 +43,7 @@ class CreatePolyline extends BasePlot {
 
             // 达到最大数量 结束绘制
             if (that.positions.length == that.maxPointNum) {
-                that.state = "endCreate";
-                if (that.handler) {
-                    that.handler.destroy();
-                    that.handler = null;
-                }
-                if (that.prompt) {
-                    that.prompt.destroy();
-                    that.prompt = null;
-                }
-                that.viewer.trackedEntity = undefined;
-                that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+                that.endCreate();
                 if (callBack) callBack(that.entity);
             }
 
@@ -100,22 +95,45 @@ class CreatePolyline extends BasePlot {
             if (!that.entity) {
                 return;
             }
-            that.state = "endCreate";
-            if (that.handler) {
-                that.handler.destroy();
-                that.handler = null;
-            }
-            that.positions.pop();
-            that.viewer.entities.remove(that.controlPoints.pop())
-            if (that.prompt) {
-                that.prompt.destroy();
-                that.prompt = null;
-            }
-            that.viewer.trackedEntity = undefined;
-            that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-
+            that.endCreate();
             if (callBack) callBack(that.entity);
         }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+    }
+
+    endCreate() {
+        let that = this;
+        that.state = "endCreate";
+        if (that.handler) {
+            that.handler.destroy();
+            that.handler = null;
+        }
+        that.positions.pop();
+        that.viewer.entities.remove(that.controlPoints.pop())
+        if (that.prompt) {
+            that.prompt.destroy();
+            that.prompt = null;
+        }
+        that.viewer.trackedEntity = undefined;
+        that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+    }
+
+    /**
+     * 当前步骤结束
+     */
+    done() {
+        if (this.state == "startCreate") {
+            this.destroy();
+        } else if (this.state == "creating") {
+            if (this.positions.length <= 2 && this.movePush == true) {
+                this.destroy();
+            } else {
+                this.endCreate();
+            }
+        } else if (this.state == "startEdit" || this.state == "editing") {
+            this.endEdit();
+        } else {
+
+        }
     }
 
     createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面

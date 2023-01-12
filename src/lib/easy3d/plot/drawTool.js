@@ -1,6 +1,4 @@
 
-import '../prompt/prompt.css'
-import Prompt from '../prompt/prompt.js'
 import CreateBillboard from './createBillboard.js'
 import CreateCircle from './createCircle.js'
 import CreateGltfModel from './createGltfModel.js'
@@ -69,8 +67,6 @@ class DrawTool {
 
     // 无论如何 进来先监听点击修改 与 右键删除事件 通过控制canEdit来判断要不要向下执行
     this.bindEdit();
-    this.bindRemove();
-    this.deletePrompt = null;
 
     /**
      * @property {Boolear} canEdit 绘制的对象，是否可编辑
@@ -170,11 +166,9 @@ class DrawTool {
    * 结束当前操作
   */
   end() {
-    if (this.lastEntityObj && this.lastEntityObj.state == "startCreate") { // 禁止一次绘制多个
-      this.lastEntityObj.destroy();
-      this.lastEntityObj = null;
+    if(this.nowDrawEntityObj){
+
     }
-    this.endEdit();
   }
 
   /**
@@ -584,73 +578,14 @@ class DrawTool {
       this.entityObjArr[i].endEdit();
     }
   }
-  // 绑定删除事件
-  bindRemove() {
-    let that = this;
-    function remove(px) {
-      // 构建右键删除鼠标提示
-      if (that.deletePrompt) {
-        that.deletePrompt.destroy();
-        that.deletePrompt = null;
-      }
-      that.deletePrompt = new Prompt(viewer, {
-        content: "<span id='deleteEntity' style='cursor: pointer;'>删除</span>",
-        show: true
-      });
-      let deleteDom = document.getElementById("deleteEntity");
-      that.deletePrompt.update(px);
-      deleteDom.addEventListener("click", function () {
-        // 删除当前对象前 结束之前的编辑
-        that.endEdit();
-        // 删除事件
-        that.deletePrompt.destroy();
-        if (!that.deleteEntityObj || that.deleteEntityObj == {}) return;
-        let entObj = that.deleteEntityObj.entityObj;
-        if (that.removeFun) {
-          that.removeFun(entObj, entObj.getEntity());
-        }
-        entObj.destroy();
-        that.entityObjArr.splice(that.deleteEntityObj.index, 1);
-      });
-    }
 
-    this.removeHandler.setInputAction(function (evt) {
-      //右键取消上一步
-      if (!that.canEdit) return;
-      // 右键点击当前目标外 销毁提示框
-      if (that.deletePrompt) {
-        that.deletePrompt.destroy();
-        that.deletePrompt = null;
-      }
-      let pick = that.viewer.scene.pick(evt.position);
-      if (Cesium.defined(pick) && pick.id) {
-        // 选中实体
-        for (let i = 0; i < that.entityObjArr.length; i++) {
-          if (
-            pick.id.objId == that.entityObjArr[i].objId &&
-            (that.entityObjArr[i].state == "endCreate" ||
-              that.entityObjArr[i].state == "startEdit" ||
-              that.entityObjArr[i].state == "endEdit")
-          ) {
-            // 结束编辑或结束构建才给删
-            that.deleteEntityObj = {
-              entityObj: that.entityObjArr[i],
-              index: i,
-            };
-            remove(evt.position);
-            break;
-          }
-        }
-      }
-    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
-    this.removeHandler.setInputAction(function (evt) {
-      //右键取消上一步
-      if (that.deletePrompt) {
-        that.deletePrompt.destroy();
-        that.deletePrompt = null;
-      }
-    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  /**
+   * 在当前步骤结束
+   */
+  done(){
+    
   }
+  
 
   /**
    * 获取当前所有对象

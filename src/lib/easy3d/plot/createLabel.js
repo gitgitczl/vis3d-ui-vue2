@@ -26,29 +26,50 @@ class CreateLabel extends BasePlot {
       this.prompt = new Prompt(this.viewer, this.promptStyle);
     let that = this;
     this.state = "startCreate";
+    if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
       if (!cartesian) return;
       that.entity = that.createLabel(cartesian.clone());
       that.position = cartesian.clone();
-      if (that.handler) {
-        that.handler.destroy();
-        that.handler = null;
-      }
-      if (that.prompt) {
-        that.prompt.destroy();
-        that.prompt = null;
-      }
-      that.state = "endCreate";
+      that.endCreate();
       if (callBack) callBack(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     this.handler.setInputAction(function (evt) {
       //单击开始绘制
       that.prompt.update(evt.endPosition, "单击新增");
-      that.state = "startCreate";
+      that.state = "creating";
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+  }
+
+  endCreate() {
+    let that = this;
+    if (that.handler) {
+      that.handler.destroy();
+      that.handler = null;
+    }
+    if (that.prompt) {
+      that.prompt.destroy();
+      that.prompt = null;
+    }
+    that.state = "endCreate";
+  }
+
+  /**
+   * 当前步骤结束
+   */
+  done() {
+    if (this.state == "startCreate") {
+      this.destroy();
+    } else if (this.state == "creating") {
+      this.destroy();
+    } else if (this.state == "startEdit" || this.state == "editing") {
+      this.endEdit();
+    } else {
+
+    }
   }
 
 

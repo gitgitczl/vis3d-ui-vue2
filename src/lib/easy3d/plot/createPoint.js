@@ -20,7 +20,7 @@ class CreatePoint extends BasePlot {
 			outlineWidth: 1
 		}
 		this.style = Object.assign(defaultStyle, style || {});
-		
+
 		/**
 		 * @property {Cesium.Cartesian3} 坐标
 		 */
@@ -28,9 +28,10 @@ class CreatePoint extends BasePlot {
 	}
 
 	start(callBack) {
-		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
+		if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
@@ -49,9 +50,38 @@ class CreatePoint extends BasePlot {
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			that.prompt.update(evt.endPosition, "单击新增");
-			that.state = "startCreate";
+			that.state = "creating";
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 	}
+
+	endCreate() {
+		let that = this;
+		if (that.handler) {
+			that.handler.destroy();
+			that.handler = null;
+		}
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+		that.state = "endCreate";
+	}
+
+	/**
+	 * 当前步骤结束
+	 */
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			this.destroy();
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
+	}
+
 	createByPositions(lnglatArr, callBack) {
 		if (!lnglatArr) return;
 		this.state = "startCreate";
@@ -100,7 +130,7 @@ class CreatePoint extends BasePlot {
 		return obj;
 	}
 	getPositions(isWgs84) {
-		return isWgs84 ? cUtil.cartesianToLnglat(this.position) :this.position 
+		return isWgs84 ? cUtil.cartesianToLnglat(this.position) : this.position
 	}
 	startEdit() {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
@@ -154,7 +184,7 @@ class CreatePoint extends BasePlot {
 				outlineColor: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : (this.style.outlineColor ? Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1) : Cesium.Color.BLACK),
 				outlineWidth: this.style.outlineWidth || 4,
 				pixelSize: this.style.pixelSize || 20,
-				disableDepthTestDistance : Number.MAX_VALUE
+				disableDepthTestDistance: Number.MAX_VALUE
 			}
 		})
 		point.objId = this.objId;

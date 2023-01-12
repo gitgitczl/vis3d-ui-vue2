@@ -9,7 +9,7 @@ import BasePlot from './basePlot';
  * @augments BasePlot
  * @alias BasePlot.BasePlot
  */
-class CreateRectangle extends BasePlot{
+class CreateRectangle extends BasePlot {
   constructor(viewer, style) {
     super(viewer, style);
     this.type = "rectangle";
@@ -21,9 +21,9 @@ class CreateRectangle extends BasePlot{
      */
     this.rightdownPoint = null;
 
-     /**
-     * @property {Cesium.Entity} leftupPoint 左上角实体点
-     */
+    /**
+    * @property {Cesium.Entity} leftupPoint 左上角实体点
+    */
     this.leftupPoint = null;
 
     /**
@@ -31,18 +31,19 @@ class CreateRectangle extends BasePlot{
      */
     this.leftup = null;
 
-     /**
-     * @property {Cesium.Cartesian3} rightdown 右下角点坐标
-     */
+    /**
+    * @property {Cesium.Cartesian3} rightdown 右下角点坐标
+    */
     this.rightdown = null;
 
     this.modifyPoint = null;
     this.pointArr = [];
   }
   start(callBack) {
-    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+    if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
     let that = this;
+    if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) { //单击开始绘制
       let cartesian = that.getCatesian3FromPX(evt.position, that.viewer, []);
       if (!cartesian) return;
@@ -58,17 +59,7 @@ class CreateRectangle extends BasePlot{
         if (!that.entity) {
           return;
         }
-        that.state = "endCreate";
-        if (that.handler) {
-          that.handler.destroy();
-          that.handler = null;
-      }
-        if (that.rightdownPoint) that.rightdownPoint.show = false;
-        if (that.leftupPoint) that.leftupPoint.show = false;
-        if (that.prompt) {
-          that.prompt.destroy();
-          that.prompt = null;
-        }
+        that.endCreate();
         if (callBack) callBack(that.entity);
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -88,6 +79,37 @@ class CreateRectangle extends BasePlot{
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
+
+  endCreate() {
+    let that = this;
+    if (that.handler) {
+      that.handler.destroy();
+      that.handler = null;
+    }
+    if (that.rightdownPoint) that.rightdownPoint.show = false;
+    if (that.leftupPoint) that.leftupPoint.show = false;
+    if (that.prompt) {
+      that.prompt.destroy();
+      that.prompt = null;
+    }
+    that.state = "endCreate";
+  }
+
+  /**
+   * 当前步骤结束
+   */
+  done() {
+    if (this.state == "startCreate") {
+      this.destroy();
+    } else if (this.state == "creating") {
+      this.destroy();
+    } else if (this.state == "startEdit" || this.state == "editing") {
+      this.endEdit();
+    } else {
+
+    }
+  }
+
   startEdit(callback) {
     if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
     this.state = "startEdit";

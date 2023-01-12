@@ -100,24 +100,50 @@ class CreatePolygon extends BasePlot {
 
 		this.handler.setInputAction(function (evt) { //双击结束绘制
 			if (!that.entity) return;
-			that.state = "endCreate";
-			that.positions.pop();
-			that.viewer.entities.remove(that.controlPoints.pop());
-			if (that.handler) {
-				that.handler.destroy();
-				that.handler = null;
-			}
-			that.movePush = false;
-			if (that.prompt) {
-				that.prompt.destroy();
-				that.prompt = null;
-			}
-
-			that.viewer.trackedEntity = undefined;
-			that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+			that.endCreate();
 			if (callBack) callBack(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
+
+	endCreate() {
+		let that = this;
+		that.state = "endCreate";
+		that.positions.pop();
+		that.viewer.entities.remove(that.controlPoints.pop());
+		if (that.handler) {
+			that.handler.destroy();
+			that.handler = null;
+		}
+		that.movePush = false;
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+
+		that.viewer.trackedEntity = undefined;
+		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+		if (callBack) callBack(that.entity);
+	}
+
+	/**
+     * 当前步骤结束
+     */
+    done() {
+        if (this.state == "startCreate") {
+            this.destroy();
+        } else if (this.state == "creating") {
+            if (this.positions.length <= 2 && this.movePush == true) {
+                this.destroy();
+            } else {
+                this.endCreate();
+            }
+        } else if (this.state == "startEdit" || this.state == "editing") {
+            this.endEdit();
+        } else {
+
+        }
+    }
+
 	createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
 		this.state = "startCreate";
