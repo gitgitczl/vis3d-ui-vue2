@@ -166,7 +166,7 @@ class DrawTool {
    * 结束当前操作
   */
   end() {
-    if(this.nowDrawEntityObj){
+    if (this.nowDrawEntityObj) {
 
     }
   }
@@ -379,11 +379,17 @@ class DrawTool {
 
   /**
    * 移除某个绘制对象
-   * @param {Object} entityObj 绘制对象
+   * @param {Object} entityObj 已绘制完成绘制对象
    */
   removeOne(entityObj) {
     if (!entityObj) return;
-    this.removeById(entityObj.objId);
+    if (!entityObj) return;
+    if (entityObj.state != "endCreate" || entityObj.state != "endEdit") {
+      entityObj.destroy();
+    } else {
+      this.removeById(entityObj.objId);
+    }
+
   }
 
   /**
@@ -579,13 +585,18 @@ class DrawTool {
     }
   }
 
-  /**
-   * 在当前步骤结束
-   */
-  done(){
-    
+  done() {
+    if (this.nowEditEntityObj) {
+      this.nowEditEntityObj.done();
+      if (this.endEditFun) this.endEditFun(this.nowEditEntityObj, this.nowEditEntityObj.getEntity());
+    }
+
+    if (this.nowDrawEntityObj) {
+      this.nowDrawEntityObj.done();
+      if (this.endCreateFun) this.endCreateFun(this.nowDrawEntityObj, this.nowDrawEntityObj.getEntity());
+    }
   }
-  
+
 
   /**
    * 获取当前所有对象
