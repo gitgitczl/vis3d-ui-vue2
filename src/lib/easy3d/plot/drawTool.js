@@ -387,7 +387,7 @@ class DrawTool {
     if (entityObj.state != "endCreate" || entityObj.state != "endEdit") {
       entityObj.destroy();
     } else {
-      this.removeById(entityObj.objId);
+      this.removeByObjId(entityObj.objId);
     }
 
   }
@@ -421,13 +421,28 @@ class DrawTool {
   */
   hasEntityObj(entityObj) {
     if (!entityObj) return false;
-    let obj = this.getEntityObjById(entityObj.objId);
+    let obj = this.getEntityObjByObjId(entityObj.objId);
     return obj != {} ? true : false;
   }
 
   /**
   * 根据id移除创建的对象
   * @param {String | Number} id 对象id
+  */
+  removeByObjId(id) {
+    let obj = this.getEntityObjByObjId(id);
+    this.entityObjArr.splice(obj.index, 1);
+    // 触发on绑定的移除事件
+    if (this.removeFun)
+      this.removeFun(obj.entityObj, obj.entityObj.getEntity());
+    if (obj.entityObj) {
+      obj.entityObj.destroy();
+    }
+  }
+
+  /**
+  * 根据attr.id移除创建的对象
+  * @param {String | Number} id 创建时的attr.id
   */
   removeById(id) {
     let obj = this.getEntityObjById(id);
@@ -440,12 +455,13 @@ class DrawTool {
     }
   }
 
+
   /**
   * 根据id缩放至绘制的对象
   * @param {String} id 对象id
   */
-  zoomToById(id) {
-    let obj = this.getEntityObjById(id);
+  zoomToByObjId(id) {
+    let obj = this.getEntityObjByObjId(id);
     if (obj.entityObj) {
       obj.entityObj.zoomTo();
     }
@@ -453,7 +469,7 @@ class DrawTool {
 
 
   /**
-   * 根据属性字段获取对象
+   * 根据attr属性字段获取对象
    * @param {String} fieldName 属性字段名称
    * @param {String} [fieldValue] 属性值，若不填，则默认以id进行查询
    * @returns {Object} obj 对象在数组中位置以及对象
@@ -497,7 +513,26 @@ class DrawTool {
 
   /**
    * 根据id获取对象
-   * @param {String | Number} id 对象id
+   * @param {String | Number} id entityObj的objid
+   * @returns {Object} obj 对象在数组中位置以及对象
+   */
+  getEntityObjByObjId(id) {
+    if (!id) return;
+    let obj = {};
+    for (let i = 0; i < this.entityObjArr.length; i++) {
+      let item = this.entityObjArr[i];
+      if (item.objId == id) {
+        obj.entityObj = item;
+        obj.index = i;
+        break;
+      }
+    }
+    return obj;
+  }
+
+  /**
+   * 根据id获取对象，同getEntityObjByField('id',idvalue);
+   * @param {String | Number} id 创建时的attr中的id
    * @returns {Object} obj 对象在数组中位置以及对象
    */
   getEntityObjById(id) {
@@ -513,6 +548,8 @@ class DrawTool {
     }
     return obj;
   }
+
+
   // 绑定编辑
   bindEdit() {
     let that = this;

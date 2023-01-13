@@ -218,7 +218,7 @@ class CreatePolyline extends BasePlot {
                 clampToGround: this.style.clampToGround
             }
         });
-        polyline.objId = this.objId;
+        polyline.objId = this.objId; // 此处进行和entityObj进行关联
         return polyline;
     }
 
