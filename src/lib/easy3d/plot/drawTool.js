@@ -589,11 +589,14 @@ class DrawTool {
     if (this.nowEditEntityObj) {
       this.nowEditEntityObj.done();
       if (this.endEditFun) this.endEditFun(this.nowEditEntityObj, this.nowEditEntityObj.getEntity());
+      this.nowEditEntityObj = undefined;
     }
 
     if (this.nowDrawEntityObj) {
       this.nowDrawEntityObj.done();
+      this.entityObjArr.push(this.nowDrawEntityObj);
       if (this.endCreateFun) this.endCreateFun(this.nowDrawEntityObj, this.nowDrawEntityObj.getEntity());
+      this.nowDrawEntityObj = undefined;
     }
   }
 

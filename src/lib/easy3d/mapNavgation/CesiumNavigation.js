@@ -115,6 +115,7 @@ CesiumNavigation.prototype.setVisible = function (visible) {
   let dom_compass = document.querySelector('.compass');
   let dom_controls = document.querySelector('.navigation-controls');
 
+  dom_legend.style.display = visible ? "block" : "none";
   dom_compass.style.display = visible ? "block" : "none";
   dom_controls.style.display = visible ? "block" : "none";
 }
