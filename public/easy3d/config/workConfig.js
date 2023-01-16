@@ -16,7 +16,7 @@ window.workConfig = {
                 "width": 350,
                 "height": 420
             },
-            "closeDisableSelf": true,
+            "closeDisableSelf": false,
             "closeDisableExcept": [
                 "plotStyle"
             ],

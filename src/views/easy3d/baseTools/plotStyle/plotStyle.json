@@ -45,7 +45,7 @@
         },
         "width": {
             "name": "宽度",
-            "value": true,
+            "value": 1,
             "type": "input-number"
         },
         "color": {
