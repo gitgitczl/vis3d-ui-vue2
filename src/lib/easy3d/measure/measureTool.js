@@ -145,8 +145,8 @@ class MeasureTool {
 				if (opt.success) opt.success(ms, res)
 				if (that.endCreateFun) that.endCreateFun(ms, res);
 				that.nowDrawMeasureObj = undefined;
+				that.measureObjArr.push(ms);
 			});
-			this.measureObjArr.push(ms);
 		}
 	}
 
@@ -199,7 +199,7 @@ class MeasureTool {
 	 * 结束的当前操作
 	 */
 	done() {
-		
+
 		if (this.nowEditMeasureObj) {
 			this.nowEditMeasureObj.done();
 			if (this.endEditFun) this.endEditFun(this.nowEditMeasureObj);
@@ -244,7 +244,7 @@ class MeasureTool {
 			this.nowDrawMeasureObj.destroy();
 			this.nowDrawMeasureObj = null; // 当前编辑对象
 		}
-		that.changeCursor(false);
+		this.changeCursor(false);
 	}
 
 	/**
@@ -273,6 +273,59 @@ class MeasureTool {
 	changeCursor(isopen) {
 		let body = document.getElementsByTagName("body");
 		body[0].style.cursor = isopen ? "crosshair" : "default";
+	}
+
+	/**
+	 * 根据id获取量算对象
+	 * @param {*} id 
+	 * @returns {Object} measureObj为图层对象，index为图层对象在数组中位置
+	 */
+	getMeasureObjById(id) {
+		if (!id) return;
+		let res = {};
+		for (let i = 0; i < this.measureObjArr.length; i++) {
+			if (this.measureObjArr[i].attr.id == id) {
+				res = {
+					measureObj: this.measureObjArr[i],
+					index: i
+				}
+				break;
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * 根据objId获取量算对象
+	 * @param {*} id 
+	 * @returns {Object} measureObj为图层对象，index为图层对象在数组中位置
+	 */
+	getMeasureObjByObjId(id) {
+		if (!id) return;
+		let res = {};
+		for (let i = 0; i < this.measureObjArr.length; i++) {
+			if (this.measureObjArr[i].objId == id) {
+				res = {
+					measureObj: this.measureObjArr[i],
+					index: i
+				}
+				break;
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * 删除单个量算对象
+	 * @param {Object} measureObj 
+	 */
+	removeOne(measureObj) {
+		if (!measureObj) return;
+		let res = this.getMeasureObjByObjId(measureObj.objId);
+		if (res.measureObj) {
+			this.measureObjArr.splice(res.index, 1);
+			res.measureObj.destroy();
+		}
 	}
 }
 

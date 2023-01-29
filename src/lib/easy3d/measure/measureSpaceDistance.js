@@ -137,8 +137,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 			that.positions.pop();
 			that.viewer.entities.remove(that.labels.pop());
 			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
-			let allDistance = that.formateLength(that.allDistance, that.unit);
-			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
+
 			that.movePush = false;
 			that.endCreate();
 			if (callBack) callBack();
@@ -152,6 +151,9 @@ class MeasureSpaceDistance extends BaseMeasure {
 		that.floatLable.show = false;
 		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 		that.viewer.trackedEntity = undefined;
+
+		let allDistance = that.formateLength(that.allDistance, that.unit);
+		that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
 
 		if (that.prompt) {
 			that.prompt.destroy();

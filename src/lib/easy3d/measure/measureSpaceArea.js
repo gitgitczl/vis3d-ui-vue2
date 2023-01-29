@@ -132,15 +132,8 @@ class MeasureSpaceArea extends BaseMeasure {
 
 			that.positions.pop();
 			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
-			var areaCenter = that.getAreaAndCenter(that.positions)
-			var area = areaCenter.area;
-			var center = areaCenter.center;
-			var text = that.formateArea(area, that.unit);
-			that.floatLabel.label.text = "面积：" + text;
-			that.floatLabel.area = area;
-			if (center) that.floatLabel.position.setValue(center);
-			that.movePush = false;
 
+			that.movePush = false;
 			that.endCreate();
 			if (callBack) callBack(that.polyline);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
@@ -150,6 +143,15 @@ class MeasureSpaceArea extends BaseMeasure {
 		let that = this;
 		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 		that.viewer.trackedEntity = undefined;
+
+		const areaCenter = that.getAreaAndCenter(that.positions)
+		let area = areaCenter.area;
+		let center = areaCenter.center;
+		let text = that.formateArea(area, that.unit);
+		that.floatLabel.label.text = "面积：" + text;
+		that.floatLabel.area = area;
+		if (center) that.floatLabel.position.setValue(center);
+
 		if (that.handler) {
 			that.handler.destroy();
 			that.handler = null;
