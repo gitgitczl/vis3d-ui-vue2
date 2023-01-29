@@ -122,6 +122,10 @@ window.workConfig = {
                 "top": 200,
                 "left": 20
             },
+            "size": {
+                "width": 350,
+                "height": 300
+            },
             "closeDisableSelf": true,
             "openDisableAnothers": false
         },

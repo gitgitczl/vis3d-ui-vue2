@@ -54,7 +54,6 @@ export default {
       lat: "",
       lng: "",
       height: "",
-      /*  markerUrl: require("@/assets/images/marker/markerBlue.png"), */
     };
   },
   mounted() {
@@ -100,6 +99,7 @@ export default {
         style: {
           image: "./easy3d/images/pathPlan/start.png",
           scale: 0.5,
+          verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         },
         positions: [this.lng, this.lat, this.height || 0],
       });
