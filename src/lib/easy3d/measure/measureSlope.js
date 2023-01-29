@@ -7,7 +7,7 @@ import BaseMeasure from "./baseMeasure";
  * @augments BaseMeasure
  * @alias BaseMeasure.MeasureSlope 
  */
-class MeasureSlope extends BaseMeasure{
+class MeasureSlope extends BaseMeasure {
     constructor(viewer, opt) {
         if (!opt) opt = {};
         super(viewer, opt);
@@ -43,6 +43,26 @@ class MeasureSlope extends BaseMeasure{
             });
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
     }
+
+    endCreate() {
+        let that = this;
+        if (that.handler) {
+            that.handler.destroy();
+            that.handler = null;
+        }
+        that.state = "endCreate";
+    }
+    
+    done() {
+        if (this.state == "startCreate") {
+            this.destroy();
+        } else if (this.state == "startEdit" || this.state == "editing") {
+            this.endEdit();
+        } else {
+            this.endCreate();
+        }
+    }
+
     //清除测量结果
     destroy() {
         this.state = "no";

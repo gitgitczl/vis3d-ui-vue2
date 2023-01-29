@@ -146,29 +146,50 @@ class MeasureGroundDistance extends BaseMeasure {
 		}, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
 		this.handler.setInputAction(function (evt) { //双击结束绘制
-			if (!that.polyline) return;
-			that.floatLable.show = false;
-			that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-			that.viewer.trackedEntity = undefined;
-
+			// 移除双击事件多生成的最后一个 
 			that.positions.pop();
 			that.viewer.entities.remove(that.labels.pop());
-			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
+			that.viewer.entities.remove(that.controlPoints.pop());
 			let allDistance = that.formateLength(that.allDistance, that.unit);
 			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-			/* that.labels[that.labels.length - 1].distance = that.allDistance; */
-
-			if (that.handler) {
-				that.handler.destroy();
-				that.handler = null;
-			}
-			if (that.prompt) {
-				that.prompt.destroy();
-				that.prompt = null;
-			}
-			that.state = "endCreate";
+			that.movePush = false;
+			that.endCreate();
 			if (callback) callback();
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+	}
+
+	endCreate() {
+		let that = this;
+		if (!that.polyline) return;
+		that.floatLable.show = false;
+		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+		that.viewer.trackedEntity = undefined;
+
+		if (that.handler) {
+			that.handler.destroy();
+			that.handler = null;
+		}
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+		that.state = "endCreate";
+	}
+
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			if (this.positions.length <= 2 && this.movePush == true) {
+				this.destroy();
+			} else {
+				this.endCreate();
+			}
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
 	}
 
 	// 开始编辑

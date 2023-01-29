@@ -44,6 +44,24 @@ class MeasureLnglat extends BaseMeasure {
 
     }
 
+    endCreate() {
+        let that = this;
+        if (that.handler) {
+            that.handler.destroy();
+            that.handler = null;
+        }
+        that.state = "endCreate";
+    }
+    done() {
+        if (this.state == "startCreate") {
+            this.destroy();
+        } else if (this.state == "startEdit" || this.state == "editing") {
+            this.endEdit();
+        } else {
+            this.endCreate();
+        }
+    }
+
     startEdit() {
         if (!((this.state == "endCrerate" || this.state == "endEdit") && this.point)) return;
         this.state = "startEdit";;

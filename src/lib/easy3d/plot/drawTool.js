@@ -85,16 +85,18 @@ class DrawTool {
     if (type == "startEdit") {
       // 开始编辑事件
       this.startEditFun = fun;
-    } else if (type == "endEdit") {
+    }
+    if (type == "endEdit") {
       // 结束编辑事件
       this.endEditFun = fun;
-    } else if (type == "remove") {
+    }
+    if (type == "remove") {
       // 移除事件
       this.removeFun = fun;
-    } else if (type == "endCreate") {
+    }
+    if (type == "endCreate") {
       // 绘制完成事件
       this.endCreateFun = fun;
-    } else {
     }
   }
 
@@ -556,8 +558,8 @@ class DrawTool {
     // 如果是线 面 则需要先选中
     if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
-      //单击开始绘制
       if (!that.canEdit) return;
+      // 若当前正在绘制 则无法进行编辑操作
       if (that.nowDrawEntityObj) return;
       let pick = that.viewer.scene.pick(evt.position);
       if (Cesium.defined(pick) && pick.id) { // 选中实体
@@ -568,8 +570,8 @@ class DrawTool {
               that.entityObjArr[i].state != "creating" ||
               that.entityObjArr[i].state != "endEdit")
           ) {
+            // 结束上一个实体的编辑操作
             if (that.nowEditEntityObj) {
-              // 结束除当前选中实体的所有编辑操作
               that.nowEditEntityObj.endEdit();
               if (that.endEditFun) {
                 that.endEditFun(
@@ -579,7 +581,7 @@ class DrawTool {
               }
               that.nowEditEntityObj = null;
             }
-            // 开始编辑
+            // 开始当前实体的编辑
             that.entityObjArr[i].startEdit();
             that.nowEditObj = that.entityObjArr[i];
             if (that.startEditFun) that.startEditFun(that.nowEditObj, pick.id); // 开始编辑
@@ -596,7 +598,7 @@ class DrawTool {
               that.nowEditEntityObj.getEntity()
             );
           }
-          that.nowEditEntityObj = null;
+          that.nowEditEntityObj = undefined;
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);

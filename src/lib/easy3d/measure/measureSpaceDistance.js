@@ -134,30 +134,51 @@ class MeasureSpaceDistance extends BaseMeasure {
 		this.handler.setInputAction(function (evt) { //双击结束绘制
 			if (!that.polyline) return;
 
-			that.floatLable.show = false;
-			that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-			that.viewer.trackedEntity = undefined;
-
 			that.positions.pop();
 			that.viewer.entities.remove(that.labels.pop());
 			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
 			let allDistance = that.formateLength(that.allDistance, that.unit);
 			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
-			/* that.labels[that.labels.length - 1].distance = that.allDistance; */
-
 			that.movePush = false;
-			if (that.prompt) {
-				that.prompt.destroy();
-				that.prompt = null;
-			}
-
-			if (that.handler) {
-				that.handler.destroy();
-				that.handler = null;
-			}
-			that.state = "endCreate";
+			that.endCreate();
 			if (callBack) callBack();
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+	}
+
+
+	endCreate() {
+		let that = this;
+		if (!that.polyline) return;
+		that.floatLable.show = false;
+		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+		that.viewer.trackedEntity = undefined;
+
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+
+		if (that.handler) {
+			that.handler.destroy();
+			that.handler = null;
+		}
+		that.state = "endCreate";
+	}
+
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			if (this.positions.length <= 2 && this.movePush == true) {
+				this.destroy();
+			} else {
+				this.endCreate();
+			}
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
 	}
 
 	// 开始编辑
@@ -235,6 +256,9 @@ class MeasureSpaceDistance extends BaseMeasure {
 			that.state = "endEdit";
 		}, Cesium.ScreenSpaceEventType.LEFT_UP);
 	}
+
+
+
 
 	endEdit() {
 		let that = this;

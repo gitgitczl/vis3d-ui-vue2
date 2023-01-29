@@ -27,15 +27,15 @@ class MeasureTool {
 		this.viewer = viewer;
 
 		/**
-		 * @property {Object} nowMeasureObj 当前测量对象
+		 * @property {Object} nowDrawMeasureObj 当前测量对象
 		 */
-		this.nowMeasureObj = null;
+		this.nowDrawMeasureObj = null;
 
 		/**
 		 * @property {Array} measureObjArr 测量对象数组
 		 */
 		this.measureObjArr = [];
-		this.lastMeasureObj = null;
+		this.nowEditMeasureObj = null;
 		this.handler = null;
 
 		/**
@@ -48,6 +48,16 @@ class MeasureTool {
 		 */
 		this.intoEdit = obj.intoEdit == undefined ? true : obj.intoEdit;
 		this.bindEdit();
+
+		/**
+		 * @property {Object} nowDrawMeasureObj 当前绘制对象，绘制完成后为undifined
+		 */
+		this.nowDrawMeasureObj = undefined;
+
+		/**
+		 * @property {Object} nowEditMeasureObj 当前编辑对象，编辑完成后为undifined
+		 */
+		this.nowEditMeasureObj = undefined;
 	}
 
 	/** 
@@ -79,11 +89,12 @@ class MeasureTool {
 		opt = opt || {};
 		if (!opt.type) return;
 		let ms;
+		this.endEdit();
+		if (this.nowDrawMeasureObj && (
+			this.nowDrawMeasureObj.state != "endCreate" &&
+			this.nowDrawMeasureObj.state != "endEdit") &&
+			measureTool.nowDrawMeasureObj.state != "no") return;
 
-		if (this.nowMeasureObj && (
-			this.nowMeasureObj.state != "endCreate" &&
-			this.nowMeasureObj.state != "endEdit") &&
-			measureTool.nowMeasureObj.state != "no") return;
 		switch (Number(opt.type)) {
 			case 1: // 空间距离测量
 				ms = new MeasureSpaceDistance(this.viewer, opt);
@@ -121,7 +132,7 @@ class MeasureTool {
 			default:
 				break;
 		}
-		this.nowMeasureObj = ms;
+		this.nowDrawMeasureObj = ms;
 		let that = this;
 		if (ms) {
 			this.changeCursor(true);
@@ -130,10 +141,10 @@ class MeasureTool {
 				if (that.intoEdit) {
 					ms.startEdit();
 					if (that.startEditFun) that.startEditFun(ms);
-					that.lastMeasureObj = ms;
 				}
 				if (opt.success) opt.success(ms, res)
 				if (that.endCreateFun) that.endCreateFun(ms, res);
+				that.nowDrawMeasureObj = undefined;
 			});
 			this.measureObjArr.push(ms);
 		}
@@ -147,8 +158,9 @@ class MeasureTool {
 		// 如果是线 面 则需要先选中
 		if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		this.handler.setInputAction(function (evt) {
-			//单击开始绘制
 			if (!that.canEdit) return;
+			// 若当前正在绘制 则无法进行编辑操作
+			if (that.nowDrawMeasureObj) return;
 			let pick = that.viewer.scene.pick(evt.position);
 			if (Cesium.defined(pick) && pick.id && pick.id.objId) {
 				// 选中实体
@@ -158,50 +170,59 @@ class MeasureTool {
 						(that.measureObjArr[i].state == "endCreate" ||
 							that.measureObjArr[i].state == "endEdit")
 					) {
-						if (that.lastMeasureObj) {
+						// 结束上一个编辑
+						if (that.nowEditMeasureObj) {
 							// 结束除当前选中实体的所有编辑操作
-							that.lastMeasureObj.endEdit();
-							if (that.endEditFun) {
-								that.endEditFun(that.lastMeasureObj);
-							}
-							that.lastMeasureObj = null;
+							that.nowEditMeasureObj.endEdit();
+							if (that.endEditFun) that.endEditFun(that.nowEditMeasureObj);
+							that.nowEditMeasureObj = undefined;
 						}
-						// 开始编辑
-
+						// 开始当前编辑
 						that.measureObjArr[i].startEdit();
-						that.nowEditObj = that.measureObjArr[i];
-						if (that.startEditFun) that.startEditFun(that.nowEditObj); // 开始编辑
-						that.lastMeasureObj = that.measureObjArr[i];
+						that.nowEditMeasureObj = that.measureObjArr[i];
+						if (that.startEditFun) that.startEditFun(that.nowEditMeasureObj); // 开始编辑
 						break;
 					}
 				}
 			} else {
-				// 未选中实体 则结束全部绘制
-				if (that.lastMeasureObj) {
-					that.lastMeasureObj.endEdit();
-					if (that.endEditFun) {
-						that.endEditFun(that.lastMeasureObj); // 结束事件
-					}
-					that.lastMeasureObj = null;
+				// 未选中实体 则结束编辑
+				if (that.nowEditMeasureObj) {
+					that.nowEditMeasureObj.endEdit();
+					if (that.endEditFun) that.endEditFun(that.nowEditMeasureObj); // 结束事件
+					that.nowEditMeasureObj = undefined;
 				}
 			}
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 	}
 
 	/**
+	 * 结束的当前操作
+	 */
+	done() {
+		
+		if (this.nowEditMeasureObj) {
+			this.nowEditMeasureObj.done();
+			if (this.endEditFun) this.endEditFun(this.nowEditMeasureObj);
+			this.nowEditMeasureObj = undefined;
+		}
+
+		if (this.nowDrawMeasureObj) {
+			this.nowDrawMeasureObj.done();
+			this.measureObjArr.push(this.nowDrawMeasureObj);
+			if (this.endCreateFun) this.endCreateFun(this.nowDrawMeasureObj);
+			this.nowDrawMeasureObj = undefined;
+		}
+	}
+
+	/**
 	 * 结束编辑
 	 */
 	endEdit() {
-		if (this.lastMeasureObj) {
+		if (this.nowEditMeasureObj) {
 			// 结束除当前选中实体的所有编辑操作
-			this.lastMeasureObj.endEdit();
-			if (this.endEditFun) {
-				this.endEditFun(
-					this.lastMeasureObj,
-					this.lastMeasureObj.getEntity()
-				); // 结束事件
-			}
-			this.lastMeasureObj = null;
+			this.nowEditMeasureObj.endEdit();
+			this.endEditFun(this.nowEditMeasureObj); // 结束事件
+			this.nowEditMeasureObj = null;
 		}
 		for (let i = 0; i < this.measureObjArr.length; i++) {
 			this.measureObjArr[i].endEdit();
@@ -219,9 +240,9 @@ class MeasureTool {
 			}
 		}
 		this.measureObjArr = [];
-		if (this.nowMeasureObj) {
-			this.nowMeasureObj.destroy();
-			this.nowMeasureObj = null; // 当前编辑对象
+		if (this.nowDrawMeasureObj) {
+			this.nowDrawMeasureObj.destroy();
+			this.nowDrawMeasureObj = null; // 当前编辑对象
 		}
 		that.changeCursor(false);
 	}
@@ -235,7 +256,6 @@ class MeasureTool {
 			this.handler.destroy();
 			this.handler = null;
 		}
-
 	}
 
 	/**
@@ -243,7 +263,7 @@ class MeasureTool {
 	*/
 	setUnit(unit) {
 		if (!unit) return;
-		this.nowMeasureObj.setUnit(unit);
+		this.nowDrawMeasureObj.setUnit(unit);
 	}
 
 	/**

@@ -54,15 +54,7 @@ class MeasureAzimutht extends BaseMeasure {
         point.wz = 1;
         that.controlPoints.push(point);
         that.state = "endCreate";
-        if (that.prompt) {
-          that.prompt.destroy();
-          that.prompt = null;
-        }
-        if (that.handler) {
-          that.handler.destroy();
-          that.handler = null;
-        }
-
+        that.endCreate();
         if (callback) callback(that.azimutht);
       }
 
@@ -80,7 +72,6 @@ class MeasureAzimutht extends BaseMeasure {
         let point = that.createPoint(cartesian.clone());
         point.wz = 0;
         that.controlPoints.push(point);
-
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -105,7 +96,32 @@ class MeasureAzimutht extends BaseMeasure {
         that.floatLabel.label.text = "方位角：" + that.azimutht.toFixed(2);
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+  }
 
+  /**
+   * 结束创建
+   */
+  endCreate() {
+    let that = this;
+    that.state = "endCreate";
+    if (that.prompt) {
+      that.prompt.destroy();
+      that.prompt = null;
+    }
+    if (that.handler) {
+      that.handler.destroy();
+      that.handler = null;
+    }
+  }
+
+  done() {
+    if (this.state == "startCreate") {
+      this.destroy();
+    } else if (this.state == "startEdit" || this.state == "editing") {
+      this.endEdit();
+    } else {
+      this.endCreate();
+    }
   }
 
   /**

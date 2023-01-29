@@ -48,6 +48,14 @@ class BaseMeasure {
         }
     }
 
+    endCreate(){}
+    /**
+     * 结束当前操作 包括编辑和绘制
+     */
+    done(){
+
+    }
+
     createLine(positions, clampToGround) {
         if (!positions) return;
         let ent = this.viewer.entities.add({

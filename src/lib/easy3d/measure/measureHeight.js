@@ -32,18 +32,12 @@ class MeasureHeight extends BaseMeasure {
 
       if (that.positions.length == 2) {
         that.positions[1] = cartesian.clone();
-        if (that.handler) {
-          that.handler.destroy();
-          that.handler = null;
-        }
-        if (that.prompt) {
-          that.prompt.destroy();
-          that.prompt = null;
-        }
+
         let point = that.createPoint(cartesian.clone());
         point.wz = 1;
         that.controlPoints.push(point);
-        that.state = "endCreate";
+
+        that.endCreate();
         if (callback) callback();
       } else {
         that.polyline = that.createLine(that.positions, false);
@@ -78,6 +72,28 @@ class MeasureHeight extends BaseMeasure {
       that.floatLabel.length = heightAndCenter.height;
       if (heightAndCenter.center) that.floatLabel.position.setValue(heightAndCenter.center);
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+  }
+
+  endCreate() {
+    let that = this;
+    if (that.handler) {
+      that.handler.destroy();
+      that.handler = null;
+    }
+    if (that.prompt) {
+      that.prompt.destroy();
+      that.prompt = null;
+    }
+    that.state = "endCreate";
+  }
+  done() {
+    if (this.state == "startCreate") {
+      this.destroy();
+    } else if (this.state == "startEdit" || this.state == "editing") {
+      this.endEdit();
+    } else {
+      this.endCreate();
+    }
   }
 
   startEdit(callback) {

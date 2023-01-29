@@ -70,7 +70,7 @@ class MeasureSpaceArea extends BaseMeasure {
 						that.polygon.objId = that.objId;
 						/* if (that.polyline) that.polyline.show = false; */
 					}
-					if (!that.floatLabel){
+					if (!that.floatLabel) {
 						that.floatLabel = that.createLabel(cartesian, "");
 						that.floatLabel.label.heightReference = 1;
 					}
@@ -93,7 +93,7 @@ class MeasureSpaceArea extends BaseMeasure {
 			that.state = "creating";
 			if (!that.polyline && !that.polygon) return;
 			that.positions.splice(that.positions.length - 2, 1);
-			that.viewer.entities.remove(that.controlPoints.pop());  
+			that.viewer.entities.remove(that.controlPoints.pop());
 			if (that.positions.length == 2) {
 				if (that.polygon) {
 					that.viewer.entities.remove(that.polygon);
@@ -129,8 +129,7 @@ class MeasureSpaceArea extends BaseMeasure {
 			if (!that.polygon) {
 				return;
 			}
-			that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-			that.viewer.trackedEntity = undefined;
+
 			that.positions.pop();
 			that.viewer.entities.remove(that.controlPoints.pop()); // 移除最后一个
 			var areaCenter = that.getAreaAndCenter(that.positions)
@@ -140,18 +139,43 @@ class MeasureSpaceArea extends BaseMeasure {
 			that.floatLabel.label.text = "面积：" + text;
 			that.floatLabel.area = area;
 			if (center) that.floatLabel.position.setValue(center);
-			if (that.handler) {
-				that.handler.destroy();
-				that.handler = null;
-			}
 			that.movePush = false;
-			if (that.prompt) {
-				that.prompt.destroy();
-				that.prompt = null;
-			}
-			that.state = "endCreate";
+
+			that.endCreate();
 			if (callBack) callBack(that.polyline);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+	}
+
+	endCreate() {
+		let that = this;
+		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+		that.viewer.trackedEntity = undefined;
+		if (that.handler) {
+			that.handler.destroy();
+			that.handler = null;
+		}
+
+		if (that.prompt) {
+			that.prompt.destroy();
+			that.prompt = null;
+		}
+		that.state = "endCreate";
+	}
+
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			if (this.positions.length <= 2 && this.movePush == true) {
+				this.destroy();
+			} else {
+				this.endCreate();
+			}
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
+
+		}
 	}
 
 	startEdit(callback) {
