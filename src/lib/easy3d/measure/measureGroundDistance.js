@@ -107,6 +107,7 @@ class MeasureGroundDistance extends BaseMeasure {
 				/* if (that.fun) that.fun(distance); */
 			});
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
 		this.handler.setInputAction(function (evt) {
 			that.state = "creating";
 			if (!that.polyline) return;
@@ -126,6 +127,14 @@ class MeasureGroundDistance extends BaseMeasure {
 				that.floatLable.show = false;
 				that.positions = [];
 			}
+
+			if (!that.movePush) {
+				that.lastCartesian = that.positions[that.positions.length - 1];
+			} else {
+				that.lastCartesian = that.positions[that.positions.length - 2];
+			}
+
+
 			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
 			that.getGroundLength([cartesian, that.positions[that.positions.length - 2]], function (distance) {

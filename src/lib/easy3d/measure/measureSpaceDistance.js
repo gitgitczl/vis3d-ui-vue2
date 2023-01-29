@@ -100,7 +100,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 		this.handler.setInputAction(function (evt) {
 			that.state = "creating";
 			if (!that.polyline) return;
-			if (that.positions.length <= 2) return; // 默认最后一个不给删除
+			if (that.positions.length <= 2) return; // 默认第一个不给删除
 			that.positions.splice(that.positions.length - 2, 1);
 			that.viewer.entities.remove(that.labels.pop());
 			that.viewer.entities.remove(that.controlPoints.pop());  // 移除最后一个
@@ -122,6 +122,13 @@ class MeasureSpaceDistance extends BaseMeasure {
 			that.floatLable.label.text = that.formateLength(distance, that.unit);
 			that.floatLable.distance = distance;
 			that.floatLable.position.setValue(cartesian);
+
+			if (!that.movePush) {
+				that.lastCartesian = that.positions[that.positions.length - 1];
+			} else {
+				that.lastCartesian = that.positions[that.positions.length - 2];
+			}
+
 		}, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 
 		this.handler.setInputAction(function (evt) { //双击结束绘制
@@ -287,7 +294,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 			let labelEnt = this.labels[i];
 			let distance = labelEnt.distance;
 			let label = labelEnt.label;
-			if(!label) continue;
+			if (!label) continue;
 			if (i == this.labels.length - 1) {
 				label.text = "总长：" + this.formateLength(distance, unit);
 			} else {
