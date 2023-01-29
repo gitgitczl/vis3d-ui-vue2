@@ -161,6 +161,8 @@ class MeasureSpaceArea extends BaseMeasure {
 			that.prompt.destroy();
 			that.prompt = null;
 		}
+
+
 		that.state = "endCreate";
 	}
 
@@ -260,6 +262,11 @@ class MeasureSpaceArea extends BaseMeasure {
 			this.handler.destroy();
 			this.handler = null;
 		}
+		for (let i = 0; i < that.controlPoints.length; i++) {
+			let point = that.controlPoints[i];
+			this.viewer.entities.remove(point);
+		}
+
 		this.floatLable = null;
 	}
 
