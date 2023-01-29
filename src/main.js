@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 /* import less from 'less' */
 import easy3d from "@/lib/easy3d/easy3d.export.js"
+import '@/assets/font/iconfont.css'
 // 本地加密类库
 /* import "@/lib/easy3d-min/easy3d.css"
 import easy3d from "@/lib/easy3d-min/easy3d.min.js" */
