@@ -56,8 +56,8 @@ class MeasureTool {
 	 * @param {Function} fun 绑定函数
 	 */
 	on(type, fun) {
-		if (type == "end") {
-			this.endMeasureFun = fun;
+		if (type == "endCreate") {
+			this.endCreateFun = fun;
 		}
 
 		if (type == "startEdit") {
@@ -133,7 +133,7 @@ class MeasureTool {
 					that.lastMeasureObj = ms;
 				}
 				if (opt.success) opt.success(ms, res)
-				if (that.endMeasureFun) that.endMeasureFun(ms, res);
+				if (that.endCreateFun) that.endCreateFun(ms, res);
 			});
 			this.measureObjArr.push(ms);
 		}

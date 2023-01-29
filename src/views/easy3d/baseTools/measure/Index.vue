@@ -125,7 +125,7 @@ export default {
     let that = this;
     if (!measureTool) {
       measureTool = new this.easy3d.MeasureTool(window.viewer);
-      measureTool.on("end", function (ms) {
+      measureTool.on("endCreate", function (ms) {
         that.isShowRes = ms.unitType ? true : false;
         that.isMeasureActive = -1;
       });
