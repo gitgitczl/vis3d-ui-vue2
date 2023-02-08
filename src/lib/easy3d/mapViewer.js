@@ -193,7 +193,6 @@ class MapViewer {
 
 
         let { terrain } = this.opt.map;
-        debugger
         this.terrainUrl = terrain && terrain.url;
 
         if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);

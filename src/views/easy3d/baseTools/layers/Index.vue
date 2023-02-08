@@ -1,5 +1,11 @@
 <template>
-  <Card @close="close" :title="title" :size="size" :iconfont="iconfont" :position="position">
+  <Card
+    @close="close"
+    :title="title"
+    :size="size"
+    :iconfont="iconfont"
+    :position="position"
+  >
     <div class="tree-body reset-tree basic-tree" onselectstart="return false">
       <el-tree
         ref="layerTree"
@@ -194,6 +200,7 @@ export default {
     },
     // childeren转为线性
     getAllLayers(lys) {
+      if (!lys) return;
       lys = lys || {};
       lys = JSON.parse(JSON.stringify(lys));
       let layers = [];
@@ -223,6 +230,7 @@ export default {
     },
 
     nodeRightClick(event, data) {
+      return;
       this.meunStyle = { top: `${event.pageY}px`, left: `${event.pageX}px` };
       this.$set(this, "isTreeMenu", true);
       /**
