@@ -316,7 +316,8 @@ cUtil.getCirclePointsByAngle = function (center, aimP, angle) {
  * @param {Number} [angle] 间隔角度，默认为60° 
  * @returns {Cesium.Cartesian3[]} 圆上点坐标数组
  */
-cUtil.getCirclePointsByRadius = function (center, radius, angle) {
+cUtil.getCirclePointsByRadius = function (opt) {
+    let { center, radius, angle } = opt || {};
     if (!center || !radius) return;
     angle = angle || 60;
     let positions = [];
@@ -386,7 +387,7 @@ cUtil.updatePositionsHeight = function (pois, h) {
  * 
  */
 cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
-    let area = computeArea(positions) / 1000;
+    let area = cUtil.computeArea(positions) / 1000;
     if (!positions) return;
     var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
         positions: positions,
@@ -439,7 +440,7 @@ cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
         if (data.maxHeight < obj.height) {
             data.maxHeight = obj.height;
         }
-        obj.area = computeAreaOfTriangle(cartesian1, cartesian2, cartesian3);
+        obj.area = cUtil.computeAreaOfTriangle(cartesian1, cartesian2, cartesian3);
         data.uniformArr.push(obj);
     }
     return data;
@@ -519,10 +520,11 @@ cUtil.getSlopePosition = function (center, radius, angle, viewer) {
     }, viewer);
 
     let minH = Number.MAX_VALUE;
-    let centerH = cUtil.getTerrainHeight(center.clone());
+    let centerH = cUtil.getTerrainHeight(center.clone(),viewer);
+    if(!centerH) return ;
     let step = -1;
     for (let i = 0; i < positions.length; i++) {
-        let h = cUtil.getTerrainHeight(positions[i]);
+        let h = cUtil.getTerrainHeight(positions[i],viewer);
         if (minH > h) {
             minH = h;
             step = i;

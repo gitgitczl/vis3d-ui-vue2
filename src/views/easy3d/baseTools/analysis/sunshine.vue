@@ -38,6 +38,7 @@ export default {
       startTime: "",
       endTime: "",
       nowTime: "",
+      intval : undefined
     };
   },
 
@@ -72,10 +73,13 @@ export default {
       }
       sunshine.start();
 
-      window.setInterval(function () {
+      if(this.intval){
+        window.clearInterval(this.intval);
+        this.intval = undefined;
+      }
+      this.intval = window.setInterval(function () {
         let time = window.viewer.clock.currentTime;
         let date = Cesium.JulianDate.toDate(time);
-        // console.log("date===>",date);
         that.nowTime = date;
       }, 100);
     },
@@ -83,6 +87,12 @@ export default {
       if (!sunshine) return;
       sunshine.end();
       this.nowTime = "";
+      this.startTime = "";
+      if(this.intval){
+        window.clearInterval(this.intval);
+        this.intval = undefined;
+      }
+      this.endTime = "";
     },
   },
 };

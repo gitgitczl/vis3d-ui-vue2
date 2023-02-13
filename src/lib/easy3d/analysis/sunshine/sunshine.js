@@ -29,6 +29,8 @@ class Sunshine {
         if (this._endTime instanceof Date) this._endTime = Cesium.JulianDate.fromDate(this._endTime, new Cesium.JulianDate());
         this.oldShouldAnimate = this.viewer.clock.shouldAnimate;
         this.multiplier = opt.multiplier || 60;
+        this.oldenableLighting = this.viewer.scene.globe.enableLighting;
+        this.oldshadows = this.viewer.shadows;
     }
 
     /**
@@ -36,14 +38,13 @@ class Sunshine {
      */
     start() {
         this.viewer.clock.currentTime = this._startTime.clone();
-        this.viewer.clock.startTime =  this._startTime.clone();
+        this.viewer.clock.startTime = this._startTime.clone();
         this.viewer.clock.shouldAnimate = true;
         this.viewer.clock.multiplier = this.multiplier;
         this.viewer.scene.globe.enableLighting = true;
         this.viewer.shadows = true;
         this.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
         if (this._endTime) this.viewer.clock.endTime = this._endTime.clone();
-
     }
 
     /**
@@ -53,15 +54,18 @@ class Sunshine {
         this.viewer.clock.clockRange = Cesium.ClockRange.UNBOUNDED;
         this.viewer.clock.shouldAnimate = this.oldShouldAnimate;
         this.viewer.clock.multiplier = 1;
+        this.viewer.scene.globe.enableLighting = this.oldenableLighting;
+        this.viewer.shadows = this.oldshadows;
     }
 
     /**
      * 销毁
      */
-    destroy () {
+    destroy() {
         this.viewer.clock.clockRange = Cesium.ClockRange.UNBOUNDED;
         this.viewer.clock.shouldAnimate = this.oldShouldAnimate;
         this.viewer.clock.multiplier = 1;
+        this.viewer.scene.globe.enableLighting = this.oldenableLighting;
     }
 
     /**

@@ -8,9 +8,11 @@
     "jsdoc": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
+    "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@turf/turf": "^6.5.0",
     "axios": "^0.26.1",
-    "cesium": "~1.91.0",
+    "cesium": "^1.91.0",
+    "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.6.5",
     "docdash": "^2.0.0",
     "easygis-3d": "^1.0.0",
@@ -20,11 +22,13 @@
     "jquery": "^3.6.0",
     "jsdoc": "^4.0.0",
     "leaflet": "^1.7.1",
+    "less": "^3.13.1",
+    "less-loader": "^6.2.0",
     "markdown-it": "^13.0.1",
     "markdown-it-sanitizer": "^0.4.3",
     "print-js": "^1.6.0",
-    "sass-loader": "^13.2.0",
     "screenfull": "^4.2.1",
+    "strip-pragma-loader": "^1.0.1",
     "turf": "^3.0.14",
     "v-region": "^2.2.2",
     "vue": "^2.6.11",
@@ -34,13 +38,13 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@open-wc/webpack-import-meta-loader": "^0.4.7",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
     "@vue/cli-plugin-babel": "~4.5.15",
     "@vue/cli-plugin-router": "~4.5.15",
     "@vue/cli-plugin-vuex": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
-    "less": "^3.0.4",
-    "less-loader": "^5.0.0",
+    "css-loader": "^6.7.3",
+    "style-loader": "^3.3.1",
     "vue-template-compiler": "^2.6.11"
   }
 }
