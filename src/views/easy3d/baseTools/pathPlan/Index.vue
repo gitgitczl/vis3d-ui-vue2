@@ -117,8 +117,13 @@ export default {
     }
     if (!gaodeRoute) gaodeRoute = new this.easy3d.gadgets.GaodeRoute();
   },
-
-  destroyed() {},
+  
+  destroyed() {
+    if (window.drawTool) {
+      window.drawTool.destroy();
+      window.drawTool = undefined;
+    }
+  },
 
   methods: {
     close() {
@@ -139,7 +144,7 @@ export default {
         success: function (entObj, ent) {
           startMarkerObj = entObj;
           ent.type = "start";
-          let lnglat = entObj.getPositions();
+          let lnglat = entObj.getPositions(true);
           that.startPlot =
             Number(lnglat[0]).toFixed(6) + "," + Number(lnglat[1]).toFixed(6);
         },
@@ -162,7 +167,7 @@ export default {
         success: function (entObj, ent) {
           endMarkerObj = entObj;
           ent.type = "end";
-          let lnglat = entObj.getPositions();
+          let lnglat = entObj.getPositions(true);
           that.endPlot =
             Number(lnglat[0]).toFixed(6) + "," + Number(lnglat[1]).toFixed(6);
         },
