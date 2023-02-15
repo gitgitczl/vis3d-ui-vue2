@@ -62,6 +62,10 @@ export default {
     size: {},
     position: {},
     title: "",
+    iconfont: {
+      type: String,
+      default: "icon-getihuabianji",
+    },
   },
   data() {
     return {
@@ -70,10 +74,6 @@ export default {
       isShowAttrTool: false,
       isshowInput: false,
       mode: "view",
-      iconfont: {
-        type: String,
-        default: "icon-getihuabianji",
-      },
     };
   },
 
@@ -194,7 +194,7 @@ export default {
         // 预览模式下 低亮所有面 隐藏属性面板
         if (drawTool) {
           drawTool.end();
-          drawTool.toolArr.forEach(function (entObj) {
+          drawTool.entityObjArr.forEach(function (entObj) {
             entObj.entity.polygon.material =
               Cesium.Color.WHITE.withAlpha(0.00001);
           });
@@ -208,7 +208,7 @@ export default {
           propmt = null;
         }
         if (drawTool) {
-          drawTool.toolArr.forEach(function (entObj) {
+          drawTool.entityObjArr.forEach(function (entObj) {
             entObj.entity.polygon.material = Cesium.Color.YELLOW.withAlpha(0.5);
           });
         }

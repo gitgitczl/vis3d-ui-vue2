@@ -28,6 +28,7 @@ export default {
         /* that.loadSlopeGeometry(positions); */
         let newps = that.lerpPositions(positions);
         newps.slopPositions.forEach((p, index) => {
+          debugger
           let obj = cUtil.getSlopePosition(
             p.clone(),
             newps.radius,

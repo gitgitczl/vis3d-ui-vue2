@@ -150,8 +150,7 @@ class MeasureGroundDistance extends BaseMeasure {
 			that.positions.pop();
 			that.viewer.entities.remove(that.labels.pop());
 			that.viewer.entities.remove(that.controlPoints.pop());
-			let allDistance = that.formateLength(that.allDistance, that.unit);
-			that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
+
 			that.movePush = false;
 			that.endCreate();
 			if (callback) callback();
@@ -164,6 +163,9 @@ class MeasureGroundDistance extends BaseMeasure {
 		that.floatLable.show = false;
 		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
 		that.viewer.trackedEntity = undefined;
+
+		let allDistance = that.formateLength(that.allDistance, that.unit);
+		that.labels[that.labels.length - 1].label.text = "总长：" + allDistance;
 
 		if (that.handler) {
 			that.handler.destroy();

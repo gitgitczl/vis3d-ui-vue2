@@ -125,6 +125,27 @@ class LayerTool {
     }
 
     /**
+     * 根据Objid获取当前图层对象
+     * @param {String | Number} id 
+     * @returns {Object} layerObj为图层对象，index为图层对象在数组中位置
+     */
+    getLayerObjByObjId(id){
+        if (!id) return;
+        let obj = {};
+        for (let i = 0; i < this._layerObjs.length; i++) {
+            if (this._layerObjs[i].objId == id) {
+                obj = {
+                    layerObj: this._layerObjs[i],
+                    index: i
+                }
+                break;
+            }
+        }
+        return obj;
+    }
+
+
+    /**
      * 获取当前图层对象
      * @param {Object} query 
      */

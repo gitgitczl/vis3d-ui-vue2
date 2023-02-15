@@ -83,6 +83,7 @@ export default {
       });
       this.nowShowLayerId = data.id;
       this.$set(this, "baseMapList", tempList);
+      
       window.mapViewer.baseLayerTool.hideAll();
       window.mapViewer.baseLayerTool.showById(data.id);
     },

@@ -1,7 +1,6 @@
 <template>
   <div class="map-box" ref="mapbox">
     <div id="mapContainer"></div>
-    <Head />
     <!-- 侧边工具栏 -->
     <Sidebar v-show="isshowPanel"></Sidebar>
     <!-- 循环构建组件 -->
@@ -21,7 +20,6 @@
   </div>
 </template>
 <script>
-import Head from "@/views/Head.vue";
 import Sidebar from "@/views/easy3d/sidebar.vue";
 import workControl from "./workControl.js";
 
@@ -33,7 +31,6 @@ let overviewMap = null;
 export default {
   name: "Map",
   components: {
-    Head,
     Sidebar,
   },
   data() {

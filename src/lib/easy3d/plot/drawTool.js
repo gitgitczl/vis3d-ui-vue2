@@ -104,7 +104,6 @@ class DrawTool {
    * 开启编辑功能
    */
   openEdit() {
-    this.endEdit();
     this.canEdit = true;
   }
 
@@ -112,6 +111,7 @@ class DrawTool {
   * 关闭编辑功能
   */
   closeEdit() {
+    this.endEdit();
     this.canEdit = false;
   }
 

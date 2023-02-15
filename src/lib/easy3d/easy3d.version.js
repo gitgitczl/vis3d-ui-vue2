@@ -1,5 +1,6 @@
 // easy3d 版权及有效期说明
 function setOverTime(time) {
+    return ;
     time = time || "1993/11/19 00:00:01"
     var nowDate = new Date();
     var endDate = new Date(time);
@@ -10,6 +11,7 @@ function setOverTime(time) {
 }
 
 function setConsole(time) {
+    return ;
     console.group('版本信息（🗺 三维地图开发框架）：');
     console.log(`%c 公司官网 ：http://mapgl.com`, `color: red; font-weight: bold`);
     console.log(`%c 有 效 期 ：${time}`, `color: red; font-weight: bold`);

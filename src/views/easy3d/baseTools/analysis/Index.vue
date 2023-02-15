@@ -203,7 +203,8 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-right: 16px;
+    margin-right: 12px;
+    margin-bottom: 12px;
     &:nth-child(3n) {
       margin-right: 0;
     }

@@ -150,10 +150,7 @@ export default {
     onChangeMeasure(data, index) {
       if (!measureTool) return;
       if (
-        measureTool.nowMeasureObj &&
-        measureTool.nowMeasureObj.state != "endCreate" &&
-        measureTool.nowMeasureObj.state != "endEdit" &&
-        measureTool.nowMeasureObj.state != "no"
+        measureTool.nowDrawMeasureObj || measureTool.nowEditMeasureObj
       ) {
         this.$message({
           message: "请结束上一次量算！",
