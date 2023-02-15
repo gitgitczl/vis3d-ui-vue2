@@ -11,8 +11,8 @@
     :x="position.left"
     :y="position.top"
     :parentLimitation="true"
-    :parentW="1910"
-    :parentH="930"
+    :parentW="parentWidth"
+    :parentH="parentHeight"
     @resizing="onResizing"
     @resizestop="onResizstop"
     @dragging="onDragging"
@@ -88,11 +88,10 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      let drag = this.$refs.drag;
-      let parentWidth = drag.parentElement.clientWidth;
-      let parentHeight = drag.parentElement.clientHeight;
-      this.$set(this, "parentWidth", parentWidth - 5);
-      this.$set(this, "parentHeight", parentHeight - 5);
+      const width = window.innerWidth
+      const height = window.innerHeight
+      this.$set(this, "parentWidth", width);
+      this.$set(this, "parentHeight", height);
 
       // ============= 传入参数和拖拽组件的相互转化 =============
       /* if (this.size.width) this.width = this.size.width;
