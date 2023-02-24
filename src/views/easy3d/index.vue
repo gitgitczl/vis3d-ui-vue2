@@ -121,11 +121,11 @@ export default {
     },
 
     // 监听底图坐标提示栏的开启关闭
-    "$store.state.map3d.openBottomLnglatTool": function (isOpen) {
+    "$store.state.map3d.openLnglatNavigation": function (isOpen) {
       if (isOpen) {
-        if (window.mapViewer) window.mapViewer.openBottomLnglatTool();
+        if (window.mapViewer) window.mapViewer.openLnglatNavigation();
       } else {
-        if (window.mapViewer) window.mapViewer.closeBottomLnglatTool();
+        if (window.mapViewer) window.mapViewer.closeLnglatNavigation();
       }
     },
     // 监听是否点击放大按钮

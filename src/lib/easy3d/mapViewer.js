@@ -47,7 +47,7 @@ class MapViewer {
                 errorRender: false, // 是否开启崩溃刷新
                 debugShowFramesPerSecond : false, // 是否显示帧数
                 worldAnimate: false,
-                bottomLnglatTool: true, // 经纬度及相机位置提示
+                lnglatNavigation: true, // 经纬度及相机位置提示
                 rightTool: true, // 是否开启右键功能
                 popupTooltipTool: true, // 是否开启气泡窗
                 navigationTool: true, // 导航球及比例尺
@@ -172,9 +172,9 @@ class MapViewer {
         this.rightTool = null;
 
         /**
-        * @property {LatlngNavigation}  bottomLnglatTool 底图坐标提示工具
+        * @property {LatlngNavigation}  lnglatNavigation 底图坐标提示工具
         */
-        this.bottomLnglatTool = null;
+        this.lnglatNavigation = null;
 
         /**
          * @property {CesiumNavigation} compassTool 指北针
@@ -197,7 +197,7 @@ class MapViewer {
 
         if (terrain && terrain.url && terrain.show) this.loadTerrain(terrain.url);
 
-        if (this.opt.map.bottomLnglatTool) this.openBottomLnglatTool();
+        if (this.opt.map.lnglatNavigation) this.openLnglatNavigation();
         if (this.opt.map.rightTool) this.openRightTool();
         if (this.opt.map.popupTooltipTool) this.openPopupTooltip();
         if (this.opt.map.navigationTool) this.openNavigationTool();
@@ -396,18 +396,18 @@ class MapViewer {
     /**
      * 开启底部坐标提示
      */
-    openBottomLnglatTool() {
-        if (!this.bottomLnglatTool)
-            this.bottomLnglatTool = new LatlngNavigation(this._viewer);
+    openLnglatNavigation() {
+        if (!this.lnglatNavigation)
+            this.lnglatNavigation = new LatlngNavigation(this._viewer);
     }
 
     /**
     * 关闭底部坐标提示
     */
-    closeBottomLnglatTool() {
-        if (this.bottomLnglatTool) {
-            this.bottomLnglatTool.destroy();
-            this.bottomLnglatTool = null;
+    closeLnglatNavigation() {
+        if (this.lnglatNavigation) {
+            this.lnglatNavigation.destroy();
+            this.lnglatNavigation = null;
         }
     }
 
@@ -463,9 +463,9 @@ class MapViewer {
             this.operatePlotTool = null;
         }
 
-        if (this.bottomLnglatTool) {
-            this.bottomLnglatTool.destroy();
-            this.bottomLnglatTool = null;
+        if (this.lnglatNavigation) {
+            this.lnglatNavigation.destroy();
+            this.lnglatNavigation = null;
         }
         if (this._viewer) {
             this._viewer.destroy();
@@ -486,9 +486,9 @@ class MapViewer {
             let height = window.getComputedStyle(obdom).getPropertyValue('height');
             width = window.parseInt(width);
             height = window.parseInt(height);
-            if (that.bottomLnglatTool) {
+            if (that.lnglatNavigation) {
                 let res = width > 1000;
-                that.bottomLnglatTool.setVisible(res);
+                that.lnglatNavigation.setVisible(res);
             }
 
             if (that.compassTool) {
