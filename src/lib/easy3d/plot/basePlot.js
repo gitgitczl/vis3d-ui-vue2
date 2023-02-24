@@ -58,7 +58,7 @@ class BasePlot {
         /**
          * @property {Object} promptStyle 鼠标提示框样式
          */
-        this.promptStyle = style.prompt || {
+        this.promptStyle = this.style.prompt || {
             show: true
         }
         this.properties = {};

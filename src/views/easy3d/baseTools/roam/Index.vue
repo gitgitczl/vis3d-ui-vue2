@@ -228,7 +228,7 @@ export default {
       },
       // 漫游模型选择
       selectModel: "isSelectModel",
-      roamModel: "",
+      roamModel: "./gltf/dajiang.gltf",
       modelList: [
         {
           name: "无人机",

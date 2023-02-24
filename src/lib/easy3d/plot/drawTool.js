@@ -650,6 +650,7 @@ class DrawTool {
   createByType(opt) {
     let entityObj = undefined;
     let name = "";
+    opt = opt || {};
     if (opt.type == "polyline") {
       entityObj = new CreatePolyline(this.viewer, opt.style);
       name = "折线_";
