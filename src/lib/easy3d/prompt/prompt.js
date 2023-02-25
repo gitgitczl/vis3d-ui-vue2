@@ -9,7 +9,7 @@ class Prompt {
      * @param {Cesium.Viewer} viewer 地图viewer对象 
      * @param {Object} opt 
      * @param {Boolean} opt.show 是否显示 
-     * @param {Function} [opt.open] 创建成功的回调函数
+     * @param {Function} [opt.success] 创建成功的回调函数
      * @param {Number} [opt.type=1] 1~位置变化提示框 / 2~固定坐标提示框
      * @param {Cesium.Cartesian3 | Array} opt.position 固定坐标提示框的坐标（ cartesian3 / [101,30] ），type为1时，可不设置此参数
      * @param {Boolean} [opt.anchor=true] 是否显示锚点
@@ -130,7 +130,7 @@ class Prompt {
          */
         this.contentH = this.promptDom.offsetHeight; // 高度
 
-        if(this.opt.open) this.opt.open(); 
+        if(this.opt.success) this.opt.success(); 
     }
     
     /**
