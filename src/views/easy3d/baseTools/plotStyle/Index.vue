@@ -80,14 +80,14 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 import plotStyle from "./plotStyle.json";
 import Detail from "@/views/easy3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {
   name: "plotStyle",
   components: {
-    Card,
+    
     Detail,
   },
   props: {

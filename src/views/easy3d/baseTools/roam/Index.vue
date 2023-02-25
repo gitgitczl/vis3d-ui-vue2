@@ -189,7 +189,7 @@
 
 <script>
 // 飞行漫游
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let roamDrawTool = null;
 let roamTool = null;
 let nowEditEntityObj = null;
@@ -209,7 +209,7 @@ export default {
   },
 
   components: {
-    Card,
+    
   },
 
   data() {

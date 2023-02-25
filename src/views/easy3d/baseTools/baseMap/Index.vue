@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 export default {
   name: "baseMap",
   components: {
-    Card,
+    
   },
   props: {
     title: "",

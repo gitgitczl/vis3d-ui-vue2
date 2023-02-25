@@ -17,12 +17,12 @@
 
 <script>
 // 帮助说明
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 export default {
   name: "help",
 
   components: {
-    Card,
+    
   },
 
   props: {

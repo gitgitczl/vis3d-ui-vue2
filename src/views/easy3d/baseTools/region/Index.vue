@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let regionPolygon = null;
 export default {
   name: "region",
@@ -29,7 +29,7 @@ export default {
   },
 
   components: {
-    Card,
+    
   },
 
   destroyed() {

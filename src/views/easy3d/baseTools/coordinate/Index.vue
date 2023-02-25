@@ -28,7 +28,7 @@
   </Card>
 </template>
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let drawTool = null;
 export default {
   name: "coordinate",
@@ -46,7 +46,7 @@ export default {
   },
 
   components: {
-    Card,
+    
   },
 
   data() {

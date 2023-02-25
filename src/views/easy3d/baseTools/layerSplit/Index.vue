@@ -18,13 +18,13 @@
   </Card>
 </template>
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let layerSplit = null;
 let lastLayerAttr = {}; // 当前操作的图层
 export default {
   name: "layerSplit",
   components: {
-    Card,
+    
   },
   props: {
     size: {},

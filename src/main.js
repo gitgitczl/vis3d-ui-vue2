@@ -24,6 +24,9 @@ Vue.use(vRegion)
 import Print from 'vue-print-nb'
 Vue.use(Print);
 
+import Card from '@/views/easy3d/components/Card.vue'
+Vue.component('Card', Card);
+
 
 let cesium = require('cesium/Cesium.js');
 var widgets = require('cesium/Widgets/widgets.css');

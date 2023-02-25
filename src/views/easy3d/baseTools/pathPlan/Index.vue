@@ -61,7 +61,7 @@
 </template>
 <script>
 /* 路径规划 */
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let drawTool = null;
 let gaodeRoute = null;
 let startMarkerObj = null;
@@ -82,7 +82,7 @@ export default {
   },
 
   components: {
-    Card,
+    
   },
 
   data() {

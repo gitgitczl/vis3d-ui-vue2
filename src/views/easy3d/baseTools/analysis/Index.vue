@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 import Contour from "@/views/easy3d/baseTools/analysis/contour.vue";
 import Flood from "@/views/easy3d/baseTools/analysis/flood.vue";
 import GlobeSurface from "@/views/easy3d/baseTools/analysis/globeSurface.vue";
@@ -69,7 +69,7 @@ import ModelVolume from "@/views/easy3d/baseTools/analysis/modelVolume.vue";
 export default {
   name: "analysis",
   components: {
-    Card,
+    
     Contour,
     Flood,
     GlobeSurface,
