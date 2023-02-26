@@ -91,8 +91,6 @@ export default {
       endPlot: "",
       avoid: "",
       pathPlanList: [],
-      /* startImg: require("@/assets/images/marker/start.png"),
-      endImg: require("@/assets/images/marker/end.png"), */
     };
   },
 
@@ -104,7 +102,9 @@ export default {
       window.Cesium.Color.DODGERBLUE,
     ];
     if (!drawTool) {
-      drawTool = new this.easy3d.DrawTool(window.viewer);
+      drawTool = new this.easy3d.DrawTool(window.viewer,{
+        canEdit : false
+      });
       drawTool.on("endEdit", function (entObj, ent) {
         if (!ent) return;
         if (ent.type == "start") {
@@ -115,7 +115,9 @@ export default {
         }
       });
     }
-    if (!gaodeRoute) gaodeRoute = new this.easy3d.gadgets.GaodeRoute();
+    if (!gaodeRoute) gaodeRoute = new this.easy3d.gadgets.GaodeRoute({
+      keys : ["a73e387f642573295b498d7fd6b4c537"]
+    });
   },
   
   destroyed() {
@@ -222,6 +224,9 @@ export default {
         endMarkerObj.destroy();
         endMarkerObj = null;
       }
+
+      this.startPlot = "";
+      this.endPlot = "";
     },
     // 构建路线
     createPath(lnglats, color) {
@@ -253,6 +258,7 @@ export default {
         }
       });
       routes = [];
+      this.pathPlanList = [];
     },
   },
 };
