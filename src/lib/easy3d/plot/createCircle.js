@@ -42,7 +42,7 @@ class CreateCircle extends BasePlot {
    * 开始绘制
    * @param {Function} callback 绘制成功后回调函数
   */
-  start(callBack) {
+  start(callback) {
     if (!this.prompt && this.promptStyle.show)
       this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
@@ -64,7 +64,7 @@ class CreateCircle extends BasePlot {
       } else {
         if (that.entity) {
           that.endCreate();
-          if (callBack) callBack(that.entity);
+          if (callback) callback(that.entity);
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -90,7 +90,7 @@ class CreateCircle extends BasePlot {
   /**
    * 通过坐标数组构建
    * @param {Array} lnglatArr 经纬度坐标数组
-   * @callback {Function} callBack 绘制成功后回调函数
+   * @callback {Function} callback 绘制成功后回调函数
   */
   createByPositions(lnglatArr, callback) {
     if (!lnglatArr || lnglatArr.length < 1) return;
@@ -151,7 +151,7 @@ class CreateCircle extends BasePlot {
         if (that.modifyHandler) {
           that.modifyHandler.destroy();
           that.modifyHandler = null;
-          if (callback) callback(that.entity);
+          
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
@@ -180,6 +180,7 @@ class CreateCircle extends BasePlot {
         that.floatPoint.position.setValue(that.float);
         that.radius = Cesium.Cartesian3.distance(that.float, that.position);
       }
+      if (callback) callback();
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.modifyHandler.setInputAction(function (evt) {

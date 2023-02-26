@@ -21,7 +21,7 @@ class CreateLabel extends BasePlot {
   }
 
 
-  start(callBack) {
+  start(callback) {
     if (!this.prompt && this.promptStyle.show)
       this.prompt = new Prompt(this.viewer, this.promptStyle);
     let that = this;
@@ -34,7 +34,7 @@ class CreateLabel extends BasePlot {
       that.entity = that.createLabel(cartesian.clone());
       that.position = cartesian.clone();
       that.endCreate();
-      if (callBack) callBack(that.entity);
+      if (callback) callback(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
     this.handler.setInputAction(function (evt) {
@@ -74,7 +74,7 @@ class CreateLabel extends BasePlot {
 
 
 
-  createByPositions(lnglatArr, callBack) {
+  createByPositions(lnglatArr, callback) {
     if (!lnglatArr) return;
     this.state = "startCreate";
     let position =
@@ -88,7 +88,7 @@ class CreateLabel extends BasePlot {
     this.position = position;
     if (!position) return;
     this.entity = this.createLabel(position, this.style.text);
-    if (callBack) callBack(this.entity);
+    if (callback) callback(this.entity);
     this.state = "endCreate";
   }
 
@@ -180,7 +180,7 @@ class CreateLabel extends BasePlot {
     return isWgs84 ? cUtil.cartesianToLnglat(this.position) : this.position;
   }
 
-  startEdit() {
+  startEdit(callback) {
     if (this.state == "startEdit" || this.state == "editing" || !this.entity)
       return;
     this.state = "startEdit";
@@ -206,6 +206,7 @@ class CreateLabel extends BasePlot {
         that.position = cartesian;
         that.state = "editing";
       }
+      if(callback) callback();
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.modifyHandler.setInputAction(function (evt) {

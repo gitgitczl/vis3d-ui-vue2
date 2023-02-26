@@ -179,7 +179,7 @@ class BasePlot {
      * 
      * 开始编辑
      */
-    startEdit() {
+    startEdit(callback) {
         if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
         this.state = "startEdit";;
         if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -206,6 +206,7 @@ class BasePlot {
                 that.modifyPoint.position.setValue(cartesian);
                 that.positions[that.modifyPoint.wz] = cartesian;
                 that.state = "editing";
+                if(callback) callback();
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 

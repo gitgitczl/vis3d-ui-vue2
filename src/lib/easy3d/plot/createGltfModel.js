@@ -35,7 +35,7 @@ class CreateGltfModel extends BasePlot {
     this.entity = null;
   }
 
-  start(callBack) {
+  start(callback) {
     if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
     let that = this;
@@ -47,7 +47,7 @@ class CreateGltfModel extends BasePlot {
         that.position = cartesian.clone();
       }
       that.endCreate();
-      if (callBack) callBack(that.entity);
+      if (callback) callback(that.entity);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     this.handler.setInputAction(function (evt) { //单击开始绘制
       that.prompt.update(evt.endPosition, "单击新增");
@@ -61,7 +61,7 @@ class CreateGltfModel extends BasePlot {
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
-  createByPositions(lnglatArr, callBack) {
+  createByPositions(lnglatArr, callback) {
     if (!lnglatArr) return;
     this.state = "startCreate";
     if (lnglatArr instanceof Cesium.Cartesian3) {
@@ -70,10 +70,10 @@ class CreateGltfModel extends BasePlot {
       this.position = Cesium.Cartesian3.fromDegrees(lnglatArr[0], lnglatArr[1], lnglatArr[2] || 0);
     }
     this.entity = this.createGltfModel(this.position);
-    callBack(this.entity);
+    callback(this.entity);
     this.state = "endCreate";
   }
-  startEdit() {
+  startEdit(callback) {
     if (this.state == "startEdit" || this.state == "editing") return; //表示还没绘制完成
     if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     let that = this;
@@ -95,6 +95,7 @@ class CreateGltfModel extends BasePlot {
         that.position = cartesian.clone();
       }
       that.state = "editing";
+      if(callback) callback();
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.modifyHandler.setInputAction(function (evt) {

@@ -25,7 +25,7 @@ class MeasureSpaceArea extends BaseMeasure {
 	}
 
 	//开始测量
-	start(callBack) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		var that = this;
 		this.state = "startCreate";
@@ -135,7 +135,7 @@ class MeasureSpaceArea extends BaseMeasure {
 
 			that.movePush = false;
 			that.endCreate();
-			if (callBack) callBack(that.polyline);
+			if (callback) callback(that.polyline);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 

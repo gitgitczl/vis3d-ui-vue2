@@ -55,10 +55,8 @@ class DrawTool {
     /* this.show = obj.drawEndShow == undefined ? true : obj.drawEndShow; */
 
     /**
-     * @property {Object} nowEditObj 当前编辑对象
+     * @property {Object} nowEditEntityObj 当前编辑对象
      */
-    this.nowEditObj = null;
-
     this.startEditFun = null;
     this.endEditFun = null;
     this.removeFun = null;
@@ -366,7 +364,7 @@ class DrawTool {
       this.entityObjArr[i].destroy();
     }
     this.entityObjArr = [];
-    this.nowEditObj = null;
+    this.nowEditEntityObj = null;
 
     if (this.handler) {
       this.handler.destroy();
@@ -414,7 +412,7 @@ class DrawTool {
       obj.destroy();
     }
     this.entityObjArr = [];
-    this.nowEditObj = null;
+    this.nowEditEntityObj = null;
   }
 
   /**
@@ -583,8 +581,7 @@ class DrawTool {
             }
             // 开始当前实体的编辑
             that.entityObjArr[i].startEdit();
-            that.nowEditObj = that.entityObjArr[i];
-            if (that.startEditFun) that.startEditFun(that.nowEditObj, pick.id); // 开始编辑
+            if (that.startEditFun) that.startEditFun(that.nowEditEntityObj, pick.id); // 开始编辑
             that.nowEditEntityObj = that.entityObjArr[i];
             break;
           }
