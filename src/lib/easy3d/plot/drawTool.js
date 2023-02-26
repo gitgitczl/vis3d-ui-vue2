@@ -60,6 +60,7 @@ class DrawTool {
     this.startEditFun = null;
     this.endEditFun = null;
     this.removeFun = null;
+    this.editingFun = undefined;
 
     this.deleteEntityObj = null;
 
@@ -95,6 +96,10 @@ class DrawTool {
     if (type == "endCreate") {
       // 绘制完成事件
       this.endCreateFun = fun;
+    }
+    if (type == "editing") {
+      // 正在编辑
+      this.editingFun = fun;
     }
   }
 
@@ -152,7 +157,9 @@ class DrawTool {
 
       // 如果可以编辑 则绘制完成打开编辑
       if (that.canEdit && fireEdit) {
-        entityObj.startEdit();
+        entityObj.startEdit(function () {
+          if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
+        });
         that.nowEditEntityObj = entityObj;
         if (that.startEditFun) that.startEditFun(entityObj, entity);
       }
@@ -185,9 +192,11 @@ class DrawTool {
       }
       this.nowEditEntityObj = null;
     }
-
+    let that = this;
     if (entityObj) {
-      entityObj.startEdit();
+      entityObj.startEdit(function () {
+        if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
+      });
       if (this.startEditFun)
         this.startEditFun(entityObj, entityObj.getEntity());
       this.nowEditEntityObj = entityObj;
@@ -232,7 +241,9 @@ class DrawTool {
       if (opt.show == false) entityObj.setVisible(false);
       // 如果可以编辑 则绘制完成打开编辑 
       if (that.canEdit && opt.fireEdit) {
-        entityObj.startEdit();
+        entityObj.startEdit(function () {
+          if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
+        });
         if (that.startEditFun) that.startEditFun(entityObj, entity);
         that.nowEditEntityObj = entityObj;
       }
@@ -580,7 +591,9 @@ class DrawTool {
               that.nowEditEntityObj = null;
             }
             // 开始当前实体的编辑
-            that.entityObjArr[i].startEdit();
+            that.entityObjArr[i].startEdit(function(){
+              if(that.editingFun) that.editingFun(that.nowEditEntityObj,that.nowEditEntityObj.entity);
+            });
             if (that.startEditFun) that.startEditFun(that.nowEditEntityObj, pick.id); // 开始编辑
             that.nowEditEntityObj = that.entityObjArr[i];
             break;

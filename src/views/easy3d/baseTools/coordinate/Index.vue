@@ -74,6 +74,13 @@ export default {
         that.lat = Number(lnglat[1]).toFixed(2);
         that.height = Number(lnglat[2]).toFixed(2);
       });
+      drawTool.on("editing", function (entObj, ent) {
+        const lnglat = entObj.getPositions(1);
+        if (!lnglat) return;
+        that.lng = Number(lnglat[0]).toFixed(2);
+        that.lat = Number(lnglat[1]).toFixed(2);
+        that.height = Number(lnglat[2]).toFixed(2);
+      });
     }
   },
   destroyed() {
