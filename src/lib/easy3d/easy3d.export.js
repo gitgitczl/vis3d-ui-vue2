@@ -87,5 +87,5 @@ export default {
   weather,
   animate,
   analysis,
-  LayerSplit,
+  LayerSplit
 };

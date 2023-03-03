@@ -326,11 +326,6 @@ export default {
     justify-content: center;
     margin: 0 16px 10px 0;
     cursor: pointer;
-
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
-
     span {
       font-size: 26px;
       margin-bottom: 10px;

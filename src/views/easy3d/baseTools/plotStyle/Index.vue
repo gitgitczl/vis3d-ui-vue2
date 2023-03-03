@@ -67,16 +67,17 @@
         <el-input v-bind="item.value" placeholder="请输入内容"></el-input>
       </div>
     </div>
-
-    <div class="polt-style-btn basic-polt-style-btn">
-      <span
-        v-for="(item, index) in plotStyleBtn"
-        :key="index"
-        :class="[plotActive === index ? 'polt-style-btn-active' : '']"
-        @click="onChangePlotStyle(index)"
-        >{{ item }}</span
-      >
-    </div>
+    <template slot="sidebar">
+      <div class="polt-style-btn basic-polt-style-btn">
+        <span
+          v-for="(item, index) in plotStyleBtn"
+          :key="index"
+          :class="[plotActive === index ? 'polt-style-btn-active' : '']"
+          @click="onChangePlotStyle(index)"
+          >{{ item }}</span
+        >
+      </div>
+    </template>
   </Card>
 </template>
 
