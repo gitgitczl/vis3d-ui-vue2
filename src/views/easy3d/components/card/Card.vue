@@ -195,14 +195,14 @@ export default {
 .card-content-box {
   position: relative;
   height: calc(100% - 44px);
-  box-sizing: border-box;
-  padding: 10px 20px;
   
 }
 .card-content{
   position: relative;
   width: 100%;
   height: 100%;
+  padding: 10px 20px;
+  box-sizing: border-box;
   overflow: auto;
 }
 </style>
