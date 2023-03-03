@@ -28,9 +28,12 @@
       </div>
       <span class="iconfont icon-danchuangguanbi" @click="close"></span>
     </div>
-    <div class="card-content">
+    <div class="card-content-box">
       <!-- 插槽 -->
-      <slot></slot>
+      <div class="card-content">
+        <slot></slot>
+      </div>
+      <slot name="sidebar"></slot>
     </div>
     <div class="card-footter"></div>
   </vue-drag-resize>
@@ -189,11 +192,17 @@ export default {
     }
   }
 }
-.card-content {
+.card-content-box {
   position: relative;
   height: calc(100% - 44px);
   box-sizing: border-box;
   padding: 10px 20px;
+  
+}
+.card-content{
+  position: relative;
+  width: 100%;
+  height: 100%;
   overflow: auto;
 }
 </style>
