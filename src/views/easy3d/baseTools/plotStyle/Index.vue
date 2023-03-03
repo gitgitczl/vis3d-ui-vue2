@@ -14,7 +14,6 @@
       >
         <!-- 标签 -->
         <div :span="14" v-if="item.type === 'checkbox'">
-          <!-- 构建单选框 -->
           <el-row style="margin-bottom: 10px">
             <el-col :span="6" class="plot-type-name">{{ item.name }}：</el-col>
             <el-col :span="18" class="reset-radio">
@@ -67,27 +66,28 @@
         <el-input v-bind="item.value" placeholder="请输入内容"></el-input>
       </div>
     </div>
-    <template slot="sidebar">
-      <div class="polt-style-btn basic-polt-style-btn">
-        <span
-          v-for="(item, index) in plotStyleBtn"
-          :key="index"
-          :class="[plotActive === index ? 'polt-style-btn-active' : '']"
-          @click="onChangePlotStyle(index)"
-          >{{ item }}</span
-        >
-      </div>
-    </template>
+
+    <div class="polt-style-btn basic-polt-style-btn">
+      <span
+        v-for="(item, index) in plotStyleBtn"
+        :key="index"
+        :class="[plotActive === index ? 'polt-style-btn-active' : '']"
+        @click="onChangePlotStyle(index)"
+        >{{ item }}</span
+      >
+    </div>
   </Card>
 </template>
 
 <script>
+
 import plotStyle from "./plotStyle.json";
 import Detail from "@/views/easy3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {
   name: "plotStyle",
   components: {
+    
     Detail,
   },
   props: {
@@ -102,7 +102,7 @@ export default {
   data() {
     return {
       plotStyleAttr: {},
-      plotStyleBtn: ["其他属性","样式设置" ],
+      plotStyleBtn: ["标绘属性", "自有属性"],
       plotActive: 1,
 
       infos: [
@@ -287,4 +287,4 @@ export default {
     width: 60px;
   }
 }
-</style> 
+</style>

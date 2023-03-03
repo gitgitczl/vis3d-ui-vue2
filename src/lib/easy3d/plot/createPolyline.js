@@ -2,7 +2,9 @@
 import BasePlot from "./basePlot";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
-import animate from "../animateMaterial/animate"
+
+import animate from "../animateMaterial/animate";
+// 注册自定义材质
 /**
  * 线标绘类
  * @class
@@ -229,6 +231,7 @@ class CreatePolyline extends BasePlot {
         // 构建多种材质的线
         style = style || {};
         let material = null;
+        debugger
         if (animateType == "flowline") {
             material = new animate.FlowLineMaterial({
                 color: style.color || Cesium.Color.WHITE, // 默认颜色
