@@ -25,6 +25,21 @@
       </el-col>
 
       <el-col
+        :span="18"
+        class="reset-select"
+        v-if="detailAttr.type === 'select'"
+      >
+        <el-select v-model="value" @change="toChange" placeholder="请选择">
+          <el-option
+            v-for="(item, index) in detailAttr.options"
+            :key="index"
+            :label="item.name"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </el-col>
+
+      <el-col
         class="basic-number"
         :span="18"
         v-if="detailAttr.type === 'input-number'"
@@ -41,11 +56,7 @@
         :span="18"
         v-if="detailAttr.type === 'input-text'"
       >
-        <el-input
-          size="small"
-          v-model="value"
-          @change="toChange"
-        ></el-input>
+        <el-input size="small" v-model="value" @change="toChange"></el-input>
       </el-col>
 
       <el-col
@@ -53,15 +64,8 @@
         class="reset-color-picker color-picker-box basic-text-input"
         v-if="detailAttr.type === 'color-picker'"
       >
-        <el-color-picker
-          v-model="value"
-          @change="toChange"
-        ></el-color-picker>
-        <el-input
-          v-model="value"
-          placeholder="请输入内容"
-          disabled
-        ></el-input>
+        <el-color-picker v-model="value" @change="toChange"></el-color-picker>
+        <el-input v-model="value" placeholder="请输入内容" disabled></el-input>
       </el-col>
       <el-col
         :span="10"

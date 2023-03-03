@@ -68,21 +68,22 @@
             "options": {
                 "animate": {
                     "name": "动态线",
-                    "animateType":{
-                        "name":"动态类型",
-                        "type":"select",
-                        "options":[
+                    "animateType": {
+                        "name": "动态类型",
+                        "type": "select",
+                        "value": "flowline",
+                        "options": [
                             {
-                                "name":"流动线",
-                                "value":"flowline"
+                                "name": "流动线",
+                                "value": "flowline"
                             },
                             {
-                                "name":"流动线",
-                                "value":"flyline"
+                                "name": "流动线",
+                                "value": "flyline"
                             },
                             {
-                                "name":"流动线",
-                                "value":"flowline2"
+                                "name": "流动线",
+                                "value": "flowline2"
                             }
                         ]
                     },
@@ -144,7 +145,7 @@
             "options": {
                 "show": {
                     "name": "显示",
-                    "value" : true,
+                    "value": true,
                     "outlineColor": {
                         "name": "轮廓线颜色",
                         "value": "#ffffff",
@@ -168,7 +169,7 @@
                 },
                 "hide": {
                     "name": "隐藏",
-                    "value" : false
+                    "value": false
                 }
             }
         }
@@ -201,7 +202,7 @@
         }
     },
     "label": {
-        "text" : {
+        "text": {
             "name": "标注名称",
             "value": "--",
             "type": "input-text"
@@ -219,7 +220,7 @@
         "fillColorAlpha": {
             "name": "透明度",
             "type": "slider",
-            "value" : 1,
+            "value": 1,
             "min": 0,
             "max": 1,
             "step": 0.01
@@ -258,7 +259,7 @@
             "options": {
                 "show": {
                     "name": "显示",
-                    "value" : true,
+                    "value": true,
                     "backgroundColor": {
                         "name": "背景色",
                         "value": "#ffffff",
@@ -274,7 +275,7 @@
                 },
                 "hide": {
                     "name": "隐藏",
-                    "value" : false
+                    "value": false
                 }
             }
         }
