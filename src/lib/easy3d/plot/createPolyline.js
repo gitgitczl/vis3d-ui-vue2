@@ -2,6 +2,7 @@
 import BasePlot from "./basePlot";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+import animate from "../animateMaterial/animate"
 /**
  * 线标绘类
  * @class
@@ -226,22 +227,26 @@ class CreatePolyline extends BasePlot {
         // 构建多种材质的线
         style = style || {};
         let material = null;
+        if(!style.image){
+            console.log("缺少图片材质");
+            return Cesium.Color.WHITE;
+        }
         if (lineType == "flowLine") {
-            material = new FlowLineMaterial({
-                color: style.color || Cesium.Color.RED, // 默认颜色
-                image: style.image || "../img/texture/lineClr.png",
+            material = new animate.FlowLineMaterial({
+                color: style.color || Cesium.Color.WHITE, // 默认颜色
+                image: style.image,
                 duration: style.duration || 5000
             })
         } else if (lineType == "rainbowLine") {
-            material = new FlowLineMaterial({
-                image: style.image || "../img/texture/lineClr2.png",
+            material = new animate.FlowLineMaterial({
+                image: style.image,
                 duration: style.duration || 5000
             })
         } else if (lineType == "flyLine") {
-            material = new FlyLineMaterial({ //动画线材质
-                color: style.color || Cesium.Color.RED,
+            material = new animate.FlyLineMaterial({ //动画线材质
+                color: style.color || Cesium.Color.WHITE,
                 duration: style.duration || 3000,
-                image: style.image || "../img/texture/glow.png",
+                image: style.image,
                 repeat: new Cesium.Cartesian2(1, 1) //平铺
             })
         } else {

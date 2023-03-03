@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       plotStyleAttr: {},
-      plotStyleBtn: ["样式设置", "其他属性"],
+      plotStyleBtn: ["其他属性","样式设置" ],
       plotActive: 1,
 
       infos: [

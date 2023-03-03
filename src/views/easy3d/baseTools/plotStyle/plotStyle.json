@@ -73,6 +73,14 @@
                         "value": true,
                         "type": "input-number"
                     }
+                },
+                "common": {
+                    "name": "普通",
+                    "duration": {
+                        "name": "流动速度",
+                        "value": true,
+                        "type": "input-number"
+                    }
                 }
             }
         }

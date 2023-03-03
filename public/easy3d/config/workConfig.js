@@ -14,7 +14,7 @@ window.workConfig = {
             },
             "size": {
                 "width": 350,
-                "height": 420
+                "height": 480
             },
             "closeDisableSelf": false,
             "closeDisableExcept": [
