@@ -80,14 +80,12 @@
 </template>
 
 <script>
-
 import plotStyle from "./plotStyle.json";
 import Detail from "@/views/easy3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {
   name: "plotStyle",
   components: {
-    
     Detail,
   },
   props: {
@@ -102,7 +100,7 @@ export default {
   data() {
     return {
       plotStyleAttr: {},
-      plotStyleBtn: ["标绘属性", "自有属性"],
+      plotStyleBtn: ["样式设置", "其他属性"],
       plotActive: 1,
 
       infos: [
@@ -287,4 +285,4 @@ export default {
     width: 60px;
   }
 }
-</style>
+</style> 

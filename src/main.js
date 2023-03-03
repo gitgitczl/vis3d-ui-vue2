@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router/index.js';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import axios from 'axios'
+
 /* import less from 'less' */
 import easy3d from "@/lib/easy3d/easy3d.export.js"
 import '@/assets/font/iconfont.css'
@@ -38,6 +38,8 @@ window.cUtil = easy3d.cUtil;
 Vue.prototype.widgets = widgets
 
 Vue.config.productionTip = false
+
+import axios from 'axios'
 Vue.prototype.axios = axios
 
 Vue.use(ElementUI);
