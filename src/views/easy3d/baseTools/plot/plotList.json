@@ -53,6 +53,19 @@
                 "scale": 1
             },
             "styleType": "label"
+        },
+        {
+            "name": "动态线",
+            "type": "polyline",
+            "iconImg": "./easy3d/images/plot/polyline.png",
+            "styleType": "polyline",
+            "style": {
+                "clampToGround": true,
+                "color": "#ffff00",
+                "animateType": "flowline",
+                "duration" : 1000,
+                "image": "./easy3d/images/texture/glow.png"
+            }
         }
     ],
     "军事标绘": [

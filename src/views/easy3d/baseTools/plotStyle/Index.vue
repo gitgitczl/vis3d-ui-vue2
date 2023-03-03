@@ -28,7 +28,7 @@
               </el-radio-group>
             </el-col>
           </el-row>
-          
+
           <div
             v-for="(opt, step) in item.options"
             :key="step"

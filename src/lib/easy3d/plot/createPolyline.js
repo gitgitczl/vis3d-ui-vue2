@@ -161,8 +161,9 @@ class CreatePolyline extends BasePlot {
     setStyle(style) {
         if (!style) return;
         let material = undefined;
-        if (style.lineType) {
-            material = this.getMaterial(style.lineType, style);
+        if (style.animateType) {
+            material = this.getMaterial(style.animateType, style);
+
         } else {
             let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color || "#000000");
             material = color.withAlpha(style.colorAlpha || 1);
@@ -178,8 +179,8 @@ class CreatePolyline extends BasePlot {
         if (!this.entity) return;
         let obj = {};
         let polyline = this.entity.polyline;
-        if (this.style.lineType != undefined) {
-            obj.lineType = this.style.lineType;
+        if (this.style.animateType != undefined) {
+            obj.animateType = this.style.animateType;
             obj.image = this.style.image;
             obj.duration = this.style.duration;
         }
@@ -187,11 +188,12 @@ class CreatePolyline extends BasePlot {
         if (polyline.material instanceof Cesium.ColorMaterialProperty) {
             obj.material = "common";
         } else {
-            if (polyline.material instanceof FlowLineMaterial) {
-                obj.material = "flowLine";
+            obj.material = "animate";
+            if (polyline.material instanceof animate.FlowLineMaterial) {
+                obj.animateType = "flowline";
             }
-            if (polyline.material instanceof FlyLineMaterial) {
-                obj.material = "flyLine";
+            if (polyline.material instanceof animate.FlyLineMaterial) {
+                obj.animateType = "flyline";
             }
             obj.duration = polyline.material.duration;
         }
@@ -214,7 +216,7 @@ class CreatePolyline extends BasePlot {
                     return that.positions
                 }, false),
                 show: true,
-                material: this.getMaterial(this.style.lineType, this.style),
+                material: this.getMaterial(this.style.animateType, this.style),
                 width: this.style.width || 3,
                 clampToGround: this.style.clampToGround
             }
@@ -223,26 +225,22 @@ class CreatePolyline extends BasePlot {
         return polyline;
     }
 
-    getMaterial(lineType, style) {
+    getMaterial(animateType, style) {
         // 构建多种材质的线
         style = style || {};
         let material = null;
-        if(!style.image){
-            console.log("缺少图片材质");
-            return Cesium.Color.WHITE;
-        }
-        if (lineType == "flowLine") {
+        if (animateType == "flowline") {
             material = new animate.FlowLineMaterial({
                 color: style.color || Cesium.Color.WHITE, // 默认颜色
                 image: style.image,
                 duration: style.duration || 5000
             })
-        } else if (lineType == "rainbowLine") {
+        } else if (animateType == "rainbowline") {
             material = new animate.FlowLineMaterial({
                 image: style.image,
                 duration: style.duration || 5000
             })
-        } else if (lineType == "flyLine") {
+        } else if (animateType == "flyline") {
             material = new animate.FlyLineMaterial({ //动画线材质
                 color: style.color || Cesium.Color.WHITE,
                 duration: style.duration || 3000,
