@@ -64,10 +64,28 @@
         "material": {
             "name": "材质",
             "type": "checkbox",
-            "value": "animate",
+            "value": "common",
             "options": {
                 "animate": {
                     "name": "动态线",
+                    "animateType":{
+                        "name":"动态类型",
+                        "type":"select",
+                        "options":[
+                            {
+                                "name":"流动线",
+                                "value":"flowline"
+                            },
+                            {
+                                "name":"流动线",
+                                "value":"flyline"
+                            },
+                            {
+                                "name":"流动线",
+                                "value":"flowline2"
+                            }
+                        ]
+                    },
                     "duration": {
                         "name": "流动速度",
                         "value": true,

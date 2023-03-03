@@ -14,6 +14,7 @@
       >
         <!-- 标签 -->
         <div :span="14" v-if="item.type === 'checkbox'">
+          <!-- 构建单选框 -->
           <el-row style="margin-bottom: 10px">
             <el-col :span="6" class="plot-type-name">{{ item.name }}：</el-col>
             <el-col :span="18" class="reset-radio">
@@ -27,7 +28,7 @@
               </el-radio-group>
             </el-col>
           </el-row>
-
+          
           <div
             v-for="(opt, step) in item.options"
             :key="step"
