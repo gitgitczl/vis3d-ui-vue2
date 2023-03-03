@@ -39,6 +39,11 @@ class LatlngNavigation {
             this.moveHandler = null;
         }
 
+        if(this.scale) {
+            this.scale.remove();
+            this.scale = undefined;
+        }
+
         let doms = document.getElementsByClassName("easy3d-lnglatNavigation");
         const id = this.viewer.container.id;
         const mapDom = document.getElementById(id);

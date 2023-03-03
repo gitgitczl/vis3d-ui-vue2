@@ -27,7 +27,7 @@ class CreatePoint extends BasePlot {
 		this.position = null;
 	}
 
-	start(callBack) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
@@ -46,7 +46,7 @@ class CreatePoint extends BasePlot {
 				that.prompt = null;
 			}
 			that.state = "endCreate";
-			if (callBack) callBack(that.entity);
+			if (callback) callback(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			that.prompt.update(evt.endPosition, "单击新增");
@@ -82,14 +82,14 @@ class CreatePoint extends BasePlot {
 		}
 	}
 
-	createByPositions(lnglatArr, callBack) {
+	createByPositions(lnglatArr, callback) {
 		if (!lnglatArr) return;
 		this.state = "startCreate";
 		let position = (lnglatArr instanceof Cesium.Cartesian3) ? lnglatArr : Cesium.Cartesian3.fromDegrees(lnglatArr[0], lnglatArr[1], lnglatArr[2]);
 		this.position = position;
 		if (!position) return;
 		this.entity = this.createPoint(position);
-		if (callBack) callBack(this.entity);
+		if (callback) callback(this.entity);
 		this.state = "endCreate";
 	}
 
@@ -132,7 +132,7 @@ class CreatePoint extends BasePlot {
 	getPositions(isWgs84) {
 		return isWgs84 ? cUtil.cartesianToLnglat(this.position) : this.position
 	}
-	startEdit() {
+	startEdit(callback) {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
 		this.state = "startEdit";
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -154,6 +154,7 @@ class CreatePoint extends BasePlot {
 				that.position = cartesian;
 				that.state = "editing";
 			}
+			if(callback) callback();
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 		this.modifyHandler.setInputAction(function (evt) {

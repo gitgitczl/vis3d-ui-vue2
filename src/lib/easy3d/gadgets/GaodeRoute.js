@@ -7,7 +7,7 @@ class GaodeRoute {
         opts = opts || {};
 
         //请在实际项目中将下面高德KEY换为自己申请的，因为该key不保证长期有效。
-        this._keys = opts.key || [
+        this._keys = opts.keys || [
             "ae29a37307840c7ae4a785ac905927e0",//2020-6-18
             "888a52a74c55ca47abe6c55ab3661d11",
             "0bc2903efcb3b67ebf1452d2f664a238",

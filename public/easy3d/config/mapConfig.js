@@ -14,7 +14,7 @@ window.mapConfig = {
     errorRender: true, // 是否开启崩溃刷新
     debugShowFramesPerSecond: false, // 是否显示帧数
     worldAnimate: false,
-    bottomLnglatTool: true, // 经纬度及相机位置提示
+    lnglatNavigation: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能
     popupTooltipTool: true, // 是否开启气泡窗
     navigationTool: true, // 导航球及比例尺

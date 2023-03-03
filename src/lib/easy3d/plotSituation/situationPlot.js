@@ -51,7 +51,7 @@ class SituationPlot {
     }
   }
 
-  start(callBack) {
+  start(callback) {
     let that = this;
     this.state = "startCreate";
     this.handler.setInputAction(function (evt) { //单机开始绘制
@@ -136,11 +136,11 @@ class SituationPlot {
         that.gonPointArr.push(point); */
         that.state = "endCreate";
         that.handler.destroy();
-        if (callBack) callBack(that.plotEntity);
+        if (callback) callback(that.plotEntity);
       }
     }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
   }
-  createByPositions(positions, callBack) { //通过传入坐标数组创建面
+  createByPositions(positions, callback) { //通过传入坐标数组创建面
     if (!positions) return;
     this.state = "startCreate";
     this.positions = positions;
@@ -153,7 +153,7 @@ class SituationPlot {
       this.gonPointArr.push(point);
     }
     this.state = "endCreate";
-    if (callBack) callBack(this.plotEntity);
+    if (callback) callback(this.plotEntity);
   }
   startEdit() {
     if (this.state == "startEdit" || this.state == "editing" || !this.plotEntity) return;

@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let measureTool = null;
 export default {
   name: "measure",
   components: {
-    Card,
+    
   },
   props: {
     title: "",

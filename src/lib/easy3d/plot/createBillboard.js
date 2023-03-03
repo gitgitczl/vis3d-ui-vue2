@@ -35,7 +35,7 @@ class CreateBillboard extends BasePlot {
 	 * 开始绘制
 	 * @param {Function} callback 绘制成功后回调函数
 	*/
-	start(callBack) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
@@ -54,7 +54,7 @@ class CreateBillboard extends BasePlot {
 				that.prompt = null;
 			}
 			that.state = "endCreate";
-			if (callBack) callBack(that.entity);
+			if (callback) callback(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			that.prompt.update(evt.endPosition, "单击新增");
@@ -97,9 +97,9 @@ class CreateBillboard extends BasePlot {
 	/**
 	 * 通过坐标数组构建
 	 * @param {Array} lnglatArr 经纬度坐标数组
-	 * @callback {Function} callBack 绘制成功后回调函数
+	 * @callback {Function} callback 绘制成功后回调函数
 	*/
-	createByPositions(lnglatArr, callBack) {
+	createByPositions(lnglatArr, callback) {
 		if (!lnglatArr) return;
 		this.state = "startCreate";
 		let position = null;
@@ -112,7 +112,7 @@ class CreateBillboard extends BasePlot {
 		if (!position) return;
 		this.position = position.clone();
 		this.entity = this.createBillboard(this.position);
-		if (callBack) callBack(this.entity);
+		if (callback) callback(this.entity);
 		this.state = "endCreate";
 	}
 	
@@ -169,7 +169,7 @@ class CreateBillboard extends BasePlot {
 	/**
 	 * 开始编辑 
 	 */
-	startEdit() {
+	startEdit(callback) {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
 		this.state = "startEdit";
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -189,6 +189,7 @@ class CreateBillboard extends BasePlot {
 			editBillboard.position.setValue(cartesian.clone());
 			that.position = cartesian.clone();
 			that.state = "editing";
+			if(callback) callback();
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 		this.modifyHandler.setInputAction(function (evt) { //移动时绘制线

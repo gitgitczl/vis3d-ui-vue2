@@ -258,7 +258,7 @@ class CreateArrow extends BasePlot {
 		if (that.arrowPlot.hasLine) { // 线面混合
 			entityObj = {
 				polygon: {
-					hierarchy: new Cesium.callbackProperty(function () {
+					hierarchy: new Cesium.CallbackProperty(function () {
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.spliceWZ !== null) {
 							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
@@ -269,7 +269,7 @@ class CreateArrow extends BasePlot {
 					material: color
 				},
 				polyline: {
-					positions: new Cesium.callbackProperty(function () {
+					positions: new Cesium.CallbackProperty(function () {
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
 							var arr = [];
@@ -289,7 +289,7 @@ class CreateArrow extends BasePlot {
 		} else if (that.arrowPlot.onlyLine) { // 只有线
 			entityObj = {
 				polyline: {
-					positions: new Cesium.callbackProperty(function () {
+					positions: new Cesium.CallbackProperty(function () {
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.lineWZ && that.arrowPlot.lineWZ.length > 0) {
 							var arr = [];
@@ -309,7 +309,7 @@ class CreateArrow extends BasePlot {
 		} else { // 只有面
 			entityObj = {
 				polygon: {
-					hierarchy: new Cesium.callbackProperty(function () {
+					hierarchy: new Cesium.CallbackProperty(function () {
 						let newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.spliceWZ != undefined) {
 							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
@@ -334,7 +334,7 @@ class CreateArrow extends BasePlot {
 		let that = this;
 		return this.viewer.entities.add({
 			polyline: {
-				positions: new Cesium.callbackProperty(function () {
+				positions: new Cesium.CallbackProperty(function () {
 					return that.positions
 				}, false),
 				clampToGround: Boolean(this.style.clampToGround),

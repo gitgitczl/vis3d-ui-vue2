@@ -22,9 +22,9 @@ class CreatePolyline extends BasePlot {
 
     /**
      * 开始绘制
-     * @param {Function} callBack 绘制完成之后的回调函数 
+     * @param {Function} callback 绘制完成之后的回调函数 
      */
-    start(callBack) {
+    start(callback) {
         if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
         this.state = "startCreate";
         let that = this;
@@ -44,7 +44,7 @@ class CreatePolyline extends BasePlot {
             // 达到最大数量 结束绘制
             if (that.positions.length == that.maxPointNum) {
                 that.endCreate();
-                if (callBack) callBack(that.entity);
+                if (callback) callback(that.entity);
             }
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -96,7 +96,7 @@ class CreatePolyline extends BasePlot {
                 return;
             }
             that.endCreate();
-            if (callBack) callBack(that.entity);
+            if (callback) callback(that.entity);
         }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     }
 
@@ -136,14 +136,14 @@ class CreatePolyline extends BasePlot {
         }
     }
 
-    createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
+    createByPositions(lnglatArr, callback) { //通过传入坐标数组创建面
         if (!lnglatArr || lnglatArr.length < 1) return;
         this.state = "startCreate";
         let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : cUtil.lnglatsToCartesians(lnglatArr);
         if (!positions) return;
         this.entity = this.createPolyline(this.style);
         this.positions = positions;
-        if (callBack) callBack(this.entity);
+        if (callback) callback(this.entity);
         for (let i = 0; i < positions.length; i++) {
             let newP = positions[i];
 

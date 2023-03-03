@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 let regionPolygon = null;
 export default {
   name: "region",
@@ -29,7 +29,7 @@ export default {
   },
 
   components: {
-    Card,
+    
   },
 
   destroyed() {
@@ -54,18 +54,21 @@ export default {
       }
       let { province, city, area } = data;
       let key = "";
-
+      let fileName = "";
       if (area) {
         // 精确到区县
         key = area.key;
+        fileName = "county";
       } else {
         if (city) {
           // 市级
           key = city.key;
+          fileName = "city";
         } else {
           if (province) {
             // 省级
             key = province.key;
+            fileName = "province";
           }
         }
       }
@@ -73,7 +76,7 @@ export default {
       let that = this;
 
       this.axios
-        .get(`http://localhost/xzqh/${key}.json`)
+        .get(`http://localhost/${fileName}/${key}.json`)
         .then(function (response) {
           let dspromise = window.Cesium.GeoJsonDataSource.load(response.data, {
             stroke: Cesium.Color.YELLOW,

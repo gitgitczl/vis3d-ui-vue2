@@ -77,14 +77,14 @@
 </template>
 <script>
 import plotList from "./plotList.json";
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 // 地图标注 基础组件
 window.plotDrawTool = null;
 let nowPlotEntObj = null; //当前编辑的对象
 export default {
   name: "plot",
   components: {
-    Card,
+    
   },
   props: {
     title: "",

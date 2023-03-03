@@ -24,7 +24,7 @@ class CreatePolygon extends BasePlot {
 		this.outline = null;
 	}
 
-	start(callBack) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
@@ -101,7 +101,7 @@ class CreatePolygon extends BasePlot {
 		this.handler.setInputAction(function (evt) { //双击结束绘制
 			if (!that.entity) return;
 			that.endCreate();
-			if (callBack) callBack(that.entity);
+			if (callback) callback(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 
@@ -144,7 +144,7 @@ class CreatePolygon extends BasePlot {
         }
     }
 
-	createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
+	createByPositions(lnglatArr, callback) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
 		this.state = "startCreate";
 		let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : cUtil.lnglatsToCartesians(lnglatArr);
@@ -166,7 +166,7 @@ class CreatePolygon extends BasePlot {
 		this.state = "endCreate";
 		this.entity.objId = this.objId;
 
-		if (callBack) callBack(this.entity);
+		if (callback) callback(this.entity);
 	}
 	getStyle() {
 		if (!this.entity) return;

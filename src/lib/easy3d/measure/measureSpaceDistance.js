@@ -31,7 +31,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 	}
 
 	//开始测量
-	start(callBack) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		let that = this;
 		this.state = "startCreate";
@@ -140,7 +140,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 
 			that.movePush = false;
 			that.endCreate();
-			if (callBack) callBack();
+			if (callback) callback();
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	}
 
