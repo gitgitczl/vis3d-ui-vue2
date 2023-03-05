@@ -71,6 +71,12 @@ class DrawTool {
      * @property {Boolear} canEdit 绘制的对象，是否可编辑
      */
     this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;; // 是否可以编辑
+
+    /**
+     * @property {Boolear} fireEdit 绘制的对象，是否直接进入编辑状态（需要canEdit==true）
+     */
+    this.fireEdit = obj.fireEdit == undefined ? true : obj.fireEdit;; 
+
     this.nowDrawEntityObj = null; // 当前绘制的对象
     this.nowEditEntityObj = null; // 当前编辑的对象
   }
@@ -143,7 +149,6 @@ class DrawTool {
     if (!entityObj) return;
     entityObj.attr = opt || {}; // 保存开始绘制时的属性
 
-    const fireEdit = opt.fireEdit == undefined ? true : opt.fireEdit;
     // 开始绘制
     entityObj.start(function (entity) {
       // 绘制完成后
@@ -156,7 +161,7 @@ class DrawTool {
       if (opt.show == false) entityObj.setVisible(false);
 
       // 如果可以编辑 则绘制完成打开编辑
-      if (that.canEdit && fireEdit) {
+      if (that.canEdit && that.fireEdit) {
         entityObj.startEdit(function () {
           if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
         });
@@ -221,7 +226,6 @@ class DrawTool {
    * @param {Object} opt.style 当前绘制对象的样式配置，具体配置见{@link style};
    * @param {Funtion} opt.success 创建完成的回调函数
    * @param {Boolean} [opt.show] 创建完成后，是否展示
-   * @param {Boolean} [opt.fireEdit] 创建完成后，是否进入编辑状态
   */
   createByPositions(opt) {
     opt = opt || {};
@@ -240,7 +244,7 @@ class DrawTool {
       if (that.endCreateFun) that.endCreateFun(entityObj, entity);
       if (opt.show == false) entityObj.setVisible(false);
       // 如果可以编辑 则绘制完成打开编辑 
-      if (that.canEdit && opt.fireEdit) {
+      if (that.canEdit && that.fireEdit) {
         entityObj.startEdit(function () {
           if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
         });

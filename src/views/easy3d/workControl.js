@@ -31,6 +31,9 @@ export default {
     },
     importTool(name) {
         switch (name) {
+            case "yjgl":
+                this.components.push(import("@/views/easy3d/workTools/yjgl/Index.vue"));
+                break;
             case "plot":
                 this.components.push(import("@/views/easy3d/baseTools/plot/Index.vue"));
                 break;
