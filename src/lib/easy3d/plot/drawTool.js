@@ -594,7 +594,7 @@ class DrawTool {
             that.entityObjArr[i].startEdit(function(){
               if(that.editingFun) that.editingFun(that.nowEditEntityObj,that.nowEditEntityObj.entity);
             });
-            if (that.startEditFun) that.startEditFun(that.nowEditEntityObj, pick.id); // 开始编辑
+            if (that.startEditFun) that.startEditFun(that.entityObjArr[i], pick.id); // 开始编辑
             that.nowEditEntityObj = that.entityObjArr[i];
             break;
           }

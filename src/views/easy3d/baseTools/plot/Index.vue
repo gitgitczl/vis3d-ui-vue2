@@ -157,6 +157,7 @@ export default {
         console.log("plot positions-->", positions); */
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
+        debugger
         // 开始编辑
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.attr.id);
@@ -166,7 +167,6 @@ export default {
         // 编辑完成后
         nowPlotEntObj = null;
         let lnglats = entObj.getPositions(true);
-        console.log("lnglats--->", lnglats);
         window.workControl.closeToolByName("plotStyle");
       });
     }
@@ -190,6 +190,7 @@ export default {
      */
     onChangePlotType(index, item) {
       this.$set(this, "isPlotActive", index);
+      debugger
       this.startDraw(item);
     },
 

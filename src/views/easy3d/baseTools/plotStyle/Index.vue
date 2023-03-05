@@ -66,27 +66,28 @@
         <el-input v-bind="item.value" placeholder="请输入内容"></el-input>
       </div>
     </div>
-    <template slot="sidebar">
-      <div class="polt-style-btn basic-polt-style-btn">
-        <span
-          v-for="(item, index) in plotStyleBtn"
-          :key="index"
-          :class="[plotActive === index ? 'polt-style-btn-active' : '']"
-          @click="onChangePlotStyle(index)"
-          >{{ item }}</span
-        >
-      </div>
-    </template>
+
+    <div class="polt-style-btn basic-polt-style-btn">
+      <span
+        v-for="(item, index) in plotStyleBtn"
+        :key="index"
+        :class="[plotActive === index ? 'polt-style-btn-active' : '']"
+        @click="onChangePlotStyle(index)"
+        >{{ item }}</span
+      >
+    </div>
   </Card>
 </template>
 
 <script>
+
 import plotStyle from "./plotStyle.json";
 import Detail from "@/views/easy3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {
   name: "plotStyle",
   components: {
+    
     Detail,
   },
   props: {
@@ -101,7 +102,7 @@ export default {
   data() {
     return {
       plotStyleAttr: {},
-      plotStyleBtn: ["样式设置", "其他属性"],
+      plotStyleBtn: ["标绘属性", "自有属性"],
       plotActive: 1,
 
       infos: [
@@ -162,7 +163,6 @@ export default {
         }
       }
 
-      console.log("setAttr====>", this.plotStyleAttr);
       // 设置当前对象的属性 供导出为geojson
       entityObj.setAttr(this.infos);
     },
@@ -286,4 +286,4 @@ export default {
     width: 60px;
   }
 }
-</style> 
+</style>

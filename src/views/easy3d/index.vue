@@ -54,6 +54,34 @@ export default {
     ));
     window.viewer = mapViewer._viewer;
 
+    // let positions = [];
+    // let lnglats = [
+    //   [117, 40],
+    //   [117, 41],
+    //   [118, 41],
+    //   [118, 40],
+    //   [117, 40],
+    //   [119, 40.3],
+    // ];
+    // for (let i = 0; i < lnglats.length; i++) {
+    //   let lnglat = lnglats[i];
+    //   lnglat = Cesium.Cartesian3.fromDegrees(lnglat[0], lnglat[1]);
+    //   positions.push(lnglat);
+    // }
+
+    // window.viewer.entities.add({
+    //   polyline: {
+    //     clamepToGround: true,
+    //     positions: positions,
+    //     material: new easy3d.animate.FlowLineMaterial({
+    //       color: Cesium.Color.YELLOW.withAlpha(0.6),
+    //       image: "./easy3d/images/texture/glow.png",
+    //     }),
+    //     /* material: Cesium.Color.YELLOW, */
+    //     width: 48,
+    //   },
+    // });
+
     // 开启窗口尺寸大小监听
     /* mapViewer.openSizeListener(function (w, d) {
       console.log("w--d",w,d);
@@ -169,7 +197,6 @@ export default {
   height: 100%;
 }
 
-
 #mapContainer {
   width: 100%;
   height: 100%;
@@ -177,6 +204,5 @@ export default {
   padding: 0;
   margin: 0;
   position: absolute;
-  
 }
 </style>
