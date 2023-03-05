@@ -5,11 +5,11 @@
       <div v-show="step == 0">
         <span class="draw-btn" @click="drawFence">绘制范围</span>
         <el-table :data="polygonList" style="width: 100%">
-          <el-table-column prop="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" width="60">
           </el-table-column>
           <el-table-column label="名称" width="60">
             <template slot-scope="scope">
-              <el-input v-model="scope.name"></el-input>
+              <el-input v-model="scope.row.name"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="操作">
@@ -27,7 +27,7 @@
       <div v-show="step == 1">
         <span class="draw-btn" @click="drawPoint">标识点位</span>
         <el-table :data="pointList" style="width: 100%">
-          <el-table-column prop="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" width="60">
           </el-table-column>
           <el-table-column prop="name" label="名称" width="60">
           </el-table-column>
@@ -47,7 +47,7 @@
         <span @click="drawExit">出口箭头</span>
 
         <el-table :data="exitList" style="width: 100%">
-          <el-table-column prop="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" width="60">
           </el-table-column>
           <el-table-column prop="name" label="名称" width="60">
           </el-table-column>
@@ -67,7 +67,7 @@
         <span class="draw-btn" @click="drawEntrance">入口箭头</span>
 
         <el-table :data="entranceList" style="width: 100%">
-          <el-table-column prop="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" width="60">
           </el-table-column>
           <el-table-column prop="name" label="名称" width="60">
           </el-table-column>
@@ -86,7 +86,7 @@
       <div v-show="step == 4">
         <span class="draw-btn" @click="drawRoute">绘制路线</span>
         <el-table :data="polylineList" style="width: 100%">
-          <el-table-column prop="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" width="60">
           </el-table-column>
           <el-table-column prop="name" label="名称" width="60">
           </el-table-column>
