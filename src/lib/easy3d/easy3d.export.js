@@ -61,7 +61,7 @@ let analysis = {
 };
 
 
-/* import animate from "./animateMaterial/animate"; */
+import animate from "./animateMaterial/animate";
 
 export default {
   cUtil,
@@ -78,7 +78,7 @@ export default {
   ZoomTool,
   OverviewMap,
   weather,
- /*  animate, */
+  animate,
   analysis,
   LayerSplit
 };

@@ -179,6 +179,6 @@ Cesium.Material._materialCache.addMaterial("AnimateWave", {
 });
 
 
-export default {
+export default  {
     FlowLineMaterial, FlyLineMaterial, AnimateWall, AnimateWave
 }

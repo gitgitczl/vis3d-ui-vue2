@@ -163,7 +163,6 @@ export default {
         }
       }
 
-      console.log("setAttr====>", this.plotStyleAttr);
       // 设置当前对象的属性 供导出为geojson
       entityObj.setAttr(this.infos);
     },

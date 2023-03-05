@@ -2,8 +2,7 @@
 import BasePlot from "./basePlot";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
-
-import animate from "../animateMaterial/animate";
+import animate from "../animateMaterial/animate"
 // 注册自定义材质
 /**
  * 线标绘类
@@ -162,15 +161,8 @@ class CreatePolyline extends BasePlot {
 
     setStyle(style) {
         if (!style) return;
-        let material = undefined;
-        if (style.animateType) {
-            material = this.getMaterial(style.animateType, style);
-
-        } else {
-            let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color || "#000000");
-            material = color.withAlpha(style.colorAlpha || 1);
-        }
-
+        debugger
+        let material = this.getMaterial(style.material, style);
         this.entity.polyline.material = material;
         this.entity.polyline.clampToGround = Boolean(style.clampToGround);
         if (style.width) this.entity.polyline.width = style.width || 3;
@@ -186,18 +178,14 @@ class CreatePolyline extends BasePlot {
             obj.image = this.style.image;
             obj.duration = this.style.duration;
         }
-
         if (polyline.material instanceof Cesium.ColorMaterialProperty) {
             obj.material = "common";
         } else {
-            obj.material = "animate";
+            obj.material = "flowline";
             if (polyline.material instanceof animate.FlowLineMaterial) {
-                obj.animateType = "flowline";
             }
-            if (polyline.material instanceof animate.FlyLineMaterial) {
-                obj.animateType = "flyline";
-            }
-            obj.duration = polyline.material.duration;
+            obj.duration = polyline.material._duration;
+            obj.image = polyline.material.url;
         }
 
         let color = polyline.material.color.getValue();
@@ -231,27 +219,32 @@ class CreatePolyline extends BasePlot {
         // 构建多种材质的线
         style = style || {};
         let material = null;
-        debugger
+        let color = style.color || Cesium.Color.WHITE;
+        color = color instanceof Cesium.Color ? color : Cesium.Color.fromCssColorString(style.color);
+        color = color.withAlpha(style.colorAlpha || 1);
         if (animateType == "flowline") {
+            if (!style.image) {
+                console.log("动态材质，缺少纹理图片");
+                return color;
+            }
             material = new animate.FlowLineMaterial({
-                color: style.color || Cesium.Color.WHITE, // 默认颜色
-                image: style.image,
-                duration: style.duration || 5000
-            })
-        } else if (animateType == "rainbowline") {
-            material = new animate.FlowLineMaterial({
+                color: color, // 默认颜色
                 image: style.image,
                 duration: style.duration || 5000
             })
         } else if (animateType == "flyline") {
+            if (!style.image) {
+                console.log("动态材质，缺少纹理图片");
+                return color;
+            }
             material = new animate.FlyLineMaterial({ //动画线材质
-                color: style.color || Cesium.Color.WHITE,
+                color: color,
                 duration: style.duration || 3000,
                 image: style.image,
                 repeat: new Cesium.Cartesian2(1, 1) //平铺
             })
         } else {
-            material = style.color instanceof Cesium.Color ? style.color : (style.color ? Cesium.Color.fromCssColorString(style.color).withAlpha(style.colorAlpha || 1) : Cesium.Color.WHITE);
+            material = color;
         }
         return material;
     }

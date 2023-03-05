@@ -57,14 +57,27 @@
         {
             "name": "动态线",
             "type": "polyline",
-            "iconImg": "./easy3d/images/plot/polyline.png",
+            "iconImg": "./easy3d/images/plot/flowline.png",
             "styleType": "polyline",
             "style": {
                 "clampToGround": true,
-                "color": "#ffff00",
+                "color": "#0EFCDC",
                 "animateType": "flowline",
                 "duration" : 1000,
                 "image": "./easy3d/images/texture/glow.png"
+            }
+        },
+        {
+            "name": "流动线",
+            "type": "polyline",
+            "iconImg": "./easy3d/images/plot/waterline.png",
+            "styleType": "polyline",
+            "style": {
+                "clampToGround": true,
+                "color": "#F9F507",
+                "animateType": "flowline",
+                "duration" : 1000,
+                "image": "./easy3d/images/texture/water.png"
             }
         }
     ],
