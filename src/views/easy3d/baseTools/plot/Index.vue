@@ -214,7 +214,7 @@ export default {
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
         if (!jsondata) return;
-        this.easy3d.cTool.file.downloadFile(
+        this.easy3d.cTool.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
         );

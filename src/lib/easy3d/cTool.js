@@ -8,11 +8,11 @@ let cTool = {}
  * 文本或json等下载方法
  * @param {String} fileName 文件名称，后缀需要加类型，如.txt / .json等
  * @param {String} datastr 文本字符串
- * @example cTool.file.downloadFile("测试.json",JSON.stringify(data));
+ * @example cTool.downloadFile("测试.json",JSON.stringify(data));
 */
 cTool.downloadFile = function (fileName, datastr) {
     var blob = new Blob([datastr]);
-    this._download(fileName, blob);
+    _download(fileName, blob);
 }
 
 /**

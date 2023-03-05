@@ -457,7 +457,7 @@ export default {
     },
     saveFile() {
       let jsondata = roamTool.toJson();
-      this.easy3d.cTool.file.downloadFile(
+      this.easy3d.cTool.downloadFile(
         "场景漫游.json",
         JSON.stringify(jsondata)
       );
