@@ -326,6 +326,7 @@ export default {
     justify-content: center;
     margin: 0 16px 10px 0;
     cursor: pointer;
+
     span {
       font-size: 26px;
       margin-bottom: 10px;
