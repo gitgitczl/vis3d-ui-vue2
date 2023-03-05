@@ -5,11 +5,11 @@
       <div v-show="step == 0">
         <span @click="drawFence">绘制范围</span>
         <el-table :data="polygonList" style="width: 100%">
-          <el-table-column prop="index" label="序号" width="60">
+          <el-table-column type="index" label="序号" width="60">
           </el-table-column>
           <el-table-column label="名称" width="60">
             <template slot-scope="scope">
-              <el-input v-model="scope.name"></el-input>
+              <el-input v-model="scope.row.name"></el-input>
             </template>
           </el-table-column>
           <el-table-column label="操作">
