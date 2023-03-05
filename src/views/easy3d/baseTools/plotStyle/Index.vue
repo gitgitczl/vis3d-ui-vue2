@@ -63,7 +63,7 @@
         :key="index"
       >
         <label>{{ item.fieldName }}：</label>
-        <el-input v-bind="item.value" placeholder="请输入内容"></el-input>
+        <el-input v-model="item.value" placeholder="请输入内容"></el-input>
       </div>
     </div>
 
@@ -103,7 +103,8 @@ export default {
   },
   data() {
     return {
-      plotStyleAttr: {},
+      plotStyleAttr: {
+      },
       plotStyleBtn: ["标绘属性", "自有属性"],
       plotActive: 1,
 
