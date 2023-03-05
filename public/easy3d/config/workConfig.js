@@ -13,7 +13,7 @@ window.workConfig = {
                 "left": 40
             },
             "size": {
-                "width": 350,
+                "width": 380,
                 "height": 480
             },
             "closeDisableSelf": false,
