@@ -3,7 +3,7 @@
     <div class="yjgl-bar">
       <!-- 第一步 绘制多边形范围-->
       <div v-show="step == 0">
-        <span @click="drawFence">绘制范围</span>
+        <span class="draw-btn" @click="drawFence">绘制范围</span>
         <el-table :data="polygonList" style="width: 100%">
           <el-table-column type="index" label="序号" width="60">
           </el-table-column>
@@ -25,7 +25,7 @@
       </div>
       <!-- 第二步 绘制交警位置 并标记名称-->
       <div v-show="step == 1">
-        <span @click="drawPoint">标识点位</span>
+        <span class="draw-btn" @click="drawPoint">标识点位</span>
         <el-table :data="pointList" style="width: 100%">
           <el-table-column prop="index" label="序号" width="60">
           </el-table-column>
@@ -64,7 +64,7 @@
       </div>
       <!-- 第四步 标记入口箭头 -->
       <div v-show="step == 3">
-        <span @click="drawEntrance">入口箭头</span>
+        <span class="draw-btn" @click="drawEntrance">入口箭头</span>
 
         <el-table :data="entranceList" style="width: 100%">
           <el-table-column prop="index" label="序号" width="60">
@@ -84,7 +84,7 @@
       </div>
       <!-- 绘制作业路线 -->
       <div v-show="step == 4">
-        <span @click="drawRoute">绘制路线</span>
+        <span class="draw-btn" @click="drawRoute">绘制路线</span>
         <el-table :data="polylineList" style="width: 100%">
           <el-table-column prop="index" label="序号" width="60">
           </el-table-column>
@@ -103,12 +103,12 @@
       </div>
       <!-- 导出数据 -->
       <div v-show="step == 5">
-        <span @click="exportData">导出数据</span>
+        <span class="draw-btn" @click="exportData">导出数据</span>
       </div>
 
       <!-- 分割线 -->
       <div></div>
-      <div>
+      <div class="operate">
         <span v-show="isNext" @click="goNext">下一步</span>
         <span v-show="isLast" @click="goLast">上一步</span>
       </div>
@@ -182,12 +182,14 @@ export default {
       if (this.step >= 5) {
         this.step = 5;
         this.isNext = false;
+        this.isLast = true;
       }
     },
     goLast() {
       this.step--;
       if (this.step <= 0) {
         this.step = 0;
+        this.isNext = true;
         this.isLast = false;
       }
     },
@@ -311,8 +313,19 @@ export default {
 </script>
 
 <style lang="less">
-.yjgl-bar span {
+.yjgl-bar .draw-btn {
   padding: 10px;
+  margin: 10px 0px;
+  border: 1px solid;
+  display: block;
+  width: 60px;
   border-radius: 4px;
+}
+.operate {
+  display: flex;
+  justify-content: flex-end;
+  span {
+    margin: 10px;
+  }
 }
 </style>
