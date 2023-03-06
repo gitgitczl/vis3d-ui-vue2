@@ -5,24 +5,6 @@ window.workConfig = {
     }, // 是否创建面板
     "tools": [
         {
-            "name": "应急管理",
-            "show": true,
-            "workName": "yjgl",
-            "position": {
-                "top": 100,
-                "left": 40
-            },
-            "size": {
-                "width": 380,
-                "height": 580
-            },
-            "closeDisableSelf": false,
-            "closeDisableExcept": [
-                "plotStyle"
-            ],
-            "openDisableAnothers": true
-        },
-        {
             "name": "图上标绘",
             "show": false,
             "workName": "plot",

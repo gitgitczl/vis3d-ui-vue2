@@ -132,6 +132,11 @@ class CreatePoint extends BasePlot {
 	getPositions(isWgs84) {
 		return isWgs84 ? cUtil.cartesianToLnglat(this.position) : this.position
 	}
+
+	getLnglats(){
+		return this.getPositions(true);
+	}
+	
 	startEdit(callback) {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
 		this.state = "startEdit";

@@ -1,7 +1,7 @@
 import FlowLineMaterial from "./flowline";
 import FlyLineMaterial from "./flyline";
-import AnimateWall from "./wall";
-import AnimateWave from "./wave";
+import WallMaterial from "./wall";
+import WaveMaterial from "./wave";
 let Cesium = require('cesium/Cesium.js');
 
 Object.defineProperties(FlowLineMaterial.prototype, {
@@ -90,7 +90,7 @@ Cesium.Material._materialCache.addMaterial("FlyLine", {
 });
 
 
-Object.defineProperties(AnimateWall.prototype, {
+Object.defineProperties(WallMaterial.prototype, {
     isConstant: {
         get: function () {
             return false;
@@ -103,9 +103,9 @@ Object.defineProperties(AnimateWall.prototype, {
     },
     color: Cesium.createPropertyDescriptor('color')
 });
-Cesium.Material._materialCache.addMaterial('AnimateWall', {
+Cesium.Material._materialCache.addMaterial('WallMaterial', {
     fabric: {
-        type: 'AnimateWall',
+        type: 'WallMaterial',
         uniforms: {
             color: new Cesium.Color(1.0, 1.0, 1.0, 0.5),
             image: "",
@@ -137,7 +137,7 @@ Cesium.Material._materialCache.addMaterial('AnimateWall', {
     }
 });
 
-Object.defineProperties(AnimateWave.prototype, {
+Object.defineProperties(WaveMaterial.prototype, {
     isConstant: {
         get: function () {
             return false;
@@ -150,9 +150,9 @@ Object.defineProperties(AnimateWave.prototype, {
     }
 });
 
-Cesium.Material._materialCache.addMaterial("AnimateWave", {
+Cesium.Material._materialCache.addMaterial("WaveMaterial", {
     fabric: {
-        type: "AnimateWave",
+        type: "WaveMaterial",
         uniforms: {
             color: new Cesium.Color(1, 0, 0, 1.0),
             time: 10
@@ -180,5 +180,5 @@ Cesium.Material._materialCache.addMaterial("AnimateWave", {
 
 
 export default  {
-    FlowLineMaterial, FlyLineMaterial, AnimateWall, AnimateWave
+    FlowLineMaterial, FlyLineMaterial, WallMaterial, WaveMaterial
 }

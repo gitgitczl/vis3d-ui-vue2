@@ -105,7 +105,7 @@ export default {
     return {
       plotStyleAttr: {
       },
-      plotStyleBtn: ["标绘属性", "自有属性"],
+      plotStyleBtn: ["自有属性", "标绘属性"],
       plotActive: 1,
 
       infos: [

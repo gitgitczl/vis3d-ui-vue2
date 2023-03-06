@@ -14,7 +14,7 @@
       positions: positions,
       maximumHeights: maximumHeights,
       minimumHeights: minimumHeights,
-      material: new AnimateWall({
+      material: new WallMaterial({
         color: Cesium.Color.RED,
         duration: 3000,
         axisY: false,
@@ -24,7 +24,7 @@
     }
   });
  */
-function AnimateWall(opt) {
+function WallMaterial(opt) {
   this._definitionChanged = new Cesium.Event();
   this.color = opt.color;
   this.duration = opt.duration || 1000;
@@ -38,10 +38,10 @@ function AnimateWall(opt) {
 }
 
 
-AnimateWall.prototype.getType = function (time) {
-  return 'AnimateWall';
+WallMaterial.prototype.getType = function (time) {
+  return 'WallMaterial';
 }
-AnimateWall.prototype.getValue = function (time, result) {
+WallMaterial.prototype.getValue = function (time, result) {
   if (!Cesium.defined(result)) {
     result = {};
   }
@@ -53,10 +53,10 @@ AnimateWall.prototype.getValue = function (time, result) {
   return result;
 
 }
-AnimateWall.prototype.equals = function (other) {
+WallMaterial.prototype.equals = function (other) {
   return this === other ||
     (
-      other instanceof AnimateWall &&
+      other instanceof WallMaterial &&
       Cesium.Property.equals(this._color, other._color) &&
       this._image._value == other._image._value &&
       this.repeat.equals(other.repeat)
@@ -66,4 +66,4 @@ AnimateWall.prototype.equals = function (other) {
 
 
 
-export default AnimateWall;
+export default WallMaterial;

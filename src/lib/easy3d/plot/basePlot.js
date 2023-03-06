@@ -107,6 +107,14 @@ class BasePlot {
         return isWgs84 ? cUtil.cartesiansToLnglats(this.positions, this.viewer) : this.positions;
     }
 
+     /**
+     * 获取经纬度坐标
+     * @returns {Array} 经纬度坐标数组
+     */
+     getLnglats() {
+        return cUtil.cartesiansToLnglats(this.positions, this.viewer);
+    }
+
     /**
      * 设置自定义属性
      * @param {Object} prop 属性 

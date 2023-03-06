@@ -245,9 +245,12 @@ class CreateBillboard extends BasePlot {
 
 	
 	getPositions(isWgs84) {
+		debugger
 		return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position;
 	}
-
+	getLnglats(){
+		return this.getPositions(true);
+	}
 	/**
 	 * 设置图标坐标
 	 * @param {Cesium.Cartesian3 | Array} p 坐标
