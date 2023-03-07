@@ -68,7 +68,7 @@
     </div>
 
     <template slot="sidebar">
-      <div class="polt-style-btn basic-polt-style-btn">
+      <div class="polt-style-btn basic-plot-style-btn">
         <span
           v-for="(item, index) in plotStyleBtn"
           :key="index"

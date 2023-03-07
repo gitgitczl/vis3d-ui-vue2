@@ -136,6 +136,11 @@ class CreateLabel extends BasePlot {
     if (style.showBackground != undefined)
       this.entity.label.showBackground = Boolean(style.showBackground);
 
+    if (style.scale) {
+      this.entity.label.scale = Number(style.scale);
+    }
+
+
     this.style = Object.assign(this.style, style);
   }
   // 获取相关样式
@@ -152,8 +157,8 @@ class CreateLabel extends BasePlot {
       1
     ).toCssHexString();
 
-    obj.outlineWidth = label.outlineWidth._value;
-    obj.showBackground = Boolean(label.showBackground.getValue());
+    if (label.outlineWidth != undefined) obj.outlineWidth = label.outlineWidth._value;
+    if (label.showBackground != undefined) obj.showBackground = Boolean(label.showBackground.getValue());
     if (label.backgroundColor) {
       let bkColor = label.backgroundColor.getValue();
       obj.backgroundColorAlpha = bkColor.alpha;
@@ -167,9 +172,13 @@ class CreateLabel extends BasePlot {
       obj.outlineColor = new Cesium.Color(outlineColor.red, outlineColor.green, outlineColor.blue, 1).toCssHexString();
     }
 
-    if (label.heightReference != undefined)
+    if (label.heightReference != undefined) {
       obj.heightReference = label.heightReference.getValue();
-    obj.pixelOffset = label.pixelOffset;
+    }
+
+    if (label.pixelOffset) obj.pixelOffset = label.pixelOffset.getValue();
+
+    if (label.scale) obj.scale = label.scale.getValue();
 
     obj.text = label.text.getValue();
 
@@ -206,7 +215,7 @@ class CreateLabel extends BasePlot {
         that.position = cartesian;
         that.state = "editing";
       }
-      if(callback) callback();
+      if (callback) callback();
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.modifyHandler.setInputAction(function (evt) {

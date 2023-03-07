@@ -154,7 +154,7 @@ class CreateBillboard extends BasePlot {
 		obj.image = this.style.image;
 		if (billboard.heightReference) {
 			let heightReference = billboard.heightReference.getValue();
-			obj.heightReference = Boolean(heightReference);
+			obj.heightReference = Number(heightReference);
 		}
 		obj.scale = billboard.scale.getValue();
 
@@ -220,7 +220,7 @@ class CreateBillboard extends BasePlot {
 		let billboard = this.viewer.entities.add({
 			position: cartesian,
 			billboard: {
-				color: this.style.color ? (this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1)) : Cesium.Color.WHITE,
+				color: this.style.color ? (this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1)) : Cesium.Color.WHITE,
 				image: this.style.image || "../img/mark4.png",
 				scale: this.style.scale || 1,
 				pixelOffset: this.style.pixelOffset,
@@ -245,7 +245,6 @@ class CreateBillboard extends BasePlot {
 
 	
 	getPositions(isWgs84) {
-		debugger
 		return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position;
 	}
 	getLnglats(){

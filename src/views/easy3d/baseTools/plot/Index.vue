@@ -157,7 +157,6 @@ export default {
         console.log("plot positions-->", positions); */
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
-        debugger
         // 开始编辑
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.attr.id);

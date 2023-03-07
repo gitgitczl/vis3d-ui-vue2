@@ -8,7 +8,7 @@ const easy3dStore = {
     isZoomOut: false, // 是否点击缩小按钮
     isReset: false, // 是否点击重置按钮
     isOpenOverviewMap: false, // 是否打开鹰眼图.
-    nowPlotStyleAttr: {},
+    nowPlotStyleAttr: {}, // 当前编辑的实体样式
     nowRoamAttr: {}, // 飞行漫游属性
     isToolOpen: true, // 工具栏是否打开
     baseLayers : {}, // 监听底图

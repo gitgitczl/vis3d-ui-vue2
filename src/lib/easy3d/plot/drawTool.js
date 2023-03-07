@@ -284,6 +284,7 @@ class DrawTool {
           break;
         default: ;
       }
+      this.fireEdit = false;
       this.createByPositions({
         type: drawType,
         styleType: plotType,
@@ -352,7 +353,7 @@ class DrawTool {
       case "point":
       case "gltfModel":
       case "label":
-      case "Billboard":
+      case "billboard":
         geoType = "Point";
         break;
       default:
