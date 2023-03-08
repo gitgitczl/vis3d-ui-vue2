@@ -101,7 +101,7 @@ export default {
       plotBtn: [
         {
           name: "打开",
-          icon: "icon-jianyiwenjian",
+          icon: "icon-dakaiwenjian",
           type: "loadFile",
         },
         {
