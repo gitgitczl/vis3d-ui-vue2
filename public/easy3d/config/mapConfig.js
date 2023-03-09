@@ -2,12 +2,12 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x": 109.75825473364834,
-      "y": 38.2822825260681,
-      "z": 1176.0650423862223,
-      "heading": 246.98172760363414,
-      "pitch": -31.628457477368176,
-      "roll": 359.9996887280527,
+      "x": 114.9753505672493,
+      "y": 32.561138643437005,
+      "z": 2283834.0784903597,
+      "heading": 330.1037974789964,
+      "pitch": -89.64362886411939,
+      "roll": 0,
       "duration": 0,
     },
     brightness: 1.0, // 亮度设置
@@ -54,7 +54,7 @@ window.mapConfig = {
       name: "arcgis底图",
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
-      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+      url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
       show: true,
     },
     /*  {
@@ -130,6 +130,26 @@ window.mapConfig = {
       type: "group",
       open: true,
       children: [
+        
+        {
+          name : "安徽省市区",
+          type: "geojson",
+          url: "./data/anhuiShi.json",
+          show: true,
+          style: {
+            polygon: {
+              outline: true,
+              outlineColor: "#4881a7",
+              outlineWidth: 1,
+              extrudedHeight: 10000,
+              clampToGround: false,
+              color: "#4881a7",
+              colorAlpha : 0.5,
+              height: 0,
+              fill:true
+            }
+          }
+        },
         {
           name: "天地图",
           type: "tdt",
@@ -163,75 +183,7 @@ window.mapConfig = {
           type: "xyz",
           show: false,
           url: "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png",
-        },
-        {
-          name: "行政区划（geojson）",
-          type: "geojson",
-          show: false,
-          url: "data/area.json",
-          alpha: 0.5,
-          style: {
-            point: {
-              color: "#00FFFF",
-              /*  "color": {  // 支持多种方式赋值
-                                 "field": "name",
-                                 "conditions": [
-                                     ['${name} >= "东部战区"', '#000000'],
-                                     ['true', 'color("blue")']
-                                 ]
-                             }, */
-              /* "color":{
-                                "field" : "name",
-                                "conditions" : "random" , // 可不填 
-                                "type" : "Number" // 随机数返回值类型 Number / Color(16进制颜色)
-                            }, */
-              colorAlpha: 1,
-              outlineWidth: 1,
-              outlineColor: "#000000",
-              outlineColorAlpha: 1,
-              pixelSize: 20,
-            },
-            polyline: {
-              color: "#FFFF00",
-              colorAlpha: 1,
-              width: 3,
-              clampToGround: 1,
-            },
-            polygon: {
-              heightReference: 1,
-              fill: true,
-              /* "color": "#00FFFF", */
-              /* "color": {  // 支持多种方式赋值
-                                "field": "name",
-                                "conditions": [
-                                    ['${name} == "东部战区"', '#000000'],
-                                    ['${name} == "北部战区"', '#0000ff'],
-                                    ['true', '#ff0000']
-                                ]
-                            }, */
-              color: {
-                conditions: "random",
-                type: "color", // 随机数返回值类型 number / color(16进制颜色)
-              },
-              colorAlpha: 1,
-              outline: true,
-              outlineWidth: 1,
-              outlineColor: "#FFFF00",
-              outlineColorAlpha: 1,
-            },
-          },
-
-          tooltip: [
-            {
-              field: "name",
-              fieldName: "名称",
-            },
-            {
-              field: "ADCODE99",
-              fieldName: "编号",
-            },
-          ],
-        },
+        }
       ],
     },
     {

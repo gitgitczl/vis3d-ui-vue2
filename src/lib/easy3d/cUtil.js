@@ -11,7 +11,7 @@ let cUtil = {};
  * 世界坐标转经纬度
  * @param {Cesium.Cartesian3 } cartesian 世界坐标
  * @param {Cesium.Viewer} viewer 当前viewer对象
- * @returns { Array } 经纬度坐标
+ * @returns { Array } 经纬度坐标s
  */
 cUtil.cartesianToLnglat = function (cartesian, viewer) {
     if (!cartesian) return [];

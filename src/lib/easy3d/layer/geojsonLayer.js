@@ -31,18 +31,29 @@ import BaseLayer from './baseLayer';
         heightReference: 1,
         fill: true,
         color: {
-        conditions: "random",
-        type: "color", // 随机数返回值类型 number / color(16进制颜色)
+            conditions: "random",
+            type: "color", // 随机数返回值类型 number / color(16进制颜色)
         },
+        "color": {  // 支持多种方式赋值
+                        "field": "name",
+                        "conditions": [
+                            ['${name} >= "东部战区"', '#000000'],
+                            ['true', 'color("blue")']
+                        ]
+                    }, 
+        "color":{
+            "field" : "name",
+            "conditions" : "random" , // 可不填 
+             }
+                            
         colorAlpha: 1,
         outline: true,
         outlineWidth: 1,
         outlineColor: "#FFFF00",
         outlineColorAlpha: 1,
+        },
     },
-    },
-
-    tooltip: [
+     tooltip: [
     {
         field: "name",
         fieldName: "名称",
@@ -113,9 +124,9 @@ class GeojsonLayer extends BaseLayer {
         /**
          * @property {Cesium.CustomDataSource} _layer entity集合
          */
-        this._layer = new Cesium.CustomDataSource(this.opt.typeName || ("geojson" + (new Date().getTime())));
+        this.dataSources = new Cesium.CustomDataSource(this.opt.typeName || ("geojson" + (new Date().getTime())));
+        this._layer  = this.viewer.dataSources.add(this.dataSources);
         this._layer.attr = this.opt; // 绑定配置信息
-        this.viewer.dataSources.add(this._layer);
     }
 
     /**
@@ -137,6 +148,7 @@ class GeojsonLayer extends BaseLayer {
             url: this.url
         });
         resourece.then((data) => {
+            debugger
             let { features } = data;
             for (let i = 0; i < features.length; i++) {
                 let feature = features[i];
@@ -361,9 +373,9 @@ class GeojsonLayer extends BaseLayer {
         let grapicOpt = {};
         grapicOpt.polygon = {
             hierarchy: new Cesium.PolygonHierarchy(positions),
-            heightReference: 1,
             material: color
         }
+        grapicOpt.polygon = Object.assign(style,grapicOpt.polygon);
         if (style.outline) {
             grapicOpt.polyline = {
                 positions: new Cesium.CallbackProperty(function () {
@@ -375,7 +387,7 @@ class GeojsonLayer extends BaseLayer {
             }
         }
 
-        let ent = this._layer.entities.add(grapicOpt);
+        let ent = this.viewer.entities.add(grapicOpt);
         ent.style = style;
         return ent;
     }
