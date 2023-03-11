@@ -76,6 +76,7 @@ export default {
     if (!zoomTool) {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
+
   },
   destroyed() {
     if (window.viewer) {

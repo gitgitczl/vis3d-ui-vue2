@@ -499,7 +499,8 @@
                 ]
             },
             "geometry_name": "the_geom",
-            "properties": { "name": "黄山市" }
+            "properties": { "name": "黄山市123" ,"test":"1123123"},
+            "fei": "ceshi de "
         },
         {
             "type": "Feature",

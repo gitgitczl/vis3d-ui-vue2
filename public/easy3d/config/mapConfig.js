@@ -12,7 +12,7 @@ window.mapConfig = {
     },
     brightness: 1.0, // 亮度设置
     errorRender: true, // 是否开启崩溃刷新
-    debugShowFramesPerSecond: false, // 是否显示帧数
+    debugShowFramesPerSecond: true, // 是否显示帧数
     worldAnimate: false,
     lnglatNavigation: true, // 经纬度及相机位置提示
     rightTool: true, // 是否开启右键功能
@@ -130,23 +130,40 @@ window.mapConfig = {
       type: "group",
       open: true,
       children: [
-        
         {
-          name : "安徽省市区",
+          name: "安徽省",
+          type: "geojson",
+          url: "./data/anhuiMian.json",
+          show: true,
+          style: {
+            polygon: {
+              extrudedHeight: 10000,
+              outline : false,
+              clampToGround: false,
+              color: "#4881a7",
+              colorAlpha: 0.3,
+              fill: true
+            }
+          }
+        },
+
+        {
+          name: "安徽省市区",
           type: "geojson",
           url: "./data/anhuiShi.json",
           show: true,
           style: {
             polygon: {
               outline: true,
-              outlineColor: "#4881a7",
-              outlineWidth: 1,
-              extrudedHeight: 10000,
+              outlineColor: "#ffffff",
+              outlineColorAlpha: 1,
+              outlineWidth: 3,
+              extrudedHeight: undefined,
               clampToGround: false,
               color: "#4881a7",
-              colorAlpha : 0.5,
-              height: 0,
-              fill:true
+              colorAlpha: 0.5,
+              height: 10000,
+              fill: false
             }
           }
         },

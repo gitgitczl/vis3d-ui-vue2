@@ -117,16 +117,7 @@ class GeojsonLayer extends BaseLayer {
          */
         this.style = Object.assign(defaultStyleVal, opt.style || {});
         this.url = this.opt.url || "";
-        if (this.url.indexOf("WFS") != -1) { // wfs服务
-            this.url = this.opt.url + `?service=WFS&version=1.0.0&request=GetFeature&typeName=${this.opt.typeName}&maxFeatures=50&outputFormat=application%2Fjson`;
-        }
 
-        /**
-         * @property {Cesium.CustomDataSource} _layer entity集合
-         */
-        this.dataSources = new Cesium.CustomDataSource(this.opt.typeName || ("geojson" + (new Date().getTime())));
-        this._layer  = this.viewer.dataSources.add(this.dataSources);
-        this._layer.attr = this.opt; // 绑定配置信息
     }
 
     /**
@@ -141,83 +132,116 @@ class GeojsonLayer extends BaseLayer {
      * 图层加载
      * @param {loadcallback} fun 加载完成后的回调函数
     */
-   
+
     load(fun) {
         let that = this;
-        let resourece = Cesium.Resource.fetchJson({
-            url: this.url
-        });
-        resourece.then((data) => {
-            debugger
-            let { features } = data;
-            for (let i = 0; i < features.length; i++) {
-                let feature = features[i];
-                const { geometry, properties } = feature;
-                if (!geometry) continue;
-                const { type, coordinates } = geometry
-                let positions = [];
-                switch (type) {
-                    case "Point": // 当geojson是单点时  可能创建点 图标点 单个模型
-                        let position = cUtil.lnglatToCartesian(coordinates);
-                        let point = that.createPoint(position, that.style["point"], properties);
-                        point.properties = properties;
-                        if (that.opt.popup) point.popup = that.getContent(properties, that.opt.popup);
-                        if (that.opt.tooltip) point.tooltip = that.getContent(properties, that.opt.tooltip);
-                        break;
-                    case "MultiPoint":
-                        for (let i = 0; i < coordinates.length; i++) {
-                            let position = cUtil.lnglatToCartesian(coordinates[i]);
-                            let point = that.createPoint(position, that.style["point"], properties);
-                            point.properties = properties;
-                            if (that.opt.popup) point.popup = that.getContent(properties, that.opt.popup);
-                            if (that.opt.tooltip) point.tooltip = that.getContent(properties, that.opt.tooltip);
-                        }
-                        break;
-                    case "LineString":
-                        positions = cUtil.lnglatsToCartesians(coordinates);
-                        let polyline = that.createPolyline(positions, that.style["polyline"], properties);
-                        polyline.properties = properties;
-                        if (that.opt.popup) polyline.popup = that.getContent(properties, that.opt.popup);
-                        if (that.opt.tooltip) polyline.tooltip = that.getContent(properties, that.opt.tooltip);
-                        // 构建折线
-                        break;
-                    case "MultiLineString":
-                        for (let i = 0; i < coordinates.length; i++) {
-                            let positions_lineString = cUtil.lnglatsToCartesians(coordinates[i]);
-                            let polyline = that.createPolyline(positions_lineString, that.style["polyline"], properties);
-                            polyline.show = (that.opt.show == undefined ? true : that.opt.show);
-                            polyline.properties = properties;
-                            if (that.opt.popup) polyline.popup = that.getContent(properties, that.opt.popup);
-                            if (that.opt.tooltip) polyline.tooltip = that.getContent(properties, that.opt.tooltip);
-                        }
-                        break;
-                    case "Polygon":
-                        positions = cUtil.lnglatsToCartesians(coordinates[0]);
-                        let polygon = that.createPolygon(positions, that.style["polygon"], properties);
-                        polygon.show = (that.opt.show == undefined ? true : that.opt.show);
-                        polygon.properties = properties;
-                        if (that.opt.popup) polygon.popup = that.getContent(properties, that.opt.popup);
-                        if (that.opt.tooltip) polygon.tooltip = that.getContent(properties, that.opt.tooltip);
-                        break;
-                    case "MultiPolygon":
-                        for (let i = 0; i < coordinates.length; i++) {
-                            let positions_mulitipolygon = cUtil.lnglatsToCartesians(coordinates[i][0]);
-                            let polygon = that.createPolygon(positions_mulitipolygon, that.style["polygon"], properties);
-                            polygon.show = (that.opt.show == undefined ? true : that.opt.show);
-                            polygon.properties = properties;
-                            if (that.opt.popup) polygon.popup = that.getContent(properties, that.opt.popup);
-                            if (that.opt.tooltip) polygon.tooltip = that.getContent(properties, that.opt.tooltip);
-                        }
-                        break;
-                    default:
-                        ;
+        let dataSource = this.viewer.dataSources.add(Cesium.GeoJsonDataSource.load(this.url));
+        dataSource.then((ds) => {
+            that._layer = ds;
+            that._layer.attr = that.opt;
+            for (let i = 0; i < that._layer.entities.values.length; i++) {
+                let ent = that._layer.entities.values[i];
+                let properties = ent.properties.getValue(that.viewer.clock.currentTime)
+                let style = {};
+                let graphic = undefined;
+                if (ent.polyline) {
+                    style = that.opt.style['polyline'];
+                    graphic = ent.polyline;
+
                 }
+                if (ent.polygon) {
+                    style = that.opt.style['polygon'];
+                    graphic = ent.polygon;
+                }
+
+                if (ent.point) {
+                    style = that.opt.style['point'];
+                    graphic = ent.point;
+                }
+
+                style = JSON.parse(JSON.stringify(style));  
+                debugger
+
+                let color = that.getColorByProperty(style.color, properties);
+                console.log("color-->",color,style.color)
+                color = Cesium.Color.fromCssColorString(color);
+                style.color = color.withAlpha(style.colorAlpha || 1);
+
+                if (style.outline) {
+                    let outlineColor = that.getColorByProperty(style.outlineColor, properties);
+                    outlineColor = Cesium.Color.fromCssColorString(outlineColor);
+                    style.outlineColor = outlineColor.withAlpha(style.outlineColorAlpha || 1);
+                }
+
+                for (let key in style) {
+                    graphic[key] = style[key];
+                }
+                graphic.material = graphic.color;
+
             }
 
             if (fun) fun();
         })
+
     }
-    
+
+    // 根据geojson的属性来设置颜色
+    getColorByProperty(colorObj, properties) {
+        let color = '';
+        if(colorObj=="random"){
+            color = this.getRandomColor();
+        }else if (typeof (colorObj) == "string") {
+            color = colorObj;
+        } else {
+            const field = colorObj.field;
+            // "field": "name",
+            // "conditions": [
+            //     ['${name} >= "东部战区"', '#000000'],
+            //     ['true', 'color("blue")']
+            // ]
+            if (colorObj.conditions instanceof Array) {
+                color = this.getConditionValue(field, properties[field], colorObj.conditions);
+            } else {
+                color = this.getRandomColor();
+            }
+        }
+        return color;
+    }
+
+    getConditionValue(key, value, conditions) {
+        let styleValue = null;
+        // 获取默认值
+        for (let ind = 0; ind < conditions.length; ind++) {
+            if (conditions[ind][0] == "true") {
+                styleValue = conditions[ind][1];
+                break;
+            }
+        }
+        for (let i = 0; i < conditions.length; i++) {
+            let condition = conditions[i];
+            let replaceStr = "${" + key + "}";
+            let str = condition[0].replace(replaceStr, "\"" + value + "\"");
+            if (eval(str)) {
+                styleValue = condition[1];
+                break;
+            }
+        }
+        return styleValue;
+    }
+
+    getEntityField(field, value) {
+        let entity = undefined;
+        for (let i = 0; i < this._layer.entities.length; i++) {
+            let ent = this._layer.entities[i];
+            let properties = ent.properties.getValue(that.viewer.clock.currentTime);
+            if (properties[field] == value) {
+                entity = ent;
+                break;
+            }
+        }
+        return;
+    }
+
     /**
      * 缩放至图层
      */
@@ -226,7 +250,7 @@ class GeojsonLayer extends BaseLayer {
         if (this._layer.attr.view) {
             cUtil.setCameraView(opt.view);
         } else {
-            this.viewer.zoomTo(this._layer.entities)
+            this.viewer.zoomTo(this._layer)
         }
     }
 
@@ -238,7 +262,7 @@ class GeojsonLayer extends BaseLayer {
             this.viewer.dataSources.remove(this._layer);
         }
     }
-    
+
     /**
     * 展示
     */
@@ -248,7 +272,7 @@ class GeojsonLayer extends BaseLayer {
             this._layer.attr.show = true;
         }
     }
-    
+
     /**
     * 隐藏
     */
@@ -276,141 +300,6 @@ class GeojsonLayer extends BaseLayer {
         `;
     }
 
-    getStyleValue(key, value, conditions) {
-        let styleValue = null;
-        // 获取默认值
-        for (let ind = 0; ind < conditions.length; ind++) {
-            if (conditions[ind][0] == "true") {
-                styleValue = conditions[ind][1];
-                break;
-            }
-        }
-        for (let i = 0; i < conditions.length; i++) {
-            let condition = conditions[i];
-            let replaceStr = "${" + key + "}";
-            let str = condition[0].replace(replaceStr, "\"" + value + "\"");
-            console.log("eval===>", str, eval(str));
-            if (eval(str)) {
-                styleValue = condition[1];
-                break;
-            }
-        }
-        return styleValue;
-    }
-
-    setAlpha(alpha) {
-        let entities = this._layer.entities.values;
-        entities.forEach(function (entity) {
-            let style = entity.style;
-            let color = null;
-            color = Cesium.Color.fromCssColorString(style.color);
-            color = color.withAlpha(alpha || 1);
-            let outlineColor = null;
-            outlineColor = Cesium.Color.fromCssColorString(style.outlineColor);
-            outlineColor = outlineColor.withAlpha(alpha || 1);
-
-            if (entity.point) {
-                entity.point.color = color;
-                entity.point.outlineColor = outlineColor;
-            }
-
-            if (entity.polygon) {
-                entity.polygon.material = color;
-            }
-
-            if (entity.polyline) {
-                entity.polyline.material = outlineColor;
-            }
-        });
-    }
-
-    /**
-     * 设置透明度
-     * @param {Number} alpha 透明度（0~1）
-     */
-    createPoint(position, style, properties) {
-        style = this.getNewStyle(style, properties);
-        let color = null;
-
-        style.color = style.color || "#ffff00";
-        style.colorAlpha = style.colorAlpha || 1;
-        color = Cesium.Color.fromCssColorString(style.color);
-        color = color.withAlpha(style.colorAlpha);
-
-        let outlineColor = null;
-        style.outlineColor = style.outlineColor || "#000000"
-        style.outlineColorAlpha = style.outlineColorAlpha || 1;
-        outlineColor = Cesium.Color.fromCssColorString(style.outlineColor);
-        outlineColor = outlineColor.withAlpha(style.outlineColorAlpha);
-
-        let ent = this._layer.entities.add({
-            position: position,
-            point: {
-                color: color,
-                outlineColor: outlineColor,
-                outlineWidth: style.outlineWidth || 1,
-                pixelSize: style.pixelSize || 6,
-                heightReference: 1
-            }
-        });
-        ent.style = style;
-        return ent;
-    }
-    createPolygon(positions, style, properties) {
-        style = this.getNewStyle(style, properties);
-        let color = null;
-        style.color = style.color || "#ffff00";
-        style.colorAlpha = style.colorAlpha || 1;
-        color = Cesium.Color.fromCssColorString(style.color);
-        color = color.withAlpha(style.colorAlpha);
-
-        let outlineColor = null;
-        style.outlineColor = style.outlineColor || "#000000"
-        style.outlineColorAlpha = style.outlineColorAlpha || 1;
-        outlineColor = Cesium.Color.fromCssColorString(style.outlineColor);
-        outlineColor = outlineColor.withAlpha(style.outlineColorAlpha)
-
-        let grapicOpt = {};
-        grapicOpt.polygon = {
-            hierarchy: new Cesium.PolygonHierarchy(positions),
-            material: color
-        }
-        grapicOpt.polygon = Object.assign(style,grapicOpt.polygon);
-        if (style.outline) {
-            grapicOpt.polyline = {
-                positions: new Cesium.CallbackProperty(function () {
-                    return positions
-                }, false),
-                material: outlineColor,
-                width: style.outlineWidth || 1,
-                clampToGround: true
-            }
-        }
-
-        let ent = this.viewer.entities.add(grapicOpt);
-        ent.style = style;
-        return ent;
-    }
-    createPolyline(positions, style, properties) {
-        style = this.getNewStyle(style, properties);
-        let color = null;
-
-        style.color = style.color || "#ffff00";
-        style.colorAlpha = style.colorAlpha || 1;
-        color = Cesium.Color.fromCssColorString(style.color);
-        color = color.withAlpha(style.colorAlpha);
-
-        let ent = this._layer.entities.add({
-            polyline: {
-                positions: positions,
-                material: color,
-                width: style.width || 3,
-                clampToGround: true
-            }
-        })
-        ent.style = style;
-        return ent;
-    }
 
     getRandomColor() {
         var color = "#";
@@ -422,31 +311,6 @@ class GeojsonLayer extends BaseLayer {
         return color;
     }
 
-    getNewStyle(style, properties) {
-        style = JSON.parse(JSON.stringify(style || {}));
-        let newStyle = {};
-        if (!properties) return style;
-        for (let i in style) {
-            if (style[i].conditions && style[i].conditions instanceof Array) {
-                let field = style[i].field;
-                let conditions = style[i].conditions;
-                let val = properties[field];
-                newStyle[i] = this.getStyleValue(field + '', val, conditions);
-            } else if (style[i] instanceof String) {
-                newStyle[i] = style[i];
-            } else if (style[i].conditions == "random") { // 标识根据字段设置随机值
-
-                if (style[i].type == "color") {
-                    newStyle[i] = this.getRandomColor();
-                }
-                if (style[i].type == "number") {
-                    newStyle[i] = Math.random() * 100;
-                }
-            }
-        }
-        style = Object.assign(style, newStyle);
-        return style;
-    }
 
 }
 
