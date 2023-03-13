@@ -5,17 +5,8 @@
     <Sidebar v-show="isshowPanel"></Sidebar>
     <!-- 循环构建组件 -->
     <div v-for="(item, index) in componentsArr" :key="index">
-      <component
-        :is="item.module"
-        v-if="item.show"
-        v-show="item.domShow"
-        :title="item.name"
-        :position="item.position"
-        :size="item.size"
-        :attr="item.attr"
-        :iconfont="item.iconfont"
-        @close="close"
-      />
+      <component :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name" :position="item.position"
+        :size="item.size" :attr="item.attr" :iconfont="item.iconfont" @close="close" />
     </div>
   </div>
 </template>
@@ -42,7 +33,7 @@ export default {
     };
   },
 
-  created() {},
+  created() { },
 
   mounted() {
     // 构建基础地图
@@ -53,7 +44,7 @@ export default {
       window.mapConfig
     ));
     window.viewer = mapViewer._viewer;
-  
+
     this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
 
@@ -77,6 +68,39 @@ export default {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
 
+    let handler = new Cesium.ScreenSpaceEventHandler(
+      viewer.scene.canvas
+    );
+
+    let ent = window.viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(117.39, 32.92),
+      billboard: {
+        image: "./easy3d/images/plot/start.png",
+        scale: 10,
+        heightReference: 1,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+      }
+    });
+    ent.ispick = true;
+    ent.popup = {
+      type: 2,
+      content: '<div style="width:500px;height:400px;">123123</div>',
+      anchor: false,
+      closeBtn: false,
+      // style: {
+      //   background: "none",
+      //   boxShadow: "none"
+      // }
+    };
+    ent.name = "testttstt";
+
+    // handler.setInputAction((event) => {
+    //   debugger
+    //   let picks = viewer.scene.drillPick(event.position);
+    //   viewer.scene.render();
+
+    // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
   },
   destroyed() {
     if (window.viewer) {
@@ -85,7 +109,7 @@ export default {
     }
   },
   methods: {
-    initWork() {},
+    initWork() { },
     // 工具关闭
     close(name) {
       this.$store.commit("setOperateTool", {

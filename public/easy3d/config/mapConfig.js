@@ -151,7 +151,7 @@ window.mapConfig = {
           name: "安徽省市区",
           type: "geojson",
           url: "./data/anhuiShi.json",
-          show: true,
+          show: false,
           style: {
             polygon: {
               outline: true,

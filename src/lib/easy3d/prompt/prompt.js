@@ -91,7 +91,7 @@ class Prompt {
         // 构建弹窗元素 
 
         this.promptDiv = window.document.createElement("div");
-        this.promptDiv.className = "easy3d-prompt";
+        this.promptDiv.className = `easy3d-prompt ${this.opt.className}`;
         this.promptDiv.id = promptId;
         this.promptDiv.innerHTML = promptConenet;
         let mapDom = window.document.getElementById(mapid);

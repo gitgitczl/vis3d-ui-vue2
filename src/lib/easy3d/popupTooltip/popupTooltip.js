@@ -1,6 +1,3 @@
-// 绑定所有entity的气泡窗
-import Prompt from "../prompt/prompt"
-import "../prompt/prompt.css";
 /**
  * 弹窗类
  * @class
@@ -35,19 +32,14 @@ class PopupTooltipTool {
     autoBindPopup() {
         let that = this;
         this.popupHandler.setInputAction(function (evt) { //单击开始绘制
-            if (!that.toolOpen) return;
-            const pick = that.viewer.scene.pick(evt.position);
-            if (!Cesium.defined(pick)) {
-                return;
-            }
-            let ent;
-            if (pick.primitive) { // 拾取图元
-                ent = pick.primitive;
-            }
-            if (pick.id && pick.id instanceof Cesium.Entity) {
-                ent = pick.id;
-            }
+            let picks = that.viewer.scene.drillPick(evt.position);
+            if (!picks || picks.length < 1) return;
 
+            let pick = picks.filter(pick => {
+                return pick.id.ispick; // 用于过滤 
+            });
+            if (!pick) return;
+            let ent = pick[0].id;
             /* 如果当前实体绑定了点击事件 则执行点击事件*/
             if (ent.click) ent.click(ent);
             // 如果当前实体绑定了气泡窗 则弹出气泡窗
@@ -71,7 +63,6 @@ class PopupTooltipTool {
             } else { // 可通过改变属性改变显示隐藏
                 isvisible = ent.popup.show == undefined ? true : ent.popup.show;
             }
-
             ent.popupPrompt.setVisible(isvisible);
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     }
@@ -91,7 +82,6 @@ class PopupTooltipTool {
             if (pick && pick.id && pick.id instanceof Cesium.Entity) {
                 ent = pick.id;
             }
-
 
             /* 以下几种形式销毁弹窗
             1、未拾取到对象
@@ -146,7 +136,7 @@ class PopupTooltipTool {
         } else {
             defaultVal = Object.assign(defaultVal, promptAttr);
         }
-        return new Prompt(this.viewer, defaultVal);
+        return new window.easy3d.Prompt(this.viewer, defaultVal);
     }
     
     /**
