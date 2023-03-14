@@ -55,13 +55,12 @@ class DrawTool {
     /* this.show = obj.drawEndShow == undefined ? true : obj.drawEndShow; */
 
     /**
-     * @property {Object} nowEditObj 当前编辑对象
+     * @property {Object} nowEditEntityObj 当前编辑对象
      */
-    this.nowEditObj = null;
-
     this.startEditFun = null;
     this.endEditFun = null;
     this.removeFun = null;
+    this.editingFun = undefined;
 
     this.deleteEntityObj = null;
 
@@ -72,6 +71,12 @@ class DrawTool {
      * @property {Boolear} canEdit 绘制的对象，是否可编辑
      */
     this.canEdit = obj.canEdit == undefined ? true : obj.canEdit;; // 是否可以编辑
+
+    /**
+     * @property {Boolear} fireEdit 绘制的对象，是否直接进入编辑状态（需要canEdit==true）
+     */
+    this.fireEdit = obj.fireEdit == undefined ? true : obj.fireEdit;; 
+
     this.nowDrawEntityObj = null; // 当前绘制的对象
     this.nowEditEntityObj = null; // 当前编辑的对象
   }
@@ -97,6 +102,10 @@ class DrawTool {
     if (type == "endCreate") {
       // 绘制完成事件
       this.endCreateFun = fun;
+    }
+    if (type == "editing") {
+      // 正在编辑
+      this.editingFun = fun;
     }
   }
 
@@ -140,7 +149,6 @@ class DrawTool {
     if (!entityObj) return;
     entityObj.attr = opt || {}; // 保存开始绘制时的属性
 
-    const fireEdit = opt.fireEdit == undefined ? true : opt.fireEdit;
     // 开始绘制
     entityObj.start(function (entity) {
       // 绘制完成后
@@ -153,8 +161,10 @@ class DrawTool {
       if (opt.show == false) entityObj.setVisible(false);
 
       // 如果可以编辑 则绘制完成打开编辑
-      if (that.canEdit && fireEdit) {
-        entityObj.startEdit();
+      if (that.canEdit && that.fireEdit) {
+        entityObj.startEdit(function () {
+          if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
+        });
         that.nowEditEntityObj = entityObj;
         if (that.startEditFun) that.startEditFun(entityObj, entity);
       }
@@ -187,9 +197,11 @@ class DrawTool {
       }
       this.nowEditEntityObj = null;
     }
-
+    let that = this;
     if (entityObj) {
-      entityObj.startEdit();
+      entityObj.startEdit(function () {
+        if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
+      });
       if (this.startEditFun)
         this.startEditFun(entityObj, entityObj.getEntity());
       this.nowEditEntityObj = entityObj;
@@ -214,7 +226,6 @@ class DrawTool {
    * @param {Object} opt.style 当前绘制对象的样式配置，具体配置见{@link style};
    * @param {Funtion} opt.success 创建完成的回调函数
    * @param {Boolean} [opt.show] 创建完成后，是否展示
-   * @param {Boolean} [opt.fireEdit] 创建完成后，是否进入编辑状态
   */
   createByPositions(opt) {
     opt = opt || {};
@@ -233,8 +244,10 @@ class DrawTool {
       if (that.endCreateFun) that.endCreateFun(entityObj, entity);
       if (opt.show == false) entityObj.setVisible(false);
       // 如果可以编辑 则绘制完成打开编辑 
-      if (that.canEdit && opt.fireEdit) {
-        entityObj.startEdit();
+      if (that.canEdit && that.fireEdit) {
+        entityObj.startEdit(function () {
+          if (that.editingFun) that.editingFun(entityObj, entityObj.entity);
+        });
         if (that.startEditFun) that.startEditFun(entityObj, entity);
         that.nowEditEntityObj = entityObj;
       }
@@ -271,6 +284,7 @@ class DrawTool {
           break;
         default: ;
       }
+      this.fireEdit = false;
       this.createByPositions({
         type: drawType,
         styleType: plotType,
@@ -339,7 +353,7 @@ class DrawTool {
       case "point":
       case "gltfModel":
       case "label":
-      case "Billboard":
+      case "billboard":
         geoType = "Point";
         break;
       default:
@@ -366,7 +380,7 @@ class DrawTool {
       this.entityObjArr[i].destroy();
     }
     this.entityObjArr = [];
-    this.nowEditObj = null;
+    this.nowEditEntityObj = null;
 
     if (this.handler) {
       this.handler.destroy();
@@ -414,7 +428,7 @@ class DrawTool {
       obj.destroy();
     }
     this.entityObjArr = [];
-    this.nowEditObj = null;
+    this.nowEditEntityObj = null;
   }
 
   /**
@@ -582,9 +596,10 @@ class DrawTool {
               that.nowEditEntityObj = null;
             }
             // 开始当前实体的编辑
-            that.entityObjArr[i].startEdit();
-            that.nowEditObj = that.entityObjArr[i];
-            if (that.startEditFun) that.startEditFun(that.nowEditObj, pick.id); // 开始编辑
+            that.entityObjArr[i].startEdit(function(){
+              if(that.editingFun) that.editingFun(that.nowEditEntityObj,that.nowEditEntityObj.entity);
+            });
+            if (that.startEditFun) that.startEditFun(that.entityObjArr[i], pick.id); // 开始编辑
             that.nowEditEntityObj = that.entityObjArr[i];
             break;
           }
@@ -650,6 +665,7 @@ class DrawTool {
   createByType(opt) {
     let entityObj = undefined;
     let name = "";
+    opt = opt || {};
     if (opt.type == "polyline") {
       entityObj = new CreatePolyline(this.viewer, opt.style);
       name = "折线_";

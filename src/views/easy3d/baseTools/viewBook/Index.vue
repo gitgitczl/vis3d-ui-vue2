@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 export default {
   name: "viewBook",
 
@@ -41,7 +41,7 @@ export default {
   },
 
   components: {
-    Card,
+    
   },
 
   data() {

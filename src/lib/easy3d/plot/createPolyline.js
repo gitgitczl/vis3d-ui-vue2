@@ -2,6 +2,8 @@
 import BasePlot from "./basePlot";
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
+import animate from "../animateMaterial/animate"
+// 注册自定义材质
 /**
  * 线标绘类
  * @class
@@ -22,9 +24,9 @@ class CreatePolyline extends BasePlot {
 
     /**
      * 开始绘制
-     * @param {Function} callBack 绘制完成之后的回调函数 
+     * @param {Function} callback 绘制完成之后的回调函数 
      */
-    start(callBack) {
+    start(callback) {
         if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
         this.state = "startCreate";
         let that = this;
@@ -44,7 +46,7 @@ class CreatePolyline extends BasePlot {
             // 达到最大数量 结束绘制
             if (that.positions.length == that.maxPointNum) {
                 that.endCreate();
-                if (callBack) callBack(that.entity);
+                if (callback) callback(that.entity);
             }
 
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
@@ -96,7 +98,7 @@ class CreatePolyline extends BasePlot {
                 return;
             }
             that.endCreate();
-            if (callBack) callBack(that.entity);
+            if (callback) callback(that.entity);
         }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     }
 
@@ -136,14 +138,14 @@ class CreatePolyline extends BasePlot {
         }
     }
 
-    createByPositions(lnglatArr, callBack) { //通过传入坐标数组创建面
+    createByPositions(lnglatArr, callback) { //通过传入坐标数组创建面
         if (!lnglatArr || lnglatArr.length < 1) return;
         this.state = "startCreate";
         let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : cUtil.lnglatsToCartesians(lnglatArr);
         if (!positions) return;
         this.entity = this.createPolyline(this.style);
         this.positions = positions;
-        if (callBack) callBack(this.entity);
+        if (callback) callback(this.entity);
         for (let i = 0; i < positions.length; i++) {
             let newP = positions[i];
 
@@ -159,14 +161,8 @@ class CreatePolyline extends BasePlot {
 
     setStyle(style) {
         if (!style) return;
-        let material = undefined;
-        if (style.lineType) {
-            material = this.getMaterial(style.lineType, style);
-        } else {
-            let color = style.color instanceof Cesium.Color ? style.color : Cesium.Color.fromCssColorString(style.color || "#000000");
-            material = color.withAlpha(style.colorAlpha || 1);
-        }
-
+        debugger
+        let material = this.getMaterial(style.material, style);
         this.entity.polyline.material = material;
         this.entity.polyline.clampToGround = Boolean(style.clampToGround);
         if (style.width) this.entity.polyline.width = style.width || 3;
@@ -177,22 +173,19 @@ class CreatePolyline extends BasePlot {
         if (!this.entity) return;
         let obj = {};
         let polyline = this.entity.polyline;
-        if (this.style.lineType != undefined) {
-            obj.lineType = this.style.lineType;
+        if (this.style.animateType != undefined) {
+            obj.animateType = this.style.animateType;
             obj.image = this.style.image;
             obj.duration = this.style.duration;
         }
-
         if (polyline.material instanceof Cesium.ColorMaterialProperty) {
             obj.material = "common";
         } else {
-            if (polyline.material instanceof FlowLineMaterial) {
-                obj.material = "flowLine";
+            obj.material = "flowline";
+            if (polyline.material instanceof animate.FlowLineMaterial) {
             }
-            if (polyline.material instanceof FlyLineMaterial) {
-                obj.material = "flyLine";
-            }
-            obj.duration = polyline.material.duration;
+            obj.duration = polyline.material._duration;
+            obj.image = polyline.material.url;
         }
 
         let color = polyline.material.color.getValue();
@@ -213,7 +206,7 @@ class CreatePolyline extends BasePlot {
                     return that.positions
                 }, false),
                 show: true,
-                material: this.getMaterial(this.style.lineType, this.style),
+                material: this.getMaterial(this.style.animateType, this.style),
                 width: this.style.width || 3,
                 clampToGround: this.style.clampToGround
             }
@@ -222,30 +215,36 @@ class CreatePolyline extends BasePlot {
         return polyline;
     }
 
-    getMaterial(lineType, style) {
+    getMaterial(animateType, style) {
         // 构建多种材质的线
         style = style || {};
         let material = null;
-        if (lineType == "flowLine") {
-            material = new FlowLineMaterial({
-                color: style.color || Cesium.Color.RED, // 默认颜色
-                image: style.image || "../img/texture/lineClr.png",
+        let color = style.color || Cesium.Color.WHITE;
+        color = color instanceof Cesium.Color ? color : Cesium.Color.fromCssColorString(style.color);
+        color = color.withAlpha(style.colorAlpha || 1);
+        if (animateType == "flowline") {
+            if (!style.image) {
+                console.log("动态材质，缺少纹理图片");
+                return color;
+            }
+            material = new animate.FlowLineMaterial({
+                color: color, // 默认颜色
+                image: style.image,
                 duration: style.duration || 5000
             })
-        } else if (lineType == "rainbowLine") {
-            material = new FlowLineMaterial({
-                image: style.image || "../img/texture/lineClr2.png",
-                duration: style.duration || 5000
-            })
-        } else if (lineType == "flyLine") {
-            material = new FlyLineMaterial({ //动画线材质
-                color: style.color || Cesium.Color.RED,
+        } else if (animateType == "flyline") {
+            if (!style.image) {
+                console.log("动态材质，缺少纹理图片");
+                return color;
+            }
+            material = new animate.FlyLineMaterial({ //动画线材质
+                color: color,
                 duration: style.duration || 3000,
-                image: style.image || "../img/texture/glow.png",
+                image: style.image,
                 repeat: new Cesium.Cartesian2(1, 1) //平铺
             })
         } else {
-            material = style.color instanceof Cesium.Color ? style.color : (style.color ? Cesium.Color.fromCssColorString(style.color).withAlpha(style.colorAlpha || 1) : Cesium.Color.WHITE);
+            material = color;
         }
         return material;
     }

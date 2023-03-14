@@ -39,7 +39,7 @@ class CreateRectangle extends BasePlot {
     this.modifyPoint = null;
     this.pointArr = [];
   }
-  start(callBack) {
+  start(callback) {
     if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
     this.state = "startCreate";
     let that = this;
@@ -60,7 +60,7 @@ class CreateRectangle extends BasePlot {
           return;
         }
         that.endCreate();
-        if (callBack) callBack(that.entity);
+        if (callback) callback(that.entity);
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     this.handler.setInputAction(function (evt) { //移动时绘制线
@@ -141,6 +141,7 @@ class CreateRectangle extends BasePlot {
         that.rightdown = cartesian
         that.rightdownPoint.position.setValue(that.rightdown);
       }
+      if(callback) callback();
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     this.modifyHandler.setInputAction(function (evt) {

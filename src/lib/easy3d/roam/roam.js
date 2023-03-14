@@ -140,7 +140,6 @@ class Roam {
     this.alldistance = attr.alldistance;
     this.alltimes = attr.alltimes;
     this.speed = attr.speed;
-
     this.roamEntity = this.createRoamEntity(this.opt.entityType, attr.property);
   }
 
@@ -233,6 +232,7 @@ class Roam {
   }
 
   createRoamEntity(type, property) {
+    debugger
     let entity = null;
     if (type == "model") {
       if (!this.opt.entityAttr || !this.opt.entityAttr.uri) {

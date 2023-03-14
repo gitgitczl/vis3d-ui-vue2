@@ -63,7 +63,7 @@
 </template>
 <script>
 /* 漫游相关参数设置 */
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 export default {
   name: "roamStyle",
   props: {
@@ -76,7 +76,7 @@ export default {
     },
   },
   components: {
-    Card,
+    
   },
   data() {
     return {

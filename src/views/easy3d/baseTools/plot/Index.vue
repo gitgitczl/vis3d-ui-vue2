@@ -77,14 +77,14 @@
 </template>
 <script>
 import plotList from "./plotList.json";
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 // 地图标注 基础组件
 window.plotDrawTool = null;
 let nowPlotEntObj = null; //当前编辑的对象
 export default {
   name: "plot",
   components: {
-    Card,
+    
   },
   props: {
     title: "",
@@ -101,7 +101,7 @@ export default {
       plotBtn: [
         {
           name: "打开",
-          icon: "icon-jianyiwenjian",
+          icon: "icon-dakaiwenjian",
           type: "loadFile",
         },
         {
@@ -166,7 +166,6 @@ export default {
         // 编辑完成后
         nowPlotEntObj = null;
         let lnglats = entObj.getPositions(true);
-        console.log("lnglats--->", lnglats);
         window.workControl.closeToolByName("plotStyle");
       });
     }
@@ -190,6 +189,7 @@ export default {
      */
     onChangePlotType(index, item) {
       this.$set(this, "isPlotActive", index);
+      debugger
       this.startDraw(item);
     },
 
@@ -213,7 +213,7 @@ export default {
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
         if (!jsondata) return;
-        this.easy3d.cTool.file.downloadFile(
+        this.easy3d.cTool.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
         );
@@ -326,10 +326,6 @@ export default {
     justify-content: center;
     margin: 0 16px 10px 0;
     cursor: pointer;
-
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
 
     span {
       font-size: 26px;

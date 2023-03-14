@@ -10,11 +10,11 @@
   </Card>
 </template>
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 export default {
   name: "Map3dPlatformIndex",
   components: {
-    Card,
+    
   },
   props: {
     size: {},

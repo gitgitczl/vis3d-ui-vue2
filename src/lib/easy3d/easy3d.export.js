@@ -61,14 +61,7 @@ let analysis = {
 };
 
 
-import registerAnimate from "./animateMaterial/animate";
-// 注册自定义材质
-let rganimate = registerAnimate();
-let animate = {
-  Wall: rganimate.AnimateWall,
-  FlowLine: rganimate.FlowLineMaterial,
-};
-
+import animate from "./animateMaterial/animate";
 
 export default {
   cUtil,
@@ -87,5 +80,5 @@ export default {
   weather,
   animate,
   analysis,
-  LayerSplit,
+  LayerSplit
 };

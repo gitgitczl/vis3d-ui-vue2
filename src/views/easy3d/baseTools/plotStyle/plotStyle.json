@@ -63,15 +63,35 @@
         },
         "material": {
             "name": "材质",
+            "value": "common",
             "type": "checkbox",
-            "value": "animate",
             "options": {
-                "animate": {
-                    "name": "动态线",
+                "common": {
+                    "name": "普通",
+                    "value":"common"
+                },
+                "flowline": {
+                    "name": "流动线",
+                    "value":"flowline",
                     "duration": {
                         "name": "流动速度",
-                        "value": true,
-                        "type": "input-number"
+                        "type":"input-number",
+                        "value": 1000
+                    },
+                    "image": {
+                        "name": "材质路径",
+                        "value": "./easy3d/images/texture/glow.png",
+                        "type": "input-text",
+                        "disable": "disabled"
+                    }
+                },
+                "flyline": {
+                    "name": "飞行线",
+                    "value":"flyline",
+                    "duration": {
+                        "name": "流动速度",
+                        "type":"input-number",
+                        "value": 1000
                     }
                 }
             }
@@ -118,7 +138,7 @@
             "options": {
                 "show": {
                     "name": "显示",
-                    "value" : true,
+                    "value": true,
                     "outlineColor": {
                         "name": "轮廓线颜色",
                         "value": "#ffffff",
@@ -142,7 +162,7 @@
                 },
                 "hide": {
                     "name": "隐藏",
-                    "value" : false
+                    "value": false
                 }
             }
         }
@@ -175,7 +195,7 @@
         }
     },
     "label": {
-        "text" : {
+        "text": {
             "name": "标注名称",
             "value": "--",
             "type": "input-text"
@@ -193,7 +213,7 @@
         "fillColorAlpha": {
             "name": "透明度",
             "type": "slider",
-            "value" : 1,
+            "value": 1,
             "min": 0,
             "max": 1,
             "step": 0.01
@@ -232,7 +252,7 @@
             "options": {
                 "show": {
                     "name": "显示",
-                    "value" : true,
+                    "value": true,
                     "backgroundColor": {
                         "name": "背景色",
                         "value": "#ffffff",
@@ -248,7 +268,7 @@
                 },
                 "hide": {
                     "name": "隐藏",
-                    "value" : false
+                    "value": false
                 }
             }
         }

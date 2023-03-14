@@ -3,13 +3,15 @@ import App from './App.vue'
 import router from './router/index.js';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import axios from 'axios'
+
 /* import less from 'less' */
 import easy3d from "@/lib/easy3d/easy3d.export.js"
+// ============= 加密后 =================
+/* import "@/lib/easy3d/easy3d.min.css"
+import easy3d from "@/lib/easy3d/easy3d.min.js" */
+
 import '@/assets/font/iconfont.css'
 // 本地加密类库
-/* import "@/lib/easy3d-min/easy3d.css"
-import easy3d from "@/lib/easy3d-min/easy3d.min.js" */
 import store from './store';
 // 拖拽组件注册
 import VueDragResize from 'vue-drag-resize'
@@ -24,6 +26,9 @@ Vue.use(vRegion)
 import Print from 'vue-print-nb'
 Vue.use(Print);
 
+import Card from "@/views/easy3d/components/card/Card.vue";
+Vue.component("Card", Card);
+
 
 let cesium = require('cesium/Cesium.js');
 var widgets = require('cesium/Widgets/widgets.css');
@@ -35,6 +40,8 @@ window.cUtil = easy3d.cUtil;
 Vue.prototype.widgets = widgets
 
 Vue.config.productionTip = false
+
+import axios from 'axios'
 Vue.prototype.axios = axios
 
 Vue.use(ElementUI);

@@ -7,7 +7,7 @@ class BaiduPOI {
         opts = opts || {};
 
         //请在实际项目中将下面百度KEY换为自己申请的，因为该key不保证长期有效。
-        this._keys = opts.key || [
+        this._keys = opts.keys || [
             "c3qarrKcqnB9HbCOPfKOHgneH6AGXCVU",//2020-6-6
             "6g6evLsHT4M0DVZnRXRpXDDq1t95ESrg",
             "4j0HA8IeuvAPCl62ni8xCZkBhc2YGr67",

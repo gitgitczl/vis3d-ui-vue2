@@ -46,7 +46,7 @@
   </Card>
 </template>
 <script>
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 
 /* 单体化 */
 let handler = null;
@@ -56,7 +56,7 @@ let drawTool = null;
 export default {
   name: "monomer",
   components: {
-    Card,
+    
   },
   props: {
     size: {},

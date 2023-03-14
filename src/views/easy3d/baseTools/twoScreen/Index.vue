@@ -46,7 +46,7 @@
 </template>
 <script>
 /* 分屏对比 */
-import Card from "@/views/easy3d/components/card/Card.vue";
+
 export default {
   name: "twoScreen",
   props: {
@@ -59,7 +59,7 @@ export default {
     },
   },
   components: {
-    Card,
+    
   },
   data() {
     return {

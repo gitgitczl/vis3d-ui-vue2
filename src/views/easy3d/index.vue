@@ -5,17 +5,8 @@
     <Sidebar v-show="isshowPanel"></Sidebar>
     <!-- 循环构建组件 -->
     <div v-for="(item, index) in componentsArr" :key="index">
-      <component
-        :is="item.module"
-        v-if="item.show"
-        v-show="item.domShow"
-        :title="item.name"
-        :position="item.position"
-        :size="item.size"
-        :attr="item.attr"
-        :iconfont="item.iconfont"
-        @close="close"
-      />
+      <component :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name" :position="item.position"
+        :size="item.size" :attr="item.attr" :iconfont="item.iconfont" @close="close" />
     </div>
   </div>
 </template>
@@ -42,7 +33,7 @@ export default {
     };
   },
 
-  created() {},
+  created() { },
 
   mounted() {
     // 构建基础地图
@@ -53,11 +44,6 @@ export default {
       window.mapConfig
     ));
     window.viewer = mapViewer._viewer;
-
-    // 开启窗口尺寸大小监听
-    /* mapViewer.openSizeListener(function (w, d) {
-      console.log("w--d",w,d);
-    });  */
 
     this.$store.commit("setBaseLayers", window.mapConfig.baseLayers);
     this.$store.commit("setOperateLayers", window.mapConfig.operateLayers);
@@ -81,6 +67,40 @@ export default {
     if (!zoomTool) {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
+
+    let handler = new Cesium.ScreenSpaceEventHandler(
+      viewer.scene.canvas
+    );
+
+    let ent = window.viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(117.39, 32.92),
+      billboard: {
+        image: "./easy3d/images/plot/start.png",
+        scale: 10,
+        heightReference: 1,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM
+      }
+    });
+    ent.ispick = true;
+    ent.popup = {
+      type: 2,
+      content: '<div style="width:500px;height:400px;">123123</div>',
+      anchor: false,
+      closeBtn: false,
+      // style: {
+      //   background: "none",
+      //   boxShadow: "none"
+      // }
+    };
+    ent.name = "testttstt";
+
+    // handler.setInputAction((event) => {
+    //   debugger
+    //   let picks = viewer.scene.drillPick(event.position);
+    //   viewer.scene.render();
+
+    // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
   },
   destroyed() {
     if (window.viewer) {
@@ -89,7 +109,7 @@ export default {
     }
   },
   methods: {
-    initWork() {},
+    initWork() { },
     // 工具关闭
     close(name) {
       this.$store.commit("setOperateTool", {
@@ -121,11 +141,11 @@ export default {
     },
 
     // 监听底图坐标提示栏的开启关闭
-    "$store.state.map3d.openBottomLnglatTool": function (isOpen) {
+    "$store.state.map3d.openLnglatNavigation": function (isOpen) {
       if (isOpen) {
-        if (window.mapViewer) window.mapViewer.openBottomLnglatTool();
+        if (window.mapViewer) window.mapViewer.openLnglatNavigation();
       } else {
-        if (window.mapViewer) window.mapViewer.closeBottomLnglatTool();
+        if (window.mapViewer) window.mapViewer.closeLnglatNavigation();
       }
     },
     // 监听是否点击放大按钮
@@ -169,7 +189,6 @@ export default {
   height: 100%;
 }
 
-
 #mapContainer {
   width: 100%;
   height: 100%;
@@ -177,6 +196,5 @@ export default {
   padding: 0;
   margin: 0;
   position: absolute;
-  
 }
 </style>

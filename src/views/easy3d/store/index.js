@@ -3,12 +3,12 @@
 const easy3dStore = {
   state: {
     operateTool: {}, // 当前打开的工具条
-    openBottomLnglatTool: true, // 底图坐标提示栏是否打开
+    openLnglatNavigation: true, // 底图坐标提示栏是否打开
     isZoomIn: false, // 是否点击放大按钮
     isZoomOut: false, // 是否点击缩小按钮
     isReset: false, // 是否点击重置按钮
     isOpenOverviewMap: false, // 是否打开鹰眼图.
-    nowPlotStyleAttr: {},
+    nowPlotStyleAttr: {}, // 当前编辑的实体样式
     nowRoamAttr: {}, // 飞行漫游属性
     isToolOpen: true, // 工具栏是否打开
     baseLayers : {}, // 监听底图
@@ -19,8 +19,8 @@ const easy3dStore = {
     setOperateTool: (state, operateTool) => {
       state.operateTool = operateTool
     },
-    setOpenBottomLnglatTool: (state, openBottomLnglatTool) => {
-      state.openBottomLnglatTool = openBottomLnglatTool
+    setOpenLnglatNavigation: (state, openLnglatNavigation) => {
+      state.openLnglatNavigation = openLnglatNavigation
     },
     setIsZoomIn: (state, isZoomIn) => {
       state.isZoomIn = isZoomIn

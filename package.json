@@ -33,6 +33,7 @@
     "v-region": "^2.2.2",
     "vue": "^2.6.11",
     "vue-drag-resize": "^1.5.4",
+    "vue-draggable-resizable": "^2.3.0",
     "vue-print-nb": "^1.7.5",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"

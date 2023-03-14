@@ -35,7 +35,7 @@ class CreateBillboard extends BasePlot {
 	 * 开始绘制
 	 * @param {Function} callback 绘制成功后回调函数
 	*/
-	start(callBack) {
+	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		this.state = "startCreate";
 		let that = this;
@@ -54,7 +54,7 @@ class CreateBillboard extends BasePlot {
 				that.prompt = null;
 			}
 			that.state = "endCreate";
-			if (callBack) callBack(that.entity);
+			if (callback) callback(that.entity);
 		}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 		this.handler.setInputAction(function (evt) { //单击开始绘制
 			that.prompt.update(evt.endPosition, "单击新增");
@@ -97,9 +97,9 @@ class CreateBillboard extends BasePlot {
 	/**
 	 * 通过坐标数组构建
 	 * @param {Array} lnglatArr 经纬度坐标数组
-	 * @callback {Function} callBack 绘制成功后回调函数
+	 * @callback {Function} callback 绘制成功后回调函数
 	*/
-	createByPositions(lnglatArr, callBack) {
+	createByPositions(lnglatArr, callback) {
 		if (!lnglatArr) return;
 		this.state = "startCreate";
 		let position = null;
@@ -112,7 +112,7 @@ class CreateBillboard extends BasePlot {
 		if (!position) return;
 		this.position = position.clone();
 		this.entity = this.createBillboard(this.position);
-		if (callBack) callBack(this.entity);
+		if (callback) callback(this.entity);
 		this.state = "endCreate";
 	}
 	
@@ -154,7 +154,7 @@ class CreateBillboard extends BasePlot {
 		obj.image = this.style.image;
 		if (billboard.heightReference) {
 			let heightReference = billboard.heightReference.getValue();
-			obj.heightReference = Boolean(heightReference);
+			obj.heightReference = Number(heightReference);
 		}
 		obj.scale = billboard.scale.getValue();
 
@@ -169,7 +169,7 @@ class CreateBillboard extends BasePlot {
 	/**
 	 * 开始编辑 
 	 */
-	startEdit() {
+	startEdit(callback) {
 		if (this.state == "startEdit" || this.state == "editing" || !this.entity) return;
 		this.state = "startEdit";
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -189,6 +189,7 @@ class CreateBillboard extends BasePlot {
 			editBillboard.position.setValue(cartesian.clone());
 			that.position = cartesian.clone();
 			that.state = "editing";
+			if(callback) callback();
 		}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
 		this.modifyHandler.setInputAction(function (evt) { //移动时绘制线
@@ -219,7 +220,7 @@ class CreateBillboard extends BasePlot {
 		let billboard = this.viewer.entities.add({
 			position: cartesian,
 			billboard: {
-				color: this.style.color ? (this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1)) : Cesium.Color.WHITE,
+				color: this.style.color ? (this.style.color instanceof Cesium.Color ? this.style.color : Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1)) : Cesium.Color.WHITE,
 				image: this.style.image || "../img/mark4.png",
 				scale: this.style.scale || 1,
 				pixelOffset: this.style.pixelOffset,
@@ -246,7 +247,9 @@ class CreateBillboard extends BasePlot {
 	getPositions(isWgs84) {
 		return isWgs84 ? cUtil.cartesianToLnglat(this.position, this.viewer) : this.position;
 	}
-
+	getLnglats(){
+		return this.getPositions(true);
+	}
 	/**
 	 * 设置图标坐标
 	 * @param {Cesium.Cartesian3 | Array} p 坐标

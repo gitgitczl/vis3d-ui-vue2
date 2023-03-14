@@ -93,7 +93,7 @@ class MeasureTool {
 		if (this.nowDrawMeasureObj && (
 			this.nowDrawMeasureObj.state != "endCreate" &&
 			this.nowDrawMeasureObj.state != "endEdit") &&
-			measureTool.nowDrawMeasureObj.state != "no") return;
+			this.nowDrawMeasureObj.state != "no") return;
 
 		switch (Number(opt.type)) {
 			case 1: // 空间距离测量
@@ -221,7 +221,7 @@ class MeasureTool {
 		if (this.nowEditMeasureObj) {
 			// 结束除当前选中实体的所有编辑操作
 			this.nowEditMeasureObj.endEdit();
-			this.endEditFun(this.nowEditMeasureObj); // 结束事件
+			if (this.endEditFun) this.endEditFun(this.nowEditMeasureObj); // 结束事件
 			this.nowEditMeasureObj = null;
 		}
 		for (let i = 0; i < this.measureObjArr.length; i++) {

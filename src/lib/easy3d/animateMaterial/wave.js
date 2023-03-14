@@ -10,14 +10,14 @@
     ellipse: {
       semiMinorAxis: 250000.0,
       semiMajorAxis: 400000.0,
-      material: new easy3d.AnimateWave({
+      material: new easy3d.WaveMaterial({
         duration: 2000,
         color: Cesium.Color.RED,
       }),
     },
   });
  */
-function AnimateWave(opt) {
+function WaveMaterial(opt) {
     this._definitionChanged = new Cesium.Event();
     this._color = undefined;
     this.defaultColor = Cesium.Color.fromCssColorString("#02ff00");
@@ -27,13 +27,13 @@ function AnimateWave(opt) {
 }
 
 
-AnimateWave.prototype.color = function () {
+WaveMaterial.prototype.color = function () {
     return Cesium.createPropertyDescriptor('color');
 }
-AnimateWave.prototype.getType = function () {
-    return 'AnimateWave';
+WaveMaterial.prototype.getType = function () {
+    return 'WaveMaterial';
 }
-AnimateWave.prototype.getValue = function (time, result) {
+WaveMaterial.prototype.getValue = function (time, result) {
     if (!Cesium.defined(result)) {
         result = {};
     }
@@ -45,11 +45,11 @@ AnimateWave.prototype.getValue = function (time, result) {
     result.time = (new Date().getTime() - this._time) / this._duration;
     return result;
 }
-AnimateWave.prototype.equals = function (other) {
+WaveMaterial.prototype.equals = function (other) {
     return this === other ||
-        other instanceof AnimateWave && Cesium.Property.equals(this._color, other._color);
+        other instanceof WaveMaterial && Cesium.Property.equals(this._color, other._color);
 }
 
 
 
-export default AnimateWave;
+export default WaveMaterial;
