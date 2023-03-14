@@ -248,6 +248,16 @@ window.mapConfig = {
             z: 10,
           },
           maximumScreenSpaceError: 16,
+        },
+        {
+          name: "大学",
+          type: "3dtiles",
+          url: "http://localhost/qinggu/qx-xuexiao/tileset.json",
+          show: false,
+          center: {
+            z: 30,
+          },
+          maximumScreenSpaceError: 1,
         }
 
       ],
