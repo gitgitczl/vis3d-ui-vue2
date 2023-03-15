@@ -20,31 +20,33 @@
         fsSource += '#define USE_SOFT_SHADOWS\n';
     }
 
-    var shadowParameters = 'struct sg_shadowParameters\n' +
-        '{\n' +
-        '#ifdef USE_CUBE_MAP_SHADOW\n' +
-        '    vec3 texCoords;\n' +
-        '#else\n' +
-        '    vec2 texCoords;\n' +
-        '#endif\n' +
-        '\n' +
-        '    float depthBias;\n' +
-        '    float depth;\n' +
-        '    float nDotL;\n' +
-        '    vec2 texelStepSize;\n' +
-        '    float normalShadingSmooth;\n' +
-        '    float darkness;\n' +
-        '};\n'
+    // 定义阴影贴图参数
+    var shadowParameters = `struct sg_shadowParameters{ 
+        #ifdef USE_CUBE_MAP_SHADOW\n
+            vec3 texCoords;\n
+        #else\n
+            vec2 texCoords;\n
+        #endif\n
+            float depthBias;
+            float depth;
+            float nDotL;
+            vec2 texelStepSize;
+            float normalShadingSmooth;
+            float darkness;
+        };\n`;
 
     var shadowVisibility = '#ifdef USE_CUBE_MAP_SHADOW\n' +
+        // 获取当前纹理的的深度
         'float sg_sampleShadowMap(samplerCube shadowMap, vec3 d)\n' +
         '{\n' +
         '    return czm_unpackDepth(textureCube(shadowMap, d));\n' +
         '}\n' +
+        // 比较当前深度和某坐标点深度
         'float sg_shadowDepthCompare(samplerCube shadowMap, vec3 uv, float depth)\n' +
         '{\n' +
         '    return step(depth, sg_sampleShadowMap(shadowMap, uv));\n' +
         '}\n' +
+        
         'float sg_shadowVisibility(samplerCube shadowMap, sg_shadowParameters shadowParameters)\n' +
         '{\n' +
         '    float depthBias = shadowParameters.depthBias;\n' +

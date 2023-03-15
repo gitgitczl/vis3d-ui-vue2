@@ -134,7 +134,7 @@ window.mapConfig = {
           name: "安徽省",
           type: "geojson",
           url: "./data/anhuiMian.json",
-          show: true,
+          show: false,
           style: {
             polygon: {
               extrudedHeight: 10000,
@@ -209,24 +209,24 @@ window.mapConfig = {
       open: true,
       children: [
         {
-          name: "城区模型",
+          name: "石化企业",
           type: "3dtiles",
-          url: "http://8.141.58.76:6814/data/3dtiles/tileset.json",
+          url: "http://localhost/qinggu/max-shihua/tileset.json",
           show: false,
           center: {
-            z: 10,
+            z: 50,
           },
           maximumScreenSpaceError: 16,
         },
         {
-          name: "化工厂",
+          name: "大学",
           type: "3dtiles",
-          url: "http://localhost/model/max-shihua/tileset.json",
+          url: "http://localhost/qinggu/qx-xuexiao/tileset.json",
           show: false,
           center: {
-            z: 10,
+            z: 30,
           },
-          maximumScreenSpaceError: 16,
+          maximumScreenSpaceError: 1,
         }
 
       ],
