@@ -138,7 +138,7 @@ window.mapConfig = {
           style: {
             polygon: {
               extrudedHeight: 10000,
-              outline : false,
+              outline: false,
               clampToGround: false,
               color: "#4881a7",
               colorAlpha: 0.3,
@@ -217,9 +217,22 @@ window.mapConfig = {
             z: 10,
           },
           maximumScreenSpaceError: 16,
+        },
+        {
+          name: "化工厂",
+          type: "3dtiles",
+          url: "http://localhost/model/max-shihua/tileset.json",
+          show: false,
+          center: {
+            z: 10,
+          },
+          maximumScreenSpaceError: 16,
         }
 
       ],
-    },
+    }
+
   ],
+
+
 };

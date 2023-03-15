@@ -68,39 +68,6 @@ export default {
       zoomTool = new this.easy3d.ZoomTool(window.viewer);
     }
 
-    let handler = new Cesium.ScreenSpaceEventHandler(
-      viewer.scene.canvas
-    );
-
-    let ent = window.viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(117.39, 32.92),
-      billboard: {
-        image: "./easy3d/images/plot/start.png",
-        scale: 10,
-        heightReference: 1,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM
-      }
-    });
-    ent.ispick = true;
-    ent.popup = {
-      type: 2,
-      content: '<div style="width:500px;height:400px;">123123</div>',
-      anchor: false,
-      closeBtn: false,
-      // style: {
-      //   background: "none",
-      //   boxShadow: "none"
-      // }
-    };
-    ent.name = "testttstt";
-
-    // handler.setInputAction((event) => {
-    //   debugger
-    //   let picks = viewer.scene.drillPick(event.position);
-    //   viewer.scene.render();
-
-    // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
   },
   destroyed() {
     if (window.viewer) {

@@ -189,7 +189,6 @@ export default {
      */
     onChangePlotType(index, item) {
       this.$set(this, "isPlotActive", index);
-      debugger
       this.startDraw(item);
     },
 
