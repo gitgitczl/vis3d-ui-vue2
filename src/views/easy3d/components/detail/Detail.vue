@@ -7,7 +7,7 @@
         class="reset-radio"
         v-if="detailAttr.type === 'radio-number'"
       >
-        <el-radio-group v-model="value" @change="toChange">
+        <el-radio-group v-model="detailAttr.value" @change="toChange">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
@@ -18,7 +18,7 @@
         class="reset-radio"
         v-if="detailAttr.type === 'radio-boolean'"
       >
-        <el-radio-group v-model="value" @change="toChange">
+        <el-radio-group v-model="detailAttr.value" @change="toChange">
           <el-radio :label="true">是</el-radio>
           <el-radio :label="false">否</el-radio>
         </el-radio-group>
@@ -29,7 +29,7 @@
         class="reset-select"
         v-if="detailAttr.type === 'select'"
       >
-        <el-select v-model="value" @change="toChange" placeholder="请选择">
+        <el-select v-model="detailAttr.value" @change="toChange" placeholder="请选择">
           <el-option
             v-for="(item, index) in detailAttr.options"
             :key="index"
@@ -46,7 +46,7 @@
       >
         <el-input-number
           size="small"
-          v-model="value"
+          v-model="detailAttr.value"
           @change="toChange"
         ></el-input-number>
       </el-col>
@@ -56,7 +56,7 @@
         :span="18"
         v-if="detailAttr.type === 'input-text'"
       >
-        <el-input size="small" v-model="value" @change="toChange"></el-input>
+        <el-input size="small" v-model="detailAttr.value" @change="toChange"></el-input>
       </el-col>
 
       <el-col
@@ -64,8 +64,8 @@
         class="reset-color-picker color-picker-box basic-text-input"
         v-if="detailAttr.type === 'color-picker'"
       >
-        <el-color-picker v-model="value" @change="toChange"></el-color-picker>
-        <el-input v-model="value" placeholder="请输入内容" disabled></el-input>
+        <el-color-picker v-model="detailAttr.value" @change="toChange"></el-color-picker>
+        <el-input v-model="detailAttr.value" placeholder="请输入内容" disabled></el-input>
       </el-col>
       <el-col
         :span="10"
@@ -73,7 +73,7 @@
         class="reset-slider basic-slider"
       >
         <el-slider
-          v-model="value"
+          v-model="detailAttr.value"
           :min="detailAttr.min === undefined ? 0 : detailAttr.min"
           :max="detailAttr.max === undefined ? 1 : detailAttr.max"
           :step="detailAttr.step === undefined ? 1 : detailAttr.step"
@@ -96,12 +96,10 @@ export default {
     };
   },
   mounted() {
-    this.value = this.detailAttr.value; // 这行代码值两千块
   },
 
   methods: {
-    toChange(val) {
-      this.detailAttr.value = this.value;
+    toChange() {
       this.$emit("toChange");
     },
   },

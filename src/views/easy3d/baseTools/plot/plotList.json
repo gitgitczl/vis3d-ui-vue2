@@ -42,14 +42,14 @@
             "type": "label",
             "iconImg": "./easy3d/images/plot/label.png",
             "style": {
-                "text": "新增标注",
-                "fillColor": "#0000ff",
+                "text": "未命名",
+                "fillColor": "#fff",
                 "outline": false,
                 "outlineWidth": 1,
                 "outlineColor": "#ff0000",
                 "heightReference": 0,
                 "showBackground": true,
-                "backgroundColor": null,
+                "backgroundColor": "#000",
                 "scale": 1
             },
             "styleType": "label"

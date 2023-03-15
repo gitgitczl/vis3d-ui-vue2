@@ -10,7 +10,7 @@ window.workConfig = {
             "workName": "plot",
             "position": {
                 "top": 60,
-                "left": 40
+                "left": 10
             },
             "size": {
                 "width": 380,
@@ -27,8 +27,8 @@ window.workConfig = {
             "show": false,
             "workName": "plotStyle",
             "position": {
-                "right": 10,
-                "bottom": 30
+                "bottom": 40,
+                "right": 10
             },
             "size": {
                 "width": 350,
@@ -43,8 +43,8 @@ window.workConfig = {
             "show": false,
             "workName": "measure",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 60,
+                "left": 10
             },
             "size": {
                 "width": 352,
@@ -58,8 +58,8 @@ window.workConfig = {
             "show": false,
             "workName": "baseMap",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 60,
+                "right": 120
             },
             "size": {
                 "width": 350,
@@ -73,8 +73,8 @@ window.workConfig = {
             "show": false,
             "workName": "help",
             "position": {
-                "top": 120,
-                "right": 120
+                "top": 60,
+                "left": 10
             },
             "size": {
                 "width": 350,
@@ -89,7 +89,7 @@ window.workConfig = {
             "workName": "layers",
             "position": {
                 "top": 60,
-                "left": 20
+                "left": 10
             },
             "size": {
                 "width": 300,
@@ -104,8 +104,8 @@ window.workConfig = {
             "show": false,
             "workName": "analysis",
             "position": {
-                "top": 100,
-                "left": 40
+                "top": 60,
+                "left": 10
             },
             "size": {
                 "width": 350,
@@ -119,8 +119,8 @@ window.workConfig = {
             "show": false,
             "workName": "coordinate",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 60,
+                "left": 10
             },
             "size": {
                 "width": 350,
@@ -145,15 +145,19 @@ window.workConfig = {
             "size": {
                 "height": 120,
                 "width": 300
-            }
+            },
+            "position": {
+                "top": 60,
+                "left": 10
+            },
         },
         {
             "name": "路径规划",
             "show": false,
             "workName": "pathPlan",
             "position": {
-                "top": 200,
-                "left": 20
+                "top": 60,
+                "left": 10
             },
             "closeDisableSelf": true,
             "openDisableAnothers": false
@@ -163,7 +167,11 @@ window.workConfig = {
             "show": false,
             "workName": "viewBook",
             "closeDisableSelf": true,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "position": {
+                "top": 60,
+                "left": 10
+            }
         },
         {
             "name": "飞行漫游",
@@ -173,7 +181,11 @@ window.workConfig = {
             "openDisableAnothers": true,
             "closeDisableExcept": [
                 "roamStyle"
-            ]
+            ],
+            "position": {
+                "top": 60,
+                "left": 10
+            }
         },
         {
             "name": "漫游属性",
@@ -182,8 +194,8 @@ window.workConfig = {
             "closeDisableSelf": false,
             "openDisableAnothers": false,
             "position": {
-                "right": 10,
-                "bottom": 30
+                "bottom": 40,
+                "right": 10
             },
             "size": {
                 "width": 350,
@@ -197,8 +209,8 @@ window.workConfig = {
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "position": {
-                "right": 10,
-                "bottom": 30
+                "top": 60,
+                "left": 10
             },
             "size": {
                 "width": 350,
@@ -214,6 +226,10 @@ window.workConfig = {
             "size": {
                 "width": 350,
                 "height": 320
+            },
+            "position": {
+                "top": 60,
+                "left": 10
             }
         }
     ]

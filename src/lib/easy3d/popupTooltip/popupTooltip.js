@@ -32,14 +32,19 @@ class PopupTooltipTool {
     autoBindPopup() {
         let that = this;
         this.popupHandler.setInputAction(function (evt) { //单击开始绘制
-            let picks = that.viewer.scene.drillPick(evt.position);
-            if (!picks || picks.length < 1) return;
+            if (!that.toolOpen) return;
+            const pick = that.viewer.scene.pick(evt.position);
+            if (!Cesium.defined(pick)) {
+                return;
+            }
+            let ent;
+            if (pick.primitive) { // 拾取图元
+                ent = pick.primitive;
+            }
+            if (pick.id && pick.id instanceof Cesium.Entity) {
+                ent = pick.id;
+            }
 
-            let pick = picks.filter(pick => {
-                return pick.id.ispick; // 用于过滤 
-            });
-            if (!pick) return;
-            let ent = pick[0].id;
             /* 如果当前实体绑定了点击事件 则执行点击事件*/
             if (ent.click) ent.click(ent);
             // 如果当前实体绑定了气泡窗 则弹出气泡窗

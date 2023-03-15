@@ -160,8 +160,6 @@ class GeojsonLayer extends BaseLayer {
                 }
 
                 style = JSON.parse(JSON.stringify(style));  
-                debugger
-
                 let color = that.getColorByProperty(style.color, properties);
                 console.log("color-->",color,style.color)
                 color = Cesium.Color.fromCssColorString(color);

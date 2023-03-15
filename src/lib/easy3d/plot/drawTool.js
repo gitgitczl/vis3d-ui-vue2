@@ -261,6 +261,7 @@ class DrawTool {
   */
   createByGeojson(data) {
     let { features } = data;
+    let entObjArr = [];
     for (let i = 0; i < features.length; i++) {
       let feature = features[i];
       const { properties, geometry } = feature;
@@ -285,13 +286,15 @@ class DrawTool {
         default: ;
       }
       this.fireEdit = false;
-      this.createByPositions({
+      let entObj = this.createByPositions({
         type: drawType,
         styleType: plotType,
         positions: positions,
         style: properties.style
       })
+      if(entObj) entObjArr.push(entObj);
     }
+    return entObjArr;
   }
 
   /**

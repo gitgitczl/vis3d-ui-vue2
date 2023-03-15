@@ -1,21 +1,9 @@
 <template>
-  <Card
-    :title="title"
-    :position="position"
-    :size="size"
-    :iconfont="iconfont"
-    @close="close"
-  >
+  <Card :title="title" :position="position" :size="size" :iconfont="iconfont" @close="close">
     <div class="plot-btn-box basic-plot">
       <ul class="plot-btn">
-        <el-tooltip
-          v-for="(item, index) in plotBtn"
-          :key="index"
-          class="item"
-          effect="dark"
-          :content="item.name"
-          placement="top"
-        >
+        <el-tooltip v-for="(item, index) in plotBtn" :key="index" class="item" effect="dark" :content="item.name"
+          placement="top">
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -23,14 +11,8 @@
       </ul>
       <span></span>
       <ul class="plot-btn">
-        <el-tooltip
-          v-for="(item, index) in plotBtn2"
-          :key="index"
-          class="item"
-          effect="dark"
-          :content="item.name"
-          placement="top"
-        >
+        <el-tooltip v-for="(item, index) in plotBtn2" :key="index" class="item" effect="dark" :content="item.name"
+          placement="top">
           <li>
             <i :class="['iconfont', item.icon]" @click="btnClick(item)"></i>
           </li>
@@ -38,41 +20,22 @@
       </ul>
     </div>
     <div class="plot-select basic-select">
-      <el-select
-        v-model="plotInitValue"
-        @change="onChangePlot"
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="(item, index) in plotTypeList"
-          :key="index"
-          :label="item"
-          :value="item"
-        >
+      <el-select v-model="plotInitValue" @change="onChangePlot" placeholder="请选择">
+        <el-option v-for="(item, index) in plotTypeList" :key="index" :label="item" :value="item">
         </el-option>
       </el-select>
     </div>
 
     <ul class="plot-box basic-tool">
-      <li
-        v-for="(item, index) in plotList"
-        :key="index"
-        :class="[index === isPlotActive ? 'tool-active' : '']"
-        @click="onChangePlotType(index, item)"
-      >
+      <li v-for="(item, index) in plotList" :key="index" :class="[index === isPlotActive ? 'tool-active' : '']"
+        @click="onChangePlotType(index, item)">
         <span><img :src="item.iconImg" /></span>
         <label>{{ item.name }}</label>
       </li>
     </ul>
 
     <!-- 打开文件 -->
-    <input
-      type="file"
-      accept=".json"
-      style="display: none"
-      id="plot-loadFile"
-      @change="loadFileChange"
-    />
+    <input type="file" accept=".json" style="display: none" id="plot-loadFile" @change="loadFileChange" />
   </Card>
 </template>
 <script>
@@ -84,7 +47,7 @@ let nowPlotEntObj = null; //当前编辑的对象
 export default {
   name: "plot",
   components: {
-    
+
   },
   props: {
     title: "",
@@ -158,12 +121,14 @@ export default {
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑
+        debugger
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.attr.id);
         window.workControl.openToolByName("plotStyle");
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
+        debugger
         nowPlotEntObj = null;
         let lnglats = entObj.getPositions(true);
         window.workControl.closeToolByName("plotStyle");
@@ -194,6 +159,7 @@ export default {
 
     // 绘制
     startDraw(item, index) {
+      item = JSON.parse(JSON.stringify(item)); // 数据隔离
       if (!window.plotDrawTool) return;
       window.plotDrawTool.start(item);
       this.$set(this, "cardDialog", true);

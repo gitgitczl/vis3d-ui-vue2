@@ -72,8 +72,6 @@ class CreateLabel extends BasePlot {
     }
   }
 
-
-
   createByPositions(lnglatArr, callback) {
     if (!lnglatArr) return;
     this.state = "startCreate";
@@ -237,12 +235,12 @@ class CreateLabel extends BasePlot {
     this.forbidDrawWorld(false);
     this.state = "endEdit";
   }
-  createLabel(cartesian, text) {
+  createLabel(cartesian) {
     if (!cartesian) return;
     let label = this.viewer.entities.add({
       position: cartesian,
       label: {
-        text: text || "--",
+        text: this.style.text || "--",
         fillColor: this.style.fillColor
           ? Cesium.Color.fromCssColorString(this.style.fillColor).withAlpha(
             this.style.fillColorAlpha || 1
