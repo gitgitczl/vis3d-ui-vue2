@@ -9,7 +9,7 @@ window.workConfig = {
             "show": false,
             "workName": "plot",
             "position": {
-                "top": 100,
+                "top": 60,
                 "left": 40
             },
             "size": {
@@ -88,7 +88,7 @@ window.workConfig = {
             "show": false,
             "workName": "layers",
             "position": {
-                "top": 200,
+                "top": 60,
                 "left": 20
             },
             "size": {
