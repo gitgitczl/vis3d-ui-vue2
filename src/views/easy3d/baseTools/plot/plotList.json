@@ -47,7 +47,7 @@
                 "outline": false,
                 "outlineWidth": 1,
                 "outlineColor": "#ff0000",
-                "heightReference": 1,
+                "heightReference": 0,
                 "showBackground": true,
                 "backgroundColor": null,
                 "scale": 1
@@ -244,7 +244,7 @@
             "styleType": "gltfModel",
             "iconImg": "./easy3d/images/plot/baidengchuan.png",
             "style": {
-                "heightReference": 1,
+                "heightReference": 0,
                 "uri": "./gltf/baidengchuan.glb",
                 "minimumPixelSize": 24,
                 "scale": 5,
@@ -259,7 +259,7 @@
             "styleType": "gltfModel",
             "iconImg": "./easy3d/images/plot/hongfuchuan.png",
             "style": {
-                "heightReference": 1,
+                "heightReference": 0,
                 "uri": "./gltf/hongfuchuan.glb",
                 "minimumPixelSize": 24,
                 "scale": 1,

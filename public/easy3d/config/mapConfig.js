@@ -54,8 +54,15 @@ window.mapConfig = {
       name: "arcgis底图",
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
-      url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
       show: true,
+    },
+    {
+      name: "蓝黑底图",
+      type: "mapserver",
+      iconImg: "./easy3d/images/baseMap/geoq.png",
+      url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+      show: false,
     },
     /*  {
             "name": "中国",
