@@ -203,7 +203,6 @@ export default {
   watch: {
     "$store.state.map3d.plotEntityObjId": function (newid, oldid) {
       // 防止当前页面未关闭 却传入了不同的id
-      debugger
       if (newid != oldid) {
         this.setAttr(newid);
       }

@@ -66,6 +66,7 @@ class DrawTool {
 
     // 无论如何 进来先监听点击修改 与 右键删除事件 通过控制canEdit来判断要不要向下执行
     this.bindEdit();
+    this.bindRemove();
 
     /**
      * @property {Boolear} canEdit 绘制的对象，是否可编辑
@@ -75,7 +76,7 @@ class DrawTool {
     /**
      * @property {Boolear} fireEdit 绘制的对象，是否直接进入编辑状态（需要canEdit==true）
      */
-    this.fireEdit = obj.fireEdit == undefined ? true : obj.fireEdit;; 
+    this.fireEdit = obj.fireEdit == undefined ? true : obj.fireEdit;;
 
     this.nowDrawEntityObj = null; // 当前绘制的对象
     this.nowEditEntityObj = null; // 当前编辑的对象
@@ -292,7 +293,7 @@ class DrawTool {
         positions: positions,
         style: properties.style
       })
-      if(entObj) entObjArr.push(entObj);
+      if (entObj) entObjArr.push(entObj);
     }
     return entObjArr;
   }
@@ -599,8 +600,8 @@ class DrawTool {
               that.nowEditEntityObj = null;
             }
             // 开始当前实体的编辑
-            that.entityObjArr[i].startEdit(function(){
-              if(that.editingFun) that.editingFun(that.nowEditEntityObj,that.nowEditEntityObj.entity);
+            that.entityObjArr[i].startEdit(function () {
+              if (that.editingFun) that.editingFun(that.nowEditEntityObj, that.nowEditEntityObj.entity);
             });
             if (that.startEditFun) that.startEditFun(that.entityObjArr[i], pick.id); // 开始编辑
             that.nowEditEntityObj = that.entityObjArr[i];
@@ -620,6 +621,58 @@ class DrawTool {
         }
       }
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  }
+
+  // 绑定右键删除
+  bindRemove() {
+    let that = this;
+    // 如果是线 面 则需要先选中
+    if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+    this.handler.setInputAction(function (evt) {
+      if (!that.canEdit) return;
+      // 若当前正在绘制 则无法进行删除
+      if (that.nowDrawEntityObj) return;
+      let pick = that.viewer.scene.pick(evt.position);
+      if (!pick || !pick.id) return;
+      /* let selectEntobj = undefined; */
+      /* for (let i = 0; i < that.entityObjArr.length; i++) {
+        if (pick.id.objId == that.entityObjArr[i].objId) {
+          selectEntobj = that.entityObjArr[i];
+          break;
+        }
+      } */
+
+      that.createDelteDom(evt.position, pick.id.objId);
+
+    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+  }
+
+  createDelteDom(px, objId) {
+    if (!objId) return;
+    let deleteDom = window.document.createElement("span");
+    deleteDom.style.background = "rgba(0,0,0,0.5)";
+    deleteDom.style.position = "absolute";
+    deleteDom.style.color = "white";
+    deleteDom.style.left = (px.x + 10) + "px";
+    deleteDom.style.top = (px.y + 10) + "px";
+    deleteDom.style.padding = "4px";
+    deleteDom.style.cursor = "pointer";
+    deleteDom.id = "easy3d-plot-delete";
+    deleteDom.setAttribute("objId", objId);
+    deleteDom.innerHTML = `删除`;
+    let mapDom = window.document.getElementById(this.viewer.container.id);
+    mapDom.appendChild(deleteDom);
+
+    const clsBtn = window.document.getElementById("easy3d-plot-delete");
+    if (!clsBtn) return;
+    let that = this;
+    clsBtn.addEventListener("click", (e) => {
+      let id = deleteDom.getAttribute("objId");
+      that.removeByObjId(id);
+    });
+    document.addEventListener("click", function () {
+      clsBtn.remove();
+    });
   }
 
   /**
