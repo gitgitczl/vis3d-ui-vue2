@@ -1,21 +1,12 @@
 <template>
-  <Card
-    :size="size"
-    :title="title"
-    :iconfont="iconfont"
-    @close="close"
-    :position="position"
-  >
+  <Card :size="size" :title="title" :iconfont="iconfont" @close="close" :position="position">
     <div class="analysis-tomain" @click="tomain" v-show="analysisName !== ''">
+      <a>&lt;&lt;</a>
       <span>{{ analysisName }}</span>
     </div>
     <ul class="analysis-box basic-tool" v-show="analysisName == ''">
-      <li
-        v-for="(item, index) in btnlist"
-        :key="index"
-        :class="[changeAnalysisType === item.type ? 'tool-active' : '']"
-        @click="onChangeAnalysis(item)"
-      >
+      <li v-for="(item, index) in btnlist" :key="index" :class="[changeAnalysisType === item.type ? 'tool-active' : '']"
+        @click="onChangeAnalysis(item)">
         <i :class="['iconfont', item.icon]"></i>
         <label>{{ item.name }}</label>
       </li>
@@ -69,7 +60,7 @@ import ModelVolume from "@/views/easy3d/baseTools/analysis/modelVolume.vue";
 export default {
   name: "analysis",
   components: {
-    
+
     Contour,
     Flood,
     GlobeSurface,
@@ -164,9 +155,9 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() { },
 
-  destroyed() {},
+  destroyed() { },
   methods: {
     close() {
       this.$emit("close", "analysis");
@@ -193,6 +184,7 @@ export default {
 .analysis-box {
   display: flex;
   flex-wrap: wrap;
+
   li {
     width: 90px;
     height: 64px;
@@ -205,31 +197,38 @@ export default {
     cursor: pointer;
     margin-right: 12px;
     margin-bottom: 12px;
+
     &:nth-child(3n) {
       margin-right: 0;
     }
+
     i {
       font-size: 26px;
       margin-bottom: 10px;
     }
+
     label {
       cursor: pointer;
     }
   }
 }
+
 .slope-toolip {
   font-size: 12px;
   margin: 15px 0;
+
   li {
     display: flex;
     flex-wrap: wrap;
     color: #6d748a;
   }
 }
+
 .analysis-btn {
   display: flex;
   justify-content: flex-end;
   margin-top: 15px;
+
   span {
     height: 32px;
     padding: 0 15px;
@@ -241,14 +240,17 @@ export default {
     justify-content: center;
     cursor: pointer;
     margin-right: 7px;
+
     &:last-child {
       margin-right: 0;
     }
   }
 }
+
 .analysis-top-btn {
   justify-content: flex-start;
 }
+
 .analysis-tomain {
   padding: 6px 4px;
   border-bottom: 1px gray dashed;
