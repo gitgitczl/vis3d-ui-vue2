@@ -239,28 +239,58 @@
     ],
     "模型标绘": [
         {
-            "name": "白浮船",
+            "name": "战斗机",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/baidengchuan.png",
+            "iconImg": "./easy3d/images/plot/zhandouji.png",
             "style": {
                 "heightReference": 0,
-                "uri": "./gltf/baidengchuan.glb",
+                "uri": "./gltf/zhanji.glb",
                 "minimumPixelSize": 24,
-                "scale": 5,
+                "scale": 1,
                 "heading": 0,
                 "pitch": 0,
                 "roll": 0
             }
         },
         {
-            "name": "红灯船",
+            "name": "雷达",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/hongfuchuan.png",
+            "iconImg": "./easy3d/images/plot/leida.png",
             "style": {
                 "heightReference": 0,
-                "uri": "./gltf/hongfuchuan.glb",
+                "uri": "./gltf/leida.glb",
+                "minimumPixelSize": 24,
+                "scale": 5,
+                "heading": -30,
+                "pitch": 0,
+                "roll": 0
+            }
+        },
+        {
+            "name": "越野车",
+            "type": "gltfModel",
+            "styleType": "gltfModel",
+            "iconImg": "./easy3d/images/plot/yueyeche.png",
+            "style": {
+                "heightReference": 0,
+                "uri": "./gltf/gongchengche.glb",
+                "minimumPixelSize": 24,
+                "scale": 1,
+                "heading": -30,
+                "pitch": 0,
+                "roll": 0
+            }
+        },
+        {
+            "name": "无人机",
+            "type": "gltfModel",
+            "styleType": "gltfModel",
+            "iconImg": "./easy3d/images/plot/wurenji.png",
+            "style": {
+                "heightReference": 0,
+                "uri": "./gltf/dajiang.gltf",
                 "minimumPixelSize": 24,
                 "scale": 1,
                 "heading": -30,
