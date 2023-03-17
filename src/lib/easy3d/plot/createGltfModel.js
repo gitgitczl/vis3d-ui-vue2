@@ -185,7 +185,7 @@ class CreateGltfModel extends BasePlot {
     obj.uri = model.uri.getValue();
 
     let heightReference = this.entity.heightReference && this.entity.heightReference.getValue();
-    if(heightReference) obj.heightReference = Number(heightReference);
+    if(heightReference!=undefined) obj.heightReference = Number(heightReference);
     return obj;
   }
   setStyle(style) {

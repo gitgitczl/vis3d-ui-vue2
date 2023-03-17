@@ -100,7 +100,7 @@
     "polygon": {
         "heightReference": {
             "name": "是否贴地",
-            "value": true,
+            "value": 1,
             "type": "radio-number"
         },
         "fill": {
@@ -170,7 +170,7 @@
     "billboard": {
         "heightReference": {
             "name": "是否贴地",
-            "value": true,
+            "value": 1,
             "type": "radio-number"
         },
         "color": {
@@ -202,7 +202,7 @@
         },
         "heightReference": {
             "name": "是否贴地",
-            "value": true,
+            "value": 1,
             "type": "radio-number"
         },
         "fillColor": {
@@ -291,7 +291,7 @@
     "gltfModel": {
         "heightReference": {
             "name": "是否贴地",
-            "value": true,
+            "value": 1,
             "type": "radio-number"
         },
         "heading": {
