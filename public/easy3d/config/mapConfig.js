@@ -51,10 +51,17 @@ window.mapConfig = {
       rectangle: [-180, -90, 180, 90],
     },
     {
-      name: "arcgis底图",
+      name: "电子底图",
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+      show: false,
+    },
+    {
+      name: "彩色底图",
+      type: "mapserver",
+      iconImg: "./easy3d/images/baseMap/arcgis.png",
+      url: "https://services.arcgisonline.com/arcgis/rest/services/World_Physical_Map/MapServer",
       show: true,
     },
     {
