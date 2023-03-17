@@ -17,7 +17,7 @@ function setConsole(time) {
     console.log(`%c 有 效 期 ：${time}`, `color: red; font-weight: bold`);
     console.log(`%c 编译日期 ：2023-01-11 17:30:00`, `color: #03A9F4; font-weight: bold`);
     console.log(`%c 其    它 ：
-        1、如当前版本出现问题，请联系：18755191132（微信同号）
+        1、如当前版本出现问题，请联系：15156540451（微信同号）
         2、未授权版本超过上述有效期后，此系统将不能使用！`, `color: #03A9F4; font-weight: bold`);
     console.groupEnd();
 }
