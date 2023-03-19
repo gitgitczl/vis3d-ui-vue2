@@ -198,6 +198,7 @@ class Roam {
    * 继续漫游
    */
   goon() {
+    debugger
     if (!this.stopTime) return;
     this.viewer.clock.currentTime = this.stopTime.clone();
     this.viewer.clock.shouldAnimate = true;

@@ -408,22 +408,23 @@ class SituationPlot {
 
   }
   getCatesian3FromPX(px, viewer) {
-    let picks = viewer.scene.drillPick(px);
-    let cartesian;
-    let isOn3dtiles = false;
-    for (let i = 0; i < picks.length; i++) {
-      if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
-        isOn3dtiles = true;
-        break;
-      }
-    }
-    if (isOn3dtiles) {
-      cartesian = viewer.scene.pickPosition(px);
-    } else {
-      let ray = viewer.camera.getPickRay(px);
-      if (!ray) return null;
-      cartesian = viewer.scene.globe.pick(ray, viewer.scene);
-    }
+    // let picks = viewer.scene.drillPick(px);
+    // let cartesian;
+    // let isOn3dtiles = false;
+    // for (let i = 0; i < picks.length; i++) {
+    //   if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
+    //     isOn3dtiles = true;
+    //     break;
+    //   }
+    // }
+    // if (isOn3dtiles) {
+    //   cartesian = viewer.scene.pickPosition(px);
+    // } else {
+    //   let ray = viewer.camera.getPickRay(px);
+    //   if (!ray) return null;
+    //   cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+    // }
+    let cartesian = viewer.scene.pickPosition(px);
     return cartesian;
   }
   getSituationByType(type) {

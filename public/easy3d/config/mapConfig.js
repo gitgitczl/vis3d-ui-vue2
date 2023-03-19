@@ -2,12 +2,12 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x": 114.9753505672493,
-      "y": 32.561138643437005,
-      "z": 2283834.0784903597,
-      "heading": 330.1037974789964,
-      "pitch": -89.64362886411939,
-      "roll": 0,
+      "x" : 117.28886022164883,
+      "y" : 31.451717348795132,
+      "z" : 55465.26169812524,
+      "heading" : 359.31729907269107,
+      "pitch" : -55.72672188549485,
+      "roll" : 359.979088652007,
       "duration": 0,
     },
     brightness: 1.0, // 亮度设置
@@ -55,14 +55,14 @@ window.mapConfig = {
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      show: false,
+      show: true,
     },
     {
       name: "彩色底图",
       type: "mapserver",
-      iconImg: "./easy3d/images/baseMap/arcgis.png",
+      iconImg: "./easy3d/images/baseMap/caise.png",
       url: "https://services.arcgisonline.com/arcgis/rest/services/World_Physical_Map/MapServer",
-      show: true,
+      show: false,
     },
     {
       name: "蓝黑底图",
@@ -225,7 +225,7 @@ window.mapConfig = {
         {
           name: "石化企业",
           type: "3dtiles",
-          url: "http://localhost/qinggu/max-shihua/tileset.json",
+          url: "http://localhost/model/max-shihua/tileset.json",
           show: false,
           center: {
             z: 50,

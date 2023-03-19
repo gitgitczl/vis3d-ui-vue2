@@ -27,7 +27,7 @@ class RoamTool {
          * @property {Array} roamList 漫游对象数组
          */
         this.roamList = [];
-        
+
         /**
          * @property {Array} nowStartRoam 当前正在漫游对象
          */
@@ -274,6 +274,21 @@ class RoamTool {
             roam.destroy();
         }
         this.roamList = [];
+        this.startRoamFun = null;
+        this.endRoamFun = null;
+        this.roamingFun = null;
+        this.stopRoamFun = null;
+        this.goonRoamFun = null;
+        this.endCreateFun = null;
+    }
+
+    removeAll() {
+        for (let i = this.roamList.length - 1; i >= 0; i--) {
+            let roam = this.roamList[i];
+            roam.destroy();
+        }
+        this.roamList = [];
+      
     }
 
     /**
