@@ -20,7 +20,7 @@ class TilesetLayer {
         maximumScreenSpaceError: 16,
         maximumMemoryUsage: 1024,
         center: {
-        z: 10
+            z: 10
         },
         style: {
             color: {

@@ -42,6 +42,12 @@ window.mapConfig = {
   },
   baseLayers: [
     {
+      name: "全国地图（0-8）",
+      type: "xyz",
+      show: true,
+      url: "http://localhost/layer/world0-8/{z}/{x}/{y}.jpg",
+    },
+    {
       name: "单张地图",
       type: "singleImage",
       url: "./easy3d/images/layer/world.jpg",
@@ -55,7 +61,7 @@ window.mapConfig = {
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      show: true,
+      show: false,
     },
     {
       name: "彩色底图",
@@ -213,8 +219,9 @@ window.mapConfig = {
           name: "全国地图（深色）",
           type: "xyz",
           show: false,
-          url: "http://8.142.20.247:25548/layer/chengdu/{z}/{x}/{y}.png",
+          url: "http://localhost/layer/world0-8/{z}/{x}/{y}.jpg",
         }
+
       ],
     },
     {

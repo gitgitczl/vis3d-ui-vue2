@@ -18,6 +18,9 @@ function setConsole(time) {
         1、如当前版本出现问题，请联系：15156540451（微信同号）
         2、未授权版本超过上述有效期后，此系统将不能使用！`, `color: #03A9F4; font-weight: bold`);
     console.groupEnd();
+    window.console.clear = function () {
+        alert("无版权，禁止清除控制台！");
+    }
 }
 
 setConsole("2023-05-30 10:00:00");
