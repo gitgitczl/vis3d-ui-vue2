@@ -8,12 +8,14 @@ class Prompt {
     /**
      * @param {Cesium.Viewer} viewer 地图viewer对象 
      * @param {Object} opt 
+     * @param {Cesium.Cartesian3 | Array} [opt.position] 弹窗坐标 （type=2时生效）
      * @param {Boolean} opt.show 是否显示 
      * @param {Function} [opt.success] 创建成功的回调函数
      * @param {Number} [opt.type=1] 1~位置变化提示框 / 2~固定坐标提示框
      * @param {Cesium.Cartesian3 | Array} opt.position 固定坐标提示框的坐标（ cartesian3 / [101,30] ），type为1时，可不设置此参数
      * @param {Boolean} [opt.anchor=true] 是否显示锚点
      * @param {Boolean} [opt.closeBtn=true] 是否显示关闭按钮
+     * @param {String} opt.className 自定义class
      * @param {String} opt.content 弹窗内容
      * @param {Function} [opt.close] 关闭弹窗时的回调函数
      * @param {Object} [opt.offset] 偏移参数
@@ -101,7 +103,7 @@ class Prompt {
         if (clsBtn) {
             clsBtn.addEventListener("click", (e) => {
                 that.hide();
-                if (that.close) that.close();
+                if (that.opt.close) that.opt.close();
             })
         }
 
@@ -130,9 +132,9 @@ class Prompt {
          */
         this.contentH = this.promptDom.offsetHeight; // 高度
 
-        if(this.opt.success) this.opt.success(); 
+        if (this.opt.success) this.opt.success();
     }
-    
+
     /**
      * 销毁
      */
@@ -284,7 +286,7 @@ class Prompt {
         if (Array.isArray(p)) {
             const posi = Cesium.Cartesian3.fromDegrees(p[0], p[1], p[2] || 0);
             position = posi.clone();
-        } if (p instanceof Cesium.Cartesian3) {
+        } else if (p instanceof Cesium.Cartesian3) {
             position = p.clone();
         } else { // 像素类型
             position = p;

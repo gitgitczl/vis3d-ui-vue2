@@ -116,6 +116,12 @@ window.mapConfig = {
           type: "arcgiscache",
           show: false,
         },
+        {
+          name: "吉林延边（16级）",
+          type: "xyz",
+          show: true,
+          url: "http://localhost/layer/jilinyanbian16/{z}/{x}/{y}.png",
+        }
       ],
     },
     /*  {

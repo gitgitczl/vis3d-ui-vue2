@@ -18,6 +18,16 @@
       width: 540px;
       height: 400px;
     }
+    .logo{
+      display: none;
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      z-index: 999;
+    }
+    .logo img{
+      width: 100px;
+    }
   </style>
 </head>
 <!-- 引入地图相关配置文件 -->
@@ -27,10 +37,9 @@
 <body>
   <div id="app">
   </div>
-
-  <video id="trailer" style="display: none;" muted="muted" autoplay="autoplay" loop="loop" crossorigin="" controls="">
-    <source src="./video/shenggu.mp4" type="video/mp4">
-  </video>
+  <div class="logo">
+    <a href="http://www.mapgl.com"><img src="./easy3d/images/logo.png" alt=""></a>
+  </div>
 </body>
 
 </html>
