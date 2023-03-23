@@ -81,24 +81,24 @@ class LatlngNavigation {
         mapDom.appendChild(ele);
     }
     getCatesian3FromPX(px) {
-        // const picks = this.viewer.scene.drillPick(px);
-        // this.viewer.scene.render();
-        // let cartesian;
-        // let isOn3dtiles = false;
-        // for (let i = 0; i < picks.length; i++) {
-        //     if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
-        //         isOn3dtiles = true;
-        //         break;
-        //     }
-        // }
-        // if (isOn3dtiles) {
-        //     cartesian = this.viewer.scene.pickPosition(px);
-        // } else {
-        //     const ray = this.viewer.camera.getPickRay(px);
-        //     if (!ray) return null;
-        //     cartesian = this.viewer.scene.globe.pick(ray, this.viewer.scene);
-        // }
-        let cartesian = this.viewer.scene.pickPosition(px);
+        const picks = this.viewer.scene.drillPick(px);
+        this.viewer.scene.render();
+        let cartesian;
+        let isOn3dtiles = false;
+        for (let i = 0; i < picks.length; i++) {
+            if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
+                isOn3dtiles = true;
+                break;
+            }
+        }
+        if (isOn3dtiles) {
+            cartesian = this.viewer.scene.pickPosition(px);
+        } else {
+            const ray = this.viewer.camera.getPickRay(px);
+            if (!ray) return null;
+            cartesian = this.viewer.scene.globe.pick(ray, this.viewer.scene);
+        }
+       
         return cartesian;
     }
     setHtml(latlngOpt, cameraView) {

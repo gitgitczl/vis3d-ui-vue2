@@ -165,24 +165,23 @@ class BaseMeasure {
 
     //兼容模型和地形上坐标拾取
     getCatesian3FromPX(px, viewer) {
-        // var picks = viewer.scene.drillPick(px);
-        // viewer.scene.render();
-        // var cartesian;
-        // var isOn3dtiles = false;
-        // for (var i = 0; i < picks.length; i++) {
-        //     if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
-        //         isOn3dtiles = true;
-        //         break;
-        //     }
-        // }
-        // if (isOn3dtiles) {
-        //     cartesian = viewer.scene.pickPosition(px);
-        // } else {
-        //     var ray = viewer.camera.getPickRay(px);
-        //     if (!ray) return null;
-        //     cartesian = viewer.scene.globe.pick(ray, viewer.scene);
-        // }
-        let cartesian = this.viewer.scene.pickPosition(px);
+        var picks = viewer.scene.drillPick(px);
+        viewer.scene.render();
+        var cartesian;
+        var isOn3dtiles = false;
+        for (var i = 0; i < picks.length; i++) {
+            if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
+                isOn3dtiles = true;
+                break;
+            }
+        }
+        if (isOn3dtiles) {
+            cartesian = viewer.scene.pickPosition(px);
+        } else {
+            var ray = viewer.camera.getPickRay(px);
+            if (!ray) return null;
+            cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+        }
         return cartesian;
     }
 

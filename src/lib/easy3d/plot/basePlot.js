@@ -62,6 +62,9 @@ class BasePlot {
             show: true
         }
         this.properties = {};
+
+        // 缩放分辨率比例
+        this.clientScale = 1;
     }
 
     /**
@@ -70,25 +73,41 @@ class BasePlot {
      * @returns {Cesium.Cartesian3} 世界坐标
      */
     getCatesian3FromPX(px) {
-        // let picks = this.viewer.scene.drillPick(px);
-        // this.viewer.scene.render();
-        // let cartesian;
-        // let isOn3dtiles = false;
-        // for (let i = 0; i < picks.length; i++) {
-        //     if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
-        //         isOn3dtiles = true;
-        //         break;
-        //     }
-        // }
-        // if (isOn3dtiles) {
-        //     cartesian = this.viewer.scene.pickPosition(px);
-        // } else {
-        //     let ray = this.viewer.camera.getPickRay(px);
-        //     if (!ray) return null;
-        //     cartesian = this.viewer.scene.globe.pick(ray, this.viewer.scene);
-        // }
-        let cartesian = this.viewer.scene.pickPosition(px);
+        px = this.transpx(px); // 此处单独解决了地图踩点的偏移  prompt的偏移暂未处理
+        let picks = this.viewer.scene.drillPick(px);
+        this.viewer.scene.render();
+        let cartesian;
+        let isOn3dtiles = false;
+        for (let i = 0; i < picks.length; i++) {
+            if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
+                isOn3dtiles = true;
+                break;
+            }
+        }
+        if (isOn3dtiles) {
+            cartesian = this.viewer.scene.pickPosition(px);
+        } else {
+            let ray = this.viewer.camera.getPickRay(px);
+            if (!ray) return null;
+            cartesian = this.viewer.scene.globe.pick(ray, this.viewer.scene);
+        }
         return cartesian;
+    }
+
+    /**
+     *  此方法用于 地图界面缩放问题（transform:translate(2)）
+     * @param {Number} scale 缩放比例 
+     */
+    setClientScale(scale) {
+        scale = scale || 1;
+        this.clientScale = scale;
+    }
+
+    transpx(px) {
+        return {
+            x: px.x / (this.clientScale || 1),
+            y: px.y / (this.clientScale || 1)
+        }
     }
 
     /**
@@ -108,11 +127,11 @@ class BasePlot {
         return isWgs84 ? cUtil.cartesiansToLnglats(this.positions, this.viewer) : this.positions;
     }
 
-     /**
-     * 获取经纬度坐标
-     * @returns {Array} 经纬度坐标数组
-     */
-     getLnglats() {
+    /**
+    * 获取经纬度坐标
+    * @returns {Array} 经纬度坐标数组
+    */
+    getLnglats() {
         return cUtil.cartesiansToLnglats(this.positions, this.viewer);
     }
 
@@ -215,7 +234,7 @@ class BasePlot {
                 that.modifyPoint.position.setValue(cartesian);
                 that.positions[that.modifyPoint.wz] = cartesian;
                 that.state = "editing";
-                if(callback) callback();
+                if (callback) callback();
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
@@ -251,7 +270,7 @@ class BasePlot {
      * 结束创建
      */
     endCreate() {
-        
+
     }
 
     /**

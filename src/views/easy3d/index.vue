@@ -161,9 +161,10 @@ export default {
 #mapContainer {
   width: 100%;
   height: 100%;
-  top: 0;
   padding: 0;
   margin: 0;
-  position: absolute;
+  /* 
+  top: 0;
+  position: absolute; */
 }
 </style>

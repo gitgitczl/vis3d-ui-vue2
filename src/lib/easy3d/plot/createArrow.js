@@ -93,18 +93,18 @@ class CreateArrow extends BasePlot {
 		this.handler.setInputAction(function (evt) { //移动时绘制面
 
 			if (that.positions.length < 1) {
-				that.prompt.update(evt.endPosition, "单击开始绘制");
+				if(that.prompt) that.prompt.update(evt.endPosition, "单击开始绘制");
 				that.state = "startCreate";
 				return;
 			}
 			if (that.positions.length == that.maxPointNum) {
-				that.prompt.update(evt.endPosition, "双击结束");
+				if(that.prompt) that.prompt.update(evt.endPosition, "双击结束");
 			} else if (that.positions.length > that.maxPointNum) {
 				that.endCreate();
 				if (callback) callback(that.entity);
 				return;
 			} else {
-				that.prompt.update(evt.endPosition, "单击新增，不少于" + that.minPointNum + "个点</br>" + "双击结束");
+				if(that.prompt) that.prompt.update(evt.endPosition, "单击新增，不少于" + that.minPointNum + "个点</br>" + "双击结束");
 			}
 			that.state = "creating"
 			let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);

@@ -20,7 +20,6 @@
         <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
       </el-tooltip>
     </ul>
-
   </div>
 </template>
 
