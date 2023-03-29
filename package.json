@@ -11,6 +11,7 @@
     "@open-wc/webpack-import-meta-loader": "^0.4.7",
     "@turf/turf": "^6.5.0",
     "axios": "^0.26.1",
+    "cesium": "1.87",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.6.5",
     "docdash": "^2.0.0",
@@ -43,7 +44,6 @@
     "@vue/cli-plugin-router": "~4.5.15",
     "@vue/cli-plugin-vuex": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
-    "cesium": "1.91",
     "css-loader": "^6.7.3",
     "style-loader": "^3.3.1",
     "vue-template-compiler": "^2.6.11"

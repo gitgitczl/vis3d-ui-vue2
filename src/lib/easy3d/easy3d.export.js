@@ -40,6 +40,8 @@ import ZoomTool from "./zoomTool/zoomTool";
 import OverviewMap from "./overviewMap/overviewMap";
 import LayerSplit from "./layerSplit/layerSplit";
 
+import ParticleSystem from "./particleSystem/particleSystem"
+
 // 引入分析模块
 import visualFieldTool from "./analysis/visualField/visualFieldTool";
 import VisualField from "./analysis/visualField/visualField";
@@ -80,5 +82,6 @@ export default {
   weather,
   animate,
   analysis,
+  ParticleSystem,
   LayerSplit
 };
