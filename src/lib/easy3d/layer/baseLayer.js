@@ -32,7 +32,6 @@ class BaseLayer {
      * 
      */
     constructor(viewer, opt) {
-
         this.viewer = viewer;
         this.opt = opt || {};
         // 定义imageryLayer基础参数种类
@@ -46,7 +45,7 @@ class BaseLayer {
          * @property {String | Number} id 图层id
          */
         this.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
-        if (!opt.url && opt.type != "tdt" && opt.type != "grid") {
+        if (!opt.url && opt.type != "tdt" && opt.type != "grid" && opt.type != "tencent") {
             console.log("缺少服务地址！", opt);
             return;
         }

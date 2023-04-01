@@ -9,7 +9,7 @@ import XYZLayer from "./xyzLayer.js";
 import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
 import WMTSLayer from "./wmtsLayer";
-
+import TencentLayer from "./tencentLayer.js";
 
 
 /**
@@ -45,7 +45,7 @@ class LayerTool {
         let layerObj = null;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
-        
+
         // 自动设置图层的index
         switch (type) {
             case "xyz": //xyz格式切片
@@ -82,6 +82,8 @@ class LayerTool {
             case "grid":// 网格图层
                 layerObj = new GridLayer(this.viewer, opt);
                 break;
+            case "tencent": // 腾讯地图
+                layerObj = new TencentLayer(this.viewer, opt);
             default:
                 break;
         }
@@ -129,7 +131,7 @@ class LayerTool {
      * @param {String | Number} id 
      * @returns {Object} layerObj为图层对象，index为图层对象在数组中位置
      */
-    getLayerObjByObjId(id){
+    getLayerObjByObjId(id) {
         if (!id) return;
         let obj = {};
         for (let i = 0; i < this._layerObjs.length; i++) {
@@ -243,7 +245,7 @@ class LayerTool {
             this.hideById(id);
         }
     }
-    
+
     /**
      * 根据图层对象id，缩放到某个图层
      * @param {String | Number} id 图层对象id

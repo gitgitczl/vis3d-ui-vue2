@@ -153,6 +153,7 @@ class RoamTool {
     }
 
     updatePositionsHeight(positions, height) {
+        if(height==undefined) return positions;
         if (!positions || positions.length < 2) return;
         let newPositions = [];
         positions.forEach(position => {

@@ -2,12 +2,12 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x" : 117.28886022164883,
-      "y" : 31.451717348795132,
-      "z" : 55465.26169812524,
-      "heading" : 359.31729907269107,
-      "pitch" : -55.72672188549485,
-      "roll" : 359.979088652007,
+      "x": 117.28886022164883,
+      "y": 31.451717348795132,
+      "z": 55465.26169812524,
+      "heading": 359.31729907269107,
+      "pitch": -55.72672188549485,
+      "roll": 359.979088652007,
       "duration": 0,
     },
     brightness: 1.0, // 亮度设置
@@ -92,6 +92,13 @@ window.mapConfig = {
       iconImg: "./easy3d/images/baseMap/tdt.png",
       key: "a217b99b7be68b98104548d78e9a679a",
     },
+    {
+      name: "腾讯地图",
+      type: "tencent",
+      layerType: "1",
+      show: false
+    }
+
   ],
   operateLayers: [
     {
