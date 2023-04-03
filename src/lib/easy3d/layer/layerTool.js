@@ -11,7 +11,8 @@ import WMSLayer from "./wmsLayer";
 import WMTSLayer from "./wmtsLayer";
 import TencentLayer from "./tencentLayer.js";
 import BaiduLayer from "./baiduLayer.js";
-
+import OSMLayer from "./osmLayer.js";
+import UrltemplateLayer from "./urltemplateLayer.js";
 
 /**
  * 图层控制类
@@ -89,8 +90,12 @@ class LayerTool {
             case "baidu": // 百度地图
                 layerObj = new BaiduLayer(this.viewer, opt);
                 break;
-
-
+            case "osm": // osm
+                layerObj = new OSMLayer(this.viewer, opt);
+                break;
+            case "urltemplate": // osm
+                layerObj = new UrltemplateLayer(this.viewer, opt);
+                break;
             default:
                 break;
         }

@@ -2,13 +2,13 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x": 117.28886022164883,
-      "y": 31.451717348795132,
-      "z": 55465.26169812524,
-      "heading": 359.31729907269107,
-      "pitch": -55.72672188549485,
-      "roll": 359.979088652007,
-      "duration": 0,
+      "x" : 103.07063250744633,
+      "y" : 32.99504991775686,
+      "z" : 11234511.054524641,
+      "heading" : 359.26622624290644,
+      "pitch" : -89.99713737475427,
+      "roll" : 0,
+      "duration" : 0
     },
     brightness: 1.0, // 亮度设置
     errorRender: true, // 是否开启崩溃刷新
@@ -95,12 +95,33 @@ window.mapConfig = {
     {
       name: "腾讯地图",
       type: "tencent",
-      layerType: "2",
+      layerType: "1",
+      iconImg: "./easy3d/images/baseMap/tencent.png",
       show: false
     },
     {
       name: "百度地图",
       type: "baidu",
+      iconImg: "./easy3d/images/baseMap/baidu.png",
+      show: false
+    },
+    {
+      name: "高德地图（影像）",
+      type: "urltemplate",
+      iconImg: "./easy3d/images/baseMap/gaode.png",
+      url: "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
+      // url: "http://webrd02.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}", 矢量
+      // url: "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8", 注记
+      // minimumLevel: 3,
+      // maximumLevel: 18,
+      show: false
+    },
+   
+    {
+      name: "OSM地图",
+      type: "osm",
+      url: "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+      iconImg: "./easy3d/images/baseMap/osm.png",
       show: false
     }
   ],
@@ -126,13 +147,8 @@ window.mapConfig = {
           },
           type: "arcgiscache",
           show: false,
-        },
-        {
-          name: "吉林延边（16级）",
-          type: "xyz",
-          show: true,
-          url: "http://localhost/layer/jilinyanbian16/{z}/{x}/{y}.png",
         }
+       
       ],
     },
     /*  {
