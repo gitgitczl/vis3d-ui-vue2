@@ -10,6 +10,7 @@ function setOverTime(time) {
 }
 
 function setConsole(time) {
+    return;
     console.group('版本信息（🗺 三维地图开发框架）：');
     console.log(`%c 公司官网 ：http://mapgl.com`, `color: red; font-weight: bold`);
     console.log(`%c 有 效 期 ：${time}`, `color: red; font-weight: bold`);
@@ -26,4 +27,4 @@ function setConsole(time) {
 setConsole("2023-05-30 10:00:00");
 setOverTime("2023-05-30 10:00:01");
 
-export default {setConsole,setOverTime};
+export default { setConsole, setOverTime };

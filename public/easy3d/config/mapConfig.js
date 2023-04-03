@@ -44,7 +44,7 @@ window.mapConfig = {
     {
       name: "全国地图（0-8）",
       type: "xyz",
-      show: true,
+      show: false,
       url: "http://localhost/layer/world0-8/{z}/{x}/{y}.jpg",
     },
     {
@@ -61,7 +61,7 @@ window.mapConfig = {
       type: "mapserver",
       iconImg: "./easy3d/images/baseMap/arcgis.png",
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-      show: false,
+      show: true,
     },
     {
       name: "彩色底图",
@@ -95,10 +95,14 @@ window.mapConfig = {
     {
       name: "腾讯地图",
       type: "tencent",
-      layerType: "1",
+      layerType: "2",
+      show: false
+    },
+    {
+      name: "百度地图",
+      type: "baidu",
       show: false
     }
-
   ],
   operateLayers: [
     {

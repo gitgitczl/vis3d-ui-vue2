@@ -6,11 +6,7 @@ import BaseLayer from './baseLayer.js';
  * @augments BaseLayer
  * @alias BaseLayer.MapserverLayer
  * @example 
- *      let mapserverLayer = new easy3d.MapserverLayer(viewer,{
- *              url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
- *              show: true,
- *      });
- *      mapserverLayer.load();
+
  */
 class TencentLayer extends BaseLayer {
     /**
@@ -30,9 +26,9 @@ class TencentLayer extends BaseLayer {
         * @property {String} type 类型
         */
         this.type = "tencent";
-        
+
         const lyrurl = this.getUrlByType(opt.layerType || "1");
-        this._provider = new Cesium.ArcGisMapServerImageryProvider({
+        let pattr = {
             url: lyrurl,
             customTags: {
                 sx: function (imageryProvider, x, y, level) {
@@ -42,7 +38,10 @@ class TencentLayer extends BaseLayer {
                     return ((1 << level) - y) >> 4
                 }
             }
-        });
+        }
+        pattr = Object.assign(this.providerAttr || {}, pattr);
+
+        this._provider = new Cesium.UrlTemplateImageryProvider(pattr);
     }
 
     getUrlByType(type) {
@@ -67,7 +66,6 @@ class TencentLayer extends BaseLayer {
                 ;
         }
         return url;
-
     }
 }
 

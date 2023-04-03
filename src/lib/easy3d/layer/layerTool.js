@@ -10,6 +10,7 @@ import TilesetLayer from "./tilesetLayer";
 import WMSLayer from "./wmsLayer";
 import WMTSLayer from "./wmtsLayer";
 import TencentLayer from "./tencentLayer.js";
+import BaiduLayer from "./baiduLayer.js";
 
 
 /**
@@ -84,6 +85,12 @@ class LayerTool {
                 break;
             case "tencent": // 腾讯地图
                 layerObj = new TencentLayer(this.viewer, opt);
+                break;
+            case "baidu": // 百度地图
+                layerObj = new BaiduLayer(this.viewer, opt);
+                break;
+
+
             default:
                 break;
         }

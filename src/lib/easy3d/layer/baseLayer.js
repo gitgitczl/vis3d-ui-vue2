@@ -45,7 +45,8 @@ class BaseLayer {
          * @property {String | Number} id 图层id
          */
         this.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
-        if (!opt.url && opt.type != "tdt" && opt.type != "grid" && opt.type != "tencent") {
+        
+        if (!opt.url && opt.type != "tdt" && opt.type != "grid" && opt.type != "tencent" && opt.type!="baidu") {
             console.log("缺少服务地址！", opt);
             return;
         }
