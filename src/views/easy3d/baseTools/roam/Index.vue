@@ -365,7 +365,8 @@ export default {
         };
 
         that.selectModel = "isSelectModel";
-        that.roamModel = "";
+        that.roamModel = "./gltf/dajiang.gltf";
+
       });
     }
   },
@@ -501,6 +502,7 @@ export default {
               fixType: attr.fixType,
               alltimes: attr.alltimes,
               speed: attr.speed,
+              height : Number(attr.height || 0)
             };
 
             that.selectModel = attr.entityAttr.uri

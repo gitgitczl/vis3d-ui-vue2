@@ -121,11 +121,12 @@ class Roam {
 
   init() {
     let attr = {};
+    debugger
     if (this.fixType == "0") {
       // 固定时长漫游
       this.endTime = Cesium.JulianDate.addSeconds(
         this.startTime,
-        this.opt.alltimes,
+        Number(this.opt.alltimes),
         new Cesium.JulianDate()
       );
       attr = this.createPropertyByTimes(this.positions, this.opt.alltimes);
@@ -399,7 +400,7 @@ class Roam {
         const times = passdistance / speed;
         currentTime = Cesium.JulianDate.addSeconds(
           this.startTime.clone(),
-          times,
+          Number(times),
           new Cesium.JulianDate()
         );
       }
@@ -439,7 +440,7 @@ class Roam {
         const times = passdistance / speed;
         currentTime = Cesium.JulianDate.addSeconds(
           this.startTime.clone(),
-          times,
+          Number(times),
           new Cesium.JulianDate()
         );
       }
