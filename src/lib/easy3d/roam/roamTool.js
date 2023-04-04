@@ -111,14 +111,20 @@ class RoamTool {
                 break;
             case 2:
                 // 贴地漫游
-                this.getTerrainPositions(positions, function (newPositions) {
-                    roamAttr.positions = newPositions;
-                    roamAttr.heightReference = 1;
-                    roam = new Roam(that.viewer, roamAttr);
-                    roam.attr = roamAttr;
-                    that.roamList.push(roam);
-                    if (callback) callback(roam);
-                })
+                // this.getTerrainPositions(positions, function (newPositions) {
+                //     roamAttr.positions = newPositions;
+                //     roamAttr.heightReference = 1;
+                //     roam = new Roam(that.viewer, roamAttr);
+                //     roam.attr = roamAttr;
+                //     that.roamList.push(roam);
+                //     if (callback) callback(roam);
+                // })
+                // ============ 当前未实时计算高程 by 20230404 ============
+                if (roamAttr.entityAttr) roamAttr.entityAttr.heightReference = 1;
+                roam = new Roam(that.viewer, roamAttr);
+                roam.attr = roamAttr;
+                that.roamList.push(roam);
+                if (callback) callback(roam);
                 break;
             case 3:
                 // 贴模型漫游
@@ -175,9 +181,10 @@ class RoamTool {
             let cg = Cesium.Cartographic.fromCartesian(cartesian);
             cgArr.push(cg);
         }
+        let that = this;
         Cesium.when(Cesium.sampleTerrainMostDetailed(this.viewer.terrainProvider, cgArr), function (updateLnglats) {
 
-            let raisedPositions = ellipsoid.cartographicArrayToCartesianArray(updateLnglats); //转为世界坐标数组
+            let raisedPositions = that.viewer.scene.globe.ellipsoid.cartographicArrayToCartesianArray(updateLnglats); //转为世界坐标数组
             if (callback) callback(raisedPositions);
         });
     }
