@@ -23,6 +23,16 @@ cUtil.cartesianToLnglat = function (cartesian, viewer) {
     return [lng, lat, hei];
 }
 
+cUtil.getViewCenter = (viewer) => {
+    if (!viewer) return;
+    var rectangle = viewer.camera.computeViewRectangle();
+    var west = rectangle.west / Math.PI * 180;
+    var north = rectangle.north / Math.PI * 180;
+    var east = rectangle.east / Math.PI * 180;
+    var south = rectangle.south / Math.PI * 180;
+    return [(east + west) / 2, (north + south) / 2]
+}
+
 /**
  * 世界坐标数组转经纬度数组
  * @param {Cesium.Cartesian3[]} cartesians 世界坐标数组
@@ -32,6 +42,10 @@ cUtil.cartesianToLnglat = function (cartesian, viewer) {
 cUtil.cartesiansToLnglats = function (cartesians, viewer) {
     if (!cartesians || cartesians.length < 1) return;
     viewer = viewer || window.viewer;
+    if (!viewer) {
+        console.log('cUtil.cartesiansToLnglats方法缺少viewer对象');
+        return;
+    }
     var arr = [];
     for (var i = 0; i < cartesians.length; i++) {
         arr.push(cUtil.cartesianToLnglat(cartesians[i], viewer));
@@ -65,7 +79,10 @@ cUtil.lnglatsToCartesians = function (lnglats) {
  * @param {Cesium.Viewer} viewer 当前viewer对象
  */
 cUtil.flyTo = function (opt, viewer) {
-    if (!viewer) return;
+    if (!viewer) {
+        console.log('cUtil.flyTo缺少viewer对象');
+        return;
+    }
     opt = opt || {};
     let center = opt.center;
     if (!center) {
@@ -100,6 +117,10 @@ cUtil.flyTo = function (opt, viewer) {
  */
 cUtil.getCameraView = function (viewer) {
     viewer = viewer || window.viewer;
+    if (!viewer) {
+        console.log('cUtil.getCameraView缺少viewer对象');
+        return;
+    }
     var camera = viewer.camera;
     var position = camera.position;
     var heading = camera.heading;
@@ -126,6 +147,10 @@ cUtil.getCameraView = function (viewer) {
  */
 cUtil.setCameraView = function (obj, viewer) {
     viewer = viewer || window.viewer;
+    if (!viewer) {
+        console.log('cUtil.setCameraView缺少viewer对象');
+        return;
+    }
     if (!obj) return;
     var position = obj.destination || Cesium.Cartesian3.fromDegrees(obj.x, obj.y, obj.z); // 兼容cartesian3和xyz
     viewer.camera.flyTo({
@@ -261,6 +286,11 @@ cUtil.lerpPositions = function (positions, granularity) {
  * @returns {Cesium.Cartesian3 } 交点坐标
  */
 cUtil.getIntersectPosition = function (obj, viewer) {
+    if (!viewer) {
+        console.log('cUtil.getIntersectPosition缺少viewer对象');
+        return;
+    }
+
     let p1 = obj.startPoint;
     let p2 = obj.endPoint;
     if (!p1 || !p2) {
@@ -387,6 +417,11 @@ cUtil.updatePositionsHeight = function (pois, h) {
  * 
  */
 cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
+    if (!viewer) {
+        console.log('cUtil.computeUniforms缺少viewer对象');
+        return;
+    }
+
     let area = cUtil.computeArea(positions) / 1000;
     if (!positions) return;
     var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
@@ -453,6 +488,11 @@ cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
  * @returns {Number} area，面积
  */
 cUtil.computeArea = function (positions, viewer) {
+    if (!viewer) {
+        console.log('cUtil.computeArea缺少viewer对象');
+        return;
+    }
+
     positions = positions.concat([positions[0]]);
     const lnglats = cUtil.cartesiansToLnglats(positions, viewer);
     let polygon = turf.polygon([lnglats]);
@@ -467,6 +507,11 @@ cUtil.computeArea = function (positions, viewer) {
  * @returns {Number} height，当前坐标点的地形高度
  */
 cUtil.getTerrainHeight = function (position, viewer) {
+    if (!viewer) {
+        console.log('cUtil.getTerrainHeight缺少viewer对象');
+        return;
+    }
+
     if (!position || !viewer) return;
     return viewer.scene.globe.getHeight(Cesium.Cartographic.fromCartesian(position));
 }
@@ -478,6 +523,11 @@ cUtil.getTerrainHeight = function (position, viewer) {
  * @returns {Number} height，当前坐标点的高度
  */
 cUtil.get3dtilesHeight = function (position, viewer) {
+    if (!viewer) {
+        console.log('cUtil.get3dtilesHeight缺少viewer对象');
+        return;
+    }
+
     if (!position || !viewer) return;
     return viewer.scene.sampleHeight(Cesium.Cartographic.fromCartesian(position));
 }
@@ -512,6 +562,11 @@ cUtil.computeAreaOfTriangle = function (pos1, pos2, pos3) {
  * @returns {Object} 返回坡度起始点坐标、终点坐标以及坡度值
  */
 cUtil.getSlopePosition = function (center, radius, angle, viewer) {
+    if (!viewer) {
+        console.log('cUtil.getSlopePosition缺少viewer对象');
+        return;
+    }
+
     if (!viewer || !center) return;
     let positions = cUtil.getCirclePointsByRadius({
         center: center,
@@ -520,11 +575,11 @@ cUtil.getSlopePosition = function (center, radius, angle, viewer) {
     }, viewer);
 
     let minH = Number.MAX_VALUE;
-    let centerH = cUtil.getTerrainHeight(center.clone(),viewer);
-    if(!centerH) return ;
+    let centerH = cUtil.getTerrainHeight(center.clone(), viewer);
+    if (!centerH) return;
     let step = -1;
     for (let i = 0; i < positions.length; i++) {
-        let h = cUtil.getTerrainHeight(positions[i],viewer);
+        let h = cUtil.getTerrainHeight(positions[i], viewer);
         if (minH > h) {
             minH = h;
             step = i;

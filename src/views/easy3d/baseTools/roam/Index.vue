@@ -266,7 +266,7 @@ export default {
 
     if (!roamDrawTool) {
       roamDrawTool = new this.easy3d.DrawTool(window.viewer, {
-        hasEdit: true,
+        canEdit: true,
       });
       roamDrawTool.on("startEdit", function (entObj, ent) {
         // 结束其他漫游

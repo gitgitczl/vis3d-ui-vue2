@@ -278,7 +278,7 @@
                 "uri": "./gltf/gongchengche.glb",
                 "minimumPixelSize": 24,
                 "scale": 1,
-                "heading": -30,
+                "heading": -30,  
                 "pitch": 0,
                 "roll": 0
             }

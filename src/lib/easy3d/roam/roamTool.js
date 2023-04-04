@@ -69,6 +69,7 @@ class RoamTool {
     /**
      * 
      * @param {Object} opt 
+     * @param {Array} [opt.positions] 漫游坐标数组
      * @param {Number} [opt.roamType=0] 漫游类型（1~飞行漫游/2~贴地漫游/0~普通漫游）
      * @param {Number} [opt.alltimes=60] 漫游时长，和speed互斥
      * @param {Number} [opt.speed] 漫游速度，和alltimes互斥
@@ -112,7 +113,7 @@ class RoamTool {
                 // 贴地漫游
                 this.getTerrainPositions(positions, function (newPositions) {
                     roamAttr.positions = newPositions;
-                    /* roamAttr.modelHeightReference = 1; */
+                    roamAttr.heightReference = 1;
                     roam = new Roam(that.viewer, roamAttr);
                     roam.attr = roamAttr;
                     that.roamList.push(roam);
@@ -153,7 +154,7 @@ class RoamTool {
     }
 
     updatePositionsHeight(positions, height) {
-        if(height==undefined) return positions;
+        if (height == undefined) return positions;
         if (!positions || positions.length < 2) return;
         let newPositions = [];
         positions.forEach(position => {
@@ -289,7 +290,7 @@ class RoamTool {
             roam.destroy();
         }
         this.roamList = [];
-      
+
     }
 
     /**

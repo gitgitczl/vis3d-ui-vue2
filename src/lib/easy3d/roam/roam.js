@@ -103,7 +103,7 @@ class Roam {
     /**
      * @property {Boolean} isLockView 是否锁定视角
      */
-    this.isLockView = false; 
+    this.isLockView = false;
     this.viewXYZ = {
       // 锁定时视角参数
       x: 0,
@@ -153,7 +153,7 @@ class Roam {
     this.positions = positions;
     this.init();
   }
-  
+
   /**
    * 开始漫游
    */
@@ -194,9 +194,9 @@ class Roam {
     if (this.roamingFun) this.roamingFun();
   }
 
-   /**
-   * 继续漫游
-   */
+  /**
+  * 继续漫游
+  */
   goon() {
     debugger
     if (!this.stopTime) return;
@@ -233,7 +233,6 @@ class Roam {
   }
 
   createRoamEntity(type, property) {
-    debugger
     let entity = null;
     if (type == "model") {
       if (!this.opt.entityAttr || !this.opt.entityAttr.uri) {
@@ -290,7 +289,7 @@ class Roam {
   reversePositions(positions) {
     if (!positions || positions.length < 1) return;
     if (positions[0] instanceof Cesium.Cartesian3) {
-      return cUtil.cartesiansToLnglats(positions);
+      return cUtil.cartesiansToLnglats(positions, this.viewer);
     } else {
       return positions;
     }
@@ -459,9 +458,8 @@ class Roam {
    * 设置漫游视角
    * @param {String} viewType 漫游视角（no~不固定视角/gs~跟随视角/dy~第一视角/sd~上帝视角）
    */
-  setViewType(viewType) {
+  setViewType(viewType, customXYZ) {
     this.viewType = viewType;
-    console.log("setViewType===>", this.isLockView);
     switch (this.viewType) {
       case "dy":
         this.isLockView = true;
@@ -482,6 +480,15 @@ class Roam {
       case "gs":
         this.isLockView = false;
         this.viewer.trackedEntity = this.roamEntity || undefined;
+        break;
+      case "custom":
+        this.isLockView = true;
+        customXYZ = customXYZ || {};
+        this.viewXYZ = {
+          x: customXYZ.x || 600,
+          y: customXYZ.y || 0,
+          z: customXYZ.z || 150,
+        };
         break;
       default:
         this.isLockView = false;
@@ -514,7 +521,7 @@ class Roam {
       distanceED: this.distanceED,
       speed: this.speed,
       fixType: this.fixType,
-      positions: this.reversePositions(this.positions),
+      positions: this.reversePositions(this.positions, this.viewer),
       /*entityType: this.opt.entityType,
               entityAttr: this.opt.entityAttr */
     };

@@ -429,7 +429,7 @@ class ArrowUtil {
   }
   cartesianToLnglat (cartesian) {
     if (!cartesian) return;
-    var ellipsoid = viewer.scene.globe.ellipsoid;
+    /* var ellipsoid = viewer.scene.globe.ellipsoid; */
     var lnglat = Cesium.Cartographic.fromCartesian(cartesian);
     // var lnglat = ellipsoid.cartesianToCartographic(cartesian);
     var lat = Cesium.Math.toDegrees(lnglat.latitude);

@@ -121,14 +121,12 @@ export default {
       });
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑
-        debugger
         nowPlotEntObj = entObj;
         that.$store.commit("setPlotEntityObjId", entObj.attr.id);
         window.workControl.openToolByName("plotStyle");
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后
-        debugger
         nowPlotEntObj = null;
         let lnglats = entObj.getPositions(true);
         window.workControl.closeToolByName("plotStyle");
@@ -161,6 +159,7 @@ export default {
     startDraw(item, index) {
       item = JSON.parse(JSON.stringify(item)); // 数据隔离
       if (!window.plotDrawTool) return;
+      console.log(item);
       window.plotDrawTool.start(item);
       this.$set(this, "cardDialog", true);
     },
