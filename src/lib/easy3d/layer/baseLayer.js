@@ -15,6 +15,7 @@ class BaseLayer {
      * @param {String} opt.url 地图服务地址
      * @param {Object} [opt.view] 图层定位视角
      * @param {Array} [opt.rectangle] 地图服务范围 [117,40,118,41]
+     * @param {String} [opt.srs] 当前服务的坐标系 / 4326 3857
      * @param {Number|Function} [opt.alpha=1.0] 图层透明度
      * @param {Number|Function} [opt.nightAlpha=1.0] 在晚上的图层透明度
      * @param {Number|Function} [opt.dayAlpha=1.0] 在白天的图层透明度
@@ -45,8 +46,8 @@ class BaseLayer {
          * @property {String | Number} id 图层id
          */
         this.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
-        
-        if (!opt.url && opt.type != "tdt" && opt.type != "grid" && opt.type != "tencent" && opt.type!="baidu") {
+
+        if (!opt.url && opt.type != "tdt" && opt.type != "grid" && opt.type != "tencent" && opt.type != "baidu") {
             console.log("缺少服务地址！", opt);
             return;
         }
@@ -71,6 +72,14 @@ class BaseLayer {
             this.imageryLayerAttr.rectangle = trectangle;
         }
 
+        let tilingScheme = new Cesium.WebMercatorTilingScheme();
+        if (opt.srs == "EPSG:4326" || opt.srs == "epsg:4326") {
+            tilingScheme = new Cesium.GeographicTilingScheme({
+                numberOfLevelZeroTilesX: opt.numberOfLevelZeroTilesX || 2,
+                numberOfLevelZeroTilesY: opt.numberOfLevelZeroTilesY || 1
+            });
+        }
+        this.providerAttr.tilingScheme = tilingScheme;
         this.providerAttr.url = opt.url;
         // 从opt中过滤出provider的参数
 

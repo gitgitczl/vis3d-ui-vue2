@@ -61,21 +61,21 @@ CompositeCoordinateSystem.create = function (ecModel, api) {
   var coordSys;
   ecModel.eachComponent('GLMap', function (GLMapModel) {
     var viewportRoot = api.getZr().painter.getViewportRoot();
-    var GLMap = echarts.glMap;
+    var GLMap = echarts.GLMap;
     coordSys = new CompositeCoordinateSystem(GLMap, api);
     coordSys.setMapOffset(GLMapModel.__mapOffset || [0, 0]);
     GLMapModel.coordinateSystem = coordSys;
   });
   ecModel.eachSeries(function (seriesModel) {
     if (seriesModel.get('coordinateSystem') === 'GLMap') {
-      coordSys = new CompositeCoordinateSystem(echarts.glMap, api);
-      seriesModel.coordinateSystem = new CompositeCoordinateSystem(echarts.glMap, api);
+      coordSys = new CompositeCoordinateSystem(echarts.GLMap, api);
+      seriesModel.coordinateSystem = new CompositeCoordinateSystem(echarts.GLMap, api);
     }
   });
 }
 
 
-function registerGLMap() {
+function registerGLMap(viewer) {
   echarts.registerCoordinateSystem('GLMap', CompositeCoordinateSystem);
   /* CompositeMap */
   echarts.registerAction({
@@ -102,7 +102,7 @@ function registerGLMap() {
     isControl: true,
     init: function (ecModel, api) {
       var that = this;
-      var glMap = echarts.glMap;
+      var glMap = echarts.GLMap;
       var moveHandler = function (type, target) {
         api.dispatchAction({
           type: 'GLMapRoam'
@@ -110,7 +110,6 @@ function registerGLMap() {
       }
       //绑定渲染事件 实时监控echarts div和地球的位置
       var handler = new Cesium.ScreenSpaceEventHandler(glMap.canvas);
-      var viewer = echarts.viewer;
       glMap.postRender.addEventListener(function () {
         var cameraPosition = viewer.camera.position;
         if (!cameraPosition) {
@@ -140,7 +139,7 @@ function registerGLMap() {
     },
     render: function render(GLMapModel, ecModel, api) { },
     dispose: function dispose(target) {
-      echarts.glMap.postRender.removeEventListener(this.moveHandler, this);
+      echarts.GLMap.postRender.removeEventListener(this.moveHandler, this);
     },
     getCenter: function (viewer) {
       var canvas = viewer.scene.canvas;
@@ -177,10 +176,10 @@ var echartMap = {
     chartContainer.setAttribute('id', 'echarts_div');
     chartContainer.setAttribute('class', 'echartsLayer');
     container.container.appendChild(chartContainer);
-    if (!echarts.glMap)
-      registerGLMap();
-    echarts.glMap = scene;
-    echarts.viewer = this.viewer;
+    if (!echarts.GLMap)
+      registerGLMap(this.viewer);
+    echarts.GLMap = scene;
+    /* echarts.viewer = this.viewer; */
     return echarts.init(chartContainer);
   }
 }

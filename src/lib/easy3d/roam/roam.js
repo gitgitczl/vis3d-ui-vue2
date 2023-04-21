@@ -121,7 +121,6 @@ class Roam {
 
   init() {
     let attr = {};
-    debugger
     if (this.fixType == "0") {
       // 固定时长漫游
       this.endTime = Cesium.JulianDate.addSeconds(
@@ -520,9 +519,11 @@ class Roam {
       alldistance: this.alldistance,
       alltimes: this.alltimes,
       distanceED: this.distanceED,
+      timeED : this.timeED,
       speed: this.speed,
       fixType: this.fixType,
       positions: this.reversePositions(this.positions, this.viewer),
+      nowPosition: this.roamEntity ? this.roamEntity.position.getValue(this.viewer.clock.currentTime) : undefined
       /*entityType: this.opt.entityType,
               entityAttr: this.opt.entityAttr */
     };

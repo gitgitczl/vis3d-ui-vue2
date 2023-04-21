@@ -13,12 +13,14 @@ let fog = {
     /**
      * 能见度（0-1）
      */
-    fogVal: 0.50,
+    fogVal: 0.1,
     /**
      * 激活
      * @function
      */
-    activate: function () {
+    viewer : undefined,
+    activate: function (viewer) {
+        this.viewer = viewer || window.viewer;
         if (this.isActivate) return;
         this.isActivate = true;
         var fs_fog = this.initfog();
@@ -28,7 +30,7 @@ let fog = {
             name: 'czm_fog',
             fragmentShader: fs_fog
         });
-        viewer.scene.postProcessStages.add(this.fogProcs);
+        this.viewer.scene.postProcessStages.add(this.fogProcs);
     },
     /**
      * 销毁释放
@@ -37,7 +39,7 @@ let fog = {
         if (!this.isActivate) return;
         this.isActivate = false;
         if (this.fogProcs) {
-            viewer.scene.postProcessStages.remove(this.fogProcs);
+            this.viewer.scene.postProcessStages.remove(this.fogProcs);
             this.fogProcs.destroy();
             this.fogProcs = null;
         }
@@ -53,7 +55,7 @@ let fog = {
             "\n" +
             "      vec4 depthcolor = texture2D(depthTexture, v_textureCoordinates);\n" +
             "\n" +
-            "      float f=(depthcolor.r-0.22)/" + this.fogVal + ";\n" +
+            "      float f=(depthcolor.r-0.22)/" + (1 - this.fogVal) + ";\n" +
             "      if(f<0.0) f=0.0;\n" +
             "      else if(f>1.0) f=1.0;\n" +
             "      gl_FragColor = mix(origcolor,fogcolor,f);\n" +

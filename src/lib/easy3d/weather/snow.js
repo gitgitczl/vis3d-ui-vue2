@@ -15,7 +15,8 @@ let snow = {
     /**
      * 激活
      */
-    activate: function () {
+    activate: function (viewer) {
+        this.viewer = viewer || window.viewer;
         if (this.isActivate) return;
         this.isActivate = true;
         var fs_snow = this.initSnow();
@@ -23,7 +24,7 @@ let snow = {
             name: 'czm_snow',
             fragmentShader: fs_snow
         });
-        viewer.scene.postProcessStages.add(this.snowProcs);
+        this.viewer.scene.postProcessStages.add(this.snowProcs);
     },
 
     /**
@@ -33,7 +34,7 @@ let snow = {
         if (!this.isActivate) return;
         this.isActivate = false;
         if (this.snowProcs) {
-            viewer.scene.postProcessStages.remove(this.snowProcs);
+            this.viewer.scene.postProcessStages.remove(this.snowProcs);
             this.snowProcs = null;
         }
     },

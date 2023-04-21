@@ -5,6 +5,7 @@
     border-radius: 4px;
     position: absolute;
     display: none;
+    color: white !important;
   }
 
   .easy3d-right-tool li {
@@ -22,6 +23,7 @@
 
   /* 内容面板样式 */
   .easy3d-right-content {
+    color: white !important;
     z-index: 4;
     background: rgba(0.5, 0.5, 0.5, 0.5);
     position: absolute;

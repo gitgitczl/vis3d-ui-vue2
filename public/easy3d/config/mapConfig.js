@@ -2,13 +2,13 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x" : 103.07063250744633,
-      "y" : 32.99504991775686,
-      "z" : 11234511.054524641,
-      "heading" : 359.26622624290644,
-      "pitch" : -89.99713737475427,
+      "x" : 112.24037786821494,
+      "y" : 31.101539791751655,
+      "z" : 3656387.5848016106,
+      "heading" : 4.688441447620103,
+      "pitch" : -89.98846996633668,
       "roll" : 0,
-      "duration" : 0
+      "duration": 0
     },
     brightness: 1.0, // 亮度设置
     errorRender: true, // 是否开启崩溃刷新
@@ -116,7 +116,7 @@ window.mapConfig = {
       // maximumLevel: 18,
       show: false
     },
-   
+
     {
       name: "OSM地图",
       type: "osm",
@@ -148,7 +148,7 @@ window.mapConfig = {
           type: "arcgiscache",
           show: false,
         }
-       
+
       ],
     },
     /*  {
@@ -253,6 +253,19 @@ window.mapConfig = {
           type: "xyz",
           show: false,
           url: "http://localhost/layer/world0-8/{z}/{x}/{y}.jpg",
+        },
+
+        {
+          name: "安徽",
+          type: "xyz",
+          show: false,
+          url: "http://localhost/layer/anhui11/img/{z}/{x}/{y}.png",
+        },
+        {
+          name: "安徽（路网）",
+          type: "xyz",
+          show: false,
+          url: "http://localhost/layer/anhui11/name/{z}/{x}/{y}.png",
         }
 
       ],
@@ -263,6 +276,17 @@ window.mapConfig = {
       open: true,
       children: [
         {
+          name: "鄂尔多斯",
+          type: "3dtiles",
+          url: "http://10.33.136.4:8000/data/model/eeds-kbs2023/1/tileset.json",
+          show: true,
+          maximumScreenSpaceError: 16,
+        /*   maximumMemoryusage: 1024, */
+          center: {
+            z: 22
+          },
+        },
+        {
           name: "石化企业",
           type: "3dtiles",
           url: "http://localhost/model/max-shihua/tileset.json",
@@ -271,6 +295,16 @@ window.mapConfig = {
             z: 50,
           },
           maximumScreenSpaceError: 16,
+        },
+        {
+          name: "寺庙",
+          type: "3dtiles",
+          url: "http://mapgl.com/data/model/qx-simiao/tileset.json",
+          center: {
+            z: 90,
+          },
+          show: false,
+          maximumScreenSpaceError: 1,
         },
         {
           name: "大学",

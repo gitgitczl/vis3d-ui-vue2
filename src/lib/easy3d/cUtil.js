@@ -1,5 +1,7 @@
 import * as turf from '@turf/turf';
 
+
+
 /**
  * 三维基础方法
  * @example cUtil.getCameraView(viewer);
@@ -16,7 +18,7 @@ let cUtil = {};
 cUtil.cartesianToLnglat = function (cartesian, viewer) {
     if (!cartesian) return [];
     viewer = viewer || window.viewer;
-    var lnglat = viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian);
+    var lnglat = Cesium.Cartographic.fromCartesian(cartesian);
     var lat = Cesium.Math.toDegrees(lnglat.latitude);
     var lng = Cesium.Math.toDegrees(lnglat.longitude);
     var hei = lnglat.height;
@@ -263,9 +265,15 @@ cUtil.gcj2wgs = function (arrdata) {
  */
 cUtil.lerpPositions = function (positions, granularity) {
     if (!positions || positions.length == 0) return;
+
+    let dis = 0;
+    for (let i = 1; i < positions.length; i++) {
+        dis += Cesium.Cartesian3.distance(positions[i],positions[i-1]);
+    }
+
     var surfacePositions = Cesium.PolylinePipeline.generateArc({ //将线进行插值
         positions: positions,
-        granularity: 0.00001
+        granularity: 0.000000001 * dis
     });
     if (!surfacePositions) return;
     var arr = [];
@@ -422,12 +430,12 @@ cUtil.computeUniforms = function (positions, isOn3dtiles, viewer) {
         return;
     }
 
-    let area = cUtil.computeArea(positions) / 1000;
+    let area = cUtil.computeArea(positions, viewer) / 1000;
     if (!positions) return;
     var polygonGeometry = new Cesium.PolygonGeometry.fromPositions({
         positions: positions,
         vertexFormat: Cesium.PerInstanceColorAppearance.FLAT_VERTEX_FORMAT,
-        granularity: (Math.PI / Math.pow(2, 11) / 1000) * area
+        granularity: (Math.PI / Math.pow(2, 11) / 1000) * (area / 10)
     });
     var geom = new Cesium.PolygonGeometry.createGeometry(polygonGeometry);
     var indices = geom.indices;

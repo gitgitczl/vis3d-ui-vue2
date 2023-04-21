@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Hammer from 'hammerjs';
-let cesium = require('cesium/Cesium.js');
-let { knockout } = cesium;
+// let cesium = require('cesium/Cesium.js');
+let { knockout } = Cesium;
 var Knockout = knockout
 var KnockoutHammerBinding = {
   register: function (Knockout) {

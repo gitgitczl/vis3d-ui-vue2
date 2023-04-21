@@ -88,6 +88,8 @@ class PopupTooltipTool {
                 ent = pick.id;
             }
 
+            if(ent) ent.tooltipId = new Date().getTime() + "" + Math.floor(Math.random()*10000) + "" + Math.floor(Math.random()*10000);
+
             /* 以下几种形式销毁弹窗
             1、未拾取到对象
             2、拾取到的对象不是上一个对象 */
@@ -98,7 +100,7 @@ class PopupTooltipTool {
                 }
                 return;
             } else {
-                if (that.lastTooltipPromptEnt && that.lastTooltipPromptEnt.tooltipPrompt && ent.id != that.lastTooltipPromptEnt.id) {
+                if (that.lastTooltipPromptEnt && that.lastTooltipPromptEnt.tooltipPrompt && ent.tooltipId != that.lastTooltipPromptEnt.tooltipId) {
                     that.lastTooltipPromptEnt.tooltipPrompt.destroy();
                     that.lastTooltipPromptEnt.tooltipPrompt = null;
                 }

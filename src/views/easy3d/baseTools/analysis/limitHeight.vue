@@ -12,7 +12,7 @@
           @input="changeHeight"
           placeholder="请输入高度"
         ></el-input-number>
-      </li>
+      </li> 
       <li>
         <label>顶部高度：</label>
         <el-input-number

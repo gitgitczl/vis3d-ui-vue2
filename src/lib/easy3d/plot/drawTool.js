@@ -310,7 +310,12 @@ class DrawTool {
     if (this.entityObjArr.length == 0) return null;
     for (let i = 0; i < this.entityObjArr.length; i++) {
       let item = this.entityObjArr[i];
-      let coordinates = item.getPositions(true);
+      let lnglats = item.getPositions(true);
+      // geojson中 单个坐标 不含高度 否则geojsondatasourece加载会有问题
+      let coordinates = [];
+      for (let step = 0; step < lnglats.length; step++) {
+        coordinates.push([lnglats[step][0], lnglats[step][1]])
+      }
       let style = item.getStyle();
       let geoType = this.transType(item.type);
       let feature = {

@@ -56,7 +56,7 @@ class CreateArrow extends BasePlot {
 
 		this.polyline = null;
 		let defaultStyle = {
-			outlineColor: "#000000",
+			outlineColor: "#ff0000",
 			outlineWidth: 2
 		}
 
@@ -259,6 +259,7 @@ class CreateArrow extends BasePlot {
 			entityObj = {
 				polygon: {
 					hierarchy: new Cesium.CallbackProperty(function () {
+						
 						var newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.spliceWZ !== null) {
 							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);
@@ -310,6 +311,7 @@ class CreateArrow extends BasePlot {
 			entityObj = {
 				polygon: {
 					hierarchy: new Cesium.CallbackProperty(function () {
+						debugger
 						let newPosition = that.arrowPlot.startCompute(that.positions);
 						if (that.arrowPlot.spliceWZ != undefined) {
 							newPosition.splice(that.arrowPlot.spliceWZ - 1, 1);

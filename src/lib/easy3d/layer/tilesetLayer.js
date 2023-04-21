@@ -80,9 +80,18 @@ class TilesetLayer {
             new Cesium.Cesium3DTileset(tilesetAttr)
         );
 
+
         test.readyPromise.then(function (tileset) {
-            that._layer = tileset;
-            that._layer.layerConfig = that.opt; // 保存配置信息
+            tileset.style = new Cesium.Cesium3DTileStyle({
+                color: {
+                    conditions: [
+                        ['true', 'color("blue", .1)']
+                    ]
+                }
+            });
+            
+             that._layer = tileset;
+             that._layer.layerConfig = that.opt; // 保存配置信息
             that._layer.initBoundingSphere = tileset.boundingSphere.clone();// 初始化中心
             that._layer.show = that.opt.show == undefined ? true : that.opt.show;
 
@@ -93,16 +102,16 @@ class TilesetLayer {
             if (that.opt.position) { // 设定模型位置
                 that.setPosition(that.opt.position)
             }
-
             if (that.opt.flyTo) { // 是否定位
                 that.zoomTo();
             }
 
             if (that.opt.style) that.updateStyle(that.opt.style);
-
+           
             if (fun) fun(tileset);
 
         })
+        return test;
     }
 
     /**
@@ -132,6 +141,14 @@ class TilesetLayer {
             this._layer.show = false;
             this._layer.layerConfig.show = false;
         }
+    }
+
+    /**
+     * 显示隐藏
+     */
+    setVisible(visible) {
+        if (visible) this.show();
+        else this.hide();
     }
 
     /**
@@ -211,10 +228,10 @@ class TilesetLayer {
      * @param {Number} [alpha=1] 
      */
     setAlpha(alpha) {
-        alpha = alpha == undefined ? 1 : alpha;
-        this._layer.style = new Cesium.Cesium3DTileStyle({
-            color: "color('rgba(255,255,255," + alpha + ")')",
-        });
+        // alpha = alpha == undefined ? 1 : alpha;
+        // this._layer.style = new Cesium.Cesium3DTileStyle({
+        //     color: "color('rgba(255,255,255," + alpha + ")')",
+        // });
     }
 }
 

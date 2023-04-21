@@ -14,6 +14,7 @@ import CreatePolyline from './plot/createPolyline.js'
 import CreateArrow from "./plot/createArrow";
 import DrawTool from "./plot/drawTool";
 
+import cover from "./cover/cover"
 
 
 import ArcgiscacheLayer from "./layer/arcgiscacheLayer.js";
@@ -27,7 +28,6 @@ import XYZLayer from "./layer/xyzLayer.js";
 import TilesetLayer from "./layer/tilesetLayer";
 import WMSLayer from "./layer/wmsLayer";
 import WMTSLayer from "./layer/wmtsLayer";
-
 
 import LayerTool from "./layer/layerTool";
 import "./prompt/prompt.css";
@@ -51,13 +51,21 @@ import LimitHeight from "./analysis/limitHeight/limitHeight";
 import MapViewer from "./mapViewer";
 
 import weather from "./weather/weather"
+import Cluster from "./cluster/cluster";
+
+import TilesetEdit from "./tilesetAbout/tilesetEdit"
+import TilesetClip from "./tilesetAbout/tilesetClip"
+const tileset = {
+  Clip: TilesetClip,
+  Edit: TilesetEdit
+}
 
 // 版本信息控制
-import easy3dVERSION from "./easy3d.version.js"
+/* import easy3dVERSION from "./easy3d.version.js" */
 
 let analysis = {
   visualFieldTool: visualFieldTool,
-  VisualField : VisualField,
+  VisualField: VisualField,
   Sunshine: Sunshine,
   LimitHeight: LimitHeight,
 };
@@ -69,13 +77,14 @@ export default {
   cUtil,
   cTool,
   MapViewer,
-  CreateBillboard,CreateCircle,CreateGltfModel,CreateLabel,CreatePoint,CreatePolygon,CreateRectangle,CreatePolyline,CreateArrow,
+  CreateBillboard, CreateCircle, CreateGltfModel, CreateLabel, CreatePoint, CreatePolygon, CreateRectangle, CreatePolyline, CreateArrow,
   DrawTool,
   ArcgiscacheLayer, MapserverLayer, GridLayer, GeojsonLayer, TDTLayer, SingleImageLayer, TMSLayer, XYZLayer, TilesetLayer, WMSLayer, WMTSLayer,
   LayerTool,
   MeasureTool,
   Prompt,
   gadgets,
+  cover,
   RoamTool,
   ZoomTool,
   OverviewMap,
@@ -83,5 +92,7 @@ export default {
   animate,
   analysis,
   ParticleSystem,
-  LayerSplit
+  LayerSplit,
+  Cluster,
+  tileset
 };

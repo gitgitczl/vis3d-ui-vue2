@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-let cesium = require('cesium/Cesium.js');
-let { defined, DeveloperError, EllipsoidGeodesic, Cartesian2, getTimestamp, EventHelper, knockout } = cesium;
+// let Cesium = require('cesium/Cesium.js');
+let { defined, DeveloperError, EllipsoidGeodesic, Cartesian2, getTimestamp, EventHelper, knockout } = Cesium;
 import loadView from '../core/loadView'
 var Knockout = knockout
 

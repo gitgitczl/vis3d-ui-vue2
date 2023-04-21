@@ -28,13 +28,13 @@ class LimitHeght {
         /**
          * @property {Number} topHeight 最大高度
          */
-        this.topHeight = opt.topHeight || Number.MAX_VALUE;
+        this.topHeight = Number(opt.topHeight) || Number.MAX_VALUE;
 
         const icolor = opt.color || "#ff0000";
         this.color = icolor instanceof Cesium.Color ? icolor : Cesium.Color.fromCssColorString(icolor);
         this.colorAlpha = opt.alpha || 0.8;
         this.primitive = undefined;
-        this.extrudedHeight = this.topHeight - this.bottomHeight;
+        // this.extrudedHeight = this.topHeight - this.bottomHeight;
         this.init();
     }
     /**
@@ -45,7 +45,7 @@ class LimitHeght {
             geometry: new Cesium.PolygonGeometry({
                 polygonHierarchy: new Cesium.PolygonHierarchy(this.positions),
                 height: this.bottomHeight,
-                extrudedHeight: this.extrudedHeight
+                extrudedHeight: this.topHeight
             }),
             attributes: {
                 color: Cesium.ColorGeometryInstanceAttribute.fromColor(this.color.withAlpha(this.colorAlpha)),

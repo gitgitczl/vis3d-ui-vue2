@@ -42,8 +42,8 @@ class BaseMeasure {
         this.promptStyle = opt.prompt || {
             show: true,
             offset: {
-                x: 60,
-                y: 60
+                x: 20,
+                y: 20
             }
         }
     }

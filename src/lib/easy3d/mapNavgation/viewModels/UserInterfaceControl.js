@@ -1,5 +1,5 @@
-let cesium = require('cesium/Cesium.js');
-let { defined, DeveloperError, knockout } = cesium;
+// let Cesium = require('cesium/Cesium.js');
+let { defined, DeveloperError, knockout } = Cesium;
 
 var Knockout = knockout;
 /**

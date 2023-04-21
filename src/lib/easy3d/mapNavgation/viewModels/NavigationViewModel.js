@@ -1,6 +1,6 @@
-let cesium = require('cesium/Cesium.js');
-let { defined, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } = cesium;
-let cesiumMath = cesium.Math;
+// let Cesium = require('cesium/Cesium.js');
+let { defined, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } = Cesium;
+let cesiumMath = Cesium.Math;
 import loadView from '../core/loadView'
 import ResetViewNavigationControl from './ResetViewNavigationControl'
 import ZoomNavigationControl from './ZoomNavigationControl'

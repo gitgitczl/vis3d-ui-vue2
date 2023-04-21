@@ -6,7 +6,7 @@ const viewToPoint = {
     center: null,
     startTime: null,
     viewer: undefined,
-    start: function (opt, viewer) {
+    start: function (viewer,opt) {
         this.viewer = viewer || window.viewer;
         if (!this.viewer) {
             console.log("绕点旋转缺少viewer对象");

@@ -45,6 +45,7 @@ class LayerTool {
      */
     add(opt) {
         let layerObj = null;
+        let success = opt.success ;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
 
@@ -101,14 +102,17 @@ class LayerTool {
         }
         if (!layerObj) return;
         if (layerObj.type == "3dtiles" || layerObj.type == "geojson") {
-            layerObj.load(function () {
+            layerObj.load(function (tileset) {
+               
+                if(success) success(layerObj,layerObj.layer);
                 if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
-                layerObj.setVisible(opt.show);
+                layerObj.setVisible(opt.show == undefined ? true : opt.show);
             });
         } else {
             layerObj.load();
             if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
-            layerObj.setVisible(opt.show);
+            layerObj.setVisible(opt.show == undefined ? true : opt.show);
+            if(success) success(layerObj,layerObj.layer);
         }
         this._layerObjs.push(layerObj);
 

@@ -26,7 +26,7 @@
  */
 function WallMaterial(opt) {
   this._definitionChanged = new Cesium.Event();
-  this.color = opt.color;
+  this._color = opt.color;
   this.duration = opt.duration || 1000;
   this._time = (new Date()).getTime();
   if (!opt.image) {
@@ -45,13 +45,12 @@ WallMaterial.prototype.getValue = function (time, result) {
   if (!Cesium.defined(result)) {
     result = {};
   }
-  result.color = Cesium.Property.getValueOrClonedDefault(this._color, time, Cesium.Color.WHITE, result.color);
+  result.color = this._color || Cesium.Color.WHITE;
   result.image = this.image;
   result.time = (((new Date()).getTime() - this._time) % this.duration) / this.duration;
   result.axisY = this.axisY;
   result.repeat = this.repeat;
   return result;
-
 }
 WallMaterial.prototype.equals = function (other) {
   return this === other ||

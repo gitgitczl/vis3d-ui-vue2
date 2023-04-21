@@ -135,7 +135,9 @@ class GeojsonLayer extends BaseLayer {
 
     load(fun) {
         let that = this;
-        let dataSource = this.viewer.dataSources.add(Cesium.GeoJsonDataSource.load(this.url));
+        let dataSource = this.viewer.dataSources.add(Cesium.GeoJsonDataSource.load(this.url, {
+            clampToGround: this.opt.style.clampToGround || this.opt.style.heightReference==1
+        }));
         dataSource.then((ds) => {
             that._layer = ds;
             that._layer.attr = that.opt;
@@ -159,9 +161,8 @@ class GeojsonLayer extends BaseLayer {
                     graphic = ent.point;
                 }
 
-                style = JSON.parse(JSON.stringify(style));  
+                style = JSON.parse(JSON.stringify(style));
                 let color = that.getColorByProperty(style.color, properties);
-                console.log("color-->",color,style.color)
                 color = Cesium.Color.fromCssColorString(color);
                 style.color = color.withAlpha(style.colorAlpha || 1);
 
@@ -175,9 +176,12 @@ class GeojsonLayer extends BaseLayer {
                     graphic[key] = style[key];
                 }
                 graphic.material = graphic.color;
+                graphic.classificationType = Cesium.ClassificationType.BOTH;
 
             }
-
+            if (that.opt.flyTo) { // 是否定位
+                that.zoomTo();
+            }
             if (fun) fun();
         })
 
@@ -186,9 +190,9 @@ class GeojsonLayer extends BaseLayer {
     // 根据geojson的属性来设置颜色
     getColorByProperty(colorObj, properties) {
         let color = '';
-        if(colorObj=="random"){
+        if (colorObj == "random") {
             color = this.getRandomColor();
-        }else if (typeof (colorObj) == "string") {
+        } else if (typeof (colorObj) == "string") {
             color = colorObj;
         } else {
             const field = colorObj.field;

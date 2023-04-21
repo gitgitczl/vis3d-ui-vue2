@@ -74,7 +74,7 @@ class Prompt {
             `;
         }
         if (this.opt.closeBtn) { // 移动提示框 不显示关闭按钮
-            closeHtml = `<a class="prompt-close" attr="${this.opt.id}" id="prompt-close-${this.opt.id}" href="#close">x</a>`;
+            closeHtml = `<a class="prompt-close" attr="${this.opt.id}" id="prompt-close-${this.opt.id}">x</a>`;
         }
         let boxShadow = this.opt.style.boxShadow;
         const promptId = "prompt-" + this.opt.id;

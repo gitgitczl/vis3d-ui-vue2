@@ -246,7 +246,6 @@ export default {
         windowHeight: document.body.scrollHeight,
       }).then((canvas) => {
         const url = canvas.toDataURL();
-        this.img = url;
         printJS({
           printable: url,
           type: "image",

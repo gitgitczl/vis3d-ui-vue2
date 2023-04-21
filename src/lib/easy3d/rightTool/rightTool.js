@@ -1,4 +1,5 @@
 import $ from "jquery";
+import "./rightTool.css"
 class RightTool {
     constructor(viewer, opt) {
 
@@ -114,6 +115,7 @@ class RightTool {
         $(`#easy3d-right-tool-${this.randomId} ul`).append(html);
         $(`#right-tool-view-${this.randomId}`).on("click", function () {
             $(`#easy3d-right-tool-${that.randomId}`).hide();
+            debugger
             var camera = that.viewer.camera;
             var position = camera.position;
             var heading = camera.heading;

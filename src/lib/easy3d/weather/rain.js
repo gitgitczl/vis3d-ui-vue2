@@ -15,7 +15,8 @@ let rain = {
      /**
      * 激活
      */
-    activate: function () {
+    activate: function (viewer) {
+        this.viewer = viewer || window.viewer;
         if (this.isActivate) return;
         this.isActivate = true;
         var fs_rain = this.initRain();
@@ -23,7 +24,7 @@ let rain = {
             name: 'czm_rain',
             fragmentShader: fs_rain
         });
-        viewer.scene.postProcessStages.add(this.rainProcs);
+        this.viewer.scene.postProcessStages.add(this.rainProcs);
     },
     /**
      * 销毁释放
@@ -32,7 +33,7 @@ let rain = {
         if (!this.isActivate) return;
         this.isActivate = false;
         if (this.rainProcs) {
-            viewer.scene.postProcessStages.remove(this.rainProcs);
+            this.viewer.scene.postProcessStages.remove(this.rainProcs);
             this.rainProcs = null;
         }
     },

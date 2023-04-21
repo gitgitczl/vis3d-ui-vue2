@@ -370,6 +370,10 @@ class BasePlot {
         this.properties.attr = attr || {};
     }
 
+    getAttr(){
+        return this.properties.attr;
+    }
+
     /**
      * 缩放至当前绘制的对象
     */

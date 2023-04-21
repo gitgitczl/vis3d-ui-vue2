@@ -6,63 +6,113 @@ class TilesetEdit {
             console.log("缺少模型！");
             return;
         }
-        this.mtxHpr = opt.mtxHpr || {};
-        this.tileset.mtxHpr = this.mtxHpr;
+        this.initBoundingSphere = Cesium.BoundingSphere.clone(this.tileset.boundingSphere, new Cesium.BoundingSphere());
+        this.initTransform = this.tileset._root.transform.clone();
+        this.moveMtx = undefined;
+        this.scaleMtx = undefined;
+        this.rotationMtx_X = undefined;
+        this.rotationMtx_Y = undefined;
+        this.rotationMtx_Z = undefined;
+
+        this.scaleMtx_X = undefined;
+        this.scaleMtx_Y = undefined;
+        this.scaleMtx_Z = undefined;
+
+        let centerMtx = Cesium.Transforms.eastNorthUpToFixedFrame(this.initBoundingSphere.center.clone());
+        this.centerMtx_inverse = Cesium.Matrix4.inverse(centerMtx.clone(), new Cesium.Matrix4());
+        this.newCenter = Cesium.Matrix4.multiplyByPoint(
+            this.centerMtx_inverse.clone(),
+            this.initBoundingSphere.center.clone(),
+            new Cesium.Cartesian3());
     }
 
-    setPosition(position, callback) {
-        if (!position) return;
+    // 计算平移矩阵
+    setPosition(position) {
         if (!(position instanceof Cesium.Cartesian3)) {
-            position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2] || 0);
+            position = Cesium.Cartesian3.fromDegrees(Number(position[0]), Number(position[1]), Number(position[2] || 0));
         }
-        this.tileset.boundingSphere.center = position;
-        // 此处不能只建立正东正北的局部坐标系 因为可能旋转 再进行平移
-        var mtx;
-        if (Object.keys(this.mtxHpr).length == 0) {
-            mtx = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-        } else {
-            var hpr = new Cesium.HeadingPitchRoll(
-                Cesium.Math.toRadians(this.mtxHpr.heading || 0),
-                Cesium.Math.toRadians(this.mtxHpr.pitch || 0),
-                Cesium.Math.toRadians(this.mtxHpr.roll || 0));
-            mtx = Cesium.Transforms.headingPitchRollToFixedFrame(position, hpr);
-        }
-        this.tileset._root.transform = mtx;
+        // 局部坐标系下坐标
+        let newPosition = Cesium.Matrix4.multiplyByPoint(this.centerMtx_inverse.clone(), position.clone(), new Cesium.Cartesian3())
+        // 当前相对起点的偏移量
+        let translation = Cesium.Cartesian3.subtract(newPosition.clone(), this.newCenter.clone(), new Cesium.Cartesian3());
+        let nowMovelMtx = Cesium.Matrix4.fromTranslation(translation.clone(), new Cesium.Matrix4());
+        if (this.moveMtx) this.revertTransform(this.moveMtx);
+        this.moveMtx = nowMovelMtx.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowMovelMtx.clone(), this.tileset._root.transform);
+    }
 
-        if (callback) callback(this.tileset)
-    }
+    // 计算缩放矩阵
     setScale(scale) {
-        Cesium.Matrix4.multiplyByUniformScale(this.tileset._root.transform, scale,
-            this.tileset._root.transform);
+        let translation = new Cesium.Cartesian3(1, 1, 1);
+        if (scale instanceof Cesium.Cartesian3) {
+            translation = scale.clone();
+        } else {
+            translation = new Cesium.Cartesian3(scale, scale, scale);
+        }
+        let nowScaleMtx = Cesium.Matrix4.fromScale(translation.clone(), new Cesium.Matrix4());
+        if (this.scaleMtx) this.revertTransform(this.scaleMtx);
+        this.scaleMtx = nowScaleMtx.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowScaleMtx.clone(), this.tileset._root.transform);
     }
-    setHeight(h) {
-        if (h === undefined) return;
-        var lnglat = cUtil.cartesianToLnglat(this.tileset.boundingSphere.center);
-        var lng = lnglat[0];
-        var lat = lnglat[1];
-        var c3 = Cesium.Cartesian3.fromDegrees(lng, lat, h);
-        this.setPosition(c3);
+
+    setScaleX(scale) {
+        let translation = new Cesium.Cartesian3(scale, 1, 1);
+        let nowScaleMtx = Cesium.Matrix4.fromScale(translation.clone(), new Cesium.Matrix4());
+        if (this.scaleMtx_X) this.revertTransform(this.scaleMtx_X);
+        this.scaleMtx_X = nowScaleMtx.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowScaleMtx.clone(), this.tileset._root.transform);
     }
-    setRoate(opt) {
-        if (opt.rx) {
-            var mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(opt.rx)); //绕x轴旋转
-            var rotationX = Cesium.Matrix4.fromRotationTranslation(mx);
-            this.tileset._root.transform = Cesium.Matrix4.multiply(this.tileset._root.transform.clone(), rotationX, new Cesium.Matrix4());
-            this.mtxHpr.roll = opt.rx;
-        }
-        // 表示绕x轴旋转
-        if (opt.ry) {
-            var my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(opt.ry)); //绕x轴旋转
-            var rotationY = Cesium.Matrix4.fromRotationTranslation(my);
-            this.tileset._root.transform = Cesium.Matrix4.multiply(this.tileset._root.transform.clone(), rotationY, new Cesium.Matrix4());
-            this.mtxHpr.pitch = -opt.ry;
-        }
-        // 表示绕x轴旋转
-        if (opt.rz) {
-            var mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(opt.rz)); //绕x轴旋转
-            var rotationZ = Cesium.Matrix4.fromRotationTranslation(mz);
-            this.tileset._root.transform = Cesium.Matrix4.multiply(this.tileset._root.transform.clone(), rotationZ, new Cesium.Matrix4());
-            this.mtxHpr.heading = -opt.rz;
-        }
+
+    setScaleY(scale) {
+        let translation = new Cesium.Cartesian3(1, scale, 1);
+        let nowScaleMtx = Cesium.Matrix4.fromScale(translation.clone(), new Cesium.Matrix4());
+        if (this.scaleMtx_Y) this.revertTransform(this.scaleMtx_Y);
+        this.scaleMtx_Y = nowScaleMtx.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowScaleMtx.clone(), this.tileset._root.transform);
+    }
+
+    setScaleZ(scale) {
+        let translation = new Cesium.Cartesian3(1, 1, scale);
+        let nowScaleMtx = Cesium.Matrix4.fromScale(translation.clone(), new Cesium.Matrix4());
+        if (this.scaleMtx_Z) this.revertTransform(this.scaleMtx_Z);
+        this.scaleMtx_Z = nowScaleMtx.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowScaleMtx.clone(), this.tileset._root.transform);
+    }
+
+    // 计算旋转矩阵
+    setRotateX(angle) {
+        let mtx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(angle));
+        let nowRotationMtx_X = Cesium.Matrix4.fromRotation(mtx, new Cesium.Matrix4());
+        if (this.rotationMtx_X) this.revertTransform(this.rotationMtx_X);
+        this.rotationMtx_X = nowRotationMtx_X.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowRotationMtx_X.clone(), this.tileset._root.transform);
+    }
+
+    setRotateY(angle) {
+        let mtx = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(angle));
+        let nowRotationMtx_Y = Cesium.Matrix4.fromRotation(mtx, new Cesium.Matrix4());
+        if (this.rotationMtx_Y) this.revertTransform(this.rotationMtx_Y);
+        this.rotationMtx_Y = nowRotationMtx_Y.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowRotationMtx_Y.clone(), this.tileset._root.transform);
+    }
+
+    setRotateZ(angle) {
+        let mtx = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(angle));
+        let nowRotationMtx_Z = Cesium.Matrix4.fromRotation(mtx, new Cesium.Matrix4());
+        if (this.rotationMtx_Z) this.revertTransform(this.rotationMtx_Z);
+        this.rotationMtx_Z = nowRotationMtx_Z.clone();
+        Cesium.Matrix4.multiply(this.tileset._root.transform, nowRotationMtx_Z.clone(), this.tileset._root.transform);
+    }
+
+    reset() {
+        this.tileset._root.transform = this.initTransform();
+    }
+
+    revertTransform(mtx4) {
+        let inverse = Cesium.Matrix4.inverse(mtx4.clone(), new Cesium.Matrix4());
+        Cesium.Matrix4.multiply(this.tileset._root.transform, inverse.clone(), this.tileset._root.transform);
     }
 }
+
+
+export default TilesetEdit;

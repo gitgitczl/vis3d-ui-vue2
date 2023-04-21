@@ -9,9 +9,7 @@ class Sunshine {
      * @param {Object} opt 基础参数
      * @param {Date|Cesium.JulianDate} opt.startTime 开始时间
      * @param {Date|Cesium.JulianDate} opt.endTime 结束时间
-     * @param {Number} [opt.topHeight=Number.MAX_VALUE] 最大高度
-     * @param {String} [opt.color='#ff0000'] 颜色
-     * @param {Number} [opt.alpha=0.8] 颜色透明度
+     * @param {Number} [opt.multiplier=1] 播放速度
      */
     constructor(viewer, opt) {
         this.viewer = viewer;

@@ -262,8 +262,8 @@ class MeasureSpaceArea extends BaseMeasure {
 			this.handler.destroy();
 			this.handler = null;
 		}
-		for (let i = 0; i < that.controlPoints.length; i++) {
-			let point = that.controlPoints[i];
+		for (let i = 0; i < this.controlPoints.length; i++) {
+			let point = this.controlPoints[i];
 			this.viewer.entities.remove(point);
 		}
 
@@ -287,7 +287,7 @@ class MeasureSpaceArea extends BaseMeasure {
 	}
 	createPolygon() {
 		var that = this;
-		var polygon = viewer.entities.add({
+		var polygon = this.viewer.entities.add({
 			polygon: new Cesium.PolygonGraphics({
 				hierarchy: new Cesium.CallbackProperty(function () {
 					return new Cesium.PolygonHierarchy(that.positions);

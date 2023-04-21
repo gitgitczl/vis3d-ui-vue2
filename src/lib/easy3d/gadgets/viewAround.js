@@ -6,7 +6,7 @@ const viewAround = {
     isStop: false,
     initHeading: undefined,
     viewer: undefined,
-    start: function (opt, viewer) {
+    start: function (viewer,opt) {
         this.viewer = viewer || window.viewer;
         let { speed } = opt;
         speed = speed || 5;

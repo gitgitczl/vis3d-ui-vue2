@@ -38,7 +38,7 @@ class MeasureLnglat extends BaseMeasure {
                 that.point = that.createPoint();
                 that.point.objId = that.objId;
             }
-            var lnglat = cUtil.cartesianToLnglat(cartesian);
+            var lnglat = cUtil.cartesianToLnglat(cartesian,that.viewer);
             that.point.label.text = "经度：" + lnglat[0].toFixed(6) + "\n纬度：" + lnglat[1].toFixed(6) + "\n高度：" + lnglat[2].toFixed(2) + " m";
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 

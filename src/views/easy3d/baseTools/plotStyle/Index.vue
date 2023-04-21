@@ -135,6 +135,10 @@ export default {
       let nowPlotEntityObj = window.plotDrawTool.getEntityObjById(id) || {};
       let entityObj = nowPlotEntityObj.entityObj;
       if (!entityObj) return;
+
+      const entityObjAttr = entityObj.getAttr();
+      if(entityObjAttr) this.infos = entityObjAttr;
+
       this.plotStyleAttr = plotStyle[entityObj.attr.styleType];
       // 设置样式默认值
       let entityStyleValue = entityObj.getStyle();
