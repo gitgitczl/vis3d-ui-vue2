@@ -223,7 +223,7 @@ export default {
         fixType: "0",
         alltimes: 60,
         mark: "",
-        height: "",
+        height: 1000,
         entityAttr: {},
       },
       // 漫游模型选择
@@ -360,7 +360,7 @@ export default {
           viewType: "no",
           fixType: "0",
           mark: "",
-          height: "",
+          height: 1000,
           entityAttr: {},
         };
 
