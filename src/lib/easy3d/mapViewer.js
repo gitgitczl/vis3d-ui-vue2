@@ -221,7 +221,7 @@ class MapViewer {
 
         this.viewer.scene.debugShowFramesPerSecond =
             this.opt.map.debugShowFramesPerSecond;
-
+        
         // 亮度设置
         if (this.opt.map.brightness != undefined) {
             var stages = this.viewer.scene.postProcessStages;

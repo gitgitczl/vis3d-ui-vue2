@@ -45,7 +45,7 @@ class LayerTool {
      */
     add(opt) {
         let layerObj = null;
-        let success = opt.success ;
+        let success = opt.success;
         opt = JSON.parse(JSON.stringify(opt || {}));
         let type = opt.type;
 
@@ -102,20 +102,19 @@ class LayerTool {
         }
         if (!layerObj) return;
         if (layerObj.type == "3dtiles" || layerObj.type == "geojson") {
-            layerObj.load(function (tileset) {
-               
-                if(success) success(layerObj,layerObj.layer);
+            layerObj.load(function (layer) {
+                // 当为3dtiles是 setAlpha和success里的设置样式可能会冲突
                 if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
                 layerObj.setVisible(opt.show == undefined ? true : opt.show);
+                if (success) success(layerObj, layer);
             });
         } else {
             layerObj.load();
             if (opt.alpha != undefined) layerObj.setAlpha(opt.alpha);
             layerObj.setVisible(opt.show == undefined ? true : opt.show);
-            if(success) success(layerObj,layerObj.layer);
+            if (success) success(layerObj, layerObj.layer);
         }
         this._layerObjs.push(layerObj);
-
         opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
         opt.alpha = opt.alpha == undefined ? 1 : opt.alpha;
         layerObj.attr = opt; // 绑定属性文件 与mapConfig.js进行关联

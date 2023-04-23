@@ -2,12 +2,12 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x" : 112.24037786821494,
-      "y" : 31.101539791751655,
-      "z" : 3656387.5848016106,
-      "heading" : 4.688441447620103,
-      "pitch" : -89.98846996633668,
-      "roll" : 0,
+      "x" : 117.0845372279808,
+      "y" : 31.646710053439016,
+      "z" : 432.53055753877084,
+      "heading" : 5.903109488796287e-12,
+      "pitch" : -28.653722707005915,
+      "roll" : 359.9999999999999,
       "duration": 0
     },
     brightness: 1.0, // 亮度设置
@@ -279,9 +279,9 @@ window.mapConfig = {
           name: "鄂尔多斯",
           type: "3dtiles",
           url: "http://10.33.136.4:8000/data/model/eeds-kbs2023/1/tileset.json",
-          show: true,
+          show: false,
           maximumScreenSpaceError: 16,
-        /*   maximumMemoryusage: 1024, */
+          /*   maximumMemoryusage: 1024, */
           center: {
             z: 22
           },
@@ -292,7 +292,14 @@ window.mapConfig = {
           url: "http://localhost/model/max-shihua/tileset.json",
           show: false,
           center: {
-            z: 50,
+            z: 80,
+          },
+          style: {
+            color: {
+              conditions: [
+                ['true', 'color("red", 0.5)']
+              ]
+            }
           },
           maximumScreenSpaceError: 16,
         },

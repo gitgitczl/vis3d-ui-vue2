@@ -105,7 +105,7 @@ class TilesetEdit {
     }
 
     reset() {
-        this.tileset._root.transform = this.initTransform();
+        this.tileset._root.transform = this.initTransform.clone();
     }
 
     revertTransform(mtx4) {

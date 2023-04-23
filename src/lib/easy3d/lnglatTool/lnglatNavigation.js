@@ -70,9 +70,9 @@ class LatlngNavigation {
         let ele = document.createElement("div");
         ele.className = 'easy3d-lnglatNavigation';
         ele.innerHTML = ` <ul>
-                            <li></li>   
-                            <li></li>
-                            <li></li>
+                            <li style="width:120px;"></li>   
+                            <li style="width:120px;"></li>
+                            <li style="width:120px;"></li>
                             <li></li>
                             <li></li>
                             <li></li>

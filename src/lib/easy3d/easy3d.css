@@ -419,3 +419,8 @@ i {
 .reset-select .el-select {
   width: 100%;
 }
+
+.cesium-performanceDisplay-defaultContainer{
+ 
+  right: 80px !important;
+}

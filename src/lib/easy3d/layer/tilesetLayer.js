@@ -2,6 +2,7 @@
  * 3tiles模型加载类
  * @class 
  */
+import TilesetEdit from "../tilesetAbout/tilesetEdit";
 class TilesetLayer {
     /**
      * 
@@ -58,6 +59,7 @@ class TilesetLayer {
         }
         this._layer = undefined;
 
+        this.tilesetEdit = undefined;
     }
 
     // 获取当前图层
@@ -82,34 +84,16 @@ class TilesetLayer {
 
 
         test.readyPromise.then(function (tileset) {
-            tileset.style = new Cesium.Cesium3DTileStyle({
-                color: {
-                    conditions: [
-                        ['true', 'color("blue", .1)']
-                    ]
-                }
-            });
-            
-             that._layer = tileset;
-             that._layer.layerConfig = that.opt; // 保存配置信息
+
+            if (!that.tilesetEdit) that.tilesetEdit = new TilesetEdit(viewer, { tileset: tileset });
+            that._layer = tileset;
+            that._layer.layerConfig = that.opt; // 保存配置信息
             that._layer.initBoundingSphere = tileset.boundingSphere.clone();// 初始化中心
             that._layer.show = that.opt.show == undefined ? true : that.opt.show;
-
-            if (that.opt.center) { // 设定模型中心点
-                that.setCenter(that.opt.center);
-            }
-
-            if (that.opt.position) { // 设定模型位置
-                that.setPosition(that.opt.position)
-            }
-            if (that.opt.flyTo) { // 是否定位
-                that.zoomTo();
-            }
-
+            if (that.opt.center) that.setCenter(that.opt.center);
+            if (that.opt.flyTo) that.zoomTo();
             if (that.opt.style) that.updateStyle(that.opt.style);
-           
             if (fun) fun(tileset);
-
         })
         return test;
     }
@@ -130,6 +114,8 @@ class TilesetLayer {
         if (this._layer) {
             this._layer.show = true;
             this._layer.layerConfig.show = true;
+
+            if(this.opt.style) this.updateStyle(this.opt.style); // 显示时 要重置样式
         }
     }
 
@@ -169,38 +155,21 @@ class TilesetLayer {
 
     /**
      * 设置模型中心点
-     * @param {Object} opt 
+     * @param {Object|Cesium.Cartesian3} opt 
      * @param {Number} opt.x 经度
      * @param {Number} opt.y 纬度
      * @param {Number} opt.z 高度
      */
     setCenter(opt) {
-        if (!opt) return;
-        const cartographic = Cesium.Cartographic.fromCartesian(this._layer.initBoundingSphere.center);
-        const surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0);
-        const lng = opt.x || Cesium.Math.toDegrees(cartographic.longitude);
-        const lat = opt.y || Cesium.Math.toDegrees(cartographic.latitude);
-        const offset = Cesium.Cartesian3.fromDegrees(Number(lng), Number(lat), opt.z || 0);
-        const translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
-        this._layer.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
-    }
-
-    /**
-     * 设置模型位置
-     * @param {Cesium.Cartesian3 | Object} position 
-     */
-    setPosition(position) {
-        if (!position) {
-            return;
-        }
-        let center;
-        if (position instanceof Cesium.Cartesian3) {
-            center = position.clone();
+        opt = opt || {};
+        if (opt instanceof Cesium.Cartesian3) {
+            this.tilesetEdit.setPosition(opt.clone());
         } else {
-            center = Cesium.Cartesian3.fromDegrees(position.x, position.y, position.z);
+            let origin = Cesium.Cartographic.fromCartesian(this._layer.boundingSphere.center);
+            opt.x = opt.x || Cesium.Math.toDegrees(origin.longitude);
+            opt.y = opt.y || Cesium.Math.toDegrees(origin.latitude);
+            this.tilesetEdit.setPosition([opt.x, opt.y, opt.z]);
         }
-        var mtx = Cesium.Transforms.eastNorthUpToFixedFrame(center);
-        this._layer._root.transform = mtx;
     }
 
     /**
@@ -228,10 +197,10 @@ class TilesetLayer {
      * @param {Number} [alpha=1] 
      */
     setAlpha(alpha) {
-        // alpha = alpha == undefined ? 1 : alpha;
-        // this._layer.style = new Cesium.Cesium3DTileStyle({
-        //     color: "color('rgba(255,255,255," + alpha + ")')",
-        // });
+        alpha = alpha == undefined ? 1 : alpha;
+        this._layer.style = new Cesium.Cesium3DTileStyle({
+            color: "color('rgba(255,255,255," + alpha + ")')",
+        });
     }
 }
 
