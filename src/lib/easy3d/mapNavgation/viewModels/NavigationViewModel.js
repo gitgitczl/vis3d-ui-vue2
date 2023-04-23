@@ -1,4 +1,4 @@
-// let Cesium = require('cesium/Cesium.js');
+ let Cesium = require('cesium/Cesium.js');
 let { defined, getTimestamp, EventHelper, Transforms, SceneMode, Cartesian2, Cartesian3, Matrix4, BoundingSphere, HeadingPitchRange, knockout } = Cesium;
 let cesiumMath = Cesium.Math;
 import loadView from '../core/loadView'

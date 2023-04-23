@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-// let Cesium = require('cesium/Cesium.js');
+ let Cesium = require('cesium/Cesium.js');
 let { defined, Event, knockout, DeveloperError } = Cesium;
 import registerKnockoutBindings from './core/registerKnockoutBindings'
 import DistanceLegendViewModel from './viewModels/DistanceLegendViewModel'

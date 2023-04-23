@@ -3,7 +3,7 @@ import WallMaterial from "./wall";
 import WaveMaterial from "./wave";
 import ScanMaterial from "./scan";
 import CylinderMaterial from "./cylinder"
-// let cesium = require('cesium/Cesium.js');
+let Cesium = require('cesium/Cesium.js');
 
 Object.defineProperties(FlowLineMaterial.prototype, {
     isConstant: {

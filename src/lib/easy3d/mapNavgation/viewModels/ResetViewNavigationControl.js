@@ -1,4 +1,4 @@
-// let Cesium = require('cesium/Cesium.js');
+ let Cesium = require('cesium/Cesium.js');
 let { defined, Camera, Rectangle, Cartographic ,Math} = Cesium;
 import svgReset from '../svgPaths/svgReset'
 import NavigationControl from './NavigationControl'
