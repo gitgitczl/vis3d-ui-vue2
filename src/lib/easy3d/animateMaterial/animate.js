@@ -51,8 +51,6 @@ Cesium.Material._materialCache.addMaterial("FlowLine", {
     }
 });
 
-
-
 Object.defineProperties(WallMaterial.prototype, {
     isConstant: {
         get: function () {
@@ -112,7 +110,6 @@ Object.defineProperties(WaveMaterial.prototype, {
         }
     }
 });
-
 Cesium.Material._materialCache.addMaterial("WaveMaterial", {
     fabric: {
         type: "WaveMaterial",
@@ -154,7 +151,6 @@ Object.defineProperties(ScanMaterial.prototype, {
     },
     color: Cesium.createPropertyDescriptor('color')
 });
-
 Cesium.Material._materialCache.addMaterial("ScanMaterial", {
     fabric: {
         type: "",
@@ -206,7 +202,6 @@ Cesium.Material._materialCache.addMaterial("ScanMaterial", {
     }
 });
 
-
 Object.defineProperties(CylinderMaterial.prototype, {
     isConstant: {
         get: function () {
@@ -220,7 +215,6 @@ Object.defineProperties(CylinderMaterial.prototype, {
     },
     color: Cesium.createPropertyDescriptor('color')
 });
-
 Cesium.Material._materialCache.addMaterial('cylinderMaterial', {
     fabric: {
         type: Cesium.Material.CircleFadeMaterialType,
@@ -258,8 +252,6 @@ Cesium.Material._materialCache.addMaterial('cylinderMaterial', {
         return true;
     }
 });
-
-
 
 export default {
     FlowLineMaterial, WallMaterial, WaveMaterial, ScanMaterial, CylinderMaterial
