@@ -479,6 +479,100 @@ i {
     height: 17px;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
+  }.easy3d-right-tool {
+    z-index: 999;
+    padding: 10px 5px;
+    background: rgba(42,48,60,0.8);
+    border-radius: 4px;
+    position: absolute;
+    display: none;
+    color: white !important;
+  }
+
+  .easy3d-right-tool li {
+    cursor: pointer;
+    border-bottom: 1px solid white;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .easy3d-right-tool li:hover {
+    color: #00FFFF;
+  }
+
+  /* 内容面板样式 */
+  .easy3d-right-content {
+    color: white !important;
+    z-index: 4;
+    background: rgba(0.5, 0.5, 0.5, 0.5);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 4px;
+    border: 1px solid #00FFFF;
+    min-width: 300px;
+    min-height: 120px;
+  }
+
+  .right-content-result {
+    padding: 10px 0px;
+    max-height: 600px;
+    max-width: 500px;
+    overflow: auto;
+  }
+
+  .right-content-close {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+  .content-result-title{
+    font-size: 16px;
+    font-weight: 600;
+    margin: 4px 10px;
+  }
+  .content-result-line{
+    width: 96%;
+    height: 1px;
+    background: grey;
+    margin: 10px auto;
+  }
+  .content-result-info{
+    font-size: 14px;
+    margin: auto 10px;
+  }
+
+
+  .scrollbar::-webkit-scrollbar {
+    width : 5px; 
+    height: 1px;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #535353;
+  }
+  .scrollbar::-webkit-scrollbar-track {
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background   : #ededed;
+  }
+  
+  /* 遮罩 */
+  .easy3d-right-tool-shadow{
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    padding: 0px;
+    background: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 0px;
+    left: 0px;
   }.easy3d-lnglatNavigation ul {
     position: absolute;
     width: 100%;
@@ -997,98 +1091,3 @@ input:focus {
     display: none;
   }
 }
-.easy3d-right-tool {
-    z-index: 999;
-    padding: 10px 5px;
-    background: rgba(42,48,60,0.8);
-    border-radius: 4px;
-    position: absolute;
-    display: none;
-    color: white !important;
-  }
-
-  .easy3d-right-tool li {
-    cursor: pointer;
-    border-bottom: 1px solid white;
-    height: 30px;
-    line-height: 30px;
-    font-size: 16px;
-    font-weight: 400;
-  }
-
-  .easy3d-right-tool li:hover {
-    color: #00FFFF;
-  }
-
-  /* 内容面板样式 */
-  .easy3d-right-content {
-    color: white !important;
-    z-index: 4;
-    background: rgba(0.5, 0.5, 0.5, 0.5);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    border-radius: 4px;
-    border: 1px solid #00FFFF;
-    min-width: 300px;
-    min-height: 120px;
-  }
-
-  .right-content-result {
-    padding: 10px 0px;
-    max-height: 600px;
-    max-width: 500px;
-    overflow: auto;
-  }
-
-  .right-content-close {
-    position: absolute;
-    top: 4px;
-    right: 10px;
-    cursor: pointer;
-  }
-
-  .content-result-title{
-    font-size: 16px;
-    font-weight: 600;
-    margin: 4px 10px;
-  }
-  .content-result-line{
-    width: 96%;
-    height: 1px;
-    background: grey;
-    margin: 10px auto;
-  }
-  .content-result-info{
-    font-size: 14px;
-    margin: auto 10px;
-  }
-
-
-  .scrollbar::-webkit-scrollbar {
-    width : 5px; 
-    height: 1px;
-  }
-  .scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background   : #535353;
-  }
-  .scrollbar::-webkit-scrollbar-track {
-    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    background   : #ededed;
-  }
-  
-  /* 遮罩 */
-  .easy3d-right-tool-shadow{
-    width: 100%;
-    height: 100%;
-    z-index: 3;
-    padding: 0px;
-    background: rgba(0, 0, 0, 0.2);
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
