@@ -110,7 +110,7 @@ export default {
       this.diffH = 0;
     },
     compute(h) {
-      let uniformData = cUtil.computeUniforms(polygonPositions, true,window.viewer);
+      let uniformData = util.computeUniforms(polygonPositions, true,window.viewer);
       let minh = uniformData.minHeight;
       let maxh = uniformData.maxHeight;
       this.diffH = Number(maxh - minh).toFixed(2);

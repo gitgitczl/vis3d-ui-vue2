@@ -77,7 +77,7 @@ export default {
     window.floodDrawTool.on("endEdit", function (entObj, ent) {
       // 编辑完成后
       polygonPositions = entObj.getPositions();
-      let uniformData = cUtil.computeUniforms(
+      let uniformData = util.computeUniforms(
         polygonPositions,
         false,
         window.viewer

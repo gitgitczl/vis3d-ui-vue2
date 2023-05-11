@@ -71,7 +71,7 @@ export default {
       }
 
       window.viewer.scene.render();
-      let view = this.easy3d.cUtil.getCameraView(window.viewer);
+      let view = this.easy3d.util.getCameraView(window.viewer);
       this.viewerList.unshift({
         name: this.viewerTitle,
         imgSrc: window.viewer.canvas.toDataURL("image/png"),
@@ -90,7 +90,7 @@ export default {
     },
     setCameraView(attr) {
       if (!attr || !attr.view) return;
-      this.easy3d.cUtil.setCameraView(attr.view);
+      this.easy3d.util.setCameraView(attr.view);
     },
   },
 };

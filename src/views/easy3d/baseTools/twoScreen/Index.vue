@@ -170,9 +170,9 @@ export default {
       );
     },
     updateView: function (viewer, viewer2) {
-      let cameraView = this.easy3d.cUtil.getCameraView(viewer);
+      let cameraView = this.easy3d.util.getCameraView(viewer);
       cameraView.duration = 0;
-      this.easy3d.cUtil.setCameraView(cameraView, viewer2);
+      this.easy3d.util.setCameraView(cameraView, viewer2);
     },
     close() {
       this.$emit("close", "twoScreen");

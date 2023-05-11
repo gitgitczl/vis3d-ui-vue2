@@ -137,7 +137,7 @@ export default {
       this.fillTotalV = 0;
     },
     flfxStartCompute(h) {
-      let uniformData = cUtil.computeUniforms(
+      let uniformData = util.computeUniforms(
         polygonPositions,
         false,
         window.viewer
@@ -227,7 +227,7 @@ export default {
         if (item) viewer.entities.remove(item);
       }
       bzdPoints = [];
-      var positions = cUtil.updatePositionsHeight(positions, height);
+      var positions = util.updatePositionsHeight(positions, height);
       bzmPlane = viewer.entities.add({
         polygon: {
           hierarchy: new Cesium.PolygonHierarchy(positions),
@@ -263,7 +263,7 @@ export default {
         let ray = viewer.camera.getPickRay(evt.position);
         if (!ray) return null;
         let cartesian = viewer.scene.globe.pick(ray, viewer.scene);
-        let lnglat = cUtil.cartesianToLnglat(cartesian);
+        let lnglat = util.cartesianToLnglat(cartesian);
         that.jzmHeight = lnglat[2];
         that.flfxStartCompute(that.jzmHeight);
         setHeightHandler.destroy();

@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 /dist
-/lib/easy3d
+/src/lib/easy3d-resource
 .svn
 apidoc
 

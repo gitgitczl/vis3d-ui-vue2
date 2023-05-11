@@ -77,7 +77,7 @@ export default {
           let ctgc_center = Cesium.Cartographic.fromCartesian(positions[0]);
           ctgc_center.height = ctgc_center.height + 2;
           let center = Cesium.Cartographic.toCartesian(ctgc_center);
-          let pnts = that.easy3d.cUtil.getCirclePointsByAngle(center, positions[1], 6);
+          let pnts = that.easy3d.util.getCirclePointsByAngle(center, positions[1], 6);
           if (window.viewer.scene.sampleHeightSupported) {
             // 求出表面高度
             var promise = window.viewer.scene.sampleHeightMostDetailed(pnts);
@@ -86,7 +86,7 @@ export default {
                 let cc = updatedPosition[i];
                 cc.height = (cc.height || 0) + 1;
                 let position = Cesium.Cartographic.toCartesian(cc);
-                let point = that.easy3d.cUtil.getIntersectPosition(
+                let point = that.easy3d.util.getIntersectPosition(
                   {
                     startPoint: center,
                     endPoint: position,
@@ -120,7 +120,7 @@ export default {
           let ctgc_aim = Cesium.Cartographic.fromCartesian(positions[1]);
           ctgc_aim.height = ctgc_aim.height + 1;
           let aim = Cesium.Cartographic.toCartesian(ctgc_aim);
-          let point = that.easy3d.cUtil.getIntersectPosition(
+          let point = that.easy3d.util.getIntersectPosition(
             {
               startPoint: center,
               endPoint: aim,

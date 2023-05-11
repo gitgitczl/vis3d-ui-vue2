@@ -1,7 +1,7 @@
 {
     "source": {
         "include": [
-            "./src/lib/easy3d/cUtil.js",
+            "./src/lib/easy3d/util.js",
             "./src/lib/easy3d/cTool.js",
             "./src/lib/easy3d/mapViewer.js",
             "./src/lib/easy3d/layer/baseLayer.js",
