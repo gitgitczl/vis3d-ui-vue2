@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 /* import less from 'less' */
-import easy3d from "@/lib/easy3d/easy3d.export.js"
+import easy3d from "@/lib/easy3d-resource/easy3d.export.js"
 // ============= 加密后 =================
 /* import "@/lib/easy3d/easy3d.min.css"
 import easy3d from "@/lib/easy3d/easy3d.min.js" */
