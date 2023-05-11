@@ -102,7 +102,7 @@ export default {
       window.Cesium.Color.DODGERBLUE,
     ];
     if (!drawTool) {
-      drawTool = new this.easy3d.DrawTool(window.viewer,{
+      drawTool = new this.easy3d.plot.Tool(window.viewer,{
         canEdit : false
       });
       drawTool.on("endEdit", function (entObj, ent) {

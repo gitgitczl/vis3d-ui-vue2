@@ -45,7 +45,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.limitHeightDrawTool)
-      window.limitHeightDrawTool = new this.easy3d.DrawTool(window.viewer, {
+      window.limitHeightDrawTool = new this.easy3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
 

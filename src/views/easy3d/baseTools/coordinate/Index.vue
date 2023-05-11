@@ -59,7 +59,7 @@ export default {
   mounted() {
     let that = this;
     if (!drawTool) {
-      drawTool = new this.easy3d.DrawTool(window.viewer);
+      drawTool = new this.easy3d.plot.Tool(window.viewer);
       drawTool.on("endCreate", function (entObj, ent) {
         const lnglat = entObj.getPositions(1);
         if (!lnglat) return;

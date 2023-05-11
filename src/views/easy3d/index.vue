@@ -65,7 +65,7 @@ export default {
 
     // 构建缩放按钮
     if (!zoomTool) {
-      zoomTool = new this.easy3d.ZoomTool(window.viewer);
+      zoomTool = new this.easy3d.gadgets.ZoomTool(window.viewer);
     }
 
    
@@ -135,7 +135,7 @@ export default {
     "$store.state.map3d.isOpenOverviewMap": function (res) {
       if (res) {
         if (!overviewMap)
-          overviewMap = new this.easy3d.OverviewMap(window.viewer);
+          overviewMap = new this.easy3d.common.OverviewMap(window.viewer);
       } else {
         if (overviewMap) {
           overviewMap.destroy();

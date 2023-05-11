@@ -64,7 +64,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.floodDrawTool)
-      window.floodDrawTool = new this.easy3d.DrawTool(window.viewer, {
+      window.floodDrawTool = new this.easy3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
 

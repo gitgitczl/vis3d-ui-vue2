@@ -109,7 +109,7 @@ export default {
 
     let that = this;
     if (!window.plotDrawTool) {
-      window.plotDrawTool = new this.easy3d.DrawTool(window.viewer, {
+      window.plotDrawTool = new this.easy3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
       window.plotDrawTool.on("endCreate", function (entObj, ent) {
@@ -177,7 +177,7 @@ export default {
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
         if (!jsondata) return;
-        this.easy3d.cTool.downloadFile(
+        this.easy3d.tool.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
         );

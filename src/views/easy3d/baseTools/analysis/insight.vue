@@ -35,7 +35,7 @@ export default {
     };
   },
   mounted() {
-    drawTool = new this.easy3d.DrawTool(window.viewer, {
+    drawTool = new this.easy3d.plot.Tool(window.viewer, {
       canEdit: false,
     });
   },
