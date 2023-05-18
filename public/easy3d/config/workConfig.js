@@ -85,7 +85,7 @@ window.workConfig = {
         },
         {
             "name": "图层管理",
-            "show": false,
+            "show": true,
             "workName": "layers",
             "position": {
                 "top": 60,

@@ -6,10 +6,12 @@
 
 <script>
 import Map from '@/views/easy3d/index.vue'
+import Clip from "@/views/easy3d/clip.vue"
 export default {
   name: 'App',
   components: {
     Map,
+    Clip
   },
 
   data() {

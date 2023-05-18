@@ -2,13 +2,12 @@ window.mapConfig = {
   baseServer: "http://localhost:1119/",
   map: {
     cameraView: {
-      "x" : 117.0845372279808,
-      "y" : 31.646710053439016,
-      "z" : 432.53055753877084,
-      "heading" : 5.903109488796287e-12,
-      "pitch" : -28.653722707005915,
-      "roll" : 359.9999999999999,
-      "duration": 0
+      "x": 119.03222038317756,
+      "y": 33.5915693135117,
+      "z": 107.98639676283688,
+      "heading": 354.07486284134643,
+      "pitch": -23.759409828465948,
+      "roll": 0.000016592901764765016
     },
     brightness: 1.0, // 亮度设置
     errorRender: true, // 是否开启崩溃刷新
@@ -42,12 +41,6 @@ window.mapConfig = {
   },
   baseLayers: [
     {
-      name: "全国地图（0-8）",
-      type: "xyz",
-      show: false,
-      url: "http://localhost/layer/world0-8/{z}/{x}/{y}.jpg",
-    },
-    {
       name: "单张地图",
       type: "singleImage",
       url: "./easy3d/images/layer/world.jpg",
@@ -77,13 +70,6 @@ window.mapConfig = {
       url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
       show: false,
     },
-    /*  {
-            "name": "中国",
-            "type": "xyz",
-            "iconImg": "./easy3d/images/baseMap/arcgis.png",
-            "url": "http://localhost/china/{z}/{x}/{y}.jpg",
-            "show": false
-        }, */
     {
       name: "天地图",
       type: "tdt",
@@ -115,216 +101,52 @@ window.mapConfig = {
       // minimumLevel: 3,
       // maximumLevel: 18,
       show: false
-    },
-
-    {
-      name: "OSM地图",
-      type: "osm",
-      url: "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
-      iconImg: "./easy3d/images/baseMap/osm.png",
-      show: false
     }
   ],
   operateLayers: [
     {
-      name: "地图切片",
-      open: true,
-      type: "group",
-      children: [
-        {
-          name: "水下地形",
-          url: "http://112.86.147.194:9009/data/demnewtile/L{arc_z}/R{arc_y}/C{arc_x}.png",
-          minimumLevel: 1,
-          maximumLevel: 19,
-          minimumTerrainLevel: 1,
-          view: {
-            x: 118.73263653438936,
-            y: 31.971959788539053,
-            z: 6643.463555185671,
-            heading: 341.6647257262609,
-            pitch: -36.54290725763041,
-            roll: 359.9323408763138,
-          },
-          type: "arcgiscache",
-          show: false,
-        }
-
-      ],
-    },
-    /*  {
-            // 兼容标绘类型的数据
-            "name": "航标模型",
-            "type": "group",
-            "open": false,
-            "children": [
-                {
-                    "name": "白灯船",
-                    "id": "1010", // 不可少
-                    "type": "plot",
-                    "plotType": "gltfModel",
-                    "styleType": "gltfModel",
-                    "positions": [109.769837, 38.285877, 0],
-                    "show": 1,
-                    "style": {
-                        "heightReference": 1,
-                        "uri": "./gltf/baidengchuan.glb",
-                        "minimumPixelSize": 24,
-                        "scale": 5,
-                        "heading": 0,
-                        "pitch": 0,
-                        "roll": 0
-                    }
-                }
-            ]
-        }, */
-
-    {
-      name: "测试图层",
+      name: "倾斜摄影（osgb）",
       type: "group",
       open: true,
       children: [
-        {
-          name: "安徽省",
-          type: "geojson",
-          url: "./data/anhuiMian.json",
-          show: false,
-          style: {
-            polygon: {
-              extrudedHeight: 10000,
-              outline: false,
-              clampToGround: false,
-              color: "#4881a7",
-              colorAlpha: 0.3,
-              fill: true
-            }
-          }
-        },
-
-        {
-          name: "安徽省市区",
-          type: "geojson",
-          url: "./data/anhuiShi.json",
-          show: false,
-          style: {
-            polygon: {
-              outline: true,
-              outlineColor: "#ffffff",
-              outlineColorAlpha: 1,
-              outlineWidth: 3,
-              extrudedHeight: undefined,
-              clampToGround: false,
-              color: "#4881a7",
-              colorAlpha: 0.5,
-              height: 10000,
-              fill: false
-            }
-          }
-        },
-        {
-          name: "天地图",
-          type: "tdt",
-          layerName: "img",
-          show: false,
-          key: "a217b99b7be68b98104548d78e9a679a",
-          compare: true,
-        },
-        {
-          name: "单张地图",
-          type: "singleImage",
-          url: "./easy3d/images/layer/world.jpg",
-          iconImg: "./easy3d/images/layer/world.jpg",
-          show: false,
-          layerSplit: true,
-          alpha: 1,
-          rectangle: [-180, -90, 180, 90],
-        },
-
-        {
-          name: "网格图",
-          type: "grid",
-          url: "./easy3d/images/layer/world.jpg",
-          iconImg: "./easy3d/images/layer/world.jpg",
-          show: false,
-          glowColor: "#FF0000",
-          alpha: 1,
-        },
-        {
-          name: "全国地图（深色）",
-          type: "xyz",
-          show: false,
-          url: "http://localhost/layer/world0-8/{z}/{x}/{y}.jpg",
-        },
-
-        {
-          name: "安徽",
-          type: "xyz",
-          show: false,
-          url: "http://localhost/layer/anhui11/img/{z}/{x}/{y}.png",
-        },
-        {
-          name: "安徽（路网）",
-          type: "xyz",
-          show: false,
-          url: "http://localhost/layer/anhui11/name/{z}/{x}/{y}.png",
-        }
-
-      ],
-    },
-    {
-      name: "三维模型",
-      type: "group",
-      open: true,
-      children: [
-        {
-          name: "鄂尔多斯",
-          type: "3dtiles",
-          url: "http://10.33.136.4:8000/data/model/eeds-kbs2023/1/tileset.json",
-          show: false,
-          maximumScreenSpaceError: 16,
-          /*   maximumMemoryusage: 1024, */
-          center: {
-            z: 22
-          },
-        },
-        {
-          name: "石化企业",
-          type: "3dtiles",
-          url: "http://localhost/model/max-shihua/tileset.json",
-          show: false,
-          center: {
-            z: 80,
-          },
-          style: {
-            color: {
-              conditions: [
-                ['true', 'color("red", 0.5)']
-              ]
-            }
-          },
-          maximumScreenSpaceError: 16,
-        },
         {
           name: "寺庙",
           type: "3dtiles",
           url: "http://mapgl.com/data/model/qx-simiao/tileset.json",
           center: {
-            z: 90,
+            z: 120,
           },
-          show: false,
+          show: true,
           maximumScreenSpaceError: 1,
         },
         {
-          name: "大学",
+          name: "大雁塔",
           type: "3dtiles",
-          url: "http://localhost/qinggu/qx-xuexiao/tileset.json",
-          show: false,
+          url: "http://mapgl.com/data/model/qx-dyt/tileset.json",
           center: {
-            z: 30,
+            z: 423,
           },
+          show: false,
           maximumScreenSpaceError: 1,
         }
-
       ],
+    },
+    {
+      name: "手工建模",
+      type: "group",
+      open: true,
+      children: [
+        {
+          name: "石化企业（3dmax）",
+          type: "3dtiles",
+          url: "http://mapgl.com/data/model/max-shihua/tileset.json",
+          show: false,
+          center: {
+            z: 80,
+          },
+          maximumScreenSpaceError: 16,
+        }
+      ]
     }
 
   ],
