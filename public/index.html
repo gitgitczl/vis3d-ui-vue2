@@ -6,6 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link rel="stylesheet" href="http://mapgl.com/lib/Cesium1.107/Widgets/widgets.css">
+  <script src="http://mapgl.com/lib/Cesium1.107/Cesium.js"></script>
+  <script>
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NzFkNzQwZi03ZTAyLTQxMzctYmJjMC0wYmRmZmViMDA1OGYiLCJpZCI6NDU3NzMsImlhdCI6MTY0MjEzOTMyNH0.VWjtgLef19NZAcQe7_M05tPNSXsQMMSj3bCJOgSKe_A';
+  </script>
   <title>
     三维基础框架
   </title>
@@ -18,14 +23,16 @@
       width: 540px;
       height: 400px;
     }
-    .logo{
+
+    .logo {
       display: none;
       position: absolute;
       left: 20px;
       top: 20px;
       z-index: 999;
     }
-    .logo img{
+
+    .logo img {
       width: 100px;
     }
   </style>
