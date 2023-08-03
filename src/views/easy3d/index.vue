@@ -68,8 +68,6 @@ export default {
       zoomTool = new this.easy3d.gadgets.ZoomTool(window.viewer);
     }
 
-   
-
   },
   destroyed() {
     if (window.viewer) {
