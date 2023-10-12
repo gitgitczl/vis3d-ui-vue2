@@ -88,7 +88,7 @@ export default {
 
   data() {
     return {
-      operateLayers: this.$store.state.map3d.operateLayers,
+      operateLayers: this.$store.state.vis3d.operateLayers,
       expandedKeys: [], // 默认打开节点
       checkedKeys: [], // 默认选中节点
       defaultProps: {
@@ -245,7 +245,7 @@ export default {
 
   // 保持和树统一
   watch: {
-    "$store.state.map3d.operateLayers": {
+    "$store.state.vis3d.operateLayers": {
       handler(operateLayers) {
         let data = this.getAllLayers(operateLayers);
         let { layers } = data || {};

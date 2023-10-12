@@ -109,7 +109,7 @@ export default {
 
     let that = this;
     if (!window.plotDrawTool) {
-      window.plotDrawTool = new this.easy3d.plot.Tool(window.viewer, {
+      window.plotDrawTool = new this.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
       window.plotDrawTool.on("endCreate", function (entObj, ent) {
@@ -177,7 +177,7 @@ export default {
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
         if (!jsondata) return;
-        this.easy3d.tool.downloadFile(
+        this.vis3d.tool.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
         );
@@ -221,7 +221,7 @@ export default {
   },
   watch: {
     // 监听当前绘制的对象的属性改变 from plotStyle
-    "$store.state.map3d.nowPlotStyleAttr": {
+    "$store.state.vis3d.nowPlotStyleAttr": {
       handler(style) {
         window.plotDrawTool.updateOneStyle(nowPlotEntObj, style);
       },

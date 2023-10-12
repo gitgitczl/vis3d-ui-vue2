@@ -59,7 +59,7 @@ export default {
   mounted() {
     let that = this;
     if (!drawTool) {
-      drawTool = new this.easy3d.plot.Tool(window.viewer);
+      drawTool = new this.vis3d.plot.Tool(window.viewer);
       drawTool.on("endCreate", function (entObj, ent) {
         const lnglat = entObj.getPositions(1);
         if (!lnglat) return;
@@ -104,7 +104,7 @@ export default {
       let entObj = drawTool.createByPositions({
         type: "billboard",
         style: {
-          image: "./easy3d/images/pathPlan/start.png",
+          image: "./map3d/images/pathPlan/start.png",
           scale: 0.5,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         },
@@ -118,7 +118,7 @@ export default {
       drawTool.start({
         type: "billboard",
         style: {
-          image: "./easy3d/images/pathPlan/start.png",
+          image: "./map3d/images/pathPlan/start.png",
           scale: 0.5,
         },
       });

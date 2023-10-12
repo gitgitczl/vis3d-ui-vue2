@@ -110,7 +110,7 @@ export default {
     },
   },
   watch: {
-    "$store.state.map3d.nowRoamAttr": {
+    "$store.state.vis3d.nowRoamAttr": {
       handler(attr) {
         this.nowStartRoamAttr = attr || {};
       },

@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "@/lib/vis3d-min/vis3d.css"
 import vis3d from "@/lib/vis3d-min/vis3d.min.js"
 Vue.prototype.vis3d = window.vis3d = vis3d;
-Vue.prototype.easy3d = window.easy3d = vis3d;
+Vue.prototype.map3d = window.map3d = vis3d;
 import '@/assets/font/iconfont.css'
 // 本地加密类库
 import store from './store';

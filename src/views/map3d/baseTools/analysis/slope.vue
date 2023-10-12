@@ -19,7 +19,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.slopDrawTool) {
-      window.slopDrawTool = new this.easy3d.plot.Tool(window.viewer, {
+      window.slopDrawTool = new this.vis3d.plot.Tool(window.viewer, {
         canEdit: false,
       });
       window.slopDrawTool.on("endCreate", function (entObj, ent) {

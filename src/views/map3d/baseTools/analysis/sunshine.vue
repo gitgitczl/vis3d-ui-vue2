@@ -66,7 +66,7 @@ export default {
         return;
       }
       if (!sunshine) {
-        sunshine = new this.easy3d.analysis.Sunshine(viewer, {
+        sunshine = new this.vis3d.analysis.Sunshine(viewer, {
           startTime: startDate,
           endTime: endDate,
         });

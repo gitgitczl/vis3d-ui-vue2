@@ -122,7 +122,7 @@ export default {
   },
 
   mounted() {
-    let plotEntityObjId = this.$store.state.map3d.plotEntityObjId;
+    let plotEntityObjId = this.$store.state.vis3d.plotEntityObjId;
     this.setAttr(plotEntityObjId);
   },
 
@@ -205,7 +205,7 @@ export default {
     },
   },
   watch: {
-    "$store.state.map3d.plotEntityObjId": function (newid, oldid) {
+    "$store.state.vis3d.plotEntityObjId": function (newid, oldid) {
       // 防止当前页面未关闭 却传入了不同的id
       if (newid != oldid) {
         this.setAttr(newid);

@@ -100,7 +100,7 @@ export default {
     this.$set(this, "operateLayers", operateLayers);
 
     // 构建底图
-    window.mapViewer2 = new this.easy3d.MapViewer(
+    window.mapViewer2 = new this.vis3d.MapViewer(
       "mapContainer2",
       newMapConfig
     );
@@ -170,9 +170,9 @@ export default {
       );
     },
     updateView: function (viewer, viewer2) {
-      let cameraView = this.easy3d.util.getCameraView(viewer);
+      let cameraView = this.vis3d.util.getCameraView(viewer);
       cameraView.duration = 0;
-      this.easy3d.util.setCameraView(cameraView, viewer2);
+      this.vis3d.util.setCameraView(cameraView, viewer2);
     },
     close() {
       this.$emit("close", "twoScreen");

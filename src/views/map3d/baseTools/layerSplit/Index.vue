@@ -43,7 +43,7 @@ export default {
   },
 
   mounted() {
-    let operateLayers = this.$store.state.map3d.operateLayers;
+    let operateLayers = this.$store.state.vis3d.operateLayers;
     let res = this.getAllLayers(operateLayers);
 
     let allLayers = res.layers;
@@ -68,7 +68,7 @@ export default {
     lastLayerAttr = this.layerList[0];
 
     if (!layerSplit) {
-      layerSplit = new this.easy3d.common.LayerSplit(window.viewer, {
+      layerSplit = new this.vis3d.common.LayerSplit(window.viewer, {
         layer: lyrObj._layer,
       });
     }

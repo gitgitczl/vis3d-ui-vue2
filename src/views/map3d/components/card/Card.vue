@@ -1,8 +1,8 @@
 <template>
   <vue-drag-resize
-    id="easy3d-drag"
+    id="map3d-drag"
     ref="drag"
-    class="easy3d-card basic-card"
+    class="map3d-card basic-card"
     dragHandle=".card-title"
     :sticks="['br']"
     :isActive="true"
@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style lang="less">
-.easy3d-card {
+.map3d-card {
   position: absolute;
   z-index: 999 !important;
 }

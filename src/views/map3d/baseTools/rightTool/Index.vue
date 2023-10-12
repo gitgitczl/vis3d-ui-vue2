@@ -10,7 +10,7 @@
 <script>
 /* 鼠标右键菜单 */
 export default {
-  name: "Easy3dPlatformIndex",
+  name: "map3dPlatformIndex",
 
   data() {
     return {

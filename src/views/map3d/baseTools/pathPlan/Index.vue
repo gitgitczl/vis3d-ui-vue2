@@ -102,7 +102,7 @@ export default {
       window.Cesium.Color.DODGERBLUE,
     ];
     if (!drawTool) {
-      drawTool = new this.easy3d.plot.Tool(window.viewer,{
+      drawTool = new this.vis3d.plot.Tool(window.viewer,{
         canEdit : false
       });
       drawTool.on("endEdit", function (entObj, ent) {
@@ -115,7 +115,7 @@ export default {
         }
       });
     }
-    if (!gaodeRoute) gaodeRoute = new this.easy3d.gadgets.GaodeRoute({
+    if (!gaodeRoute) gaodeRoute = new this.vis3d.gadgets.GaodeRoute({
       keys : ["a73e387f642573295b498d7fd6b4c537"]
     });
   },
@@ -141,7 +141,7 @@ export default {
       drawTool.start({
         type: "billboard",
         style: {
-          image: "./easy3d/images/pathPlan/start.png",
+          image: "./map3d/images/pathPlan/start.png",
         },
         success: function (entObj, ent) {
           startMarkerObj = entObj;
@@ -164,7 +164,7 @@ export default {
       drawTool.start({
         type: "billboard",
         style: {
-          image: "./easy3d/images/pathPlan/end.png",
+          image: "./map3d/images/pathPlan/end.png",
         },
         success: function (entObj, ent) {
           endMarkerObj = entObj;

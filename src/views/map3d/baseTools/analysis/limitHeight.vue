@@ -45,7 +45,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.limitHeightDrawTool)
-      window.limitHeightDrawTool = new this.easy3d.plot.Tool(window.viewer, {
+      window.limitHeightDrawTool = new this.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
 
@@ -82,7 +82,7 @@ export default {
       if(!positions) return;
       window.limitHeightDrawTool.end();
       window.limitHeightDrawTool.removeAll();
-      limitHeight = new this.easy3d.analysis.LimitHeight(window.viewer, {
+      limitHeight = new this.vis3d.analysis.LimitHeight(window.viewer, {
         positions: positions,
         bottomHeight: this.bottomHeight,
         topHeight: this.topHeight

@@ -231,42 +231,37 @@ export default {
     open(item) {
       if (item.workName) {
         workControl.openToolByName(item.workName)
-      } else {
-
       }
 
-
-      if (item.type == "scaleBig") {
-        if (!zoomTool)  zoomTool = new this.easy3d.gadgets.ZoomTool(window.viewer);
+      if (item.type == "scaleBig") { // 放大
+        if (!zoomTool) zoomTool = new this.vis3d.gadgets.ZoomTool(window.viewer);
         zoomTool.forward();
-
       }
 
-      if (item.type == "scaleSmall") {
-        if (!zoomTool)  zoomTool = new this.easy3d.gadgets.ZoomTool(window.viewer);
+      if (item.type == "scaleSmall") { // 缩小
+        if (!zoomTool) zoomTool = new this.vis3d.gadgets.ZoomTool(window.viewer);
         zoomTool.backward();
       }
 
-      if (item.type == "update") {
+      if (item.type == "update") { // 页面刷新
         window.location.reload();
       }
-      // 全屏
-      if (item.type === "fullScreen") {
+
+      if (item.type === "fullScreen") {  // 全屏
         this.screen();
       }
 
-      // 鹰眼图
-      if (item.type === "overviewMap") {
+      if (item.type === "overviewMap") { // 鹰眼图
         this.isOpenOverviewMap = !this.isOpenOverviewMap;
-        if(this.isOpenOverviewMap && !overviewMap){
-          overviewMap = new this.easy3d.common.OverviewMap(window.viewer);
-        }else{
+        if (this.isOpenOverviewMap && !overviewMap) {
+          overviewMap = new this.vis3d.common.OverviewMap(window.viewer);
+        } else {
           overviewMap.destroy();
           overviewMap = undefined;
         }
       }
 
-      if (item.type === "print") {
+      if (item.type === "print") { // 地图打印
         this.printMap();
       }
     },

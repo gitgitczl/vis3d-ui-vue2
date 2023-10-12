@@ -241,7 +241,7 @@ export default {
   mounted() {
     let that = this;
     if (!roamTool) {
-      roamTool = new this.easy3d.roam.Tool(window.viewer);
+      roamTool = new this.vis3d.roam.Tool(window.viewer);
       roamTool.on("startRoam", function () {
         // 开始漫游时 显示漫游面板
         that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
@@ -265,7 +265,7 @@ export default {
     }
 
     if (!roamDrawTool) {
-      roamDrawTool = new this.easy3d.plot.Tool(window.viewer, {
+      roamDrawTool = new this.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
       roamDrawTool.on("startEdit", function (entObj, ent) {
@@ -458,7 +458,7 @@ export default {
     },
     saveFile() {
       let jsondata = roamTool.toJson();
-      this.easy3d.tool.downloadFile(
+      this.vis3d.tool.downloadFile(
         "场景漫游.json",
         JSON.stringify(jsondata)
       );
@@ -518,7 +518,7 @@ export default {
   },
   watch: {
     // 漫游视角切换
-    "$store.state.map3d.nowRoamViewType": function (data) {
+    "$store.state.vis3d.nowRoamViewType": function (data) {
       this.nowRoamAttr.viewType = data;
     },
   },

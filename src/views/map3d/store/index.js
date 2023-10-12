@@ -1,6 +1,6 @@
 
 /* 模块间的状态管理 */
-const easy3dStore = {
+const map3dStore = {
   state: {
     operateTool: {}, // 当前打开的工具条
     openLnglatNavigation: true, // 底图坐标提示栏是否打开
@@ -60,4 +60,4 @@ const easy3dStore = {
   }
 }
 
-export default easy3dStore;
+export default map3dStore;

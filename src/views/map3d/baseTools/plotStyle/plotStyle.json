@@ -80,7 +80,7 @@
                     },
                     "image": {
                         "name": "材质路径",
-                        "value": "./easy3d/images/texture/glow.png",
+                        "value": "./map3d/images/texture/glow.png",
                         "type": "input-text",
                         "disable": "disabled"
                     }

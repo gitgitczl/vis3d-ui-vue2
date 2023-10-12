@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      baseMapList: this.$store.state.map3d.baseLayers,
+      baseMapList: this.$store.state.vis3d.baseLayers,
       isShowTerrain: true,
       nowShowLayerId: null,
     };

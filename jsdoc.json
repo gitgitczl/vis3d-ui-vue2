@@ -1,13 +1,13 @@
 {
     "source": {
-        "include": ["./src/lib/easy3d-resource"],
+        "include": ["./src/lib/map3d-resource"],
         "includePattern": ".+\\.js(doc|x)?$",
         "exclude": [
-            "./apidoc/","./src/lib/easy3d-resource/sensor",
-            "./src/lib/easy3d-resource/gadgets/core",
-            "./src/lib/easy3d-resource/gadgets/styles",
-            "./src/lib/easy3d-resource/gadgets/svgPaths",
-            "./src/lib/easy3d-resource/gadgets/viewModels"
+            "./apidoc/","./src/lib/map3d-resource/sensor",
+            "./src/lib/map3d-resource/gadgets/core",
+            "./src/lib/map3d-resource/gadgets/styles",
+            "./src/lib/map3d-resource/gadgets/svgPaths",
+            "./src/lib/map3d-resource/gadgets/viewModels"
 
         ]
     },

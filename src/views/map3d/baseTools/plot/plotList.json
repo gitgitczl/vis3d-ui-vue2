@@ -3,13 +3,13 @@
         {
             "name": "点",
             "type": "point",
-            "iconImg": "./easy3d/images/plot/point.png",
+            "iconImg": "./map3d/images/plot/point.png",
             "styleType": "point"
         },
         {
             "name": "线",
             "type": "polyline",
-            "iconImg": "./easy3d/images/plot/polyline.png",
+            "iconImg": "./map3d/images/plot/polyline.png",
             "styleType": "polyline",
             "style": {
                 "clampToGround": true,
@@ -19,7 +19,7 @@
         {
             "name": "面",
             "type": "polygon",
-            "iconImg": "./easy3d/images/plot/polygon.png",
+            "iconImg": "./map3d/images/plot/polygon.png",
             "styleType": "polygon",
             "style": {
                 "color": "#0000ff",
@@ -31,16 +31,16 @@
         {
             "name": "图标",
             "type": "billboard",
-            "iconImg": "./easy3d/images/plot/billboard.png",
+            "iconImg": "./map3d/images/plot/billboard.png",
             "style": {
-                "image": "./easy3d/images/plot/start.png"
+                "image": "./map3d/images/plot/start.png"
             },
             "styleType": "billboard"
         },
         {
             "name": "文字",
             "type": "label",
-            "iconImg": "./easy3d/images/plot/label.png",
+            "iconImg": "./map3d/images/plot/label.png",
             "style": {
                 "text": "未命名",
                 "fillColor": "#fff",
@@ -57,34 +57,34 @@
         {
             "name": "动态线",
             "type": "polyline",
-            "iconImg": "./easy3d/images/plot/flowline.png",
+            "iconImg": "./map3d/images/plot/flowline.png",
             "styleType": "polyline",
             "style": {
                 "clampToGround": true,
                 "color": "#0EFCDC",
                 "animateType": "flowline",
                 "duration" : 1000,
-                "image": "./easy3d/images/texture/glow.png"
+                "image": "./map3d/images/texture/glow.png"
             }
         },
         {
             "name": "流动线",
             "type": "polyline",
-            "iconImg": "./easy3d/images/plot/waterline.png",
+            "iconImg": "./map3d/images/plot/waterline.png",
             "styleType": "polyline",
             "style": {
                 "clampToGround": true,
                 "color": "#F9F507",
                 "animateType": "flowline",
                 "duration" : 1000,
-                "image": "./easy3d/images/texture/water.png"
+                "image": "./map3d/images/texture/water.png"
             }
         }
     ],
     "军事标绘": [
         {
             "name": "攻击箭头",
-            "iconImg": "./easy3d/images/plot/gjjt.png",
+            "iconImg": "./map3d/images/plot/gjjt.png",
             "type": "arrow",
             "arrowType": 1,
             "style": {
@@ -95,7 +95,7 @@
         },
         {
             "name": "攻击箭头(平尾)",
-            "iconImg": "./easy3d/images/plot/gjjtpw.png",
+            "iconImg": "./map3d/images/plot/gjjtpw.png",
             "type": "arrow",
             "arrowType": 2,
             "style": {
@@ -106,7 +106,7 @@
         },
         {
             "name": "攻击箭头(燕尾)",
-            "iconImg": "./easy3d/images/plot/gjjtyw.png",
+            "iconImg": "./map3d/images/plot/gjjtyw.png",
             "type": "arrow",
             "arrowType": 3,
             "style": {
@@ -117,7 +117,7 @@
         },
         {
             "name": "钳击箭头",
-            "iconImg": "./easy3d/images/plot/qjjt.png",
+            "iconImg": "./map3d/images/plot/qjjt.png",
             "type": "arrow",
             "arrowType": 5,
             "style": {
@@ -128,7 +128,7 @@
         },
         {
             "name": "单尖直箭头",
-            "iconImg": "./easy3d/images/plot/zjt.png",
+            "iconImg": "./map3d/images/plot/zjt.png",
             "type": "arrow",
             "arrowType": 6,
             "style": {
@@ -139,7 +139,7 @@
         },
         {
             "name": "单尖直箭头（燕尾）",
-            "iconImg": "./easy3d/images/plot/zjtyw.png",
+            "iconImg": "./map3d/images/plot/zjtyw.png",
             "type": "arrow",
             "arrowType": 7,
             "style": {
@@ -150,7 +150,7 @@
         },
         {
             "name": "闭合曲面",
-            "iconImg": "./easy3d/images/plot/bhqm.png",
+            "iconImg": "./map3d/images/plot/bhqm.png",
             "type": "arrow",
             "arrowType": 4,
             "style": {
@@ -161,7 +161,7 @@
         },
         {
             "name": "弓形面",
-            "iconImg": "./easy3d/images/plot/gxm.png",
+            "iconImg": "./map3d/images/plot/gxm.png",
             "type": "arrow",
             "arrowType": 9,
             "style": {
@@ -172,7 +172,7 @@
         },
         {
             "name": "直箭头",
-            "iconImg": "./easy3d/images/plot/czjt.png",
+            "iconImg": "./map3d/images/plot/czjt.png",
             "type": "arrow",
             "arrowType": 10,
             "style": {
@@ -183,7 +183,7 @@
         },
         {
             "name": "矩形旗",
-            "iconImg": "./easy3d/images/plot/jxq.png",
+            "iconImg": "./map3d/images/plot/jxq.png",
             "type": "arrow",
             "arrowType": 11,
             "style": {
@@ -194,7 +194,7 @@
         },
         {
             "name": "扇形",
-            "iconImg": "./easy3d/images/plot/sx.png",
+            "iconImg": "./map3d/images/plot/sx.png",
             "type": "arrow",
             "arrowType": 12,
             "style": {
@@ -205,7 +205,7 @@
         },
         {
             "name": "三角旗",
-            "iconImg": "./easy3d/images/plot/sjq.png",
+            "iconImg": "./map3d/images/plot/sjq.png",
             "type": "arrow",
             "arrowType": 13,
             "style": {
@@ -216,7 +216,7 @@
         },
         {
             "name": "矩形波浪旗",
-            "iconImg": "./easy3d/images/plot/jxblq.png",
+            "iconImg": "./map3d/images/plot/jxblq.png",
             "type": "arrow",
             "arrowType": 14,
             "style": {
@@ -227,7 +227,7 @@
         },
         {
             "name": "单线箭头",
-            "iconImg": "./easy3d/images/plot/zxjt.png",
+            "iconImg": "./map3d/images/plot/zxjt.png",
             "type": "arrow",
             "arrowType": 16,
             "style": {
@@ -242,7 +242,7 @@
             "name": "战斗机",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/zhandouji.png",
+            "iconImg": "./map3d/images/plot/zhandouji.png",
             "style": {
                 "heightReference": 0,
                 "uri": "./gltf/zhanji.glb",
@@ -257,7 +257,7 @@
             "name": "雷达",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/leida.png",
+            "iconImg": "./map3d/images/plot/leida.png",
             "style": {
                 "heightReference": 0,
                 "uri": "./gltf/leida.glb",
@@ -272,7 +272,7 @@
             "name": "越野车",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/yueyeche.png",
+            "iconImg": "./map3d/images/plot/yueyeche.png",
             "style": {
                 "heightReference": 0,
                 "uri": "./gltf/gongchengche.glb",
@@ -287,7 +287,7 @@
             "name": "无人机",
             "type": "gltfModel",
             "styleType": "gltfModel",
-            "iconImg": "./easy3d/images/plot/wurenji.png",
+            "iconImg": "./map3d/images/plot/wurenji.png",
             "style": {
                 "heightReference": 0,
                 "uri": "./gltf/dajiang.gltf",

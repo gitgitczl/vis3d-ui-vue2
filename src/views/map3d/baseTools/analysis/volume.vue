@@ -58,7 +58,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.volumeDrawTool) {
-      window.volumeDrawTool = new this.easy3d.plot.Tool(window.viewer, {
+      window.volumeDrawTool = new this.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
       window.volumeDrawTool.on("endCreate", function (entObj, ent) {

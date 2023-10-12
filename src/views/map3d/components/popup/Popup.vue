@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="easy3d-popup-close"></div>
-        <div class="easy3d-popup-title"></div>
-        <div class="easy3d-popup-content">
+        <div class="map3d-popup-close"></div>
+        <div class="map3d-popup-title"></div>
+        <div class="map3d-popup-content">
             <slot></slot>
         </div>
     </div>
@@ -10,7 +10,7 @@
 <script>
 /* 气泡弹窗组件 */
 export default {
-    name: 'Easy3dPlatformPopup',
+    name: 'map3dPlatformPopup',
 
     data() {
         return {
