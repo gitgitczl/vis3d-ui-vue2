@@ -178,7 +178,9 @@ export default {
     toChange() {
       let val = JSON.parse(JSON.stringify(this.plotStyleAttr));
       let newStyle = this.transformStyleVal(val);
-      this.$store.commit("setNowPlotStyleAttr", newStyle);
+
+      debugger
+      this.$refs.plot.setEntityStyle(newStyle);
     },
 
     onChangePlotStyle(index) {

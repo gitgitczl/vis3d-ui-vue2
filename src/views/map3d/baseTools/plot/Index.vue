@@ -122,8 +122,8 @@ export default {
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑
         nowPlotEntObj = entObj;
-        window.workControl.openToolByName("plotStyle",{
-          plotEntityObjId : entObj.attr.id
+        window.workControl.openToolByName("plotStyle", {
+          plotEntityObjId: entObj.attr.id
         });
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
@@ -219,16 +219,12 @@ export default {
       }
       e.target.value = "";
     },
-  },
-  watch: {
-    // 监听当前绘制的对象的属性改变 from plotStyle
-    "$store.state.vis3d.nowPlotStyleAttr": {
-      handler(style) {
-        window.plotDrawTool.updateOneStyle(nowPlotEntObj, style);
-      },
-      deep: true,
-    },
-  },
+
+    setEntityStyle(style) {
+      window.plotDrawTool.updateOneStyle(nowPlotEntObj, style);
+    }
+  }
+ 
 };
 </script>
 
