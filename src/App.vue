@@ -5,13 +5,11 @@
 </template>
 
 <script>
-import Map from '@/views/easy3d/index.vue'
-import Clip from "@/views/easy3d/clip.vue"
+import Map from '@/views/map3d/index.vue'
 export default {
   name: 'App',
   components: {
-    Map,
-    Clip
+    Map
   },
 
   data() {
