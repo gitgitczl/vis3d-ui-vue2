@@ -39,7 +39,7 @@
   </Card>
 </template>
 <script>
-import plotList from "./plotList.json";
+import plotList from "./plotList.js";
 
 // 地图标注 基础组件
 window.plotDrawTool = null;
@@ -122,8 +122,9 @@ export default {
       window.plotDrawTool.on("startEdit", function (entObj, ent) {
         // 开始编辑
         nowPlotEntObj = entObj;
-        that.$store.commit("setPlotEntityObjId", entObj.attr.id);
-        window.workControl.openToolByName("plotStyle");
+        window.workControl.openToolByName("plotStyle",{
+          plotEntityObjId : entObj.attr.id
+        });
       });
       window.plotDrawTool.on("endEdit", function (entObj, ent) {
         // 编辑完成后

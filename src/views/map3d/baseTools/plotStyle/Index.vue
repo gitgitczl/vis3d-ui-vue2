@@ -100,6 +100,7 @@ export default {
       type: String,
       default: "icon-dianyingmulu",
     },
+    attr:{}
   },
   data() {
     return {
@@ -122,8 +123,7 @@ export default {
   },
 
   mounted() {
-    let plotEntityObjId = this.$store.state.vis3d.plotEntityObjId;
-    this.setAttr(plotEntityObjId);
+    this.setAttr(this.attr.plotEntityObjId);
   },
 
   methods: {

@@ -26,7 +26,7 @@
 
     <!-- 引入地图组件 -->
     <div v-for="(item, index) in mapComphonets" :key="index">
-      <component :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name" :position="item.position"
+      <component :ref="item.workName" :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name" :position="item.position"
         :size="item.size" :attr="item.attr" :iconfont="item.iconfont" @close="close(item)" />
     </div>
   </div>
@@ -268,7 +268,6 @@ export default {
     close(item) {
       workControl.closeToolByName(item.workName);
     },
-
 
     // 地图打印
     printMap() {

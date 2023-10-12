@@ -10,7 +10,6 @@
 
 // 引入配置文件 
 import { mapConfig } from "./config/export"
-
 import Tools from "@/views/map3d/Tools.vue";
 window.viewer = null;
 window.mapViewer = null;
@@ -33,7 +32,7 @@ export default {
   mounted() {
     // 构建基础地图
     let that = this;
-    let mapViewer = (window.mapViewer = new this.easy3d.MapViewer(
+    let mapViewer = (window.mapViewer = new this.vis3d.MapViewer(
       "mapContainer",
       mapConfig
     ));
