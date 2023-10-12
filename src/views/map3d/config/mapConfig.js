@@ -12,13 +12,13 @@ import img_gaode from "../images/baseMap/gaode.png";
 export default {
     baseServer: "http://localhost:1119/",
     map: {
-        cameraView: { 
-            "x": 124.90823461416359,
-            "y": 50.197115082373834,
-            "z": 5669.4796791242015,
-            "heading": 347.02358365587594,
-            "pitch": -64.01978603212282,
-            "roll": 0.0030124720626090607,
+        cameraView: {
+            "x": 117.24473608316538,
+            "y": 31.473304123104246,
+            "z": 50127.83549149741,
+            "heading": 4.01216132021934,
+            "pitch": -54.02598589122648,
+            "roll": 359.9967116865769,
             duration: 0
         },
         brightness: 1.0, // 亮度设置
@@ -124,7 +124,7 @@ export default {
                 {
                     name: "无人机航飞（1）",
                     type: "xyz",
-                    show: true,
+                    show: false,
                     url: "http://localhost/layer/testTiff/{z}/{x}/{y}.png",
                 }
             ]

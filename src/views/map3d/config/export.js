@@ -1,22 +1,17 @@
 // 配置文件预处理 会读取window下的配置 
-import _mapConfig from "./mapConfig"
-import _workConfig from "./workConfig"
+import defaulte_mapConfig from "./mapConfig"
+import defaulte_workConfig from "./workConfig"
 // 深度合并对象
-function deepAssign(...param) {
-    let result = Object.assign({}, ...param);
-    for (let item of param) {
-        for (let [idx, val] of Object.entries(item)) {
-            if (typeof val === 'object') {
-                result[idx] = deepAssign(result[idx], val);
-            }
-        }
+function deepAssign(obj1, obj2) {
+    let _this = this
+    for (let key in obj2) {
+        obj1[key] = obj1[key] && obj1[key].toString() === "[object Object]" ? _this.deepMerge(obj1[key], obj2[key]) : obj1[key] = obj2[key]
     }
-    return result;
+    return obj1
 }
 
-
-const mapConfig = deepAssign({}, _mapConfig, window.mapConfig || {});
-const workConfig = deepAssign({}, _mapConfig, window.mapConfig || {});
+const mapConfig = deepAssign(defaulte_mapConfig, window.mapConfig || {});
+const workConfig = deepAssign(defaulte_workConfig, window.workConfig || {});
 
 export {
     mapConfig, workConfig

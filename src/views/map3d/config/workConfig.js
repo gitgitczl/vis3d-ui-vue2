@@ -86,7 +86,7 @@ export default {
         },
         {
             "name": "图层管理",
-            "show": true,
+            "show": false,
             "workName": "layers",
             "position": {
                 "top": 60,

@@ -1,28 +1,34 @@
 <template>
-  <!-- 地图侧边工具栏按钮 -->
   <div>
-    <div class="sidebar-box">
-    <ul class="basic-sidebar operate-btn">
-      <el-tooltip v-for="(item, index) in basicReset" :key="index" class="item" effect="dark" :content="item.name"
-        placement="left">
-        <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
-      </el-tooltip>
-    </ul>
+    <!-- 地图侧边工具栏按钮 -->
+    <div class="sidebar-box" v-show="isshowPanel">
+      <ul class="basic-sidebar operate-btn">
+        <el-tooltip v-for="(item, index) in basicReset" :key="index" class="item" effect="dark" :content="item.name"
+          placement="left">
+          <li :class="['iconfont', item.icon]" @click="open(item)"></li>
+        </el-tooltip>
+      </ul>
 
-    <ul class="basic-sidebar operate-btn map-operate-btn">
-      <el-tooltip v-for="(item, index) in mapLayer" :key="index" class="item" effect="dark" :content="item.name"
-        placement="left">
-        <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
-      </el-tooltip>
-    </ul>
+      <ul class="basic-sidebar operate-btn map-operate-btn">
+        <el-tooltip v-for="(item, index) in mapLayer" :key="index" class="item" effect="dark" :content="item.name"
+          placement="left">
+          <li :class="['iconfont', item.icon]" @click="open(item)"></li>
+        </el-tooltip>
+      </ul>
 
-    <ul class="basic-sidebar operate-btn">
-      <el-tooltip v-for="(item, index) in mapOperate" :key="index" class="item" effect="dark" :content="item.name"
-        placement="left">
-        <li :class="['iconfont', item.icon]" @click="opentoolName(item)"></li>
-      </el-tooltip>
-    </ul>
-  </div>
+      <ul class="basic-sidebar operate-btn">
+        <el-tooltip v-for="(item, index) in mapOperate" :key="index" class="item" effect="dark" :content="item.name"
+          placement="left">
+          <li :class="['iconfont', item.icon]" @click="open(item)"></li>
+        </el-tooltip>
+      </ul>
+    </div>
+
+    <!-- 引入地图组件 -->
+    <div v-for="(item, index) in mapComphonets" :key="index">
+      <component :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name" :position="item.position"
+        :size="item.size" :attr="item.attr" :iconfont="item.iconfont" @close="close(item)" />
+    </div>
   </div>
 </template>
 
@@ -31,11 +37,20 @@
 import screenfull from "screenfull";
 import html2canvas from "html2canvas";
 import printJS from "print-js";
+import { workConfig } from "../map3d/config/export"
+/* 模块控制器 */
+import workControl from "./workControl.js";
+window.workControl = workControl; // 绑定到全局
+
+let zoomTool = undefined; // 缩放工具
+let overviewMap = undefined; // 鹰眼图
 export default {
-  name: "sidebar",
+  name: "tools",
 
   data() {
     return {
+      isshowPanel: true, // 是否显示操作按钮 
+      mapComphonets: [],
       basicReset: [
         {
           icon: "icon-zuichu",
@@ -61,61 +76,59 @@ export default {
           icon: "icon-bangzhushuoming",
           type: "help",
           name: "帮助说明",
-          toolName: "help",
+          workName: "help",
         },
-      ], // 基础设置
-
+      ],
       mapLayer: [
         {
           icon: "icon-ditufuwu",
           type: "baseMap",
           name: "底图",
-          toolName: "baseMap",
+          workName: "baseMap",
         },
         {
           icon: "icon-cengshu",
           type: "layers",
           name: "图层",
-          toolName: "layers",
+          workName: "layers",
         },
       ],
-
       mapOperate: [
         {
           icon: "icon-tushangliangsuan",
           type: "measure",
           name: "图上量算",
-          toolName: "measure",
+          workName: "measure",
         },
         {
           icon: "icon-fenxikongjian",
           type: "",
           name: "空间分析",
-          toolName: "analysis",
+          workName: "analysis",
         },
         {
           icon: "icon-zuobiaodingwei",
           type: "",
           name: "坐标定位",
-          toolName: "coordinate",
+          workName: "coordinate",
         },
         {
           icon: "icon-diqudaohang",
           type: "",
           name: "地区导航",
-          toolName: "region",
+          workName: "region",
         },
         {
           icon: "icon-tushangcehui",
           type: "",
           name: "图上标绘",
-          toolName: "plot",
+          workName: "plot",
         },
         {
           icon: "icon-dianyingmulu",
           type: "",
           name: "视角书签",
-          toolName: "viewBook",
+          workName: "viewBook",
         },
         /*   {
           icon: "icon-wodebiaoji",
@@ -126,30 +139,30 @@ export default {
           icon: "icon-xianludaohang",
           type: "",
           name: "线路导航",
-          toolName: "pathPlan",
+          workName: "pathPlan",
         },
         {
           icon: "icon-youlan",
           type: "",
           name: "飞行漫游",
-          toolName: "roam",
+          workName: "roam",
         },
         {
           icon: "icon-getihuabianji",
           type: "",
           name: "单体化编辑",
-          toolName: "monomer",
+          workName: "monomer",
         },
         {
           icon: "icon-fenpingduibi",
           type: "",
-          toolName: "twoScreen",
           name: "分屏对比",
+          workName: "twoScreen",
         },
         {
           icon: "icon-juanlianduibi",
-          toolName: "layerSplit",
           name: "卷帘对比",
+          workName: "layerSplit",
         },
         {
           icon: "icon-ditushuchu",
@@ -172,6 +185,16 @@ export default {
       isHelp: false,
       isOpenOverviewMap: false,
     };
+  },
+
+  mounted() {
+    // 初始化各工具组件
+    workControl.init(workConfig, (list) => {
+      this.mapComphonets = list;
+    });
+
+
+
   },
 
   methods: {
@@ -204,20 +227,24 @@ export default {
       screenfull.toggle();
     },
 
-    // 打开某个工具
-    opentoolName(item) {
-      if (item.toolName)
-        this.$store.commit("setOperateTool", {
-          toolName: item.toolName,
-          openState: true,
-        });
+    // 打开具体工具模块
+    open(item) {
+      if (item.workName) {
+        workControl.openToolByName(item.workName)
+      } else {
+
+      }
+
 
       if (item.type == "scaleBig") {
-        this.$store.commit("setIsZoomIn", true);
+        if (!zoomTool)  zoomTool = new this.easy3d.gadgets.ZoomTool(window.viewer);
+        zoomTool.forward();
+
       }
 
       if (item.type == "scaleSmall") {
-        this.$store.commit("setIsZoomOut", true);
+        if (!zoomTool)  zoomTool = new this.easy3d.gadgets.ZoomTool(window.viewer);
+        zoomTool.backward();
       }
 
       if (item.type == "update") {
@@ -231,12 +258,20 @@ export default {
       // 鹰眼图
       if (item.type === "overviewMap") {
         this.isOpenOverviewMap = !this.isOpenOverviewMap;
-        this.$store.commit("setIsOpenOverviewMap", this.isOpenOverviewMap);
+        if(this.isOpenOverviewMap && !overviewMap){
+          overviewMap = new this.easy3d.common.OverviewMap(window.viewer);
+        }else{
+          overviewMap.destroy();
+          overviewMap = undefined;
+        }
       }
 
       if (item.type === "print") {
         this.printMap();
       }
+    },
+    close(item) {
+      workControl.closeToolByName(item.workName);
     },
 
 

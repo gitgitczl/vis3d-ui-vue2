@@ -84,7 +84,7 @@
 <script>
 
 import plotStyle from "./plotStyle.json";
-import Detail from "@/views/easy3d/components/detail/Detail.vue";
+import Detail from "@/views/map3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {
   name: "plotStyle",

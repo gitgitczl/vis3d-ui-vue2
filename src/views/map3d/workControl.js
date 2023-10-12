@@ -32,52 +32,52 @@ export default {
     importTool(name) {
         switch (name) {
             case "plot":
-                this.components.push(import("@/views/easy3d/baseTools/plot/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/plot/Index.vue"));
                 break;
             case "plotStyle":
-                this.components.push(import("@/views/easy3d/baseTools/plotStyle/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/plotStyle/Index.vue"));
                 break;
             case "layers":
-                this.components.push(import("@/views/easy3d/baseTools/layers/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/layers/Index.vue"));
                 break;
             case "measure":
-                this.components.push(import("@/views/easy3d/baseTools/measure/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/measure/Index.vue"));
                 break;
             case "analysis":
-                this.components.push(import("@/views/easy3d/baseTools/analysis/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/analysis/Index.vue"));
                 break;
             case "baseMap":
-                this.components.push(import("@/views/easy3d/baseTools/baseMap/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/baseMap/Index.vue"));
                 break;
             case "coordinate":
-                this.components.push(import("@/views/easy3d/baseTools/coordinate/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/coordinate/Index.vue"));
                 break;
             case "twoScreen":
-                this.components.push(import("@/views/easy3d/baseTools/twoScreen/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/twoScreen/Index.vue"));
                 break;
             case "region":
-                this.components.push(import("@/views/easy3d/baseTools/region/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/region/Index.vue"));
                 break;
             case "viewBook":
-                this.components.push(import("@/views/easy3d/baseTools/viewBook/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/viewBook/Index.vue"));
                 break;
             case "pathPlan":
-                this.components.push(import("@/views/easy3d/baseTools/pathPlan/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/pathPlan/Index.vue"));
                 break;
             case "roam":
-                this.components.push(import("@/views/easy3d/baseTools/roam/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/roam/Index.vue"));
                 break;
             case "roamStyle":
-                this.components.push(import("@/views/easy3d/baseTools/roamStyle/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/roamStyle/Index.vue"));
                 break;
             case "layerSplit":
-                this.components.push(import("@/views/easy3d/baseTools/layerSplit/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/layerSplit/Index.vue"));
                 break;
             case "monomer":
-                this.components.push(import("@/views/easy3d/baseTools/monomer/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/monomer/Index.vue"));
                 break;
             case "help":
-                this.components.push(import("@/views/easy3d/baseTools/help/Index.vue"));
+                this.components.push(import("@/views/map3d/baseTools/help/Index.vue"));
                 break;
             default: ;
         }

@@ -43,19 +43,19 @@
 
 <script>
 
-import Contour from "@/views/easy3d/baseTools/analysis/contour.vue";
-import Flood from "@/views/easy3d/baseTools/analysis/flood.vue";
-import GlobeSurface from "@/views/easy3d/baseTools/analysis/globeSurface.vue";
-import Insight from "@/views/easy3d/baseTools/analysis/insight.vue";
-import ModelClip from "@/views/easy3d/baseTools/analysis/modelClip.vue";
-import ModelFlat from "@/views/easy3d/baseTools/analysis/modelFlat.vue";
-import Slope from "@/views/easy3d/baseTools/analysis/slope.vue";
-import Sunshine from "@/views/easy3d/baseTools/analysis/sunshine.vue";
-import TerrainExcavate from "@/views/easy3d/baseTools/analysis/terrainExcavate.vue";
-import VisualField from "@/views/easy3d/baseTools/analysis/visualField.vue";
-import Volume from "@/views/easy3d/baseTools/analysis/volume.vue";
-import LimitHeight from "@/views/easy3d/baseTools/analysis/limitHeight.vue";
-import ModelVolume from "@/views/easy3d/baseTools/analysis/modelVolume.vue";
+import Contour from "@/views/map3d/baseTools/analysis/contour.vue";
+import Flood from "@/views/map3d/baseTools/analysis/flood.vue";
+import GlobeSurface from "@/views/map3d/baseTools/analysis/globeSurface.vue";
+import Insight from "@/views/map3d/baseTools/analysis/insight.vue";
+import ModelClip from "@/views/map3d/baseTools/analysis/modelClip.vue";
+import ModelFlat from "@/views/map3d/baseTools/analysis/modelFlat.vue";
+import Slope from "@/views/map3d/baseTools/analysis/slope.vue";
+import Sunshine from "@/views/map3d/baseTools/analysis/sunshine.vue";
+import TerrainExcavate from "@/views/map3d/baseTools/analysis/terrainExcavate.vue";
+import VisualField from "@/views/map3d/baseTools/analysis/visualField.vue";
+import Volume from "@/views/map3d/baseTools/analysis/volume.vue";
+import LimitHeight from "@/views/map3d/baseTools/analysis/limitHeight.vue";
+import ModelVolume from "@/views/map3d/baseTools/analysis/modelVolume.vue";
 
 export default {
   name: "analysis",
