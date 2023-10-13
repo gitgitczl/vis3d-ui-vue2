@@ -18,23 +18,7 @@
       </el-tree>
     </div>
 
-    <!-- 树节点右击菜单 -->
-    <!--
-      <ul class="tree-menu" v-show="isTreeMenu" :style="{ ...meunStyle }">
-        <li>
-          <span>上一层</span>
-        </li>
-        <li>
-          <span>下一层</span>
-        </li>
-        <li>
-          <span>置于顶层</span>
-        </li>
-        <li>
-          <span>置于底层</span>
-        </li>
-      </ul>
-    -->
+
   </Card>
 </template>
 
@@ -143,6 +127,9 @@ export default {
         this.clickTimes = 0;
       }, 300);
     },
+    nodeRightClick() {
+      return
+    },
 
     // 选中某个某个节点并打开对应图层
     checkOne(attr) {
@@ -170,50 +157,6 @@ export default {
         window.mapViewer.operateLayerTool.setVisible(data.id, visible);
       }
     },
-    // childeren转为线性
-    getAllLayers(lys) {
-      if (!lys) return;
-      lys = lys || {};
-      lys = JSON.parse(JSON.stringify(lys));
-      let layers = [];
-      let groups = [];
-      function query(attr) {
-        if (!attr.children) {
-          layers.push(attr);
-        } else {
-          let newAttr = JSON.parse(JSON.stringify(attr));
-          delete newAttr.children;
-          groups.push(newAttr);
-
-          attr.children.forEach(function (item) {
-            query(item);
-          });
-        }
-      }
-
-      lys.forEach((element) => {
-        query(element);
-      });
-
-      return {
-        layers,
-        groups,
-      };
-    },
-
-    nodeRightClick(event, data) {
-      return;
-      this.meunStyle = { top: `${event.pageY}px`, left: `${event.pageX}px` };
-      this.$set(this, "isTreeMenu", true);
-      /**
-       * 点击其他地方关闭菜单
-       */
-      const self = this;
-      document.onclick = function () {
-        self.$set(self, "isTreeMenu", false);
-      };
-    },
-
     // 递归设置属性
     recurse(list, callback) {
       for (let i = 0; i < list.length; i++) {
@@ -259,21 +202,7 @@ export default {
 
   // 保持和树统一
   watch: {
-    "window.mapViewer.operateLayerTool.layerObjs": {
-      handler(layerObjs) {
-        debugger
-        let data = this.getAllLayers(operateLayers);
-        let { layers } = data || {};
-        for (let i = 0; i < layers.length; i++) {
-          let item = layers[i];
-          if (item.show == true && this.checkedKeys.indexOf(item.id) == -1) {
-            this.checkedKeys.push(item.id);
-          }
-        }
-        this.$refs.layerTree.setCheckedKeys(this.checkedKeys);
-      },
-      deep: true,
-    },
+
   },
 };
 </script>
