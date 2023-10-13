@@ -1,44 +1,17 @@
 <template>
-  <Card
-    @close="close"
-    :title="title"
-    :size="size"
-    :iconfont="iconfont"
-    :position="position"
-  >
+  <Card @close="close" :title="title" :size="size" :iconfont="iconfont" :position="position">
     <div class="tree-body reset-tree basic-tree" onselectstart="return false">
-      <el-tree
-        ref="layerTree"
-        show-checkbox
-        :props="defaultProps"
-        :data="operateLayers"
-        :expand-on-click-node="false"
-        :default-expanded-keys="expandedKeys"
-        :default-checked-keys="checkedKeys"
-        node-key="id"
-        @node-click="nodeClick"
-        @check="nodeCheck"
-        @node-contextmenu="nodeRightClick"
-      >
+      <el-tree ref="layerTree" show-checkbox :props="defaultProps" :data="treeData" :expand-on-click-node="false"
+        :default-expanded-keys="expandedKeys" :default-checked-keys="checkedKeys" node-key="id" @node-click="nodeClick"
+        @check="nodeCheck" @node-contextmenu="nodeRightClick">
         <div class="custom-tree-node" slot-scope="{ data }">
           <span>{{ data.name }}</span>
           <div class="custom-tree-node-slider">
-            <el-slider
-              v-show="checkedKeys.indexOf(data.id) != -1"
-              v-if="
-                data.type !== '3dtiles' &&
-                data.type !== 'group' &&
-                !data.plotType
-              "
-              show-input
-              :show-input-controls="false"
-              :show-tooltip="false"
-              v-model="data.alpha"
-              :max="1"
-              :step="0.1"
-              @change="setLayeralpha(data)"
-              @input="setLayeralpha(data)"
-            >
+            <el-slider v-show="checkedKeys.indexOf(data.id) != -1" v-if="data.type !== '3dtiles' &&
+              data.type !== 'group' &&
+              !data.plotType
+              " show-input :show-input-controls="false" :show-tooltip="false" v-model="data.alpha" :max="1" :step="0.1"
+              @change="setLayeralpha(data)" @input="setLayeralpha(data)">
             </el-slider>
           </div>
         </div>
@@ -67,12 +40,11 @@
 
 <script>
 /*  */
-
 export default {
   name: "layers",
 
   components: {
-    
+
   },
 
   props: {
@@ -82,13 +54,12 @@ export default {
     iconfont: {
       type: String,
       default: "icon-cengshu",
-    },
-    mapConfig: {},
+    }
   },
 
   data() {
     return {
-      operateLayers: this.$store.state.vis3d.operateLayers,
+      treeData: [],
       expandedKeys: [], // 默认打开节点
       checkedKeys: [], // 默认选中节点
       defaultProps: {
@@ -105,8 +76,9 @@ export default {
   },
 
   mounted() {
-    let data = this.getAllLayers(this.operateLayers);
+    let data = this.getLayersData();
     let { layers, groups } = data || {};
+
     for (let i = 0; i < layers.length; i++) {
       let item = layers[i];
       if (item.show == true) {
@@ -123,10 +95,10 @@ export default {
     }
   },
 
-  destroyed() {},
+  destroyed() { },
   methods: {
     close() {
-      this.$emit("close", "layers");
+      window.workControl.closeToolByName('layers');
     },
     setLayeralpha(data) {
       let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(data.id);
@@ -241,12 +213,55 @@ export default {
         self.$set(self, "isTreeMenu", false);
       };
     },
+
+    // 递归设置属性
+    recurse(list, callback) {
+      for (let i = 0; i < list.length; i++) {
+        let item = list[i];
+        if (item.children && item.children.length > 0) {
+          this.recurse(item.children, callback)
+        } else {
+          if (callback) callback(item);
+        }
+      }
+    },
+    // 重组 mapConfig.operateLayers配置参数
+    getLayersData() {
+      let defaultOlyrs = mapViewer.mapConfig.operateLayers;
+      defaultOlyrs = JSON.parse(JSON.stringify(defaultOlyrs));
+      // 递归设置children内部的属性 保持和layerTool内一致
+      debugger
+      this.recurse(defaultOlyrs, item => {
+        let nowAttr = window.mapViewer.operateLayerTool.layerObjs.filter(obj => {
+          return obj.name == item.name && obj.type == item.type
+        })
+        item = Object.assign(item, nowAttr)
+      });
+
+      this.treeData = defaultOlyrs; // 设置树节点
+
+      let groups = [];
+      for (let ind = 0; ind < defaultOlyrs.length; ind++) {
+        const item = defaultOlyrs[ind];
+        groups.push(item);
+      }
+      let layers = [];
+      const layerObjs = window.mapViewer.operateLayerTool.layerObjs;
+      for (let i = 0; i < layerObjs.length; i++) {
+        layers.push(layerObjs[i].attr)
+      }
+
+      return {
+        groups, layers
+      }
+    }
   },
 
   // 保持和树统一
   watch: {
-    "$store.state.vis3d.operateLayers": {
-      handler(operateLayers) {
+    "window.mapViewer.operateLayerTool.layerObjs": {
+      handler(layerObjs) {
+        debugger
         let data = this.getAllLayers(operateLayers);
         let { layers } = data || {};
         for (let i = 0; i < layers.length; i++) {
@@ -268,16 +283,19 @@ export default {
   height: 736px;
   overflow-x: hidden;
   overflow-y: auto;
+
   .custom-tree-node {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
   .custom-tree-node-slider {
     width: 150px;
   }
 }
+
 .tree-menu {
   position: fixed;
   display: block;
@@ -289,6 +307,7 @@ export default {
   border: 1px solid #363d4b;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
   li {
     height: 30px;
     display: flex;
@@ -298,12 +317,15 @@ export default {
     color: #bdc2d0;
     cursor: pointer;
     border-bottom: 1px dashed #464d5c;
+
     &:last-child {
       border-bottom: none;
     }
+
     &:hover {
       background: #464d5c;
     }
+
     i {
       margin-right: 5px;
       font-size: 16px;

@@ -31,12 +31,12 @@ export default {
 
   mounted() {
     // 构建基础地图
-    let that = this;
     let mapViewer = (window.mapViewer = new this.vis3d.MapViewer(
       "mapContainer",
       mapConfig
     ));
     window.viewer = mapViewer._viewer;
+    mapViewer.mapConfig = mapConfig;
     this.iscrate = true;
   },
   destroyed() {

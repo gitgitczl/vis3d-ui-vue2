@@ -25,7 +25,6 @@ export default {
                 attr.module = module.default;
                 that.componentsArr.push(attr);
             }
-            debugger
             if (fun) fun(that.componentsArr)
         });
     },
