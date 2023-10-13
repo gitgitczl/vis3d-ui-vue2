@@ -24,10 +24,12 @@
       </ul>
     </div>
 
-    <!-- 引入地图组件 -->
+    <!-- 动态创建地图组件 -->
     <div v-for="(item, index) in mapComphonets" :key="index">
-      <component :ref="item.workName" :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name"
-        :position="item.position" :size="item.size" :attr="item.attr" :iconfont="item.iconfont" @close="close(item)" />
+      <component :ref="item.toolName" :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name"
+        @fire="fire" :position="item.position" :size="item.size" :attr="item.attr" :iconfont="item.iconfont"
+        @close="close(item)">
+      </component>
     </div>
   </div>
 </template>
@@ -46,7 +48,6 @@ let zoomTool = undefined; // 缩放工具
 let overviewMap = undefined; // 鹰眼图
 export default {
   name: "tools",
-
   data() {
     return {
       isshowPanel: true, // 是否显示操作按钮 
@@ -76,7 +77,7 @@ export default {
           icon: "icon-bangzhushuoming",
           type: "help",
           name: "帮助说明",
-          workName: "help",
+          toolName: "help",
         },
       ],
       mapLayer: [
@@ -84,51 +85,51 @@ export default {
           icon: "icon-ditufuwu",
           type: "baseMap",
           name: "底图",
-          workName: "baseMap",
+          toolName: "baseMap",
         },
         {
           icon: "icon-cengshu",
           type: "layers",
           name: "图层",
-          workName: "layers",
+          toolName: "layers",
         },
       ],
       mapOperate: [
+      {
+          icon: "icon-tushangcehui",
+          type: "",
+          name: "图上标绘",
+          toolName: "plot",
+        },
         {
           icon: "icon-tushangliangsuan",
           type: "measure",
           name: "图上量算",
-          workName: "measure",
+          toolName: "measure",
         },
         {
           icon: "icon-fenxikongjian",
           type: "",
           name: "空间分析",
-          workName: "analysis",
+          toolName: "analysis",
         },
         {
           icon: "icon-zuobiaodingwei",
           type: "",
           name: "坐标定位",
-          workName: "coordinate",
+          toolName: "coordinate",
         },
         {
           icon: "icon-diqudaohang",
           type: "",
           name: "地区导航",
-          workName: "region",
-        },
-        {
-          icon: "icon-tushangcehui",
-          type: "",
-          name: "图上标绘",
-          workName: "plot",
+          toolName: "region",
         },
         {
           icon: "icon-dianyingmulu",
           type: "",
           name: "视角书签",
-          workName: "viewBook",
+          toolName: "viewBook",
         },
         /*   {
           icon: "icon-wodebiaoji",
@@ -139,30 +140,30 @@ export default {
           icon: "icon-xianludaohang",
           type: "",
           name: "线路导航",
-          workName: "pathPlan",
+          toolName: "pathPlan",
         },
         {
           icon: "icon-youlan",
           type: "",
           name: "飞行漫游",
-          workName: "roam",
+          toolName: "roam",
         },
         {
           icon: "icon-getihuabianji",
           type: "",
           name: "单体化编辑",
-          workName: "monomer",
+          toolName: "monomer",
         },
         {
           icon: "icon-fenpingduibi",
           type: "",
           name: "分屏对比",
-          workName: "twoScreen",
+          toolName: "twoScreen",
         },
         {
           icon: "icon-juanlianduibi",
           name: "卷帘对比",
-          workName: "layerSplit",
+          toolName: "layerSplit",
         },
         {
           icon: "icon-ditushuchu",
@@ -189,11 +190,11 @@ export default {
 
   mounted() {
     // 初始化各工具组件
+    console.log("tools this.$refs===>", this.$refs);
+
     workControl.init(workConfig, (list) => {
       this.mapComphonets = list;
     });
-
-
 
   },
 
@@ -229,8 +230,8 @@ export default {
 
     // 打开具体工具模块
     open(item) {
-      if (item.workName) {
-        workControl.openToolByName(item.workName)
+      if (item.toolName) {
+        workControl.openToolByName(item.toolName)
       }
 
       if (item.type == "scaleBig") { // 放大
@@ -266,7 +267,7 @@ export default {
       }
     },
     close(item) {
-      workControl.closeToolByName(item.workName);
+      workControl.closeToolByName(item.toolName);
     },
 
     // 地图打印
@@ -286,6 +287,13 @@ export default {
         });
       });
     },
+
+    // 触发组件的方法
+    fire(opt) {
+      let { toolName, methond, arg } = opt
+      if (!this.$refs[toolName] || !this.$refs[toolName][0]) return;
+      this.$refs[toolName][0][methond](arg);
+    }
 
   },
 };

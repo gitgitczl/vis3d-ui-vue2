@@ -10,8 +10,8 @@ export default {
         for (let i = 0; i < tools.length; i++) {
             let tool = tools[i];
             tool.domShow = true;
-            toolsObj[tool.workName] = tool;
-            this.importTool(tool.workName);
+            toolsObj[tool.toolName] = tool;
+            this.importTool(tool.toolName);
         }
 
         let that = this;
@@ -19,13 +19,13 @@ export default {
             // 构建对应组件标签
             for (let i = 0; i < modules.length; i++) {
                 let module = modules[i];
-                const workName = module.default.name;
-                let attr = toolsObj[workName];
+                const toolName = module.default.name;
+                let attr = toolsObj[toolName];
                 if (!attr) continue;
                 attr.module = module.default;
                 that.componentsArr.push(attr);
             }
-
+            debugger
             if (fun) fun(that.componentsArr)
         });
     },
@@ -127,8 +127,8 @@ export default {
         if (toolAttr.openDisableAnothers) {
             for (let i = 0; i < this.componentsArr.length; i++) {
                 let ct = this.componentsArr[i];
-                if (ct.workName != name && ct.show) {
-                    this.closeToolByName(ct.workName, name);
+                if (ct.toolName != name && ct.show) {
+                    this.closeToolByName(ct.toolName, name);
                 }
             }
         }
@@ -139,7 +139,7 @@ export default {
         let component = null;
         for (let i = 0; i < this.componentsArr.length; i++) {
             let cpnt = this.componentsArr[i];
-            if (cpnt.workName == name) {
+            if (cpnt.toolName == name) {
                 component = cpnt;
                 break;
             }

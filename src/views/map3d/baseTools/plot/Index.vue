@@ -94,6 +94,7 @@ export default {
   },
 
   mounted() {
+
     // 设置下拉框
     this.$set(this, "plotTypeList", Object.keys(plotList));
     this.$set(

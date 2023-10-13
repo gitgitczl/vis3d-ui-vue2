@@ -1,7 +1,7 @@
 <template>
   <div class="map-box" ref="mapbox">
     <!-- 地图容器 -->
-    <div id="mapContainer"></div>
+    <div id="mapContainer" ref="mapContainer"></div>
     <!-- 侧边工具栏 -->
     <Tools v-if="iscrate"></Tools>
   </div>

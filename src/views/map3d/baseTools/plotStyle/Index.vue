@@ -1,48 +1,23 @@
 <template>
-  <Card
-    @close="close"
-    :title="title"
-    :position="position"
-    :size="size"
-    :iconfont="iconfont"
-  >
-    <div v-if="plotActive && Object.keys(plotStyleAttr).length">
-      <div
-        class="plot-type"
-        v-for="(item, index) in plotStyleAttr"
-        :key="index"
-      >
+  <Card @close="close" :title="title" :position="position" :size="size" :iconfont="iconfont">
+    <div v-if="plotActive && Object.keys(plotStyleAttr).length" ref="ppp">
+      <div class="plot-type" v-for="(item, index) in plotStyleAttr" :key="index">
         <!-- 标签 -->
         <div :span="14" v-if="item.type === 'checkbox'">
           <el-row style="margin-bottom: 10px">
             <el-col :span="6" class="plot-type-name">{{ item.name }}：</el-col>
             <el-col :span="18" class="reset-radio">
               <el-radio-group v-model="item.value" @change="toChange">
-                <el-radio
-                  v-for="(opt, index) in item.options"
-                  :key="index"
-                  :label="index"
-                  >{{ opt.name }}
+                <el-radio v-for="(opt, index) in item.options" :key="index" :label="index">{{ opt.name }}
                 </el-radio>
               </el-radio-group>
             </el-col>
           </el-row>
 
-          <div
-            v-for="(opt, step) in item.options"
-            :key="step"
-            v-show="step == item.value"
-          >
-            <Detail
-              v-for="(detial, ind) in opt"
-              :key="ind"
-              :detailAttr="detial"
-              @toChange="toChange"
-              v-show="ind != 'name' && ind != 'value'"
-            >
-              <el-col :span="6" class="plot-type-name"
-                >{{ detial.name }}：</el-col
-              >
+          <div v-for="(opt, step) in item.options" :key="step" v-show="step == item.value">
+            <Detail v-for="(detial, ind) in opt" :key="ind" :detailAttr="detial" @toChange="toChange"
+              v-show="ind != 'name' && ind != 'value'">
+              <el-col :span="6" class="plot-type-name">{{ detial.name }}：</el-col>
             </Detail>
           </div>
         </div>
@@ -57,11 +32,7 @@
     </div>
     <div v-if="!plotActive">
       <!-- 自定义属性信息 -->
-      <div
-        class="plot-style-self basic-text-input"
-        v-for="(item, index) in infos"
-        :key="index"
-      >
+      <div class="plot-style-self basic-text-input" v-for="(item, index) in infos" :key="index">
         <label>{{ item.fieldName }}：</label>
         <el-input v-model="item.value" placeholder="请输入内容"></el-input>
       </div>
@@ -69,13 +40,9 @@
 
     <template slot="sidebar">
       <div class="polt-style-btn basic-plot-style-btn">
-        <span
-          v-for="(item, index) in plotStyleBtn"
-          :key="index"
-          :class="[plotActive === index ? 'polt-style-btn-active' : '']"
-          @click="onChangePlotStyle(index)"
-          >{{ item }}</span
-        >
+        <span v-for="(item, index) in plotStyleBtn" :key="index"
+          :class="[plotActive === index ? 'polt-style-btn-active' : '']" @click="onChangePlotStyle(index)">{{ item
+          }}</span>
       </div>
     </template>
   </Card>
@@ -89,7 +56,7 @@ import Detail from "@/views/map3d/components/detail/Detail.vue";
 export default {
   name: "plotStyle",
   components: {
-    
+
     Detail,
   },
   props: {
@@ -100,7 +67,7 @@ export default {
       type: String,
       default: "icon-dianyingmulu",
     },
-    attr:{}
+    attr: {}
   },
   data() {
     return {
@@ -124,11 +91,12 @@ export default {
 
   mounted() {
     this.setAttr(this.attr.plotEntityObjId);
+
   },
 
   methods: {
     close() {
-      this.$emit("close", "plotStyle");
+      window.workControl.closeToolByName('plotStyle')
     },
     setAttr(id) {
       /* 根据当前编辑的对象的样式类型 构建样式面板 */
@@ -137,7 +105,7 @@ export default {
       if (!entityObj) return;
 
       const entityObjAttr = entityObj.getAttr();
-      if(entityObjAttr) this.infos = entityObjAttr;
+      if (entityObjAttr) this.infos = entityObjAttr;
 
       this.plotStyleAttr = plotStyle[entityObj.attr.styleType];
       // 设置样式默认值
@@ -168,7 +136,7 @@ export default {
               ? attr.value
               : entityStyleValue[i];
         }
-      } 
+      }
 
       // 设置当前对象的属性 供导出为geojson
       entityObj.setAttr(this.infos);
@@ -178,9 +146,11 @@ export default {
     toChange() {
       let val = JSON.parse(JSON.stringify(this.plotStyleAttr));
       let newStyle = this.transformStyleVal(val);
-
-      debugger
-      this.$refs.plot.setEntityStyle(newStyle);
+      this.$emit('fire', {
+        toolName: 'plot',
+        methond: 'setEntityStyle',
+        arg: newStyle
+      })
     },
 
     onChangePlotStyle(index) {
@@ -229,21 +199,25 @@ export default {
   background: rgba(0, 0, 0, 0.7);
   box-sizing: border-box;
   padding: 10px;
+
   .el-divider__text {
     font-size: 18px;
   }
 }
+
 .plot-body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
+
 .plot-child {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+
   li {
     width: 75px;
     height: 75px;
@@ -251,6 +225,7 @@ export default {
     margin-bottom: 10px;
     display: flex;
     cursor: pointer;
+
     img {
       width: 100%;
       height: 100%;
@@ -258,15 +233,19 @@ export default {
     }
   }
 }
+
 .plot-type-name {
   text-align: left;
 }
+
 .plot-type {
   margin-bottom: 10px;
+
   &:last-child {
     margin-bottom: 0;
   }
 }
+
 .polt-style-btn {
   position: absolute;
   left: -30px;
@@ -275,6 +254,7 @@ export default {
   height: 220px;
   display: flex;
   flex-direction: column;
+
   span {
     width: 100%;
     height: 100px;
@@ -287,10 +267,12 @@ export default {
     cursor: pointer;
   }
 }
+
 .plot-style-self {
   margin: 10px auto;
   display: flex;
   align-items: center;
+
   label {
     width: 60px;
   }

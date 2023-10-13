@@ -8,7 +8,7 @@ export default {
         {
             "name": "图上标绘",
             "show": false,
-            "workName": "plot",
+            "toolName": "plot",
             "position": {
                 "top": 60,
                 "left": 10
@@ -26,7 +26,7 @@ export default {
         {
             "name": "标绘属性",
             "show": false,
-            "workName": "plotStyle",
+            "toolName": "plotStyle",
             "position": {
                 "bottom": 40,
                 "right": 10
@@ -42,7 +42,7 @@ export default {
         {
             "name": "图上量算",
             "show": false,
-            "workName": "measure",
+            "toolName": "measure",
             "position": {
                 "top": 60,
                 "left": 10
@@ -57,7 +57,7 @@ export default {
         {
             "name": "底图设置",
             "show": false,
-            "workName": "baseMap",
+            "toolName": "baseMap",
             "position": {
                 "top": 60,
                 "right": 120
@@ -72,7 +72,7 @@ export default {
         {
             "name": "帮助说明",
             "show": false,
-            "workName": "help",
+            "toolName": "help",
             "position": {
                 "top": 60,
                 "left": 10
@@ -87,7 +87,7 @@ export default {
         {
             "name": "图层管理",
             "show": false,
-            "workName": "layers",
+            "toolName": "layers",
             "position": {
                 "top": 60,
                 "left": 10
@@ -103,7 +103,7 @@ export default {
         {
             "name": "空间分析",
             "show": false,
-            "workName": "analysis",
+            "toolName": "analysis",
             "position": {
                 "top": 60,
                 "left": 10
@@ -118,7 +118,7 @@ export default {
         {
             "name": "坐标定位",
             "show": false,
-            "workName": "coordinate",
+            "toolName": "coordinate",
             "position": {
                 "top": 60,
                 "left": 10
@@ -133,14 +133,14 @@ export default {
         {
             "name": "图层对比",
             "show": false,
-            "workName": "twoScreen",
+            "toolName": "twoScreen",
             "closeDisableSelf": true,
             "openDisableAnothers": false
         },
         {
             "name": "区域导航",
             "show": false,
-            "workName": "region",
+            "toolName": "region",
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "size": {
@@ -155,7 +155,7 @@ export default {
         {
             "name": "路径规划",
             "show": false,
-            "workName": "pathPlan",
+            "toolName": "pathPlan",
             "position": {
                 "top": 60,
                 "left": 10
@@ -166,7 +166,7 @@ export default {
         {
             "name": "视角书签",
             "show": false,
-            "workName": "viewBook",
+            "toolName": "viewBook",
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "position": {
@@ -177,7 +177,7 @@ export default {
         {
             "name": "飞行漫游",
             "show": false,
-            "workName": "roam",
+            "toolName": "roam",
             "closeDisableSelf": true,
             "openDisableAnothers": true,
             "closeDisableExcept": [
@@ -191,7 +191,7 @@ export default {
         {
             "name": "漫游属性",
             "show": false,
-            "workName": "roamStyle",
+            "toolName": "roamStyle",
             "closeDisableSelf": false,
             "openDisableAnothers": false,
             "position": {
@@ -206,7 +206,7 @@ export default {
         {
             "name": "卷帘对比",
             "show": false,
-            "workName": "layerSplit",
+            "toolName": "layerSplit",
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "position": {
@@ -221,7 +221,7 @@ export default {
         {
             "name": "单体化",
             "show": false,
-            "workName": "monomer",
+            "toolName": "monomer",
             "closeDisableSelf": true,
             "openDisableAnothers": false,
             "size": {
