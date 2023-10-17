@@ -65,7 +65,7 @@ export default {
   destroyed() {},
   methods: {
     close() {
-      this.$emit("close", "baseMap");
+      window.workControl.closeToolByName('baseMap');
     },
 
     // 选中底图

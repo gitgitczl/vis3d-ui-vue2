@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     close() {
-      this.$emit("close", "measure");
+      window.workControl.closeToolByName("measure")
     },
 
     /**

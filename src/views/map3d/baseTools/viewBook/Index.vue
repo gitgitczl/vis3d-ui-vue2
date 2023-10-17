@@ -53,7 +53,7 @@ export default {
 
   methods: {
     close() {
-      this.$emit("close", "viewBook");
+      window.workControl.closeToolByName("viewBook");
     },
 
     /**

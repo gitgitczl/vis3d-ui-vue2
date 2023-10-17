@@ -1,12 +1,6 @@
 <template>
-  <Card
-    :size="size"
-    @close="close"
-    :title="title"
-    :position="position"
-    :iconfont="iconfont"
-  >
-    <div class="basic-region">
+  <Card :size="size" @close="close" :title="title" :position="position" :iconfont="iconfont">
+    <div class="basic-region" style="color: white !important;">
       <v-region type="group" :town="false" @values="setRegion"></v-region>
     </div>
   </Card>
@@ -22,14 +16,14 @@ export default {
     title: "",
     position: {},
     size: {},
-    iconfont:{
-      type:String,
-      default : "icon-diqudaohang"
+    iconfont: {
+      type: String,
+      default: "icon-diqudaohang"
     }
   },
 
   components: {
-    
+
   },
 
   destroyed() {
@@ -45,7 +39,7 @@ export default {
 
   methods: {
     close() {
-      this.$emit("close", "region");
+      window.workControl.closeToolByName('region')
     },
     setRegion(data) {
       if (regionPolygon) {

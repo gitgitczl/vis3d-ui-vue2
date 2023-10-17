@@ -80,7 +80,7 @@ export default {
                     },
                     "image": {
                         "name": "材质路径",
-                        "value": "./map3d/images/texture/glow.png",
+                        "value": require("../../images/texture/glow.png"),
                         "type": "input-text",
                         "disable": "disabled"
                     }

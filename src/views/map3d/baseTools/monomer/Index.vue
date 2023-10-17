@@ -226,7 +226,7 @@ export default {
     },
 
     close() {
-      this.$emit("close", "monomer");
+      window.workControl.closeToolByName("monomer")
     },
   },
 };

@@ -28,7 +28,7 @@
   </Card>
 </template>
 <script>
-
+import img_start from "../../images/plot/start.png"
 let drawTool = null;
 export default {
   name: "coordinate",
@@ -63,23 +63,25 @@ export default {
       drawTool.on("endCreate", function (entObj, ent) {
         const lnglat = entObj.getPositions(1);
         if (!lnglat) return;
-        that.lng = Number(lnglat[0]).toFixed(2);
-        that.lat = Number(lnglat[1]).toFixed(2);
+        that.lng = Number(lnglat[0]).toFixed(6);
+        that.lat = Number(lnglat[1]).toFixed(6);
         that.height = Number(lnglat[2]).toFixed(2);
       });
       drawTool.on("endEdit", function (entObj, ent) {
         const lnglat = entObj.getPositions(1);
         if (!lnglat) return;
-        that.lng = Number(lnglat[0]).toFixed(2);
-        that.lat = Number(lnglat[1]).toFixed(2);
+        that.lng = Number(lnglat[0]).toFixed(6);
+        that.lat = Number(lnglat[1]).toFixed(6);
         that.height = Number(lnglat[2]).toFixed(2);
       });
       drawTool.on("editing", function (entObj, ent) {
-        const lnglat = entObj.getPositions(1);
+        const lnglat = entObj.getPositions(true);
         if (!lnglat) return;
-        that.lng = Number(lnglat[0]).toFixed(2);
-        that.lat = Number(lnglat[1]).toFixed(2);
+        that.lng = Number(lnglat[0]).toFixed(6);
+        that.lat = Number(lnglat[1]).toFixed(6);
         that.height = Number(lnglat[2]).toFixed(2);
+
+        console.log(that.lng)
       });
     }
   },
@@ -92,7 +94,7 @@ export default {
 
   methods: {
     close() {
-      this.$emit("close", "coordinate");
+      window.workControl.closeToolByName('coordinate');
     },
     showMarker() {
       if (!this.lng || !this.lat) {
@@ -104,8 +106,8 @@ export default {
       let entObj = drawTool.createByPositions({
         type: "billboard",
         style: {
-          image: "./map3d/images/pathPlan/start.png",
-          scale: 0.5,
+          image: img_start,
+          scale: 0.8,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         },
         positions: [this.lng, this.lat, this.height || 0],
@@ -113,12 +115,15 @@ export default {
       window.viewer.zoomTo(entObj.entity);
     },
     drawMarker() {
+      this.lng = '';
+      this.lat = '';
+      this.height = '';
       if (!drawTool) return;
       drawTool.removeAll();
       drawTool.start({
         type: "billboard",
         style: {
-          image: "./map3d/images/pathPlan/start.png",
+          image: img_start,
           scale: 0.5,
         },
       });

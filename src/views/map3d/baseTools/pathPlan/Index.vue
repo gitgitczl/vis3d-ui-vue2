@@ -129,7 +129,7 @@ export default {
 
   methods: {
     close() {
-      this.$emit("close", "pathPlan");
+      window.workControl.closeToolByName("pathPlan")
     },
 
     drawStrart() {
