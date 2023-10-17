@@ -95,7 +95,7 @@ export default {
         },
       ],
       mapOperate: [
-      {
+        {
           icon: "icon-tushangcehui",
           type: "",
           name: "图上标绘",
@@ -112,6 +112,12 @@ export default {
           type: "",
           name: "空间分析",
           toolName: "analysis",
+        },
+        {
+          icon: "icon-youlan",
+          type: "",
+          name: "飞行漫游",
+          toolName: "roam",
         },
         {
           icon: "icon-zuobiaodingwei",
@@ -141,12 +147,6 @@ export default {
           type: "",
           name: "线路导航",
           toolName: "pathPlan",
-        },
-        {
-          icon: "icon-youlan",
-          type: "",
-          name: "飞行漫游",
-          toolName: "roam",
         },
         {
           icon: "icon-getihuabianji",
@@ -190,8 +190,6 @@ export default {
 
   mounted() {
     // 初始化各工具组件
-    console.log("tools this.$refs===>", this.$refs);
-
     workControl.init(workConfig, (list) => {
       this.mapComphonets = list;
     });

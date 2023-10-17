@@ -21,37 +21,25 @@
 
       <li class="basic-progress">
         <label>进&nbsp;&nbsp;&nbsp;&nbsp;度：</label>
-        <el-progress
-          :text-inside="true"
-          :stroke-width="24"
-          :percentage="
-            Number(
-              Number(
-                (nowStartRoamAttr.distanceED / nowStartRoamAttr.alldistance) *
-                  100
-              ).toFixed(2)
-            )
-          "
-          v-if="
-            !isNaN(
-              Number(
-                (nowStartRoamAttr.distanceED / nowStartRoamAttr.alldistance) *
-                  100
-              )
-            )
-          "
-          status="success"
-        ></el-progress>
+        <el-progress :text-inside="true" :stroke-width="24" :percentage="Number(
+          Number(
+            (nowStartRoamAttr.distanceED / nowStartRoamAttr.alldistance) *
+            100
+          ).toFixed(2)
+        )
+          " v-if="!isNaN(
+    Number(
+      (nowStartRoamAttr.distanceED / nowStartRoamAttr.alldistance) *
+      100
+    )
+  )
+    " status="success"></el-progress>
         <!-- <el-input disabled v-model="nowStartRoamAttr.distanceED"></el-input> -->
       </li>
 
       <li class="reset-select basic-select">
         <label>视&nbsp;&nbsp;&nbsp;&nbsp;角：</label>
-        <el-select
-          v-model="nowStartRoamAttr.viewType"
-          placeholder="请选择"
-          @change="changeView"
-        >
+        <el-select v-model="nowStartRoamAttr.viewType" placeholder="请选择" @change="changeView">
           <el-option label="无" value="no"></el-option>
           <el-option label="第一视角" value="dy"> </el-option>
           <el-option label="上帝视角" value="sd"></el-option>
@@ -74,14 +62,15 @@ export default {
       type: String,
       default: "icon-youlan",
     },
+    attr: {} // 
   },
   components: {
-    
+
   },
   data() {
     return {
-      nowStartRoamAttr: {},
-    };
+      nowStartRoamAttr: {}
+    }
   },
   destroyed() {
     // 关闭当前页面时 结束当前漫游
@@ -90,11 +79,13 @@ export default {
 
   computed: {},
 
-  mounted() {},
+  mounted() {
+    this.nowStartRoamAttr = this.attr
+  },
 
   methods: {
     close() {
-      this.$emit("close", "roamStyle");
+      window.workControl.closeToolByName("roamStyle");
     },
     stopRoam() {
       if (window.nowRoam) window.nowRoam.stop();
@@ -102,21 +93,16 @@ export default {
     goonRoam() {
       if (window.nowRoam) window.nowRoam.goon();
     },
-    changeView(data) {
-      if (window.nowRoam) window.nowRoam.setViewType(data);
-    },
     endRoam() {
       if (window.nowRoam) window.nowRoam.end();
     },
-  },
-  watch: {
-    "$store.state.vis3d.nowRoamAttr": {
-      handler(attr) {
-        this.nowStartRoamAttr = attr || {};
-      },
-      deep: true,
+    changeView(data) {
+      if (window.nowRoam) window.nowRoam.setViewType(data);
     },
-  },
+    setNowRoamAttr(attr) {
+      this.nowStartRoamAttr = attr
+    }
+  }
 };
 </script>
 
@@ -124,6 +110,7 @@ export default {
 .roam-style-btn {
   display: flex;
   align-items: center;
+
   span {
     height: 40px;
     border-radius: 2px;
@@ -133,23 +120,29 @@ export default {
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+
     &:last-child {
       margin-right: 0;
     }
   }
 }
+
 .roam-style-box {
   margin-top: 15px;
+
   li {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
     &:last-child {
       margin-bottom: 0;
     }
+
     label {
       width: 80px;
     }
+
     .el-progress {
       width: 100%;
     }

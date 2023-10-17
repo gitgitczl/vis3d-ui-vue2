@@ -50,7 +50,7 @@
 
 <script>
 
-import plotStyle from "./plotStyle.json";
+import plotStyle from "./plotStyle.js";
 import Detail from "@/views/map3d/components/detail/Detail.vue";
 /* 标绘样式设置 */
 export default {

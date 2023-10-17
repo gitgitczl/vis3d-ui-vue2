@@ -1,4 +1,4 @@
-{
+export default {
     "point": {
         "pixelSize": {
             "name": "尺寸",
@@ -68,14 +68,14 @@
             "options": {
                 "common": {
                     "name": "普通",
-                    "value":"common"
+                    "value": "common"
                 },
                 "flowline": {
                     "name": "流动线",
-                    "value":"flowline",
+                    "value": "flowline",
                     "duration": {
                         "name": "流动速度",
-                        "type":"input-number",
+                        "type": "input-number",
                         "value": 1000
                     },
                     "image": {
@@ -87,10 +87,10 @@
                 },
                 "flyline": {
                     "name": "飞行线",
-                    "value":"flyline",
+                    "value": "flyline",
                     "duration": {
                         "name": "流动速度",
-                        "type":"input-number",
+                        "type": "input-number",
                         "value": 1000
                     }
                 }

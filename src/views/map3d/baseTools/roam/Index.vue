@@ -1,11 +1,5 @@
 <template>
-  <Card
-    @close="close"
-    :title="title"
-    :size="size"
-    :position="position"
-    :iconfont="iconfont"
-  >
+  <Card @close="close" :title="title" :size="size" :position="position" :iconfont="iconfont">
     <p class="roam-toolip">提示：支持.json格式的路线文件导入</p>
     <div class="roam-operate">
       <span class="basic-btn" @click="startDraw">新增线路</span>
@@ -17,33 +11,16 @@
 
     <!-- 漫游列表 -->
     <div class="reset-table roam-tabel">
-      <el-table
-        v-show="isShowList"
-        :data="roamTabList"
-        max-height="400px"
-        style="width: 100%"
-      >
+      <el-table v-show="isShowList" :data="roamTabList" max-height="400px" style="width: 100%">
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column label="名称" prop="name"></el-table-column>
         <el-table-column label="类型" prop="typeName"></el-table-column>
         <el-table-column label="备注" prop="mark"></el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <span
-              title="开始漫游"
-              class="el-icon-s-promotion operate-btn-icon"
-              @click="startRoam(scope.row)"
-            ></span>
-            <span
-              title="编辑"
-              class="el-icon-edit operate-btn-icon"
-              @click="roamEdit(scope.row)"
-            ></span>
-            <span
-              title="删除"
-              class="el-icon-delete operate-btn-icon"
-              @click="roamDelete(scope.row)"
-            ></span>
+            <span title="开始漫游" class="el-icon-s-promotion operate-btn-icon" @click="startRoam(scope.row)"></span>
+            <span title="编辑" class="el-icon-edit operate-btn-icon" @click="roamEdit(scope.row)"></span>
+            <span title="删除" class="el-icon-delete operate-btn-icon" @click="roamDelete(scope.row)"></span>
           </template>
         </el-table-column>
       </el-table>
@@ -54,10 +31,7 @@
       <el-row class="roatm-attr-item basic-text-input">
         <el-col :span="6">名称：</el-col>
         <el-col :span="18">
-          <el-input
-            placeholder="请输入名称"
-            v-model="nowRoamAttr.name"
-          ></el-input>
+          <el-input placeholder="请输入名称" v-model="nowRoamAttr.name"></el-input>
         </el-col>
       </el-row>
 
@@ -72,19 +46,11 @@
         </el-col>
       </el-row>
 
-      <el-row
-        class="roatm-attr-item reset-select basic-select"
-        v-if="selectModel == 'isSelectModel'"
-      >
+      <el-row class="roatm-attr-item reset-select basic-select" v-if="selectModel == 'isSelectModel'">
         <el-col :span="6">模型选择：</el-col>
         <el-col :span="18">
           <el-select v-model="roamModel" placeholder="请选择">
-            <el-option
-              v-for="(item, index) in modelList"
-              :key="index"
-              :label="item.name"
-              :value="item.uri"
-            >
+            <el-option v-for="(item, index) in modelList" :key="index" :label="item.name" :value="item.uri">
             </el-option>
           </el-select>
         </el-col>
@@ -100,28 +66,16 @@
           </el-radio-group>
         </el-col>
       </el-row>
-      <el-row
-        class="roatm-attr-item basic-text-input"
-        v-if="nowRoamAttr.fixType == '0'"
-      >
+      <el-row class="roatm-attr-item basic-text-input" v-if="nowRoamAttr.fixType == '0'">
         <el-col :span="6">漫游时长：</el-col>
         <el-col :span="18">
-          <el-input
-            placeholder="请输入时长"
-            v-model="nowRoamAttr.alltimes"
-          ></el-input>
+          <el-input placeholder="请输入时长" v-model="nowRoamAttr.alltimes"></el-input>
         </el-col>
       </el-row>
-      <el-row
-        class="roatm-attr-item basic-text-input"
-        v-if="nowRoamAttr.fixType == '1'"
-      >
+      <el-row class="roatm-attr-item basic-text-input" v-if="nowRoamAttr.fixType == '1'">
         <el-col :span="6">漫游速度(m/s)：</el-col>
         <el-col :span="18">
-          <el-input
-            placeholder="请输入速度"
-            v-model="nowRoamAttr.speed"
-          ></el-input>
+          <el-input placeholder="请输入速度" v-model="nowRoamAttr.speed"></el-input>
         </el-col>
       </el-row>
       <!-- 其它配置 -->
@@ -137,16 +91,10 @@
         </el-col>
       </el-row>
 
-      <el-row
-        v-if="nowRoamAttr.roamType === '1'"
-        class="roatm-attr-item basic-text-input"
-      >
+      <el-row v-if="nowRoamAttr.roamType === '1'" class="roatm-attr-item basic-text-input">
         <el-col :span="6">飞行高度：</el-col>
         <el-col :span="18">
-          <el-input
-            placeholder="请输入高度"
-            v-model="nowRoamAttr.height"
-          ></el-input>
+          <el-input placeholder="请输入高度" v-model="nowRoamAttr.height"></el-input>
         </el-col>
       </el-row>
       <el-row class="roatm-attr-item reset-select basic-select">
@@ -163,10 +111,7 @@
       <el-row class="roatm-attr-item basic-text-input">
         <el-col :span="6">备注：</el-col>
         <el-col :span="18">
-          <el-input
-            placeholder="请输入名称"
-            v-model="nowRoamAttr.mark"
-          ></el-input>
+          <el-input placeholder="请输入名称" v-model="nowRoamAttr.mark"></el-input>
         </el-col>
       </el-row>
 
@@ -177,13 +122,7 @@
     </div>
 
     <!-- 打开文件 -->
-    <input
-      type="file"
-      accept=".json"
-      style="display: none"
-      id="roam-loadFile"
-      @change="loadFileChange"
-    />
+    <input type="file" accept=".json" style="display: none" id="roam-loadFile" @change="loadFileChange" />
   </Card>
 </template>
 
@@ -194,7 +133,7 @@ let roamDrawTool = null;
 let roamTool = null;
 let nowEditEntityObj = null;
 let lastRouteObj = null; // 上次漫游的线路
-
+window.nowRoam = undefined;
 export default {
   name: "roam",
 
@@ -209,7 +148,7 @@ export default {
   },
 
   components: {
-    
+
   },
 
   data() {
@@ -244,23 +183,29 @@ export default {
       roamTool = new this.vis3d.roam.Tool(window.viewer);
       roamTool.on("startRoam", function () {
         // 开始漫游时 显示漫游面板
-        that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
-        window.workControl.openToolByName("roamStyle");
+        window.workControl.openToolByName("roamStyle",roamTool.getNowroamAttr());
       });
       roamTool.on("endRoam", function () {
         // 结束漫游时 显示漫游列表
-        that.$store.commit("setNowRoamAttr", {});
         window.workControl.closeToolByName("roamStyle");
       });
       roamTool.on("roaming", function () {
         // 每秒回调一次
-        that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
+        that.$emit("fire", {
+          toolName: "roamStyle",
+          method: 'setNowRoamAttr',
+          arg: roamTool.getNowroamAttr()
+        })
       });
       roamTool.on("stopRoam", function () {
-        that.$store.commit("setNowRoamAttr", {});
+        that.$emit("fire", {})
       });
       roamTool.on("goonRoam", function () {
-        that.$store.commit("setNowRoamAttr", roamTool.getNowroamAttr());
+        that.$emit("fire", {
+          toolName: "roamStyle",
+          method: 'setNowRoamAttr',
+          arg: roamTool.getNowroamAttr()
+        })
       });
     }
 
@@ -380,12 +325,14 @@ export default {
       roamTool.destroy();
       roamTool = null;
     }
+    window.nowRoam = undefined;
     window.workControl.closeToolByName("roamStyle");
   },
 
   methods: {
     close() {
-      this.$emit("close", "roam");
+      window.workControl.closeToolByName('roam');
+      window.workControl.closeToolByName("roamStyle");
     },
     startDraw() {
       if (!roamDrawTool) return;
@@ -502,7 +449,7 @@ export default {
               fixType: attr.fixType,
               alltimes: attr.alltimes,
               speed: attr.speed,
-              height : Number(attr.height || 0)
+              height: Number(attr.height || 0)
             };
 
             that.selectModel = attr.entityAttr.uri
@@ -515,12 +462,7 @@ export default {
         };
       }
     },
-  },
-  watch: {
-    // 漫游视角切换
-    "$store.state.vis3d.nowRoamViewType": function (data) {
-      this.nowRoamAttr.viewType = data;
-    },
+    
   },
 };
 </script>
