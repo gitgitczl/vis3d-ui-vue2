@@ -6,9 +6,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 // ============= 加密后 =================
 // 正式环境
-/* import vis3d from "@/lib/vis3d-min/vis3d.min.js" */
+import "@/lib/vis3d-min/vis3d.css"
+import vis3d from "@/lib/vis3d-min/vis3d.min.js"
 // 测试环境
-import vis3d from "@/lib/vis3d/vis3d.export.js"
+/* import vis3d from "@/lib/vis3d/vis3d.export.js" */
 
 Vue.prototype.vis3d = window.vis3d = vis3d;
 Vue.prototype.map3d = window.map3d = vis3d;
