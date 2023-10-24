@@ -311,6 +311,8 @@ export default {
   justify-content: center;
 
   .operate-btn {
+    width: 100%;
+
     li {
       width: 100%;
       height: 32px;

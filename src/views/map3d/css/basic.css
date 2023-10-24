@@ -1,3 +1,20 @@
+
+body{
+    height: 100vw;
+    width: 100vh;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    font-size: 14px;
+}
+ul,li, p{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+
 .basic-head {
     background: #2a303c;
 }
