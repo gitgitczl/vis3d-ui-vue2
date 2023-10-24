@@ -10,9 +10,7 @@ import "@/lib/vis3d-min/vis3d.css"
 import vis3d from "@/lib/vis3d-min/vis3d.min.js"
 // 测试环境
 /* import vis3d from "@/lib/vis3d/vis3d.export.js" */
-
 Vue.prototype.vis3d = window.vis3d = vis3d;
-Vue.prototype.map3d = window.map3d = vis3d;
 import '@/assets/font/iconfont.css'
 // 拖拽组件注册
 import VueDragResize from 'vue-drag-resize'
