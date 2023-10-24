@@ -314,6 +314,7 @@ export default {
     width: 100%;
 
     li {
+      color: #c7c7c7;
       width: 100%;
       height: 32px;
       overflow: hidden;

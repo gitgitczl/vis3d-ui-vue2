@@ -1,25 +1,8 @@
 <template>
-  <vue-drag-resize
-    id="map3d-drag"
-    ref="drag"
-    class="map3d-card basic-card"
-    dragHandle=".card-title"
-    :sticks="['br']"
-    :isActive="true"
-    :w="size.width"
-    :h="size.height"
-    :x="position.left"
-    :y="position.top"
-    :parentLimitation="true"
-    :parentW="parentWidth"
-    :parentH="parentHeight"
-    @resizing="onResizing"
-    @resizestop="onResizstop"
-    @dragging="onDragging"
-    @dragstop="onDragstop"
-    @clicked="onActivated"
-    @deactivated="onDeactivated"
-  >
+  <vue-drag-resize id="map3d-drag" ref="drag" class="map3d-card basic-card" dragHandle=".card-title" :sticks="['br']"
+    :isActive="true" :w="size.width" :h="size.height" :x="position.left" :y="position.top" :parentLimitation="true"
+    :parentW="parentWidth" :parentH="parentHeight" @resizing="onResizing" @resizestop="onResizstop" @dragging="onDragging"
+    @dragstop="onDragstop" @clicked="onActivated" @deactivated="onDeactivated">
     <!-- 头部 -->
     <div class="card-title">
       <div class="card-title-info">
@@ -118,7 +101,7 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onDragging(params) {},
+    onDragging(params) { },
 
     /**
      * 拖拽结束
@@ -127,7 +110,7 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onDragstop(params) {},
+    onDragstop(params) { },
 
     /**
      * 放大
@@ -136,7 +119,7 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onResizing(params) {},
+    onResizing(params) { },
 
     /**
      * 放大结束
@@ -145,17 +128,17 @@ export default {
      * @param {Number} params.width
      * @param {Number} params.height
      */
-    onResizstop(params) {},
+    onResizstop(params) { },
 
     /**
      * 单击面板
      */
-    onActivated() {},
+    onActivated() { },
 
     /**
      * 单击其他地方
      */
-    onDeactivated() {},
+    onDeactivated() { },
     /**
      * 关闭 向上抛出
      */
@@ -171,6 +154,7 @@ export default {
   position: absolute;
   z-index: 999 !important;
 }
+
 .card-title {
   height: 44px;
   display: flex;
@@ -179,25 +163,31 @@ export default {
   box-sizing: border-box;
   padding: 0 15px;
   cursor: pointer;
+
   .card-title-info {
     height: 100%;
     display: flex;
     align-items: center;
     overflow: hidden;
+    color: #c7c7c7;
+
     i {
       font-size: 18px;
     }
+
     p {
       margin-left: 10px;
     }
   }
 }
+
 .card-content-box {
   position: relative;
   height: calc(100% - 44px);
-  
+
 }
-.card-content{
+
+.card-content {
   position: relative;
   width: 100%;
   height: 100%;
