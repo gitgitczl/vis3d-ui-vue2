@@ -7,12 +7,15 @@ import 'element-ui/lib/theme-chalk/index.css';
 /* import less from 'less' */
 // ============= 加密后 =================
 import "@/lib/vis3d-min/vis3d.css"
-import vis3d from "@/lib/vis3d-min/vis3d.min.js"
+// 正式环境
+// import vis3d from "@/lib/vis3d-min/vis3d.min.js"
+// 测试环境
+import vis3d from "@/lib/vis3d/vis3d.export.js"
+import "@/lib/vis3d/vis3d.css"
+
 Vue.prototype.vis3d = window.vis3d = vis3d;
 Vue.prototype.map3d = window.map3d = vis3d;
 import '@/assets/font/iconfont.css'
-// 本地加密类库
-import store from './store';
 // 拖拽组件注册
 import VueDragResize from 'vue-drag-resize'
 Vue.component('vue-drag-resize', VueDragResize)
@@ -37,6 +40,5 @@ Vue.use(ElementUI);
 
 new Vue({
   router,
-  store,
   render: h => h(App),
 }).$mount('#app')

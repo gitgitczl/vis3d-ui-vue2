@@ -48,7 +48,7 @@ export default {
         },
         terrain: {
             url: "http://data.marsgis.cn/terrain",
-            show: false,
+            show: true,
         },
     },
     baseLayers: [
@@ -134,6 +134,18 @@ export default {
             type: "group",
             open: true,
             children: [
+
+
+                {
+                    name: "地块（3）",
+                    type: "3dtiles",
+                    url: "http://mapgl.com/data/model/dikuai/tileset.json",
+                    center: {
+                        z: 440
+                    },
+                    show: true,
+                    maximumScreenSpaceError: 16
+                },
                 {
                     name: "寺庙",
                     type: "3dtiles",

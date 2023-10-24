@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 /dist
-/src/lib/map3d-resource
+/src/lib/vis3d
 .svn
 apidoc
 
