@@ -12,6 +12,12 @@ import vis3d from "@/lib/vis3d-min/vis3d.min.js"
 /* import vis3d from "@/lib/vis3d/vis3d.export.js" */
 Vue.prototype.vis3d = window.vis3d = vis3d;
 import '@/assets/font/iconfont.css'
+// 定义面板主题样式
+Vue.prototype.toolStyle = {
+  themeType: "green", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
+  toolType: 'default' // 右侧工具条类型 default（条状工具条）
+}
+
 // 拖拽组件注册
 import VueDragResize from 'vue-drag-resize'
 Vue.component('vue-drag-resize', VueDragResize)

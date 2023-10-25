@@ -42,7 +42,7 @@ import printJS from "print-js";
 import { workConfig } from "../map3d/config/export"
 /* 模块控制器 */
 import workControl from "./workControl.js";
-import "./css/basic.css"
+
 window.workControl = workControl; // 绑定到全局
 
 let zoomTool = undefined; // 缩放工具

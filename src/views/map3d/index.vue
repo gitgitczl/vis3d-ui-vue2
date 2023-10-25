@@ -11,6 +11,8 @@
 // 引入配置文件 
 import { mapConfig } from "./config/export"
 import Tools from "@/views/map3d/Tools.vue";
+import "./css/basic.css"
+import setThemeStyle from "./css/theme";
 window.viewer = null;
 window.mapViewer = null;
 export default {
@@ -30,6 +32,9 @@ export default {
   created() { },
 
   mounted() {
+    // 设置主题样式
+    setThemeStyle(this.toolStyle.themeType);
+
     // 构建基础地图
     let mapViewer = (window.mapViewer = new this.vis3d.MapViewer(
       "mapContainer",
@@ -53,13 +58,7 @@ export default {
         toolName: name,
         openState: false,
       });
-    },
-
-    // =================== 监听操作图层的开启关闭 =======================
-    setLayerVisible(attr, visible) {
-      attr = attr || {};
-      window.mapViewer.operateLayerTool.setVisible(attr.id, visible);
-    },
+    }
   }
 
 };
