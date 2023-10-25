@@ -3,14 +3,16 @@
     <!-- 地图容器 -->
     <div id="mapContainer" ref="mapContainer"></div>
     <!-- 侧边工具栏 -->
-    <Tools v-if="iscrate"></Tools>
+    <Tools v-if="iscrate && toolsType == 'default'"></Tools>
+    <ToolsDP v-if="iscrate && toolsType == 'dropdown'"></ToolsDP>
   </div>
 </template>
 <script>
 
 // 引入配置文件 
 import { mapConfig } from "./config/export"
-import Tools from "@/views/map3d/Tools-dp.vue";
+import Tools from "@/views/map3d/Tools.vue";
+import ToolsDP from "@/views/map3d/Tools-dp.vue";
 import "./css/basic.less"
 import setThemeStyle from "./css/theme";
 window.viewer = null;
@@ -19,9 +21,11 @@ export default {
   name: "Map",
   components: {
     Tools,
+    ToolsDP
   },
   data() {
     return {
+      toolsType : 'default',
       iscrate: false, // 是否创建侧边栏 
       workConfig: {},
       plotEntityObjId: null,
@@ -34,7 +38,7 @@ export default {
   mounted() {
     // 设置主题样式
     setThemeStyle(this.toolStyle.themeType);
-
+    this.toolsType = this.toolStyle.toolsType;
     // 构建基础地图
     let mapViewer = (window.mapViewer = new this.vis3d.MapViewer(
       "mapContainer",

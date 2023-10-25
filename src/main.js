@@ -15,7 +15,7 @@ import '@/assets/font/iconfont.css'
 // 定义面板主题样式
 Vue.prototype.toolStyle = {
   themeType: "dark", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
-  toolType: 'default' // 右侧工具条类型 default（条状工具条）
+  toolsType: 'default' // 右侧工具条类型 default（条状工具条） 、dropdown（下拉工具）
 }
 
 // 拖拽组件注册
