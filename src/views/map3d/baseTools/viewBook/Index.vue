@@ -88,7 +88,7 @@ export default {
 
 <style lang="less">
 .basic-search .btn {
-  background-color: #1c9ed5;
+  background-color: var(--btnStyleColor);
 }
 
 .add-box {

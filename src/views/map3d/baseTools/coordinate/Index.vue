@@ -161,12 +161,12 @@ export default {
 }
 
 .basic-coordinate span:nth-child(1) {
-  border-color: #1c9ed5;
+  border-color: var(--btnStyleColor);
   background: rgba(28, 158, 213, 0.2);
 }
 
 .basic-coordinate span:nth-child(2) {
-  border-color: #1c9ed5;
-  background: #1c9ed5;
+  border-color: var(--btnStyleColor);
+  background: var(--btnStyleColor);
 }
 </style>

@@ -116,7 +116,7 @@ export default {
 }
 
 .basic-analysis-bottom-btn span:nth-child(2) {
-  border-color: #1c9ed5;
-  background: #1c9ed5;
+  border-color: var(--btnStyleColor);
+  background: var(--btnStyleColor);
 }
 </style>

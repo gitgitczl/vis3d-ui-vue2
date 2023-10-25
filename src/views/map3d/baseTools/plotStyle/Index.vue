@@ -285,7 +285,7 @@ export default {
 }
 
 .basic-plot-style-btn .polt-style-btn-active {
-  border: 1px solid #1c9ed5;
-  background: #1c9ed5;
+  border: 1px solid var(--btnStyleColor);
+  background: var(--btnStyleColor);
 }
 </style>

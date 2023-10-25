@@ -245,11 +245,11 @@ export default {
 
   span {
     font-weight: bold;
-    color: #1c9ed5;
+    color: var(--btnStyleColor);
   }
 }
 
 .basic-measure-clear {
-  background: #1c9ed5;
+  background: var(--btnStyleColor);
 }
 </style>

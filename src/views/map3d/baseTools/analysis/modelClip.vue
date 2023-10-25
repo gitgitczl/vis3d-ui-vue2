@@ -298,11 +298,19 @@ export default {
 }
 
 .basic-modelClip-dir .modelClip-dir-active {
-  background: #1c9ed5;
-  border-color: #1c9ed5;
+  background: var(--btnStyleColor);
+  border-color: var(--btnStyleColor);
   color: #ffffff;
 }
 
 .basic-modelClip-dir .modelClip-dir-active:last-child {
-  border-right: 1px solid #1c9ed5;
-}</style>
+  border-right: 1px solid var(--btnStyleColor);
+}
+
+
+.basic-tab .modelClip-active {
+  background: var(--btnStyleColor);
+  border-color: var(--btnStyleColor);
+  color: #ffffff;
+}
+</style>

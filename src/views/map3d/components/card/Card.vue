@@ -156,6 +156,7 @@ export default {
 }
 
 .card-title {
+  background: var(--cardHeadColor);
   height: 44px;
   display: flex;
   align-items: center;

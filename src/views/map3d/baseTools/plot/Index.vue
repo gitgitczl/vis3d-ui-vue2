@@ -264,7 +264,7 @@ export default {
 }
 
 .basic-plot li:hover {
-  background: #1c9ed5;
+  background: var(--btnStyleColor);
 }
 
 .plot-select {

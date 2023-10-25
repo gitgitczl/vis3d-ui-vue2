@@ -6,6 +6,8 @@
     --cardHeadColor: #2a303c;
     /* 弹窗面板背景色 */
     --cardBackground: rgba(37, 38, 49, 0.96);
+    /* 定义所有按钮及相关border以及其它颜色 */
+    --btnStyleColor: #1c9ed5;
 }
 
 body {
@@ -28,7 +30,7 @@ li {
     list-style: none;
 }
 
-
+/* 定义提示文字颜色 */
 .basic-tooltip {
     color: var(--fontColor);
 }
@@ -36,14 +38,14 @@ li {
 
 /* 各模块操作面板内 模块点击选中效果 */
 .basic-tool .tool-active {
-    border: 1px solid #1c9ed5;
+    border: 1px solid var(--btnStyleColor);
     color: var(--fontColor);
     background: #363d4b;
 }
 
 
 .basic-analysis-btn span {
-    border-color: #1c9ed5 !important;
+    border-color: var(--btnStyleColor) !important;
 }
 
 .basic-analysis-btn .basic-analysis-btn-clear {
@@ -51,102 +53,11 @@ li {
     background: rgba(106, 116, 133, 0.2) !important;
 }
 
-/* 修改element ui 样式 */
-.basic-text-input .el-input__inner {
-    background: #181920;
-    border: none;
-    color: var(--fontColor);
-    font-weight: bold;
-}
+/* 定义基础样式 */
 
-.basic-select .el-input__inner {
-    background: #181920;
-    border: none;
-    color: var(--fontColor);
-}
-
-.basic-slider .el-slider__button {
-    background: #1c9ed5;
-}
-
-.basic-slider .el-input__inner {
-    background: #181920;
-    border: none;
-    color: var(--fontColor);
-}
-
-.basic-slider .el-input-number__decrease,
-.basic-slider .el-input-number__increase {
-    background: #1c9ed5;
-    color: #ffffff;
-    border-color: #1c9ed5;
-}
-
-.basic-checkbox .el-checkbox {
-    color: var(--fontColor);
-}
-
-.basic-checkbox .el-checkbox__inner {
-    background: var(--fontColor);
-    border: none;
-}
-
-.basic-checkbox .el-checkbox__input.is-checked .el-checkbox__inner,
-.basic-checkbox .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color: #1c9ed5;
-    border-color: #1c9ed5;
-}
-
-.basic-tree .el-slider__button {
-    background: #1c9ed5;
-}
-
-.basic-tree .el-checkbox__inner {
-    background: var(--fontColor);
-    border: none;
-}
-
-.basic-tree .el-checkbox__input.is-checked .el-checkbox__inner,
-.basic-tree .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    background-color: #1c9ed5;
-    border-color: #1c9ed5;
-}
-
-.basic-time .el-input__inner {
-    background: #181920;
-    border: none;
-    color: var(--fontColor);
-}
-
-
-.basic-number .el-input__inner {
-    background: #181920;
-    border: none;
-    color: var(--fontColor);
-}
-
-.basic-number .volume-btn {
-    background-color: #1c9ed5;
-    border-color: #1c9ed5;
-}
-
-.basic-number .el-input-number__decrease,
-.basic-number .el-input-number__increase {
-    background-color: #1c9ed5;
-    border-color: #1c9ed5;
-    color: #ffffff;
-}
-
-
-.basic-search .el-input__inner {
-    background: #181920;
-    border: none;
-    color: var(--fontColor);
-    font-weight: bold;
-}
 
 .basic-btn {
-    background-color: #1c9ed5;
+    background-color: var(--btnStyleColor);
     color: white;
     height: 40px;
     display: flex;
@@ -172,14 +83,99 @@ li {
     background: rgba(106, 116, 133, 0.2);
 }
 
-.basic-tab .modelClip-active {
-    background: #1c9ed5;
-    border-color: #1c9ed5;
+
+/* 修改 element ui 样式 */
+.basic-progress .el-progress-bar__innerText {
+    color: var(--fontColor);
+}
+
+.basic-text-input .el-input__inner {
+    background: #181920;
+    border: none;
+    color: var(--fontColor);
+    font-weight: bold;
+}
+
+.basic-select .el-input__inner {
+    background: #181920;
+    border: none;
+    color: var(--fontColor);
+}
+
+.basic-slider .el-slider__button {
+    background: var(--btnStyleColor);
+}
+
+.basic-slider .el-input__inner {
+    background: #181920;
+    border: none;
+    color: var(--fontColor);
+}
+
+.basic-slider .el-input-number__decrease,
+.basic-slider .el-input-number__increase {
+    background: var(--btnStyleColor);
+    color: #ffffff;
+    border-color: var(--btnStyleColor);
+}
+
+.basic-checkbox .el-checkbox {
+    color: var(--fontColor);
+}
+
+.basic-checkbox .el-checkbox__inner {
+    background: var(--fontColor);
+    border: none;
+}
+
+.basic-checkbox .el-checkbox__input.is-checked .el-checkbox__inner,
+.basic-checkbox .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: var(--btnStyleColor);
+    border-color: var(--btnStyleColor);
+}
+
+.basic-tree .el-slider__button {
+    background: var(--btnStyleColor);
+}
+
+.basic-tree .el-checkbox__inner {
+    background: var(--fontColor);
+    border: none;
+}
+
+.basic-tree .el-checkbox__input.is-checked .el-checkbox__inner,
+.basic-tree .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: var(--btnStyleColor);
+    border-color: var(--btnStyleColor);
+}
+
+.basic-time .el-input__inner {
+    background: #181920;
+    border: none;
+    color: var(--fontColor);
+}
+
+
+.basic-number .el-input__inner {
+    background: #181920;
+    border: none;
+    color: var(--fontColor);
+}
+
+
+.basic-number .el-input-number__decrease,
+.basic-number .el-input-number__increase {
+    background-color: var(--btnStyleColor);
+    border-color: var(--btnStyleColor);
     color: #ffffff;
 }
 
-.basic-progress .el-progress-bar__innerText {
+
+.basic-search .el-input__inner {
+    background: #181920;
+    border: none;
     color: var(--fontColor);
+    font-weight: bold;
 }
 
 /* 重定义滚动条 */
@@ -254,8 +250,8 @@ html {
 }
 
 .head-reset .el-switch.is-checked .el-switch__core {
-    border-color: #1c9ed5;
-    background: #1c9ed5;
+    border-color: var(--btnStyleColor);
+    background: var(--btnStyleColor);
 }
 
 .head-reset .el-switch.is-checked .el-switch__core::after {
@@ -366,7 +362,7 @@ html {
 }
 
 .reset-table .operate-btn-icon:hover {
-    color: #1c9ed5;
+    color: var(--btnStyleColor);
 }
 
 .reset-table .operate-btn-icon:nth-child(2) {

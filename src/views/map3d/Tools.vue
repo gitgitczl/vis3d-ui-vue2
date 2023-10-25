@@ -300,7 +300,7 @@ export default {
 
 <style lang="less" scoped>
 .basic-sidebar {
-  background-color: #2a303c;
+  background-color: var(--cardHeadColor);
 }
 
 .basic-sidebar li {
@@ -308,7 +308,7 @@ export default {
 }
 
 .basic-sidebar li:hover {
-  background: #1c9ed5;
+  background: var(--btnStyleColor);
   color: #ffffff;
 }
 
@@ -325,6 +325,7 @@ export default {
 
   .operate-btn {
     width: 100%;
+
     li {
       color: #bdc2d0;
       width: 100%;
@@ -337,6 +338,7 @@ export default {
       cursor: pointer;
     }
   }
+
   .map-operate-btn {
     margin: 32px 0;
   }

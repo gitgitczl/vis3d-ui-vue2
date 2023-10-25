@@ -9,12 +9,12 @@
 
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">
       <span
-        :style="clickBtnIndex == 1 ? 'background: #1C9ED5' : 'none'"
+        :style="clickBtnIndex == 1 ? 'background: var(--btnStyleColor)' : 'none'"
         @click="drawCircle"
         >圆形通视分析</span
       >
       <span
-        :style="clickBtnIndex == 2 ? 'background: #1C9ED5' : 'none'"
+        :style="clickBtnIndex == 2 ? 'background: var(--btnStyleColor)' : 'none'"
         @click="drawPolyline"
         >单线通视分析</span
       >
