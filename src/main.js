@@ -14,7 +14,7 @@ Vue.prototype.vis3d = window.vis3d = vis3d;
 import '@/assets/font/iconfont.css'
 // 定义面板主题样式
 Vue.prototype.toolStyle = {
-  themeType: "green", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
+  themeType: "blue", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
   toolType: 'default' // 右侧工具条类型 default（条状工具条）
 }
 
