@@ -142,12 +142,17 @@ export default {
 	justify-content: space-between;
 	cursor: pointer;
 	li{
-		width: 60px;
+		width: 33%;
 		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		color: #bdc2d0;
+		box-sizing: border-box;
+		border-right: 1px solid rgba(189, 194, 208, 0.4);
+		&:last-child{
+			border-right: none;
+		}
 		&:hover{
 			background: var(--toolsMouseoverColor);
 		}
