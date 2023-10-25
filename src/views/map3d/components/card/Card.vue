@@ -169,12 +169,10 @@ export default {
     display: flex;
     align-items: center;
     overflow: hidden;
-    color: #c7c7c7;
-
+    color: #bdc2d0;
     i {
       font-size: 18px;
     }
-
     p {
       margin-left: 10px;
     }

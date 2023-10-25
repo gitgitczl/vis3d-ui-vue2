@@ -211,6 +211,7 @@ export default {
     justify-content: center;
     margin: 6px 10px 0 0;
     cursor: pointer;
+    color: #bdc2d0;
     &:nth-child(3n) {
       margin-right: 0;
     }

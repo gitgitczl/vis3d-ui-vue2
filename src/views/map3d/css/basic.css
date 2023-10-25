@@ -630,3 +630,7 @@ screen and (max-height: 420px) {
         display: none;
     }
 }
+
+.slope-toolip{
+    color: #bdc2d0;
+}
