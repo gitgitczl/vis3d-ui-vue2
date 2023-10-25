@@ -1,21 +1,11 @@
 <template>
-  <Card
-    @close="close"
-    :title="title"
-    :size="size"
-    :position="position"
-    :iconfont="iconfont"
-  >
+  <Card @close="close" :title="title" :size="size" :position="position" :iconfont="iconfont">
     <div class="add-box basic-search">
       <el-input v-model="viewerTitle" placeholder="请输入名称"></el-input>
       <span class="btn" @click="onAddViewer">添加</span>
     </div>
     <ul class="viewer-list">
-      <li
-        v-for="(item, index) in viewerList"
-        :key="index"
-        @click="setCameraView(item)"
-      >
+      <li v-for="(item, index) in viewerList" :key="index" @click="setCameraView(item)">
         <img :src="item.imgSrc" />
         <div class="viewer-info">
           <p>{{ item.name }}</p>
@@ -41,7 +31,7 @@ export default {
   },
 
   components: {
-    
+
   },
 
   data() {
@@ -97,9 +87,14 @@ export default {
 </script>
 
 <style lang="less">
+.basic-search .btn {
+  background-color: #1c9ed5;
+}
+
 .add-box {
   display: flex;
   align-items: center;
+
   .btn {
     width: 80px;
     height: 40px;
@@ -111,19 +106,23 @@ export default {
     justify-content: center;
   }
 }
+
 .viewer-list {
   height: calc(100% - 50px);
   margin-top: 10px;
   overflow-x: hidden;
   overflow-y: auto;
+
   li {
     position: relative;
     height: 200px;
     display: flex;
     margin: 10px 0;
+
     img {
       object-fit: cover;
     }
+
     .viewer-info {
       position: absolute;
       bottom: 0;
@@ -137,6 +136,7 @@ export default {
       background: rgba(0, 0, 0, 0.5);
       padding: 0 20px;
       color: #ffffff;
+
       span {
         cursor: pointer;
       }

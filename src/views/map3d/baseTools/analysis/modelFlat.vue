@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="slope-toolip">
+    <div class="basic-tooltip">
       提示：模型压平只支持部分无着色器的3dtiles数据。
     </div>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">

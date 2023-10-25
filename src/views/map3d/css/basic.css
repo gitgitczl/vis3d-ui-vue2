@@ -1,3 +1,13 @@
+/* 定义主题风格样式 */
+:root {
+    /* 主题文字颜色 */
+    --fontColor: #bdc2d0;
+    /* 弹窗面板头部颜色 */
+    --cardHeadColor: #2a303c;
+    /* 弹窗面板背景色 */
+    --cardBackground: rgba(37, 38, 49, 0.96);
+}
+
 body {
     height: 100vw;
     width: 100vh;
@@ -18,49 +28,19 @@ li {
     list-style: none;
 }
 
-.basic-head {
-    background: #2a303c;
+
+.basic-tooltip {
+    color: var(--fontColor);
 }
 
-.basic-head .head-reset {
-    background: #252631;
-}
 
-.basic-card {
-    background: rgba(37, 38, 49, 0.96);
-}
-
-.basic-card .card-title {
-    background: #2a303c;
-}
-
-.basic-sidebar {
-    background-color: #2a303c;
-}
-
-.basic-sidebar li {
-    box-shadow: 0px 2px 16px rgba(37, 38, 49, 0.6);
-}
-
-.basic-sidebar li:hover {
-    background: #1c9ed5;
-    color: #ffffff;
-}
-
-.basic-sidebar .basic-sidebar-active {
-    background: #1c9ed5;
-    color: #ffffff;
-}
-
+/* 各模块操作面板内 模块点击选中效果 */
 .basic-tool .tool-active {
     border: 1px solid #1c9ed5;
-    color: #bdc2d0;
+    color: var(--fontColor);
     background: #363d4b;
 }
 
-.basic-measure-clear {
-    background: #1c9ed5;
-}
 
 .basic-analysis-btn span {
     border-color: #1c9ed5 !important;
@@ -71,100 +51,18 @@ li {
     background: rgba(106, 116, 133, 0.2) !important;
 }
 
-.basic-analysis-bottom-btn span:nth-child(1) {
-    border-color: #6a7485;
-    background: rgba(106, 116, 133, 0.2);
-}
-
-.basic-analysis-bottom-btn span:nth-child(2) {
-    border-color: #1c9ed5;
-    background: #1c9ed5;
-}
-
-.basic-visualfield-btn {
-    border-color: #1c9ed5;
-    background: #1c9ed5;
-}
-
-.basic-flood p {
-    border-color: #1c9ed5;
-    background: #1c9ed5;
-}
-
-.basic-terrainExcavate-btn span:nth-child(1) {
-    border-color: #1c9ed5;
-    background: rgba(28, 158, 213, 0.2);
-}
-
-.basic-terrainExcavate-btn span:nth-child(2) {
-    border-color: #1c9ed5;
-    background: #1c9ed5;
-}
-
-.basic-modelClip-dir li {
-    border: 1px solid #6a7485;
-    background: rgba(106, 116, 133, 0.2);
-    border-right: none;
-}
-
-.basic-modelClip-dir li:last-child {
-    border-right: 1px solid #6a7485;
-}
-
-.basic-modelClip-dir .modelClip-dir-active {
-    background: #1c9ed5;
-    border-color: #1c9ed5;
-    color: #ffffff;
-}
-
-.basic-modelClip-dir .modelClip-dir-active:last-child {
-    border-right: 1px solid #1c9ed5;
-}
-
-.basic-coordinate span:nth-child(1) {
-    border-color: #1c9ed5;
-    background: rgba(28, 158, 213, 0.2);
-}
-
-.basic-coordinate span:nth-child(2) {
-    border-color: #1c9ed5;
-    background: #1c9ed5;
-}
-
-.basic-plot li:hover {
-    background: #1c9ed5;
-}
-
-.basic-plot-style-btn span {
-    border: 1px solid #6a7485;
-    background: rgba(37, 38, 49, 0.96);
-}
-
-.basic-plot-style-btn .polt-style-btn-active {
-    border: 1px solid #1c9ed5;
-    background: #1c9ed5;
-}
-
-.basic-roam-head li {
-    border-color: #6a7485 !important;
-}
-
-.basic-roam-head .roam-head-active {
-    border-color: #1c9ed5 !important;
-    background: #1c9ed5;
-}
-
+/* 修改element ui 样式 */
 .basic-text-input .el-input__inner {
     background: #181920;
     border: none;
-    color: #bdc2d0;
+    color: var(--fontColor);
     font-weight: bold;
 }
 
 .basic-select .el-input__inner {
     background: #181920;
     border: none;
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
 .basic-slider .el-slider__button {
@@ -174,7 +72,7 @@ li {
 .basic-slider .el-input__inner {
     background: #181920;
     border: none;
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
 .basic-slider .el-input-number__decrease,
@@ -185,11 +83,11 @@ li {
 }
 
 .basic-checkbox .el-checkbox {
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
 .basic-checkbox .el-checkbox__inner {
-    background: #bdc2d0;
+    background: var(--fontColor);
     border: none;
 }
 
@@ -204,7 +102,7 @@ li {
 }
 
 .basic-tree .el-checkbox__inner {
-    background: #bdc2d0;
+    background: var(--fontColor);
     border: none;
 }
 
@@ -217,33 +115,14 @@ li {
 .basic-time .el-input__inner {
     background: #181920;
     border: none;
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
-.basic-dialog .el-dialog__header {
-    background: #363d4b;
-}
-
-.basic-dialog .el-dialog__title {
-    color: #bdc2d0;
-}
-
-.basic-dialog .el-dialog__headerbtn .el-dialog__close {
-    color: #a0a7b4;
-}
-
-.basic-dialog .el-dialog {
-    background: #252631;
-}
-
-.basic-dialog .el-dialog__body {
-    color: #6d748a;
-}
 
 .basic-number .el-input__inner {
     background: #181920;
     border: none;
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
 .basic-number .volume-btn {
@@ -258,31 +137,24 @@ li {
     color: #ffffff;
 }
 
-.basic-region .rg-default-btn {
-    background: rgba(37, 38, 49, 0.96);
-    border-color: rgba(37, 38, 49, 0.96);
-    color: #bdc2d0;
-}
-
-.basic-region .rg-default-btn:hover {
-    border-color: rgba(37, 38, 49, 0.96);
-    color: #bdc2d0;
-}
 
 .basic-search .el-input__inner {
     background: #181920;
     border: none;
-    color: #bdc2d0;
+    color: var(--fontColor);
     font-weight: bold;
-}
-
-.basic-search .btn {
-    background-color: #1c9ed5;
 }
 
 .basic-btn {
     background-color: #1c9ed5;
     color: white;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 20px;
+    border-radius: 2px;
+    cursor: pointer;
 }
 
 .basic-btn-danger {
@@ -307,9 +179,10 @@ li {
 }
 
 .basic-progress .el-progress-bar__innerText {
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
+/* 重定义滚动条 */
 body,
 html {
     scrollbar-base-color: #f4f7fc;
@@ -377,7 +250,7 @@ html {
 }
 
 .head-reset .el-switch__core::after {
-    background: #bdc2d0;
+    background: var(--fontColor);
 }
 
 .head-reset .el-switch.is-checked .el-switch__core {
@@ -389,53 +262,54 @@ html {
     background: #ffffff;
 }
 
-.reset-tree .el-tree {
+/* 重定义树 */
+.basic-tree .el-tree {
     background: transparent !important;
-    color: #bdc2d0;
+    color: var(--fontColor);
 }
 
-.reset-tree .el-tree-node__content {
+.basic-tree .el-tree-node__content {
     background: transparent;
 }
 
-.reset-tree .el-tree-node__content:hover {
+.basic-tree .el-tree-node__content:hover {
     background: transparent;
 }
 
-.reset-tree .el-slider__input {
+.basic-tree .el-slider__input {
     width: 60px;
 }
 
-.reset-tree .el-slider__runway.show-input {
+.basic-tree .el-slider__runway.show-input {
     margin-right: 80px;
 }
 
-.reset-tree .el-slider__button {
+.basic-tree .el-slider__button {
     border-radius: 0;
     width: 4px;
     height: 12px;
     border: none;
 }
 
-.reset-tree .el-input--small .el-input__inner {
+.basic-tree .el-input--small .el-input__inner {
     height: 20px;
 }
 
-.reset-tree .el-input__inner {
+.basic-tree .el-input__inner {
     background: #2a303c;
-    color: #bdc2d0;
+    color: var(--fontColor);
     border: none;
 }
 
-.reset-tree .el-tree-node__expand-icon {
+.basic-tree .el-tree-node__expand-icon {
     color: #6b707c;
 }
 
-.reset-tree .el-tree-node:focus>.el-tree-node__content {
+.basic-tree .el-tree-node:focus>.el-tree-node__content {
     background-color: transparent !important;
 }
 
-.reset-tree .el-tree-node__expand-icon.is-leaf {
+.basic-tree .el-tree-node__expand-icon.is-leaf {
     color: transparent;
 }
 
@@ -517,7 +391,6 @@ html {
 }
 
 
-
 .scrollbar::-webkit-scrollbar {
     width: 5px;
     height: 1px;
@@ -552,22 +425,7 @@ html {
     transition: left 0.25s ease-out;
 }
 
-.transparent-to-input {
-    pointer-events: none;
-}
 
-.opaque-to-input {
-    pointer-events: auto;
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-/*a {
-      text-decoration: none;
-      color: @highlight-color;
-  }*/
 a:hover {
     text-decoration: underline;
 }
@@ -580,28 +438,6 @@ a:hover {
     .full-window {
         position: initial;
     }
-}
-
-.floating {
-    pointer-events: auto;
-    position: absolute;
-    border-radius: 15px;
-}
-
-.floating-horizontal {
-    pointer-events: auto;
-    position: absolute;
-    border-radius: 15px;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-.floating-vertical {
-    pointer-events: auto;
-    position: absolute;
-    border-radius: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 @media print {
@@ -629,8 +465,4 @@ screen and (max-height: 420px) {
     .compass {
         display: none;
     }
-}
-
-.slope-toolip{
-    color: #bdc2d0;
 }

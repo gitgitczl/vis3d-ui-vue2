@@ -225,7 +225,7 @@ export default {
       window.plotDrawTool.updateOneStyle(nowPlotEntObj, style);
     }
   }
- 
+
 };
 </script>
 
@@ -255,12 +255,16 @@ export default {
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: #bdc2d0;
+
       i {
         font-size: 20px;
       }
     }
   }
+}
+
+.basic-plot li:hover {
+  background: #1c9ed5;
 }
 
 .plot-select {
@@ -295,7 +299,6 @@ export default {
     }
 
     label {
-      color: #bdc2d0;
       cursor: pointer;
       height: 40px;
     }

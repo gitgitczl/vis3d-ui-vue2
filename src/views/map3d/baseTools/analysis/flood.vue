@@ -1,9 +1,9 @@
 <template>
   <div class="flood-bar">
-    <ul class="flood-body basic-flood basic-number">
+    <ul class="flood-body basic-number">
       <li>
         <label>分析区域：</label>
-        <p @click="draw">绘制区域</p>
+        <p class="basic-btn" @click="draw">绘制区域</p>
       </li>
       <li>
         <label>最低海拔(米)：</label>
@@ -173,15 +173,7 @@ export default {
       display: flex;
       justify-content: flex-end;
     }
-    p {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      box-sizing: border-box;
-      padding: 0 20px;
-      border-radius: 2px;
-      cursor: pointer;
-    }
+
   }
 }
 .flood-bar {

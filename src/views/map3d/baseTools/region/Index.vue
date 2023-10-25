@@ -93,3 +93,15 @@ export default {
   },
 };
 </script>
+<style>
+.basic-region .rg-default-btn {
+  background: rgba(37, 38, 49, 0.96);
+  border-color: rgba(37, 38, 49, 0.96);
+  color: var(--fontColor);
+}
+
+.basic-region .rg-default-btn:hover {
+  border-color: rgba(37, 38, 49, 0.96);
+  color: var(--fontColor);
+}
+</style>

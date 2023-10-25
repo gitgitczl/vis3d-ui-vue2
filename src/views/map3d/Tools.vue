@@ -299,6 +299,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.basic-sidebar {
+  background-color: #2a303c;
+}
+
+.basic-sidebar li {
+  box-shadow: 0px 2px 16px rgba(37, 38, 49, 0.6);
+}
+
+.basic-sidebar li:hover {
+  background: #1c9ed5;
+  color: #ffffff;
+}
+
 .sidebar-box {
   position: absolute;
   right: 38px;
@@ -312,7 +325,6 @@ export default {
 
   .operate-btn {
     width: 100%;
-
     li {
       color: #bdc2d0;
       width: 100%;
@@ -325,17 +337,8 @@ export default {
       cursor: pointer;
     }
   }
-
   .map-operate-btn {
     margin: 32px 0;
   }
 }
-
-/* .basic-dialog{
-  z-index: 999;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50% -50%);
-} */
 </style>

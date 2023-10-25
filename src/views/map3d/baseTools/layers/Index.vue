@@ -1,6 +1,6 @@
 <template>
   <Card @close="close" :title="title" :size="size" :iconfont="iconfont" :position="position">
-    <div class="tree-body reset-tree basic-tree" onselectstart="return false">
+    <div class="tree-body basic-tree basic-tree" onselectstart="return false">
       <el-tree ref="layerTree" show-checkbox :props="defaultProps" :data="treeData" :expand-on-click-node="false"
         :default-expanded-keys="expandedKeys" :default-checked-keys="checkedKeys" node-key="id" @node-click="nodeClick"
         @check="nodeCheck" @node-contextmenu="nodeRightClick">
@@ -243,7 +243,6 @@ export default {
     align-items: center;
     box-sizing: border-box;
     padding: 0 20px;
-    color: #bdc2d0;
     cursor: pointer;
     border-bottom: 1px dashed #464d5c;
 

@@ -331,7 +331,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #bdc2d0;
     font-style: normal;
     cursor: pointer;
   }

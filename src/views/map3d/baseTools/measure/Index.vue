@@ -1,18 +1,8 @@
 <template>
-  <Card
-    :title="title"
-    :size="size"
-    :position="position"
-    :iconfont="iconfont"
-    @close="close"
-  >
+  <Card :title="title" :size="size" :position="position" :iconfont="iconfont" @close="close">
     <ul class="measure-box basic-tool">
-      <li
-        v-for="(item, index) in measureList"
-        :key="index"
-        :class="[index === isMeasureActive ? 'tool-active' : '']"
-        @click="onChangeMeasure(item, index)"
-      >
+      <li v-for="(item, index) in measureList" :key="index" :class="[index === isMeasureActive ? 'tool-active' : '']"
+        @click="onChangeMeasure(item, index)">
         <i :class="['iconfont', item.icon]"></i>
         <label>{{ item.name }}</label>
       </li>
@@ -21,12 +11,7 @@
     <div v-show="isShowUnit" class="measure-unit-box basic-select">
       <label>单位</label>
       <el-select v-model="unitValue" placeholder="请选择" @change="changeUint">
-        <el-option
-          v-for="(item, index) in unitList"
-          :key="index"
-          :label="item"
-          :value="item"
-        >
+        <el-option v-for="(item, index) in unitList" :key="index" :label="item" :value="item">
         </el-option>
       </el-select>
     </div>
@@ -48,7 +33,7 @@ let measureTool = null;
 export default {
   name: "measure",
   components: {
-    
+
   },
   props: {
     title: "",
@@ -201,6 +186,7 @@ export default {
 .measure-box {
   display: flex;
   flex-wrap: wrap;
+
   li {
     width: 90px;
     height: 64px;
@@ -211,25 +197,30 @@ export default {
     justify-content: center;
     margin: 6px 10px 0 0;
     cursor: pointer;
-    color: #bdc2d0;
+
     &:nth-child(3n) {
       margin-right: 0;
     }
+
     i {
       font-size: 26px;
       margin-bottom: 10px;
     }
+
     label {
       cursor: pointer;
     }
   }
 }
+
 .measure-unit-box {
   margin-top: 10px;
+
   label {
     margin-right: 15px;
   }
 }
+
 .measure-clear-btn {
   width: 100%;
   height: 32px;
@@ -242,16 +233,23 @@ export default {
   color: #ffffff;
   font-weight: bold;
 }
+
 .measure-result {
   display: flex;
   align-items: center;
   margin-top: 20px;
+
   label {
     color: #6d748a;
   }
+
   span {
     font-weight: bold;
     color: #1c9ed5;
   }
+}
+
+.basic-measure-clear {
+  background: #1c9ed5;
 }
 </style>

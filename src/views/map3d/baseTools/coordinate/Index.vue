@@ -1,11 +1,5 @@
 <template>
-  <Card
-    :size="size"
-    :title="title"
-    :position="position"
-    :iconfont="iconfont"
-    @close="close"
-  >
+  <Card :size="size" :title="title" :position="position" :iconfont="iconfont" @close="close">
     <ul class="coordinate-box basic-text-input">
       <li>
         <label>经度</label>
@@ -46,7 +40,7 @@ export default {
   },
 
   components: {
-    
+
   },
 
   data() {
@@ -138,15 +132,18 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
     label {
       width: 60px;
     }
   }
 }
+
 .coordinate-btn {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   span {
     width: 88px;
     height: 32px;
@@ -161,5 +158,15 @@ export default {
     color: #ffffff;
     font-weight: bold;
   }
+}
+
+.basic-coordinate span:nth-child(1) {
+  border-color: #1c9ed5;
+  background: rgba(28, 158, 213, 0.2);
+}
+
+.basic-coordinate span:nth-child(2) {
+  border-color: #1c9ed5;
+  background: #1c9ed5;
 }
 </style>

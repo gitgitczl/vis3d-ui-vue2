@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="slope-toolip">
+    <ul class="basic-tooltip">
       <li>提示：</li>
       <li>1.cesium接口，部分情况下依赖正确的接口</li>
       <li>2.目标点如果在观察位置坡面的背面方向，会出现不准确的现象</li>

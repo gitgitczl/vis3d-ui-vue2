@@ -1,13 +1,9 @@
 <template>
   <div>
-    <p class="slope-toolip">提示：模拟设定时间范围内的太阳光效果</p>
+    <p class="basic-tooltip">提示：模拟设定时间范围内的太阳光效果</p>
     <div class="sunshine-item basic-time">
       <label>开始时间：</label>
-      <el-date-picker
-        v-model="startTime"
-        type="datetime"
-        placeholder="选择日期"
-      >
+      <el-date-picker v-model="startTime" type="datetime" placeholder="选择日期">
       </el-date-picker>
     </div>
     <div class="sunshine-item basic-time">
@@ -38,11 +34,11 @@ export default {
       startTime: "",
       endTime: "",
       nowTime: "",
-      intval : undefined
+      intval: undefined
     };
   },
 
-  mounted() {},
+  mounted() { },
 
   destroyed() {
     if (sunshine) {
@@ -73,7 +69,7 @@ export default {
       }
       sunshine.start();
 
-      if(this.intval){
+      if (this.intval) {
         window.clearInterval(this.intval);
         this.intval = undefined;
       }
@@ -88,7 +84,7 @@ export default {
       sunshine.end();
       this.nowTime = "";
       this.startTime = "";
-      if(this.intval){
+      if (this.intval) {
         window.clearInterval(this.intval);
         this.intval = undefined;
       }
@@ -102,12 +98,25 @@ export default {
 .sunshine-item {
   display: flex;
   align-items: center;
+
   label {
     margin-right: 10px;
   }
+
   .el-slider {
     width: calc(100% - 80px);
   }
+
   margin: 8px auto;
+}
+
+.basic-analysis-bottom-btn span:nth-child(1) {
+  border-color: #6a7485;
+  background: rgba(106, 116, 133, 0.2);
+}
+
+.basic-analysis-bottom-btn span:nth-child(2) {
+  border-color: #1c9ed5;
+  background: #1c9ed5;
 }
 </style>

@@ -9,7 +9,7 @@
       :position="position"
       iconfont="icon-cengshu"
     >
-      <div class="tree-body reset-tree basic-tree">
+      <div class="tree-body basic-tree basic-tree">
         <el-tree
           show-checkbox
           :props="defaultProps"

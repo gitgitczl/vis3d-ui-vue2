@@ -197,7 +197,6 @@ export default {
     cursor: pointer;
     margin-right: 12px;
     margin-bottom: 12px;
-    color: #bdc2d0;
 
     &:nth-child(3n) {
       margin-right: 0;
@@ -214,7 +213,7 @@ export default {
   }
 }
 
-.slope-toolip {
+.basic-tooltip {
   font-size: 12px;
   margin: 15px 0;
 
@@ -256,6 +255,5 @@ export default {
   padding: 6px 4px;
   border-bottom: 1px gray dashed;
   cursor: pointer;
-  color: #bdc2d0;
 }
 </style>

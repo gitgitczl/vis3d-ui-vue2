@@ -277,4 +277,15 @@ export default {
     width: 60px;
   }
 }
+
+
+.basic-plot-style-btn span {
+  border: 1px solid #6a7485;
+  background: rgba(37, 38, 49, 0.96);
+}
+
+.basic-plot-style-btn .polt-style-btn-active {
+  border: 1px solid #1c9ed5;
+  background: #1c9ed5;
+}
 </style>

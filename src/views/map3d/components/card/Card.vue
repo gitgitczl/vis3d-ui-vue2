@@ -150,9 +150,9 @@ export default {
 </script>
 
 <style lang="less">
-.map3d-card {
-  position: absolute;
-  z-index: 999 !important;
+.basic-card {
+  color: var(--fontColor);
+  background: var(--cardBackground);
 }
 
 .card-title {
@@ -169,10 +169,11 @@ export default {
     display: flex;
     align-items: center;
     overflow: hidden;
-    color: #bdc2d0;
+
     i {
       font-size: 18px;
     }
+
     p {
       margin-left: 10px;
     }

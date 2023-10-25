@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="slope-toolip">
+    <p class="basic-tooltip">
       提示：请首先单击“绘制区域按钮”，再在图上绘制分析区域
     </p>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">

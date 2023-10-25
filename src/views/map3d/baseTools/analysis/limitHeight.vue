@@ -1,9 +1,9 @@
 <template>
   <div class="flood-bar">
-    <ul class="flood-body basic-flood basic-number">
+    <ul class="flood-body basic-number">
       <li>
         <label>分析区域：</label>
-        <p @click="draw">绘制区域</p>
+        <p class="basic-btn" @click="draw">绘制区域</p>
       </li>
       <li>
         <label>底部高度：</label>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <p class="slope-toolip">提示：模拟设定时间范围内的太阳光效果</p>
+    <p class="basic-tooltip">提示：模拟设定时间范围内的太阳光效果</p>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">
-        <span>绘制区域</span>
-        <span class="basic-analysis-btn-clear">清除</span>
+      <span>绘制区域</span>
+      <span class="basic-analysis-btn-clear">清除</span>
     </div>
     <ul class="terrainExcavate-body basic-number">
       <li>
@@ -30,23 +30,35 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() { },
 
-  destroyed() {},
+  destroyed() { },
 
   methods: {},
 };
 </script>
 
 <style lang="less">
-.terrainExcavate-body{
+.terrainExcavate-body {
   margin-top: 15px;
-  li{
+
+  li {
     display: flex;
     align-items: center;
-    .el-input-number{
+
+    .el-input-number {
       margin: 0 10px;
     }
   }
+}
+
+.basic-terrainExcavate-btn span:nth-child(1) {
+  border-color: #1c9ed5;
+  background: rgba(28, 158, 213, 0.2);
+}
+
+.basic-terrainExcavate-btn span:nth-child(2) {
+  border-color: #1c9ed5;
+  background: #1c9ed5;
 }
 </style>
