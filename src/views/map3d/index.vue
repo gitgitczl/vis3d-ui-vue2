@@ -10,8 +10,8 @@
 
 // 引入配置文件 
 import { mapConfig } from "./config/export"
-import Tools from "@/views/map3d/Tools.vue";
-import "./css/basic.css"
+import Tools from "@/views/map3d/Tools-dp.vue";
+import "./css/basic.less"
 import setThemeStyle from "./css/theme";
 window.viewer = null;
 window.mapViewer = null;
