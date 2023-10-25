@@ -308,7 +308,7 @@ export default {
 }
 
 .basic-sidebar li:hover {
-  background: var(--btnStyleColor);
+  background: var(--toolsMouseoverColor);
   color: #ffffff;
 }
 
