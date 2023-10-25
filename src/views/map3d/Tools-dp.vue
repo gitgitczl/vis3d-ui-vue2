@@ -151,7 +151,7 @@ export default {
 	border-radius: 5px;
 	cursor: pointer;
 	li{
-		width: 33%;
+		width: 33.33%;
 		height: 100%;
 		display: flex;
 		align-items: center;
