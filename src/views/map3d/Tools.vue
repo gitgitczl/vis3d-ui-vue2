@@ -194,7 +194,6 @@ export default {
     workControl.init(workConfig, (list) => {
       this.mapComphonets = list;
     });
-
   },
 
   methods: {
