@@ -1,5 +1,5 @@
 <template>
-	<div class="tools-fade" :style="{right: isshowPanel ? '0' : '-332px'}">
+	<div class="tools-fade" :style="{right: isshowPanel ? '0' : '-300px'}">
 		<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']" :style="{borderColor: isshowPanel ? 'rgba(189, 194, 208, 0.4)' : 'transparent'}" @click="onOpenTool"></span>
 		<div class="tools-icon-box">
 			<div class="layer-base-icon">
@@ -200,10 +200,10 @@ export default {
 <style lang="less" scoped>
 .tools-fade {
 	position: absolute;
-	right: -332px;
+	right: -300px;
 	bottom: 60px;
 	z-index: 100;
-	width: 364px;
+	width: 332px;
 	height: 64px;
 	display: flex;
 	align-items: center;
@@ -234,7 +234,7 @@ export default {
 	flex-wrap: wrap;
 	background: var(--cardHeadColor);
 	box-sizing: border-box;
-	padding: 0 32px;
+	padding-left: 32px;
 	border-radius: 0 32px 32px 0;
 }
 
