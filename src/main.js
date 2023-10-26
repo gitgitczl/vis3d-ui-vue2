@@ -3,7 +3,7 @@ import App from './App.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
-// ======================== 引入3d平台相关 ========================
+// ======================== 引入3d平台相关 start ========================
 // 1、引入字体库
 import '@/assets/font/iconfont.css'
 // 2、引入核心类库vis3d.js
@@ -25,6 +25,7 @@ Vue.use(vRegion)
 // 打印
 import Print from 'vue-print-nb'
 Vue.use(Print);
+// ======================== 引入3d平台相关 end  ========================
 
 new Vue({
   render: h => h(App),
