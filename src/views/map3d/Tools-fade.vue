@@ -1,6 +1,6 @@
 <template>
-	<div class="tools-fade" :style="{right: isshowPanel ? '0' : '-268px'}">
-		<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']" @click="onOpenTool"></span>
+	<div class="tools-fade" :style="{right: isshowPanel ? '0' : '-332px'}">
+		<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']" :style="{borderColor: isshowPanel ? 'rgba(189, 194, 208, 0.4)' : 'transparent'}" @click="onOpenTool"></span>
 		<div class="tools-icon-box">
 			<div class="layer-base-icon">
 				<el-tooltip effect="dark" content="底图" placement="top">
@@ -200,20 +200,24 @@ export default {
 <style lang="less" scoped>
 .tools-fade {
 	position: absolute;
-	right: -268px;
+	right: -332px;
 	bottom: 60px;
 	z-index: 100;
-	width: 300px;
-	height: 100px;
+	width: 364px;
+	height: 64px;
 	display: flex;
 	align-items: center;
 	transition: right 0.5s;
 }
 
 .open-close-icon {
-	width: 32px;
-	height: 32px;
-	border-radius: 50% 0 0 50%;
+	position: absolute;
+	top: 0;
+	left: -32px;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	border: 1px solid rgba(189, 194, 208, 0.4);
 	background: var(--cardHeadColor);
 	display: flex;
 	align-items: center;
@@ -224,18 +228,21 @@ export default {
 }
 
 .tools-icon-box {
-	width: calc(100% - 32px);
+	width: 100%;
 	height: 64px;
 	display: flex;
 	flex-wrap: wrap;
 	background: var(--cardHeadColor);
+	box-sizing: border-box;
+	padding: 0 32px;
+	border-radius: 0 32px 32px 0;
 }
 
 .layer-base-icon {
 	width: 32px;
 	height: 32px;
 	color: #bdc2d0;
-	border-right: 1px solid rgba(189, 194, 208, 0.4);
+	border-bottom: 1px solid rgba(189, 194, 208, 0.4);
 	display: flex;
 	align-items: center;
 	justify-content: center;
