@@ -24,6 +24,7 @@
     "print-js": "^1.6.0",
     "screenfull": "^6.0.2",
     "v-region": "^2.2.2",
+    "vis3d": "^1.0.0",
     "vue": "^2.6.14",
     "vue-drag-resize": "^1.5.4",
     "vue-print-nb": "^1.7.5"
