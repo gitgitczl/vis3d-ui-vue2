@@ -1,9 +1,5 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin"); //将单个文件或整个目录复制到构建目录
-const webpack = require("webpack");
 const path = require("path");
 
-let cesiumSource = "./node_modules/cesium/Source";
-let cesiumWorkers = "../Build/Cesium/Workers";
 const port = process.env.port || process.env.npm_config_port || 80 // 端口
 module.exports = {
     // 基本路径
@@ -39,30 +35,10 @@ module.exports = {
         resolve: {
             alias: {
                 vue$: "vue/dist/vue.esm.js",
-                "@": path.resolve("src"),
-                cesium: path.resolve(__dirname, cesiumSource),
+                "@": path.resolve("src")
             },
         },
-        plugins: [
-                new CopyWebpackPlugin([
-                    { from: path.join(cesiumSource, cesiumWorkers), to: "Workers" },
-                ]),
-                new CopyWebpackPlugin([
-                    { from: path.join(cesiumSource, "Assets"), to: "Assets" },
-                ]),
-                new CopyWebpackPlugin([
-                    { from: path.join(cesiumSource, "Widgets"), to: "Widgets" },
-                ]),
-                new CopyWebpackPlugin([
-                    {
-                        from: path.join(cesiumSource, "ThirdParty"),
-                        to: "ThirdParty",
-                    },
-                ]),
-                new webpack.DefinePlugin({
-                    CESIUM_BASE_URL: JSON.stringify("./"),
-                }),
-        ],
+        /* 
         module: {
             unknownContextCritical: /^.\/.*$/,
             unknownContextCritical: false,
@@ -74,6 +50,6 @@ module.exports = {
                     },
                 },
             ],
-        }
+        } */
     }
 };
