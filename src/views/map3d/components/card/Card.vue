@@ -1,5 +1,5 @@
 <template>
-  <vue-drag-resize id="map3d-drag" ref="drag" class="map3d-card basic-card" dragHandle=".card-title" :sticks="['br']"
+  <VueDragResize id="map3d-drag" ref="drag" class="map3d-card basic-card" dragHandle=".card-title" :sticks="['br']"
     :isActive="true" :w="size.width" :h="size.height" :x="position.left" :y="position.top" :parentLimitation="true"
     :parentW="parentWidth" :parentH="parentHeight" @resizing="onResizing" @resizestop="onResizstop" @dragging="onDragging"
     @dragstop="onDragstop" @clicked="onActivated" @deactivated="onDeactivated">
@@ -19,11 +19,15 @@
       <slot name="sidebar"></slot>
     </div>
     <div class="card-footter"></div>
-  </vue-drag-resize>
+  </VueDragResize>
 </template>
 <script>
 // 弹出层插件
+import VueDragResize from 'vue-drag-resize'
 export default {
+  components:{
+    VueDragResize
+  },
   // 弹层属性
   props: {
     // 名称
