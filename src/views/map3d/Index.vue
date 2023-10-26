@@ -5,6 +5,7 @@
     <!-- 侧边工具栏 -->
     <Tools v-if="iscrate && toolsType == 'default'"></Tools>
     <ToolsDP v-if="iscrate && toolsType == 'dropdown'"></ToolsDP>
+    <ToolsFade />
   </div>
 </template>
 <script>
@@ -13,6 +14,7 @@
 import { mapConfig } from "./config/export"
 import Tools from "@/views/map3d/Tools.vue";
 import ToolsDP from "@/views/map3d/Tools-dp.vue";
+import ToolsFade from "@/views/map3d/Tools-fade.vue";
 import "./css/basic.less"
 import setThemeStyle from "./css/theme";
 window.viewer = null;
@@ -21,7 +23,8 @@ export default {
   name: "Map",
   components: {
     Tools,
-    ToolsDP
+    ToolsDP,
+    ToolsFade
   },
   data() {
     return {
