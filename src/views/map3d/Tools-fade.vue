@@ -13,7 +13,7 @@ import workControl from "./workControl.js";
 window.workControl = workControl; // 绑定到全局
 
 export default {
-    name: "tools-dp",
+    name: "tools-fade",
     data() {
         return {
             isshowPanel: true, // 是否显示操作按钮 
