@@ -5,7 +5,7 @@
     <!-- 侧边工具栏 -->
     <Tools v-if="iscrate && toolsType == 'default'"></Tools>
     <ToolsDP v-if="iscrate && toolsType == 'dropdown'"></ToolsDP>
-    <ToolsFade />
+    <ToolsFade v-if="iscrate && toolsType == 'fade'"/>
   </div>
 </template>
 <script>

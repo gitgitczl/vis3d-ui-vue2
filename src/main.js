@@ -17,7 +17,7 @@ Vue.component("Card", Card);
 // 4、定义【主题样式】
 Vue.prototype.toolStyle = {
   themeType: "dark", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
-  toolsType: 'dropdown' // 右侧工具条类型 default（条状工具条） 、dropdown（下拉工具）
+  toolsType: 'fade' // 右侧工具条类型 default（条状工具条） 、dropdown（下拉工具）、fade（淡入工具）
 }
 // 用于【区域定位】
 import vRegion from 'v-region'

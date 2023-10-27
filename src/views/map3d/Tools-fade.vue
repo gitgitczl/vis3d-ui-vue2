@@ -1,18 +1,9 @@
 <template>
-	<div class="tools-fade" :style="{right: isshowPanel ? '0' : '-300px'}">
-		<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']" :style="{borderColor: isshowPanel ? 'rgba(189, 194, 208, 0.4)' : 'transparent'}" @click="onOpenTool"></span>
+	<div class="tools-fade" :style="{ right: isshowPanel ? '0' : '-312px' }">
+		<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']"
+			:style="{ borderColor: isshowPanel ? 'rgba(189, 194, 208, 0.4)' : 'transparent' }" @click="onOpenTool"></span>
 		<div class="tools-icon-box">
-			<div class="layer-base-icon">
-				<el-tooltip effect="dark" content="底图" placement="top">
-					<span class="iconfont icon-ditufuwu"></span>
-				</el-tooltip>
-			</div>
-			<div class="layer-base-icon">
-				<el-tooltip effect="dark" content="图层" placement="top">
-					<span class="iconfont icon-cengshu"></span>
-				</el-tooltip>
-			</div>
-			<div class="layer-base-icon" v-for="(item, index) in mapOperate" :key="index">
+			<div class="layer-base-icon" v-for="(item, index) in mapOperate" :key="index" @click="open(item)">
 				<el-tooltip effect="dark" :content="item.name" placement="top">
 					<span :class="['iconfont', item.icon]"></span>
 				</el-tooltip>
@@ -34,6 +25,18 @@ export default {
 			isshowPanel: false, // 是否显示操作按钮 
 			mapComphonets: [],
 			mapOperate: [
+				{
+					icon: "icon-ditufuwu",
+					type: "baseMap",
+					name: "底图",
+					toolName: "baseMap",
+				},
+				{
+					icon: "icon-cengshu",
+					type: "layers",
+					name: "图层",
+					toolName: "layers",
+				},
 				{
 					icon: "icon-tushangcehui",
 					type: "",
@@ -123,12 +126,14 @@ export default {
 		 * 打开工具条
 		 * @param {*} item 
 		 */
-		onOpenTool() { 
+		onOpenTool() {
 			this.$set(this, 'isshowPanel', !this.isshowPanel)
 		},
 
 		// 打开具体工具模块
 		open(item) {
+			this.$set(this, 'isshowPanel', false)
+
 			if (item.toolName) {
 				workControl.openToolByName(item.toolName)
 			}
@@ -200,7 +205,7 @@ export default {
 <style lang="less" scoped>
 .tools-fade {
 	position: absolute;
-	right: -300px;
+	right: -312px;
 	bottom: 60px;
 	z-index: 100;
 	width: 332px;
@@ -242,7 +247,7 @@ export default {
 	width: 32px;
 	height: 32px;
 	color: #bdc2d0;
-	border-bottom: 1px solid rgba(189, 194, 208, 0.4);
+	/* border-bottom: 1px solid rgba(189, 194, 208, 0.4); */
 	display: flex;
 	align-items: center;
 	justify-content: center;
