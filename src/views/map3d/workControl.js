@@ -9,6 +9,10 @@ export default {
         let toolsObj = {};
         for (let i = 0; i < tools.length; i++) {
             let tool = tools[i];
+            if(!tool.toolName){
+                console.log("当前模块配置有误，缺少toolName",tool);
+                continue;
+            }
             tool.domShow = true;
             toolsObj[tool.toolName] = tool;
             this.importTool(tool.toolName);
@@ -128,7 +132,7 @@ export default {
             for (let i = 0; i < this.componentsArr.length; i++) {
                 let ct = this.componentsArr[i];
                 if (ct.toolName != name && ct.show) {
-                    this.closeToolByName(ct.toolName, name);
+                    this.closeToolByName(ct.toolName, name); // 打开当前模块时 关闭其他模块
                 }
             }
         }
