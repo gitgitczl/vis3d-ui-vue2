@@ -1,13 +1,24 @@
 <template>
-	<div class="tools-fade" :style="{ right: isshowPanel ? '0' : '-312px' }">
-		<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']"
-			:style="{ borderColor: isshowPanel ? 'rgba(189, 194, 208, 0.4)' : 'transparent' }" @click="onOpenTool"></span>
-		<div class="tools-icon-box">
-			<div class="layer-base-icon" v-for="(item, index) in mapOperate" :key="index" @click="open(item)">
-				<el-tooltip effect="dark" :content="item.name" placement="top">
-					<span :class="['iconfont', item.icon]"></span>
-				</el-tooltip>
+	<div>
+		<div class="tools-fade" :style="{ right: isshowPanel ? '0' : '-312px' }">
+			<span :class="[isshowPanel ? 'el-icon-close' : 'el-icon-arrow-left', 'open-close-icon']"
+				:style="{ borderColor: isshowPanel ? 'rgba(189, 194, 208, 0.4)' : 'transparent' }"
+				@click="onOpenTool"></span>
+			<div class="tools-icon-box">
+				<div class="layer-base-icon" v-for="(item, index) in mapOperate" :key="index" @click="open(item)">
+					<el-tooltip effect="dark" :content="item.name" placement="top">
+						<span :class="['iconfont', item.icon]"></span>
+					</el-tooltip>
+				</div>
 			</div>
+		</div>
+
+		<!-- 动态创建地图组件 -->
+		<div v-for="(item, index) in mapComphonets" :key="index">
+			<component :ref="item.toolName" :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name"
+				@fire="fire" :position="item.position" :size="item.size" :attr="item.attr" :iconfont="item.iconfont"
+				@close="close(item)">
+			</component>
 		</div>
 	</div>
 </template>
@@ -117,9 +128,9 @@ export default {
 	},
 	mounted() {
 		// 初始化各工具组件
-		// workControl.init(workConfig, (list) => {
-		//     this.mapComphonets = list;
-		// });
+		workControl.init(workConfig, (list) => {
+			this.mapComphonets = list;
+		});
 	},
 	methods: {
 		/**

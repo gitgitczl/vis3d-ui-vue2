@@ -118,6 +118,7 @@ export default {
     openToolByName(name, attr) {
         if (this.toolsState[name] && this.toolsState[name] === true) return; // 防止二次打开
         let toolAttr = this.getComponentByName(name);
+        if(!toolAttr) return ;
         // 打开某个模块
         toolAttr.show = true;
         toolAttr.domShow = true;
