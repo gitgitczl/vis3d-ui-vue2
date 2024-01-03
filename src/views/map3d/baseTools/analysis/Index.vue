@@ -227,7 +227,7 @@ export default {
 .analysis-btn {
   display: flex;
   justify-content: flex-end;
-  margin-top: 15px;
+  /* margin-top: 15px; */
 
   span {
     height: 32px;

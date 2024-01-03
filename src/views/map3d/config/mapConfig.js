@@ -13,17 +13,17 @@ export default {
     baseServer: "http://localhost:1119/",
     map: {
         cameraView: {
-            "x": 117.24473608316538,
-            "y": 31.473304123104246,
-            "z": 50127.83549149741,
-            "heading": 4.01216132021934,
-            "pitch": -54.02598589122648,
-            "roll": 359.9967116865769,
+            "x": 119.03180964296718,
+            "y": 33.590498112009996,
+            "z": 233.82760350909686,
+            "heading": 359.9999999999401,
+            "pitch": -28.65096138512803,
+            "roll": 360,
             duration: 0
         },
         brightness: 1.0, // 亮度设置
         errorRender: true, // 是否开启崩溃刷新
-        debugShowFramesPerSecond: false, // 是否显示帧数
+        debugShowFramesPerSecond: true, // 是否显示帧数
         worldAnimate: false,
         lnglatNavigation: true, // 经纬度及相机位置提示
         rightTool: true, // 是否开启右键功能
@@ -182,6 +182,16 @@ export default {
                         z: 80,
                     },
                     maximumScreenSpaceError: 16,
+                },
+                {
+                    name: "大楼",
+                    type: "3dtiles",
+                    url: "http://mapgl.com/data/model/max-loudong/tileset.json",
+                    show: false,
+                    maximumScreenSpaceError: 16,
+                    center: {
+                        z: 120
+                    }
                 }
             ]
         },
