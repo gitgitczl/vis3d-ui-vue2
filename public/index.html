@@ -7,7 +7,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <link rel="stylesheet" href="http://mapgl.com/lib/Cesium1.107/Widgets/widgets.css">
-  <script src="http://mapgl.com/lib/Cesium1.107/Cesium.js"></script>
+  <!-- 引入原生Cesium -->
+  <!-- <script src="http://mapgl.com/lib/Cesium1.107/Cesium.js"></script> -->
+  <!-- 引入扩展版扩展后的Cesium -->
+  <script src="http://mapgl.com/lib/Cesium-vis3d/Cesium.js"></script>
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4NzFkNzQwZi03ZTAyLTQxMzctYmJjMC0wYmRmZmViMDA1OGYiLCJpZCI6NDU3NzMsImlhdCI6MTY0MjEzOTMyNH0.VWjtgLef19NZAcQe7_M05tPNSXsQMMSj3bCJOgSKe_A';
   </script>
@@ -15,11 +18,11 @@
     三维基础框架
   </title>
   <style>
-    html,body{
+    html,
+    body {
       padding: 0px;
       margin: 0px;
     }
-    
   </style>
 </head>
 <!-- 引入地图相关配置文件 -->
