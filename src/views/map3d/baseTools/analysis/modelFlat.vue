@@ -8,13 +8,15 @@
     <div class="modelFlat-height basic-number" style="display: flex;align-items: center;">
       <label>模型：</label>
       <el-input :controls="false" v-model="tilesetName" size="small" style="width: 120px;" :disabled="true"></el-input>
-      <div class="analysis-btn analysis-top-btn basic-analysis-btn" style="margin-left: 10px;"><span @click="selectModel">点选模型</span></div>
+      <div class="analysis-btn analysis-top-btn basic-analysis-btn" style="margin-left: 10px;"><span
+          @click="selectModel">点选模型</span></div>
     </div>
 
-    <div class="analysis-btn analysis-top-btn basic-analysis-btn" style="margin: 10px auto;">
-      <span>绘制矩形</span>
-      <span>绘制多边形</span>
-      <span class="basic-analysis-btn-clear">清除</span>
+    <div class="analysis-btn analysis-top-btn basic-analysis-btn" style="margin: 10px auto;align-items: center;">
+      <label>绘制：</label>
+      <span @click="drawRectangle">矩形</span>
+      <span @click="drawPolygon">多边形</span>
+      <!-- <span class="basic-analysis-btn-clear">清除</span> -->
     </div>
     <div class="modelFlat-height basic-number">
       <label>压平高度：</label>
@@ -51,7 +53,7 @@ export default {
   data() {
     return {
       height: 0, // 压平高度
-      tilesetName : "", // 点选模型名称
+      tilesetName: "", // 点选模型名称
       modelFlatList: [
         {
           id: 1,
@@ -65,7 +67,9 @@ export default {
     };
   },
 
-  mounted() { },
+  mounted() {
+
+  },
 
   destroyed() { },
 
@@ -81,6 +85,18 @@ export default {
       })
     },
     /**
+     * 绘制矩形压平区
+     */
+    drawRectangle() {
+      
+    },
+    /**
+    *  绘制多边形压平区
+    */
+    drawRectangle() {
+
+    },
+    /**
      * 选择压平区
      * @param {Array} list 选中压平数据
      */
@@ -91,7 +107,9 @@ export default {
      * 开始压平
      * @param {Object} data
      */
-    onStartFlat(data) { },
+    onStartFlat(data) {
+
+    },
 
     /**
      * 删除
@@ -142,6 +160,7 @@ export default {
   .modelFlat-height-body {
     display: flex;
     align-items: flex-end;
+
     span {
       margin-left: 10px;
     }
