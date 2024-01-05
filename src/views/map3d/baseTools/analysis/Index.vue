@@ -20,11 +20,11 @@
       <!-- 方量分析 -->
       <Volume v-show="changeAnalysisType === 'volume'" />
       <!-- 淹没分析 -->
-      <Flood v-show="changeAnalysisType === 'flood'" />
+      <!-- <Flood v-show="changeAnalysisType === 'flood'" /> -->
       <!-- 地形开挖 -->
       <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" />
       <!-- 地表透明 -->
-      <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" />
+      <!-- <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" /> -->
       <!-- 坡度坡向 -->
       <Slope v-show="changeAnalysisType === 'slope'" />
       <!-- 模型剖切 -->
@@ -105,21 +105,21 @@ export default {
           icon: "icon-fangliangfenxi",
           type: "volume",
         },
-        {
+       /*  {
           name: "淹没分析",
           icon: "icon-yanmeifenxi",
           type: "flood",
-        },
+        }, */
         {
           name: "地形开挖",
           icon: "icon-dixingkaiwa",
           type: "terrainExcavate",
         },
-        {
+       /*  {
           name: "地表透明",
           icon: "icon-dibiaotouming",
           type: "globeSurface",
-        },
+        }, */
         {
           name: "坡度坡向",
           icon: "icon-podupoxiang",

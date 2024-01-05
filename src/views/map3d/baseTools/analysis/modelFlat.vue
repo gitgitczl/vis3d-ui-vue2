@@ -109,17 +109,29 @@ export default {
      */
     drawRectangle() {
       drawTool.start({
-        type : "rectangle",
-        style : {
-          
+        type: "rectangle",
+        style: {
+          "fill": false,
+          "outline" : true,
+          "color": "#0000ff",
+          "heightReference": 1
         }
       })
     },
     /**
     *  绘制多边形压平区
     */
-    drawRectangle() {
-
+    drawPolygon() {
+      drawTool.start({
+        type: "polygon",
+        style: {
+          "color": "#0000ff",
+          "fill": false,
+          "outline": true,
+          "outlineColor": "#ff0000",
+          "heightReference": 1
+        }
+      })
     },
     /**
      * 选择压平区

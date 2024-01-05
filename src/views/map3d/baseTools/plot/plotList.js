@@ -35,8 +35,9 @@ const list = {
             "iconImg": require('../../images/plot/rectangle.png'),
             "styleType": "polygon",
             "style": {
+                "outline" : true,
+                "fill" : false,
                 "color": "#0000ff",
-                "outline": true,
                 "outlineColor": "#ff0000",
                 "heightReference": 1
             }
