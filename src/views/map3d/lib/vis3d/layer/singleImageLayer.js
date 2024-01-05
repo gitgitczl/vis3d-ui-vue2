@@ -33,8 +33,8 @@ class SingleImageLayer extends BaseLayer{
         * @property {String} type 类型
         */
         this.type = "singleImage";
-        this.providerAttr.tileWidth = 256;
-        this.providerAttr.tileHeight = 256;
+        this.providerAttr.tileWidth = this.providerAttr.tileWidth || 256;
+        this.providerAttr.tileHeight = this.providerAttr.tileWidth || 256;
         this._provider = new Cesium.SingleTileImageryProvider(this.providerAttr);
     }
 }
