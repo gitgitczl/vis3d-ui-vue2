@@ -180,10 +180,9 @@ class CreatePolyline extends BasePlot {
         }
         if (polyline.material instanceof Cesium.ColorMaterialProperty) {
             obj.material = "common";
-        } else {
+        } else{
             obj.material = "flowline";
-            if (polyline.material instanceof animate.FlowLineMaterial) {
-            }
+           
             obj.duration = polyline.material._duration;
             obj.image = polyline.material.url;
         }
@@ -227,7 +226,7 @@ class CreatePolyline extends BasePlot {
                 console.log("动态材质，缺少纹理图片");
                 return color;
             }
-            material = new animate.FlowLine({
+            material = new animate.LineFlow({
                 color: color, // 默认颜色
                 image: style.image,
                 duration: style.duration || 5000
@@ -237,7 +236,7 @@ class CreatePolyline extends BasePlot {
                 console.log("动态材质，缺少纹理图片");
                 return color;
             }
-            material = new animate.FlyLine({ //动画线材质
+            material = new animate.LineFlow({ //动画线材质
                 color: color,
                 duration: style.duration || 3000,
                 image: style.image,
