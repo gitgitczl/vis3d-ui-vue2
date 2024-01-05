@@ -177,9 +177,6 @@ class CreateRectangle extends BasePlot {
         show: true,
         fill: this.style.fill == undefined ? true : this.style.fill,
         material: this.style.color instanceof Cesium.Color ? this.style.color : (this.style.color ? Cesium.Color.fromCssColorString(this.style.color).withAlpha(this.style.colorAlpha || 1) : Cesium.Color.WHITE),
-        outlineColor: this.style.outlineColor instanceof Cesium.Color ? this.style.outlineColor : (this.style.outlineColor ? Cesium.Color.fromCssColorString(this.style.outlineColor).withAlpha(this.style.outlineColorAlpha || 1) : Cesium.Color.BLACK),
-        outlineWidth: 1,
-        outline: this.style.outline,
       }
     });
     rectangle.objId = this.objId;
@@ -227,7 +224,7 @@ class CreateRectangle extends BasePlot {
       let color = rectangle.material.color.getValue();
       obj.colorAlpha = color.alpha;
       obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
-    }else{
+    } else {
 
     }
     // 边框线
@@ -263,9 +260,7 @@ class CreateRectangle extends BasePlot {
     this.outline.polyline.clampToGround = Number(style.heightReference) == 1 ? true : false;
 
     this.entity.rectangle.heightReference = Number(style.heightReference);
-
-    /* this.entity.rectangle.fill.setValue(Boolean(style.fill)) */
-    this.entity.rectangle.fill = false;
+    this.entity.rectangle.fill = style.fill;
     this.style = Object.assign(this.style, style);
   }
 }

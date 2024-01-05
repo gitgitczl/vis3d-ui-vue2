@@ -36,7 +36,7 @@ const list = {
             "styleType": "polygon",
             "style": {
                 "outline" : true,
-                "fill" : false,
+                "fill" : true,
                 "color": "#0000ff",
                 "outlineColor": "#ff0000",
                 "heightReference": 1
