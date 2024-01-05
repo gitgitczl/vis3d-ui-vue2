@@ -7,21 +7,19 @@
     <!-- 点选模型 -->
     <div class="modelFlat-height basic-number" style="display: flex;align-items: center;">
       <label>模型：</label>
-      <div class="modelFlat-height-body">
-        <el-input-number :controls="false" v-model="height" :min="0" placeholder="请输入内容"></el-input-number>
-      </div>
-      <div class="analysis-btn analysis-top-btn basic-analysis-btn"><span @click="selectModel">点选模型</span></div>
+      <el-input :controls="false" v-model="tilesetName" size="small" style="width: 120px;" :disabled="true"></el-input>
+      <div class="analysis-btn analysis-top-btn basic-analysis-btn" style="margin-left: 10px;"><span @click="selectModel">点选模型</span></div>
     </div>
 
-    <div class="analysis-btn analysis-top-btn basic-analysis-btn">
-      <span>添加矩形</span>
-      <span>添加多边形</span>
+    <div class="analysis-btn analysis-top-btn basic-analysis-btn" style="margin: 10px auto;">
+      <span>绘制矩形</span>
+      <span>绘制多边形</span>
       <span class="basic-analysis-btn-clear">清除</span>
     </div>
     <div class="modelFlat-height basic-number">
       <label>压平高度：</label>
       <div class="modelFlat-height-body">
-        <el-input-number :controls="false" v-model="height" :min="0" placeholder="请输入内容"></el-input-number>
+        <el-input-number :controls="false" v-model="height" size="small" :min="0" placeholder="请输入内容"></el-input-number>
         <span>(米)</span>
       </div>
     </div>
@@ -53,6 +51,7 @@ export default {
   data() {
     return {
       height: 0, // 压平高度
+      tilesetName : "", // 点选模型名称
       modelFlatList: [
         {
           id: 1,
@@ -77,7 +76,8 @@ export default {
     selectModel() {
       window.vis3d.common.selectModel.disable();
       window.vis3d.common.selectModel.activate(viewer, (res) => {
-        debugger
+        const name = res.content._tileset.layerConfig.name;
+        this.tilesetName = name;
       })
     },
     /**
@@ -142,7 +142,6 @@ export default {
   .modelFlat-height-body {
     display: flex;
     align-items: flex-end;
-
     span {
       margin-left: 10px;
     }

@@ -19,12 +19,13 @@ const selectModel = {
                 this.prompt.destroy();
                 this.prompt = undefined;
                 debugger
-                if (pick && pick.primitive instanceof Cesium.Cesium3DTileFeature) {
+                if (pick && pick.primitive instanceof Cesium.Cesium3DTileset) {
                     if (callback) callback(pick)
                 }
                 this.handler.destroy();
                 this.handler = undefined;
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+            
             this.handler.setInputAction((evt) => {
                 this.prompt.update(evt.endPosition, "左键拾取");
             }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
