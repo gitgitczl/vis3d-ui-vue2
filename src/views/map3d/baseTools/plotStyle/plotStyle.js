@@ -1,3 +1,4 @@
+// 根据styleType属性来获取对象的样式列表
 export default {
     "point": {
         "pixelSize": {

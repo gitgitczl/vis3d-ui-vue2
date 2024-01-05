@@ -2,7 +2,7 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot';
-
+import util from '../util'
 /**
  * 矩形标绘类
  * @class

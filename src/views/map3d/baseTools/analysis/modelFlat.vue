@@ -45,8 +45,9 @@
 
 <script>
 /* 模型压平 */
-let cut = undefined;
+let flat = undefined;
 let tileset = undefined;
+let drawTool = undefined;
 export default {
   name: "ModelFlat",
 
@@ -68,6 +69,25 @@ export default {
   },
 
   mounted() {
+    if (!drawTool) {
+      drawTool = new window.vis3d.plot.Tool(viewer, {
+        canEdit: false
+      })
+      drawTool.on("endCreate", (entObj, ent) => {
+        // 绘制结束后 更新列表
+        debugger
+        const randomid = new Date().getTime();
+        const name =
+          this.modelFlatList.push({
+            flatName: this.tilesetName + randomid,
+            id: randomid
+          })
+      })
+    }
+
+    if (!flat) {
+      flat = new Cesium.TilesetFlat(viewer);
+    }
 
   },
 
@@ -88,7 +108,12 @@ export default {
      * 绘制矩形压平区
      */
     drawRectangle() {
-      
+      drawTool.start({
+        type : "rectangle",
+        style : {
+          
+        }
+      })
     },
     /**
     *  绘制多边形压平区
