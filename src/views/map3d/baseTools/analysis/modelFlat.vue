@@ -75,8 +75,8 @@ export default {
      *  点击拾取模型 
      */
     selectModel() {
-      window.vis3d.gadgets.selectModel.disable();
-      window.vis3d.gadgets.selectModel.activate(viewer, (res) => {
+      window.vis3d.common.selectModel.disable();
+      window.vis3d.common.selectModel.activate(viewer, (res) => {
         debugger
       })
     },

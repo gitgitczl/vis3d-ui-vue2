@@ -5,7 +5,7 @@
     <!-- 侧边工具栏 -->
     <Tools v-if="iscrate && toolsType == 'default'"></Tools>
     <ToolsDP v-if="iscrate && toolsType == 'dropdown'"></ToolsDP>
-    <ToolsFade v-if="iscrate && toolsType == 'fade'"/>
+    <ToolsFade v-if="iscrate && toolsType == 'fade'" />
   </div>
 </template>
 <script>
@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      toolsType : 'default',
+      toolsType: 'default',
       iscrate: false, // 是否创建侧边栏 
       workConfig: {},
       plotEntityObjId: null,
