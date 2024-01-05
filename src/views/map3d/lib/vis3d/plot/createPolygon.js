@@ -121,27 +121,27 @@ class CreatePolygon extends BasePlot {
 
 		that.viewer.trackedEntity = undefined;
 		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-		
+
 	}
 
 	/**
-     * 当前步骤结束
-     */
-    done() {
-        if (this.state == "startCreate") {
-            this.destroy();
-        } else if (this.state == "creating") {
-            if (this.positions.length <= 2 && this.movePush == true) {
-                this.destroy();
-            } else {
-                this.endCreate();
-            }
-        } else if (this.state == "startEdit" || this.state == "editing") {
-            this.endEdit();
-        } else {
+	 * 当前步骤结束
+	 */
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			if (this.positions.length <= 2 && this.movePush == true) {
+				this.destroy();
+			} else {
+				this.endCreate();
+			}
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
 
-        }
-    }
+		}
+	}
 
 	createByPositions(lnglatArr, callback) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
@@ -247,7 +247,7 @@ class CreatePolygon extends BasePlot {
 	}
 	createPolyline() {
 		let that = this;
-		return this.viewer.entities.add({
+		let line = this.viewer.entities.add({
 			polyline: {
 				positions: new Cesium.CallbackProperty(function () {
 					let newPositions = that.positions.concat(that.positions[0]);
@@ -258,6 +258,9 @@ class CreatePolygon extends BasePlot {
 				width: this.style.outlineWidth || 1
 			}
 		});
+		line.objId = this.objId;
+		line.isOutline = true; // 标识其为边框线
+		return line;
 	}
 
 	destroy() {

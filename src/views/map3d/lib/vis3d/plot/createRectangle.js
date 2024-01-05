@@ -189,7 +189,7 @@ class CreateRectangle extends BasePlot {
   createPolyline() {
     let that = this;
 
-    return this.viewer.entities.add({
+    let line = this.viewer.entities.add({
       polyline: {
         positions: new Cesium.CallbackProperty(function () {
           const ctgc_leftup = Cesium.Cartographic.fromCartesian(that.leftup);
@@ -205,6 +205,9 @@ class CreateRectangle extends BasePlot {
         width: this.style.outlineWidth || 1
       }
     });
+    line.objId = this.objId;
+    line.isOutline = true; // 标识其为边框线
+    return line
   }
 
   getPositions(isWgs84) {
@@ -220,18 +223,19 @@ class CreateRectangle extends BasePlot {
     let obj = {};
     let rectangle = this.entity.rectangle;
     // 获取材质
-    debugger
-    if (rectangle.material instanceof Cesium.Color) {
+    if (rectangle.material instanceof Cesium.ColorMaterialProperty) { // 颜色材质
       let color = rectangle.material.color.getValue();
       obj.colorAlpha = color.alpha;
       obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
+    }else{
+
     }
     // 边框线
     const polyline = this.outline.polyline;
     obj.outline = this.outline.show;
     if (polyline) {
       obj.outlineWidth = polyline.width.getValue();
-      let outlineColor = polyline.material.getValue();
+      let outlineColor = polyline.material.color.getValue();
       obj.outlineColorAlpha = outlineColor.alpha;
       obj.outlineColor = new Cesium.Color(outlineColor.red, outlineColor.green, outlineColor.blue, 1).toCssHexString();
     }
@@ -240,9 +244,9 @@ class CreateRectangle extends BasePlot {
     if (rectangle.fill) obj.fill = rectangle.fill.getValue();
     obj.heightReference = rectangle.heightReference.getValue();
     if (obj.heightReference == 1) obj.height = undefined;
-    console.log("rectangle getStyle====>", obj);
     return obj;
   }
+
   setStyle(style) {
     if (!style) return;
     console.log("rectangle setStyle====>", style);
