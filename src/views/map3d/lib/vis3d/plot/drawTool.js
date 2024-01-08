@@ -420,7 +420,14 @@ class DrawTool {
     } else {
       this.removeByObjId(entityObj.objId);
     }
+  }
 
+  /**
+   * 移除某个绘制对象
+   * @param {Object} entityObj 已绘制完成绘制对象
+   */
+  remove(entityObj){
+    this.removeOne(entityObj);
   }
 
   /**

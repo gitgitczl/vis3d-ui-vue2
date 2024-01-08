@@ -18,7 +18,6 @@ const selectModel = {
                 let pick = this.viewer.scene.pick(evt.position);
                 this.prompt.destroy();
                 this.prompt = undefined;
-                debugger
                 if (pick && pick.primitive instanceof Cesium.Cesium3DTileset) {
                     if (callback) callback(pick)
                 }
