@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="map3d-popup-close"></div>
-        <div class="map3d-popup-title"></div>
-        <div class="map3d-popup-content">
+        <div class="vis3d-popup-close"></div>
+        <div class="vis3d-popup-title"></div>
+        <div class="vis3d-popup-content">
             <slot></slot>
         </div>
     </div>
