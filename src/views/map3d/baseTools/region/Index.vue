@@ -9,9 +9,10 @@
 <script>
 
 let regionPolygon = null;
+
+import axios from 'axios';
 export default {
   name: "region",
-
   props: {
     title: "",
     position: {},
@@ -68,9 +69,8 @@ export default {
       }
       if (!key) return;
       let that = this;
-
-      this.axios
-        .get(`http://47.117.134.108:9010/data/geojson/${key}.json`)
+      axios
+        .get(`http://mapgl.com/data/geojson/${key}.json`)
         .then(function (response) {
           let dspromise = window.Cesium.GeoJsonDataSource.load(response.data, {
             stroke: Cesium.Color.YELLOW,
