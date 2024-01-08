@@ -70,12 +70,12 @@ export default {
 
   mounted() {
     if (!drawTool) {
+      console.log("压平Draw Tool");
       drawTool = new window.vis3d.plot.Tool(viewer, {
-        canEdit: false
+        canEdit: true
       })
       drawTool.on("endCreate", (entObj, ent) => {
         // 绘制结束后 更新列表
-        debugger
         const randomid = new Date().getTime();
         const name =
           this.modelFlatList.push({

@@ -102,7 +102,7 @@ export default {
         },
         {
             "name": "空间分析",
-            "show": false,
+            "show": true,
             "toolName": "analysis",
             "position": {
                 "top": 60,

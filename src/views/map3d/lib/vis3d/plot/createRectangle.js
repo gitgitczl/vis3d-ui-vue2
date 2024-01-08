@@ -285,13 +285,19 @@ class CreateRectangle extends BasePlot {
       this.outline = null;
     }
 
+    if (this.leftupPoint) {
+      this.viewer.entities.remove(this.leftupPoint);
+      this.leftupPoint = null;
+    }
+
+    if (this.rightdownPoint) {
+      this.viewer.entities.remove(this.rightdownPoint);
+      this.rightdownPoint = null;
+    }
+
     this.positions = [];
     this.style = null;
-    for (var i = 0; i < this.controlPoints.length; i++) {
-      var point = this.controlPoints[i];
-      this.viewer.entities.remove(point);
-    }
-    this.controlPoints = [];
+    
     this.modifyPoint = null;
     if (this.prompt) {
       this.prompt.destroy();
@@ -300,7 +306,6 @@ class CreateRectangle extends BasePlot {
     this.state = "no";
     this.forbidDrawWorld(false);
   }
-
 
 }
 

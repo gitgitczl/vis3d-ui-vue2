@@ -14,29 +14,29 @@
 
     <div>
       <!-- 日照分析 -->
-      <Sunshine v-show="changeAnalysisType === 'sunshine'" />
+      <!-- <Sunshine v-show="changeAnalysisType === 'sunshine'" /> -->
       <!-- 可视域分析 -->
-      <VisualField v-show="changeAnalysisType === 'visualField'" />
+      <!-- <VisualField v-show="changeAnalysisType === 'visualField'" /> -->
       <!-- 方量分析 -->
       <Volume v-show="changeAnalysisType === 'volume'" />
       <!-- 淹没分析 -->
       <!-- <Flood v-show="changeAnalysisType === 'flood'" /> -->
       <!-- 地形开挖 -->
-      <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" />
+     <!--  <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" /> -->
       <!-- 地表透明 -->
       <!-- <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" /> -->
       <!-- 坡度坡向 -->
-      <Slope v-show="changeAnalysisType === 'slope'" />
+      <!-- <Slope v-show="changeAnalysisType === 'slope'" /> -->
       <!-- 模型剖切 -->
-      <ModelClip v-show="changeAnalysisType === 'modelClip'" />
+      <!-- <ModelClip v-show="changeAnalysisType === 'modelClip'" /> -->
       <!-- 模型压平 -->
       <ModelFlat v-show="changeAnalysisType === 'modelFlat'" />
       <!-- 限高分析 -->
-      <LimitHeight v-show="changeAnalysisType === 'LimitHeight'" />
+      <!-- <LimitHeight v-show="changeAnalysisType === 'LimitHeight'" /> -->
       <!-- 通视分析 -->
-      <Insight v-show="changeAnalysisType === 'insight'" />
+     <!--  <Insight v-show="changeAnalysisType === 'insight'" /> -->
       <!-- 等高线 -->
-      <Contour v-show="changeAnalysisType === 'contour'" />
+      <!-- <Contour v-show="changeAnalysisType === 'contour'" /> -->
     </div>
   </Card>
 </template>

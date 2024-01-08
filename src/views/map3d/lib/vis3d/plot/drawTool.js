@@ -45,6 +45,11 @@ class DrawTool {
     this.viewer = viewer;
     /**
      * 
+     * @property {String} plotId 标绘工具id
+     */
+    this.plotId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
+    /**
+     * 
      * @property {Array} entityObjArr 标绘对象数组
      */
     this.entityObjArr = [];
@@ -66,7 +71,6 @@ class DrawTool {
 
     // 无论如何 进来先监听点击修改 与 右键删除事件 通过控制canEdit来判断要不要向下执行
     this.bindEdit();
-    console.log("我构建了一次DrawTool对象");
     this.bindRemove();
 
     /**
@@ -137,7 +141,8 @@ class DrawTool {
     if (!opt || !opt.type) {
       return;
     }
-    opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
+    opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0)); // 单个标绘对象id
+    opt.plotId = this.plotId; // 绑定统一的工具id
     let that = this;
     this.endEdit(); // 绘制前  结束编辑
 
@@ -156,6 +161,7 @@ class DrawTool {
       // 绘制完成后
       that.nowDrawEntityObj = undefined;
       that.entityObjArr.push(entityObj);
+      console.log("start that.entityObjArr====>",that.entityObjArr);
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
       if (opt.success) opt.success(entityObj, entity);
       if (that.endCreateFun) that.endCreateFun(entityObj, entity);
@@ -635,11 +641,15 @@ class DrawTool {
     // 如果是线 面 则需要先选中
     if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
-      if (!that.canEdit) return;
+      /* console.log("that===>",that);*/
+      if (!that.canEdit) return; 
       // 若当前正在绘制 则无法进行删除
       if (that.nowDrawEntityObj) return;
       let pick = that.viewer.scene.pick(evt.position);
-      if (!pick || !pick.id) return;
+      if (!pick || !pick.id || !pick.id.objId) return;
+      const entObj = that.getEntityObjByObjId(pick.id.objId).entityObj;
+      if(!entObj) return ;
+      if(entObj.attr.plotId != that.plotId) return ;
       /* let selectEntobj = undefined; */
       /* for (let i = 0; i < that.entityObjArr.length; i++) {
         if (pick.id.objId == that.entityObjArr[i].objId) {
@@ -647,7 +657,6 @@ class DrawTool {
           break;
         }
       } */
-      console.log("我来删除啊===》");
       that.createDelteDom(evt.position, pick.id.objId);
 
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
