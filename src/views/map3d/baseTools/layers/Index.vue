@@ -33,7 +33,9 @@ export default {
 
   props: {
     title: "",
-    position: {},
+    position: {
+      zIndex: 10
+    },
     size: {},
     iconfont: {
       type: String,

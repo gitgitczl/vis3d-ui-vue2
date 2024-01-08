@@ -1,6 +1,6 @@
 <template>
   <VueDragResize id="vis3d-drag" ref="drag" class="vis3d-card basic-card" dragHandle=".card-title" :sticks="['br']"
-    :isActive="true" :w="size.width" :h="size.height" :x="position.left" :y="position.top" :parentLimitation="true"
+    :isActive="true" :w="size.width" :h="size.height" :x="position.left" :y="position.top" :z="100" :parentLimitation="true"
     :parentW="parentWidth" :parentH="parentHeight" @resizing="onResizing" @resizestop="onResizstop" @dragging="onDragging"
     @dragstop="onDragstop" @clicked="onActivated" @deactivated="onDeactivated">
     <!-- 头部 -->
@@ -43,6 +43,7 @@ export default {
         return {
           left: 100,
           top: 100,
+          zIndex: 100
         };
       },
     },

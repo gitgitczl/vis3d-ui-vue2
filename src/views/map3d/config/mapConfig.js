@@ -141,7 +141,7 @@ export default {
                     center: {
                         z: 440
                     },
-                    show: true,
+                    show: false,
                     maximumScreenSpaceError: 16
                 },
                 {

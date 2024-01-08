@@ -294,9 +294,11 @@ li {
 i {
   font-style: normal;
 }
+
 .vis3d-card:before {
   outline: none !important;
 }
+
 .vis3d-card .vdr-stick {
   border: none;
   background: transparent;
