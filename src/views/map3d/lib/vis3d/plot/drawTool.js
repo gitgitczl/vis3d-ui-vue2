@@ -161,7 +161,6 @@ class DrawTool {
       // 绘制完成后
       that.nowDrawEntityObj = undefined;
       that.entityObjArr.push(entityObj);
-      console.log("start that.entityObjArr====>",that.entityObjArr);
       // endCreateFun 和 success 无本质区别，若构建时 两个都设置了 当心重复
       if (opt.success) opt.success(entityObj, entity);
       if (that.endCreateFun) that.endCreateFun(entityObj, entity);

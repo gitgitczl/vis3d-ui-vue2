@@ -44,10 +44,12 @@
 </template>
 
 <script>
+import { Alert } from 'element-ui';
+
 /* 模型压平 */
 let flat = undefined;
 let tileset = undefined;
-let drawTool = undefined;
+let flatDrawTool = undefined;
 export default {
   name: "ModelFlat",
 
@@ -56,37 +58,45 @@ export default {
       height: 0, // 压平高度
       tilesetName: "", // 点选模型名称
       modelFlatList: [
-        {
-          id: 1,
-          flatName: "测试压平",
-        },
-        {
-          id: 2,
-          flatName: "测试压平1",
-        },
+        /*  {
+           id: 1,
+           flatName: "测试压平",
+         },
+         {
+           id: 2,
+           flatName: "测试压平1",
+         }, */
       ],
     };
   },
 
   mounted() {
-    if (!drawTool) {
-      console.log("压平Draw Tool");
-      drawTool = new window.vis3d.plot.Tool(viewer, {
-        canEdit: true
+    if (!flatDrawTool) {
+      flatDrawTool = new window.vis3d.plot.Tool(viewer, {
+        canEdit: false
       })
-      drawTool.on("endCreate", (entObj, ent) => {
+      flatDrawTool.on("endCreate", (entObj, ent) => {
         // 绘制结束后 更新列表
-        const randomid = new Date().getTime();
-        const name =
-          this.modelFlatList.push({
-            flatName: this.tilesetName + randomid,
-            id: randomid
-          })
+        const date = new Date()
+        const randomid = '压平' + date.getMinutes() + '-' + date.getSeconds();
+        this.modelFlatList.push({
+          flatName: this.tilesetName + randomid,
+          id: randomid
+        })
+        const positions = entObj.getPositions();
+        debugger
+        
+        if(flat){
+          flat.addRegion(positions)
+        }
+        flatDrawTool.remove(entObj);        
       })
     }
 
     if (!flat) {
-      flat = new Cesium.TilesetFlat(tileset);
+      flat = new Cesium.TilesetFlat(tileset,{
+        flatHeight: -30
+      });
     }
 
   },
@@ -100,6 +110,7 @@ export default {
     selectModel() {
       window.vis3d.common.selectModel.disable();
       window.vis3d.common.selectModel.activate(viewer, (res) => {
+        tileset = res.content._tileset;
         const name = res.content._tileset.layerConfig.name;
         this.tilesetName = name;
       })
@@ -108,7 +119,7 @@ export default {
      * 绘制矩形压平区
      */
     drawRectangle() {
-      drawTool.start({
+      flatDrawTool.start({
         type: "rectangle",
         style: {
           "outline": true,
@@ -123,7 +134,7 @@ export default {
     *  绘制多边形压平区
     */
     drawPolygon() {
-      drawTool.start({
+      flatDrawTool.start({
         type: "polygon",
         style: {
           "color": "#0000ff",

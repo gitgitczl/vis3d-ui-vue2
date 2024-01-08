@@ -18,7 +18,7 @@
       <!-- 可视域分析 -->
       <!-- <VisualField v-show="changeAnalysisType === 'visualField'" /> -->
       <!-- 方量分析 -->
-      <Volume v-show="changeAnalysisType === 'volume'" />
+      <!-- <Volume v-show="changeAnalysisType === 'volume'" /> -->
       <!-- 淹没分析 -->
       <!-- <Flood v-show="changeAnalysisType === 'flood'" /> -->
       <!-- 地形开挖 -->
