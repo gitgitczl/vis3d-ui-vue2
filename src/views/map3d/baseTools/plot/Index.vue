@@ -85,7 +85,6 @@ export default {
           type: "plotEdit",
         },
       ],
-
       plotInitValue: "",
       isPlotActive: -1,
       plotTypeList: [], // 标绘类型

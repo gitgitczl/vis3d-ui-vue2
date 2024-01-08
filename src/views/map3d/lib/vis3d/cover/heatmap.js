@@ -93,7 +93,7 @@ class Heatmap {
                 heightReference: 1
             }
         });
-        this.viewer.zoomTo(this.polygon)
+        if(this.opt.zoomTo) this.viewer.zoomTo(this.polygon)
     }
 
     createProvider() {

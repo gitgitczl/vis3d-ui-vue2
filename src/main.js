@@ -18,7 +18,7 @@ import Card from "@/views/map3d/components/card/Card.vue";
 Vue.component("Card", Card);
 // 4、定义【主题样式】
 Vue.prototype.toolStyle = {
-  themeType: "blue", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
+  themeType: "drak", // 主题样式颜色 dark（暗色）、blue（科技蓝）、green（生态绿）
   toolsType: 'default' // 右侧工具条类型 default（条状工具条） 、dropdown（下拉工具）、fade（淡入工具）
 }
 // 用于【区域定位】

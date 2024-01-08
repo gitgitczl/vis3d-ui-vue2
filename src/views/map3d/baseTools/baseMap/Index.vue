@@ -27,7 +27,7 @@
 </template>
 
 <script>
-
+import { mapConfig } from "../../config/export"
 export default {
   name: "baseMap",
   components: {
@@ -44,12 +44,13 @@ export default {
   },
   data() {
     return {
-      baseMapList: this.$store.state.vis3d.baseLayers,
+      baseMapList: [],
       isShowTerrain: true,
       nowShowLayerId: null,
     };
   },
   mounted() {
+    this.baseMapList = mapConfig.baseLayers;
     let lys = this.baseMapList.filter((layer) => {
       return layer.show == true;
     });

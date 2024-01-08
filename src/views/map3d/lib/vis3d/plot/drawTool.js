@@ -45,6 +45,11 @@ class DrawTool {
     this.viewer = viewer;
     /**
      * 
+     * @property {String} plotId 标绘工具id
+     */
+    this.plotId = Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
+    /**
+     * 
      * @property {Array} entityObjArr 标绘对象数组
      */
     this.entityObjArr = [];
@@ -136,7 +141,8 @@ class DrawTool {
     if (!opt || !opt.type) {
       return;
     }
-    opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0));
+    opt.id = opt.id || Number((new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0)); // 单个标绘对象id
+    opt.plotId = this.plotId; // 绑定统一的工具id
     let that = this;
     this.endEdit(); // 绘制前  结束编辑
 
@@ -414,7 +420,14 @@ class DrawTool {
     } else {
       this.removeByObjId(entityObj.objId);
     }
+  }
 
+  /**
+   * 移除某个绘制对象
+   * @param {Object} entityObj 已绘制完成绘制对象
+   */
+  remove(entityObj){
+    this.removeOne(entityObj);
   }
 
   /**
@@ -634,11 +647,15 @@ class DrawTool {
     // 如果是线 面 则需要先选中
     if (!this.handler) this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     this.handler.setInputAction(function (evt) {
-      if (!that.canEdit) return;
+      /* console.log("that===>",that);*/
+      if (!that.canEdit) return; 
       // 若当前正在绘制 则无法进行删除
       if (that.nowDrawEntityObj) return;
       let pick = that.viewer.scene.pick(evt.position);
-      if (!pick || !pick.id) return;
+      if (!pick || !pick.id || !pick.id.objId) return;
+      const entObj = that.getEntityObjByObjId(pick.id.objId).entityObj;
+      if(!entObj) return ;
+      if(entObj.attr.plotId != that.plotId) return ;
       /* let selectEntobj = undefined; */
       /* for (let i = 0; i < that.entityObjArr.length; i++) {
         if (pick.id.objId == that.entityObjArr[i].objId) {
@@ -646,7 +663,6 @@ class DrawTool {
           break;
         }
       } */
-
       that.createDelteDom(evt.position, pick.id.objId);
 
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);

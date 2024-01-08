@@ -45,7 +45,7 @@ const defaulteStyle = {
 };
 
 /**
- * 颜色转换
+ * 常见颜色转为Cesium中颜色
  * @param {Cesium.Color | String} color
  * @param {Number} alpha
  * @returns {Cesium.Color}
@@ -60,6 +60,20 @@ const transColor = (color, alpha) => {
   }
   return tcolor;
 };
+
+/**
+ * Cesium中颜色，转为16进制颜色以及alpha
+ * @param {Cesium.Color} color
+ * @returns {Object} obj
+ */
+const reverseTransColor = (color) => {
+  if (!color) return undefined;
+  const obj = {};
+  obj.alpha = color.alpha;
+  obj.color = new Cesium.Color(color.red, color.green, color.blue, 1).toCssHexString();
+  return obj
+}
+
 
 /**
  * 数组转cartsian2
@@ -82,6 +96,10 @@ const setPointStyle = (ent, style) => {
     point[i] = style[i];
   }
 };
+
+const getPointStyle = (ent) => {
+
+}
 
 const setLabelStyle = (ent, style) => {
   if (!ent) return;
@@ -125,5 +143,28 @@ const setPolygonStyle = (ent, style) => {
     polygon[i] = style[i];
   }
 }
+
+// =================================== 矩形 ===================================
+const getRectangleStyle = (ent) => {
+  if (!ent) return {};
+  let obj = {};
+  const rectangle = ent.rectangle;
+  const material = rectangle.material.getValue();
+  if (material instanceof Cesium.Color) {
+    const res = reverseTransColor(material);
+    obj.color = res.color;
+    obj.colorAlpah = res.alpha;
+  }
+  obj.heightReference = rectangle.heightReference.getValue(); // 是否贴地
+  obj.fill = rectangle.fill.getValue(); // 是否填充
+  obj.height = rectangle.height.getValue();
+
+}
+
+const setRectangleStyle = () => {
+
+}
+
+
 
 export { setPointStyle, setLabelStyle, setPolylineStyle, setPolygonStyle };

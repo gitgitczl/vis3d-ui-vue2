@@ -1,3 +1,4 @@
+// 根据styleType属性来获取对象的样式列表
 export default {
     "point": {
         "pixelSize": {
@@ -80,7 +81,7 @@ export default {
                     },
                     "image": {
                         "name": "材质路径",
-                        "value": require("../../images/texture/glow.png"),
+                        "value": require("../../images/texture/water.png"),
                         "type": "input-text",
                         "disable": "disabled"
                     }
@@ -92,6 +93,12 @@ export default {
                         "name": "流动速度",
                         "type": "input-number",
                         "value": 1000
+                    },
+                    "image": {
+                        "name": "材质路径",
+                        "value": require("../../images/texture/glow.png"),
+                        "type": "input-text",
+                        "disable": "disabled"
                     }
                 }
             }

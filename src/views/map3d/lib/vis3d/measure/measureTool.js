@@ -96,7 +96,7 @@ class MeasureTool {
 			this.nowDrawMeasureObj.state != "endEdit") &&
 			this.nowDrawMeasureObj.state != "no") return;
 
-			debugger
+		debugger
 		switch (Number(opt.type)) {
 			case 1: // 空间距离测量
 				ms = new MeasureSpaceDistance(this.viewer, opt);
@@ -131,7 +131,7 @@ class MeasureTool {
 			case 11: // 单点坡度
 				ms = new MeasureSlopePolygon(this.viewer);
 				break;
-			case 12 : // 贴地面积测量
+			case 12: // 贴地面积测量
 				ms = new MeasureGroundArea(this.viewer);
 				break
 			default:
@@ -268,7 +268,11 @@ class MeasureTool {
 	*/
 	setUnit(unit) {
 		if (!unit) return;
-		this.nowDrawMeasureObj.setUnit(unit);
+		for (let i = 0; i < this.measureObjArr.length; i++) {
+			const item = this.measureObjArr[i];
+			item.setUnit(unit);
+		}
+
 	}
 
 	/**

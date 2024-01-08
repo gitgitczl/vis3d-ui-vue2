@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="basic-tooltip">
-      提示：模型压平只支持部分无着色器的3dtiles数据。
+      提示：模型压平和模型裁剪同时作用在同一个模型上时，会冲突。
     </div>
 
     <!-- 点选模型 -->
@@ -27,14 +27,13 @@
     </div>
 
     <div class="flat-table reset-table" v-show="modelFlatList.length">
-      <el-table ref="singleTable" :data="modelFlatList" :border="true" style="width: 100%" max-height="300"
-        @selection-change="onChangeFlat">
-        <el-table-column type="selection" width="55"> </el-table-column>
+      <el-table ref="singleTable" :data="modelFlatList" :border="true" style="width: 100%" max-height="300">
+        <el-table-column type="index" width="55" label="序号"></el-table-column>
         <el-table-column property="flatName" header-align="center" align="center" label="压平区"
           show-overflow-tooltip></el-table-column>
         <el-table-column header-align="center" align="center" label="操作">
           <template slot-scope="scope">
-            <span class="el-icon-s-promotion operate-btn-icon" @click="onStartFlat(scope.row)"></span>
+            <!-- <span class="el-icon-s-promotion operate-btn-icon" @click="onStartFlat(scope.row)"></span> -->
             <span class="el-icon-delete operate-btn-icon" @click="onDeleteFlat(scope.row)"></span>
           </template>
         </el-table-column>
@@ -44,9 +43,11 @@
 </template>
 
 <script>
+import TilesetFlat from "./Tileset/TilesetFlat"
 /* 模型压平 */
-let cut = undefined;
+let flat = undefined;
 let tileset = undefined;
+let flatDrawTool = undefined;
 export default {
   name: "ModelFlat",
 
@@ -54,24 +55,61 @@ export default {
     return {
       height: 0, // 压平高度
       tilesetName: "", // 点选模型名称
-      modelFlatList: [
-        {
-          id: 1,
-          flatName: "测试压平",
-        },
-        {
-          id: 2,
-          flatName: "测试压平1",
-        },
-      ],
+      modelFlatList: [],
     };
   },
 
   mounted() {
+    if (!flatDrawTool) {
+      flatDrawTool = new window.vis3d.plot.Tool(viewer, {
+        canEdit: false
+      })
+      flatDrawTool.on("endCreate", (entObj, ent) => {
+        // 绘制结束后 更新列表
+        const date = new Date()
+        const randomid = date.getMinutes() + '_' + date.getSeconds();
+        this.modelFlatList.push({
+          flatName: this.tilesetName + '压平' + randomid,
+          id: randomid
+        })
 
+        let positions = [];
+        if (entObj.type == "rectangle") {
+          const lnglats = entObj.getPositions(true);
+          const p1 = lnglats[0];
+          const p2 = lnglats[1];
+          positions = [
+            Cesium.Cartesian3.fromDegrees(p1[0], p1[1]),
+            Cesium.Cartesian3.fromDegrees(p1[0], p2[1]),
+            Cesium.Cartesian3.fromDegrees(p2[0], p2[1]),
+            Cesium.Cartesian3.fromDegrees(p2[0], p1[1])
+          ]
+        } else {
+          positions = entObj.getPositions();
+        }
+        if (!flat) {
+          flat = new TilesetFlat(tileset, {
+            flatHeight: -30,
+          });
+        }
+        flat.addRegion({
+          positions: positions,
+          id: randomid  // 必须符合代码命名规范
+        })
+        flatDrawTool.remove(entObj);
+      })
+    }
   },
 
-  destroyed() { },
+  destroyed() {
+    if (flat) {
+      flat.destroy();
+    }
+    if (flatDrawTool) {
+      flatDrawTool.destroy();
+      flatDrawTool = undefined;
+    }
+  },
 
   methods: {
     /**
@@ -80,6 +118,7 @@ export default {
     selectModel() {
       window.vis3d.common.selectModel.disable();
       window.vis3d.common.selectModel.activate(viewer, (res) => {
+        tileset = res.content._tileset;
         const name = res.content._tileset.layerConfig.name;
         this.tilesetName = name;
       })
@@ -88,29 +127,47 @@ export default {
      * 绘制矩形压平区
      */
     drawRectangle() {
-      
+      if (!tileset) {
+        this.$message({
+          message: '请先选择模型',
+          type: 'warning'
+        });
+        return;
+      }
+      flatDrawTool.start({
+        type: "rectangle",
+        style: {
+          "outline": true,
+          "fill": false,
+          "color": "#0000ff",
+          "outlineColor": "#ff0000",
+          "heightReference": 1
+        }
+      })
     },
     /**
     *  绘制多边形压平区
     */
-    drawRectangle() {
+    drawPolygon() {
+      if (!tileset) {
+        this.$message({
+          message: '请先选择模型',
+          type: 'warning'
+        });
+        return;
+      }
 
+      flatDrawTool.start({
+        type: "polygon",
+        style: {
+          "color": "#0000ff",
+          "fill": false,
+          "outline": true,
+          "outlineColor": "#ff0000",
+          "heightReference": 1
+        }
+      })
     },
-    /**
-     * 选择压平区
-     * @param {Array} list 选中压平数据
-     */
-    onChangeFlat(list) {
-    },
-
-    /**
-     * 开始压平
-     * @param {Object} data
-     */
-    onStartFlat(data) {
-
-    },
-
     /**
      * 删除
      * @param {Object} data
@@ -129,6 +186,11 @@ export default {
 
           let tempList = this.modelFlatList.filter(item => item.id !== data.id)
           this.$set(this, 'modelFlatList', tempList)
+
+          if (flat) {
+            flat.removeRegionById(data.id);
+          }
+
         })
         .catch(() => {
           this.$message({

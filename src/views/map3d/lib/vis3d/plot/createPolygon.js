@@ -15,13 +15,12 @@ class CreatePolygon extends BasePlot {
 		this.type = "polygon";
 		this.viewer = viewer;
 		this.entity = null;
-		this.polyline = null;
+		this.outline = null;
 		let defaultStyle = {
 			outlineColor: "#000000",
 			outlineWidth: 2
 		}
 		this.style = Object.assign(defaultStyle, style || {});
-		this.outline = null;
 	}
 
 	start(callback) {
@@ -59,15 +58,15 @@ class CreatePolygon extends BasePlot {
 					that.positions[that.positions.length - 1] = cartesian;
 				}
 				if (that.positions.length == 2) {
-					if (!Cesium.defined(that.polyline)) {
-						that.polyline = that.createPolyline();
+					if (!Cesium.defined(that.outline)) {
+						that.outline = that.createPolyline();
 					}
 				}
 				if (that.positions.length == 3) {
 					if (!Cesium.defined(that.entity)) {
 						that.entity = that.createPolygon(that.style);
-						if (!that.style.outline && that.polyline) { // 不需要创建轮廓 则后续删除
-							that.polyline.show = false;
+						if (!that.style.outline && that.outline) { // 不需要创建轮廓 则后续删除
+							that.outline.show = false;
 						}
 						that.entity.objId = that.objId;
 					}
@@ -83,13 +82,13 @@ class CreatePolygon extends BasePlot {
 				if (that.entity) {
 					that.viewer.entities.remove(that.entity);
 					that.entity = null;
-					if (that.polyline) that.polyline.show = true;
+					if (that.outline) that.outline.show = true;
 				}
 			}
 			if (that.positions.length == 1) {
-				if (that.polyline) {
-					that.viewer.entities.remove(that.polyline);
-					that.polyline = null;
+				if (that.outline) {
+					that.viewer.entities.remove(that.outline);
+					that.outline = null;
 				}
 				if (that.prompt) that.prompt.update(evt.endPosition, "单击开始绘制");
 				that.positions = [];
@@ -122,27 +121,27 @@ class CreatePolygon extends BasePlot {
 
 		that.viewer.trackedEntity = undefined;
 		that.viewer.scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-		
+
 	}
 
 	/**
-     * 当前步骤结束
-     */
-    done() {
-        if (this.state == "startCreate") {
-            this.destroy();
-        } else if (this.state == "creating") {
-            if (this.positions.length <= 2 && this.movePush == true) {
-                this.destroy();
-            } else {
-                this.endCreate();
-            }
-        } else if (this.state == "startEdit" || this.state == "editing") {
-            this.endEdit();
-        } else {
+	 * 当前步骤结束
+	 */
+	done() {
+		if (this.state == "startCreate") {
+			this.destroy();
+		} else if (this.state == "creating") {
+			if (this.positions.length <= 2 && this.movePush == true) {
+				this.destroy();
+			} else {
+				this.endCreate();
+			}
+		} else if (this.state == "startEdit" || this.state == "editing") {
+			this.endEdit();
+		} else {
 
-        }
-    }
+		}
+	}
 
 	createByPositions(lnglatArr, callback) { //通过传入坐标数组创建面
 		if (!lnglatArr) return;
@@ -150,8 +149,8 @@ class CreatePolygon extends BasePlot {
 		let positions = (lnglatArr[0] instanceof Cesium.Cartesian3) ? lnglatArr : util.lnglatsToCartesians(lnglatArr);
 		if (!positions) return;
 		this.entity = this.createPolygon();
-		this.polyline = this.createPolyline();
-		this.polyline.show = this.style.outline;
+		this.outline = this.createPolyline();
+		this.outline.show = this.style.outline;
 
 		this.positions = positions;
 		for (let i = 0; i < positions.length; i++) {
@@ -189,8 +188,8 @@ class CreatePolygon extends BasePlot {
 		}
 
 		/* obj.heightReference = isNaN(polygon.heightReference.getValue()) ? false : polygon.heightReference.getValue(); */
-		let outline = this.polyline.polyline;
-		if (outline && this.polyline.show) {
+		let outline = this.outline.polyline;
+		if (outline && this.outline.show) {
 			obj.outlineWidth = outline.width.getValue();
 			/* obj.outline = "show"; */
 			obj.outline = true;
@@ -208,11 +207,11 @@ class CreatePolygon extends BasePlot {
 	setStyle(style) {
 		if (!style) return;
 		// 由于官方api中的outline限制太多 此处outline为重新构建的polyline
-		/* this.polyline.show = style.outline.show == "show" ? true : false; */
-		this.polyline.show = style.outline;
-		let outline = this.polyline.polyline;
+		/* this.outline.show = style.outline.show == "show" ? true : false; */
+		this.outline.show = style.outline;
+		let outline = this.outline.polyline;
 		outline.width = style.outlineWidth;
-		this.polyline.clampToGround = Boolean(style.heightReference);
+		this.outline.clampToGround = Boolean(style.heightReference);
 		let outlineColor = (style.outlineColor instanceof Cesium.Color) ? style.outlineColor : Cesium.Color.fromCssColorString(style.outlineColor);
 		let outlineMaterial = outlineColor.withAlpha(style.outlineColorAlpha || 1);
 		outline.material = outlineMaterial;
@@ -248,7 +247,7 @@ class CreatePolygon extends BasePlot {
 	}
 	createPolyline() {
 		let that = this;
-		return this.viewer.entities.add({
+		let line = this.viewer.entities.add({
 			polyline: {
 				positions: new Cesium.CallbackProperty(function () {
 					let newPositions = that.positions.concat(that.positions[0]);
@@ -259,6 +258,9 @@ class CreatePolygon extends BasePlot {
 				width: this.style.outlineWidth || 1
 			}
 		});
+		line.objId = this.objId;
+		line.isOutline = true; // 标识其为边框线
+		return line;
 	}
 
 	destroy() {
@@ -274,9 +276,9 @@ class CreatePolygon extends BasePlot {
 			this.viewer.entities.remove(this.entity);
 			this.entity = null;
 		}
-		if (this.polyline) {
-			this.viewer.entities.remove(this.polyline);
-			this.polyline = null;
+		if (this.outline) {
+			this.viewer.entities.remove(this.outline);
+			this.outline = null;
 		}
 		this.positions = [];
 		this.style = null;
@@ -291,9 +293,9 @@ class CreatePolygon extends BasePlot {
 		this.controlPoints = [];
 		this.state = "no";
 		if (this.prompt) this.prompt.destroy();
-		if (this.polyline) {
-			this.polyline = null;
-			this.viewer.entities.remove(this.polyline);
+		if (this.outline) {
+			this.outline = null;
+			this.viewer.entities.remove(this.outline);
 		}
 		this.forbidDrawWorld(false);
 	}

@@ -1,9 +1,10 @@
+// 定义面板中标绘类别及默认样式
 const list = {
     "基础标绘": [
         {
             "name": "点",
             "type": "point",
-            "iconImg": require('../../images/plot/point.png'), 
+            "iconImg": require('../../images/plot/point.png'),
             "styleType": "point"
         },
         {
@@ -24,6 +25,19 @@ const list = {
             "style": {
                 "color": "#0000ff",
                 "outline": true,
+                "outlineColor": "#ff0000",
+                "heightReference": 1
+            }
+        },
+        {
+            "name": "矩形",
+            "type": "rectangle",
+            "iconImg": require('../../images/plot/rectangle.png'),
+            "styleType": "polygon",
+            "style": {
+                "outline" : true,
+                "fill" : true,
+                "color": "#0000ff",
                 "outlineColor": "#ff0000",
                 "heightReference": 1
             }
@@ -63,7 +77,7 @@ const list = {
                 "clampToGround": true,
                 "color": "#0EFCDC",
                 "animateType": "flowline",
-                "duration" : 1000,
+                "duration": 1000,
                 "image": require('../../images/texture/glow.png')
             }
         },
@@ -76,7 +90,7 @@ const list = {
                 "clampToGround": true,
                 "color": "#F9F507",
                 "animateType": "flowline",
-                "duration" : 1000,
+                "duration": 1000,
                 "image": require('../../images/texture/water.png')
             }
         }
@@ -278,7 +292,7 @@ const list = {
                 "uri": "./gltf/gongchengche.glb",
                 "minimumPixelSize": 24,
                 "scale": 1,
-                "heading": -30,  
+                "heading": -30,
                 "pitch": 0,
                 "roll": 0
             }

@@ -20,15 +20,17 @@
       <!-- 方量分析 -->
       <Volume v-show="changeAnalysisType === 'volume'" />
       <!-- 淹没分析 -->
-      <Flood v-show="changeAnalysisType === 'flood'" />
+      <!-- <Flood v-show="changeAnalysisType === 'flood'" /> -->
       <!-- 地形开挖 -->
-      <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" />
+      <!--  <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" /> -->
       <!-- 地表透明 -->
-      <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" />
+      <!-- <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" /> -->
       <!-- 坡度坡向 -->
-      <Slope v-show="changeAnalysisType === 'slope'" />
+      <!-- <Slope v-show="changeAnalysisType === 'slope'" /> -->
       <!-- 模型剖切 -->
-      <ModelClip v-show="changeAnalysisType === 'modelClip'" />
+      <!-- <ModelClip v-show="changeAnalysisType === 'modelClip'" /> -->
+      <!-- 模型裁剪 -->
+      <ModelCut v-show="changeAnalysisType === 'modelCut'" />
       <!-- 模型压平 -->
       <ModelFlat v-show="changeAnalysisType === 'modelFlat'" />
       <!-- 限高分析 -->
@@ -36,40 +38,42 @@
       <!-- 通视分析 -->
       <Insight v-show="changeAnalysisType === 'insight'" />
       <!-- 等高线 -->
-      <Contour v-show="changeAnalysisType === 'contour'" />
+      <!-- <Contour v-show="changeAnalysisType === 'contour'" /> -->
     </div>
   </Card>
 </template>
 
 <script>
 
-import Contour from "@/views/map3d/baseTools/analysis/contour.vue";
-import Flood from "@/views/map3d/baseTools/analysis/flood.vue";
-import GlobeSurface from "@/views/map3d/baseTools/analysis/globeSurface.vue";
+/* import Contour from "@/views/map3d/baseTools/analysis/contour.vue"; */
+/* import Flood from "@/views/map3d/baseTools/analysis/flood.vue"; */
+/* import GlobeSurface from "@/views/map3d/baseTools/analysis/globeSurface.vue"; */
 import Insight from "@/views/map3d/baseTools/analysis/insight.vue";
 import ModelClip from "@/views/map3d/baseTools/analysis/modelClip.vue";
+import ModelCut from "@/views/map3d/baseTools/analysis/modelCut.vue";
 import ModelFlat from "@/views/map3d/baseTools/analysis/modelFlat.vue";
-import Slope from "@/views/map3d/baseTools/analysis/slope.vue";
+/* import Slope from "@/views/map3d/baseTools/analysis/slope.vue"; */
 import Sunshine from "@/views/map3d/baseTools/analysis/sunshine.vue";
-import TerrainExcavate from "@/views/map3d/baseTools/analysis/terrainExcavate.vue";
+/* import TerrainExcavate from "@/views/map3d/baseTools/analysis/terrainExcavate.vue"; */
 import VisualField from "@/views/map3d/baseTools/analysis/visualField.vue";
 import Volume from "@/views/map3d/baseTools/analysis/volume.vue";
 import LimitHeight from "@/views/map3d/baseTools/analysis/limitHeight.vue";
-import ModelVolume from "@/views/map3d/baseTools/analysis/modelVolume.vue";
+/* import ModelVolume from "@/views/map3d/baseTools/analysis/modelVolume.vue"; */
 
 export default {
   name: "analysis",
   components: {
 
-    Contour,
+    /* Contour,
     Flood,
-    GlobeSurface,
+    GlobeSurface, */
     Insight,
-    ModelClip,
+    /* ModelClip, */
+    ModelCut,
     ModelFlat,
-    Slope,
+    /* Slope, */
     Sunshine,
-    TerrainExcavate,
+    /* TerrainExcavate, */
     VisualField,
     Volume,
     LimitHeight,
@@ -105,22 +109,22 @@ export default {
           icon: "icon-fangliangfenxi",
           type: "volume",
         },
-        {
-          name: "淹没分析",
-          icon: "icon-yanmeifenxi",
-          type: "flood",
-        },
-        {
+        /*  {
+           name: "淹没分析",
+           icon: "icon-yanmeifenxi",
+           type: "flood",
+         }, */
+        /* {
           name: "地形开挖",
           icon: "icon-dixingkaiwa",
           type: "terrainExcavate",
-        },
-        {
-          name: "地表透明",
-          icon: "icon-dibiaotouming",
-          type: "globeSurface",
-        },
-        {
+        }, */
+        /*  {
+           name: "地表透明",
+           icon: "icon-dibiaotouming",
+           type: "globeSurface",
+         }, */
+        /* {
           name: "坡度坡向",
           icon: "icon-podupoxiang",
           type: "slope",
@@ -129,11 +133,16 @@ export default {
           name: "模型剖切",
           icon: "icon-moxingpouqie",
           type: "modelClip",
-        },
+        }, */
         {
           name: "模型压平",
           icon: "icon-moxingyaping",
           type: "modelFlat",
+        },
+        {
+          name: "模型裁剪",
+          icon: "icon-moxingpouqie",
+          type: "modelCut",
         },
         {
           name: "限高分析",
@@ -145,11 +154,11 @@ export default {
           icon: "icon-tongshifenxi",
           type: "insight",
         },
-        {
+        /* {
           name: "等高线分析",
           icon: "icon-denggaoxianfenxi",
           type: "contour",
-        },
+        }, */
       ],
       changeAnalysisType: "",
     };
