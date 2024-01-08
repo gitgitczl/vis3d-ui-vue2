@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="basic-tooltip">
-      提示：请首先单击“绘制区域按钮”，再在图上绘制分析区域
+      提示：请首先单击“绘制区域按钮”，再在图上绘制分析区域，此处仅针对地形可进行方量分析。
     </p>
     <div class="analysis-btn analysis-top-btn basic-analysis-btn">
       <span @click="draw">绘制区域</span>

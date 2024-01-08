@@ -14,15 +14,15 @@
 
     <div>
       <!-- 日照分析 -->
-      <!-- <Sunshine v-show="changeAnalysisType === 'sunshine'" /> -->
+      <Sunshine v-show="changeAnalysisType === 'sunshine'" />
       <!-- 可视域分析 -->
-      <!-- <VisualField v-show="changeAnalysisType === 'visualField'" /> -->
+      <VisualField v-show="changeAnalysisType === 'visualField'" />
       <!-- 方量分析 -->
-      <!-- <Volume v-show="changeAnalysisType === 'volume'" /> -->
+      <Volume v-show="changeAnalysisType === 'volume'" />
       <!-- 淹没分析 -->
       <!-- <Flood v-show="changeAnalysisType === 'flood'" /> -->
       <!-- 地形开挖 -->
-     <!--  <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" /> -->
+      <!--  <TerrainExcavate v-show="changeAnalysisType === 'terrainExcavate'" /> -->
       <!-- 地表透明 -->
       <!-- <GlobeSurface v-show="changeAnalysisType === 'globeSurface'" /> -->
       <!-- 坡度坡向 -->
@@ -34,9 +34,9 @@
       <!-- 模型压平 -->
       <ModelFlat v-show="changeAnalysisType === 'modelFlat'" />
       <!-- 限高分析 -->
-      <!-- <LimitHeight v-show="changeAnalysisType === 'LimitHeight'" /> -->
+      <LimitHeight v-show="changeAnalysisType === 'LimitHeight'" />
       <!-- 通视分析 -->
-     <!--  <Insight v-show="changeAnalysisType === 'insight'" /> -->
+      <Insight v-show="changeAnalysisType === 'insight'" />
       <!-- 等高线 -->
       <!-- <Contour v-show="changeAnalysisType === 'contour'" /> -->
     </div>
@@ -109,21 +109,21 @@ export default {
           icon: "icon-fangliangfenxi",
           type: "volume",
         },
-       /*  {
-          name: "淹没分析",
-          icon: "icon-yanmeifenxi",
-          type: "flood",
-        }, */
+        /*  {
+           name: "淹没分析",
+           icon: "icon-yanmeifenxi",
+           type: "flood",
+         }, */
         /* {
           name: "地形开挖",
           icon: "icon-dixingkaiwa",
           type: "terrainExcavate",
         }, */
-       /*  {
-          name: "地表透明",
-          icon: "icon-dibiaotouming",
-          type: "globeSurface",
-        }, */
+        /*  {
+           name: "地表透明",
+           icon: "icon-dibiaotouming",
+           type: "globeSurface",
+         }, */
         /* {
           name: "坡度坡向",
           icon: "icon-podupoxiang",

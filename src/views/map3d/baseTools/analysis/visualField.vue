@@ -53,7 +53,7 @@
           ></el-slider>
         </li>
         <li>
-          <p>可见区域颜色：</p>
+          <p>可见区颜色：</p>
           <el-color-picker
             size="small"
             v-model="visibleAreaColor"
@@ -70,7 +70,7 @@
           ></el-slider>
         </li>
         <li>
-          <p>不可见区域颜色：</p>
+          <p>不可见区颜色：</p>
           <el-color-picker
             size="small"
             v-model="hiddenAreaColor"
