@@ -16,7 +16,6 @@
       <li>
         <label>顶部高度：</label>
         <el-input-number
-          :controls="false"
           v-model="topHeight"
           placeholder="请输入高度"
         ></el-input-number>
