@@ -66,6 +66,7 @@ class DrawTool {
 
     // 无论如何 进来先监听点击修改 与 右键删除事件 通过控制canEdit来判断要不要向下执行
     this.bindEdit();
+    console.log("我构建了一次DrawTool对象");
     this.bindRemove();
 
     /**
@@ -646,7 +647,7 @@ class DrawTool {
           break;
         }
       } */
-
+      console.log("我来删除啊===》");
       that.createDelteDom(evt.position, pick.id.objId);
 
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);

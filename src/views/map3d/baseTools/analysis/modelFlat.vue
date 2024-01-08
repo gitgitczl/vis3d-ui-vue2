@@ -86,7 +86,7 @@ export default {
     }
 
     if (!flat) {
-      flat = new Cesium.TilesetFlat(viewer);
+      flat = new Cesium.TilesetFlat(tileset);
     }
 
   },
@@ -111,9 +111,10 @@ export default {
       drawTool.start({
         type: "rectangle",
         style: {
-          "fill": false,
-          "outline" : true,
+          "outline": true,
+          "fill": true,
           "color": "#0000ff",
+          "outlineColor": "#ff0000",
           "heightReference": 1
         }
       })

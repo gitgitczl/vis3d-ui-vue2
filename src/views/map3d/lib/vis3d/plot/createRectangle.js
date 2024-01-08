@@ -263,6 +263,45 @@ class CreateRectangle extends BasePlot {
     this.entity.rectangle.fill = style.fill;
     this.style = Object.assign(this.style, style);
   }
+
+  /**
+     * 销毁
+     */
+  destroy() {
+    if (this.handler) {
+      this.handler.destroy();
+      this.handler = null;
+    }
+    if (this.modifyHandler) {
+      this.modifyHandler.destroy();
+      this.modifyHandler = null;
+    }
+    if (this.entity) {
+      this.viewer.entities.remove(this.entity);
+      this.entity = null;
+    }
+    if (this.outline) {
+      this.viewer.entities.remove(this.outline);
+      this.outline = null;
+    }
+
+    this.positions = [];
+    this.style = null;
+    for (var i = 0; i < this.controlPoints.length; i++) {
+      var point = this.controlPoints[i];
+      this.viewer.entities.remove(point);
+    }
+    this.controlPoints = [];
+    this.modifyPoint = null;
+    if (this.prompt) {
+      this.prompt.destroy();
+      this.prompt = null;
+    }
+    this.state = "no";
+    this.forbidDrawWorld(false);
+  }
+
+
 }
 
 export default CreateRectangle;

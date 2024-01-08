@@ -153,7 +153,7 @@ export default {
                     center: {
                         z: 120,
                     },
-                    show: false,
+                    show: true,
                     maximumScreenSpaceError: 1,
                 },
                 {
