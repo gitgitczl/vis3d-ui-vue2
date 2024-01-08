@@ -74,8 +74,6 @@ export default {
         that.lng = Number(lnglat[0]).toFixed(6);
         that.lat = Number(lnglat[1]).toFixed(6);
         that.height = Number(lnglat[2]).toFixed(2);
-
-        console.log(that.lng)
       });
     }
   },
@@ -101,7 +99,7 @@ export default {
         type: "billboard",
         style: {
           image: img_start,
-          scale: 0.8,
+          scale: 1,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         },
         positions: [this.lng, this.lat, this.height || 0],
