@@ -13,12 +13,12 @@ export default {
     baseServer: "http://localhost:1119/",
     map: {
         cameraView: {
-            "x": 119.03180964296718,
-            "y": 33.590498112009996,
-            "z": 233.82760350909686,
-            "heading": 359.9999999999401,
-            "pitch": -28.65096138512803,
-            "roll": 360,
+            "x": 117.07992697208293,
+            "y": 31.251962839264507,
+            "z": 1318.2423955791364,
+            "heading": 0.5959736225162723,
+            "pitch": -35.138619465263815,
+            "roll": 359.999820451462,
             duration: 0
         },
         brightness: 1.0, // 亮度设置
@@ -134,8 +134,6 @@ export default {
             type: "group",
             open: true,
             children: [
-
-
                 {
                     name: "地块（3）",
                     type: "3dtiles",
@@ -153,7 +151,7 @@ export default {
                     center: {
                         z: 120,
                     },
-                    show: true,
+                    show: false,
                     maximumScreenSpaceError: 1,
                 },
                 {

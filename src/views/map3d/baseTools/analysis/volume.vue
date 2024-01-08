@@ -10,28 +10,18 @@
     <ul class="volume-body basic-number">
       <li>
         <label>基准面高：</label>
-        <el-input-number
-          :controls="false"
-          v-model="jzmHeight"
-          placeholder="请输入内容"
-        ></el-input-number>
+        <el-input-number :controls="false" v-model="jzmHeight" placeholder="请输入内容"></el-input-number>
         <span> &nbsp;m </span>
         <span class="volume-btn" @click="flfxSetHeight">点选高度</span>
       </li>
       <li>
         <label>挖方体积：</label>
-        <el-input-number
-          :controls="false"
-          v-model="digTotalV"
-        ></el-input-number>
+        <el-input-number :controls="false" v-model="digTotalV"></el-input-number>
         <span> &nbsp;m³</span>
       </li>
       <li>
         <label>填方体积：</label>
-        <el-input-number
-          :controls="false"
-          v-model="fillTotalV"
-        ></el-input-number>
+        <el-input-number :controls="false" v-model="fillTotalV"></el-input-number>
         <span> &nbsp;m³</span>
       </li>
     </ul>
@@ -137,7 +127,7 @@ export default {
       this.fillTotalV = 0;
     },
     flfxStartCompute(h) {
-      let uniformData = util.computeUniforms(
+      let uniformData = window.vis3d.util.computeUniforms(
         polygonPositions,
         false,
         window.viewer
@@ -227,7 +217,7 @@ export default {
         if (item) viewer.entities.remove(item);
       }
       bzdPoints = [];
-      var positions = util.updatePositionsHeight(positions, height);
+      var positions = window.vis3d.util.updatePositionsHeight(positions, height);
       bzmPlane = viewer.entities.add({
         polygon: {
           hierarchy: new Cesium.PolygonHierarchy(positions),
@@ -255,16 +245,20 @@ export default {
     },
     flfxSetHeight(callback) {
       let that = this;
-      setHeightHandler = new Cesium.ScreenSpaceEventHandler(
-        window.viewer.scene.canvas
-      );
+      if (!setHeightHandler) {
+        setHeightHandler = new Cesium.ScreenSpaceEventHandler(
+          window.viewer.scene.canvas
+        );
+      }
+
       setHeightHandler.setInputAction(function (evt) {
         //单击开始绘制
+        debugger
         let ray = viewer.camera.getPickRay(evt.position);
         if (!ray) return null;
         let cartesian = viewer.scene.globe.pick(ray, viewer.scene);
-        let lnglat = util.cartesianToLnglat(cartesian);
-        that.jzmHeight = lnglat[2];
+        let lnglat = window.vis3d.util.cartesianToLnglat(cartesian);
+        that.jzmHeight = Number(lnglat[2].toFixed(2));
         that.flfxStartCompute(that.jzmHeight);
         setHeightHandler.destroy();
         setHeightHandler = null;
@@ -277,17 +271,21 @@ export default {
 <style lang="less">
 .volume-body {
   margin-top: 15px;
+
   li {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
     label {
       display: flex;
       align-items: center;
     }
+
     .el-input-number {
       width: 100px;
     }
+
     .volume-btn {
       height: 40px;
       padding: 0 10px;

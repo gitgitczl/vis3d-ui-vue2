@@ -1,5 +1,9 @@
 <template>
   <div class="flood-bar">
+    <div class="basic-tooltip">
+      提示：请先在图上点选模型后，设置剖切方向及距离。
+    </div>
+
     <ul class="flood-body basic-number">
       <li>
         <label>分析区域：</label>
@@ -7,18 +11,11 @@
       </li>
       <li>
         <label>底部高度：</label>
-        <el-input-number
-          v-model="bottomHeight"
-          @input="changeHeight"
-          placeholder="请输入高度"
-        ></el-input-number>
-      </li> 
+        <el-input-number v-model="bottomHeight" @input="changeHeight" placeholder="请输入高度"></el-input-number>
+      </li>
       <li>
         <label>顶部高度：</label>
-        <el-input-number
-          v-model="topHeight"
-          placeholder="请输入高度"
-        ></el-input-number>
+        <el-input-number v-model="topHeight" placeholder="请输入高度"></el-input-number>
       </li>
     </ul>
     <div class="analysis-btn basic-analysis-btn">
@@ -38,7 +35,7 @@ export default {
   data() {
     return {
       bottomHeight: 0, // 最低高度
-      topHeight: 9999,
+      topHeight: 999,
     };
   },
   mounted() {
@@ -78,7 +75,7 @@ export default {
       this.topHeight = 0;
     },
     start() {
-      if(!positions) return;
+      if (!positions) return;
       window.limitHeightDrawTool.end();
       window.limitHeightDrawTool.removeAll();
       limitHeight = new this.vis3d.analysis.LimitHeight(window.viewer, {
@@ -115,11 +112,11 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
     label {
-      width: 120px;
       display: flex;
-      justify-content: flex-end;
     }
+
     p {
       height: 40px;
       display: flex;
@@ -131,6 +128,7 @@ export default {
     }
   }
 }
+
 .flood-bar {
   margin-top: 10px;
 }
