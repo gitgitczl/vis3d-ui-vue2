@@ -13,6 +13,7 @@ class MeasureHeight extends BaseMeasure {
     super(viewer, opt);
     if (!opt) opt = {};
     this.unitType = "length";
+    this.unit = opt.unit || "米";
     this.style = opt.style || {};
     this.viewer = viewer;
     this.polyline = null;
@@ -97,7 +98,7 @@ class MeasureHeight extends BaseMeasure {
   }
 
   startEdit(callback) {
-    if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
+    if (!((this.state == "endCreate" || this.state == "endEdit") && this.polyline)) return;
     this.state = "startEdit";;
     if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     let that = this;

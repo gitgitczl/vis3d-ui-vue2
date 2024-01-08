@@ -151,7 +151,7 @@ class MeasureTriangle extends BaseMeasure {
     }
 
     startEdit(callback) {
-        if (!(this.state == "endCrerate" || this.state == "endEdit")) return;
+        if (!(this.state == "endCreate" || this.state == "endEdit")) return;
         this.state = "startEdit";;
         if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         let that = this;

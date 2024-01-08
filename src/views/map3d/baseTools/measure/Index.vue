@@ -114,6 +114,15 @@ export default {
         that.isShowRes = ms.unitType ? true : false;
         that.isMeasureActive = -1;
       });
+
+      measureTool.on("startEdit", function (ms) {
+        that.$set(that, "isShowUnit", true);
+        that.setByUnitType(ms.unitType);
+      });
+
+      measureTool.on("endEdit", function (ms) {
+        that.$set(that, "isShowUnit", false);
+      });
     }
   },
   destroyed() {
@@ -145,32 +154,35 @@ export default {
       }
 
       this.$set(this, "isMeasureActive", index);
+
+      // 开始量算
+      let ms = measureTool.start({
+        type: data.type
+      });
+      ms.unitType = data.unitType;
+    },
+
+    setByUnitType(unitType) {
       // 设置单位
-      this.$set(this, "isShowUnit", data.unitType !== "" ? true : false);
-      if (data.unitType) {
+      if (unitType) {
         this.$set(
           this,
           "unitList",
-          data.unitType === "dis" ? this.disUnit : this.areaUnit
+          unitType === "dis" ? this.disUnit : this.areaUnit
         );
         this.$set(
           this,
           "unitValue",
-          data.unitType === "dis" ? this.disUnit[0] : this.areaUnit[0]
+          unitType === "dis" ? this.disUnit[0] : this.areaUnit[0]
         );
       }
-      // 开始量算
-      measureTool.start({
-        type: data.type,
-        unit: this.unitValue,
-      });
     },
 
     // 修改单位
     changeUint(res) {
       this.unitValue = res;
       if (!measureTool) return;
-      measureTool.setUnit(res);
+      measureTool.setMeasureObjUnit(measureTool.nowEditMeasureObj, res);
     },
 
     clear() {

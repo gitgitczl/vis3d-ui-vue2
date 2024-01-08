@@ -137,6 +137,7 @@ class BaseMeasure {
     }
 
     formateLength(val, dw) {
+        debugger
         if (val == undefined) return;
         dw = dw || "m";
         let dwStr = '';
@@ -156,7 +157,7 @@ class BaseMeasure {
         dw = dw || "m";
         if (dw == "km" || dw == "平方千米") {
             dwStr += (Number(val) / 1000000).toFixed(2) + "km²";
-        } else if (dw == "m" || dw == "平方米") {
+        } else if (dw == "m" || dw == "米" || dw == "平方米") {
             dwStr += Number(val).toFixed(2) + "m²";
         } else {
 

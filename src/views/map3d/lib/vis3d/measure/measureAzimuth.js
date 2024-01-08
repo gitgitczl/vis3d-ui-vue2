@@ -130,7 +130,7 @@ class MeasureAzimutht extends BaseMeasure {
    * @param {Function} callback 编辑成功后回调函数
    */
   startEdit(callback) {
-    if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
+    if (!((this.state == "endCreate" || this.state == "endEdit") && this.polyline)) return;
     this.state = "startEdit";;
     if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
     let that = this;

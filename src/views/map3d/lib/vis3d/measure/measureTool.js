@@ -96,7 +96,6 @@ class MeasureTool {
 			this.nowDrawMeasureObj.state != "endEdit") &&
 			this.nowDrawMeasureObj.state != "no") return;
 
-		debugger
 		switch (Number(opt.type)) {
 			case 1: // 空间距离测量
 				ms = new MeasureSpaceDistance(this.viewer, opt);
@@ -145,6 +144,7 @@ class MeasureTool {
 				that.changeCursor(false);
 				if (that.intoEdit) {
 					ms.startEdit();
+					that.nowEditMeasureObj = ms;
 					if (that.startEditFun) that.startEditFun(ms);
 				}
 				if (opt.success) opt.success(ms, res)
@@ -153,6 +153,7 @@ class MeasureTool {
 				that.measureObjArr.push(ms);
 			});
 		}
+		return ms
 	}
 
 	/**
@@ -266,13 +267,9 @@ class MeasureTool {
 	/**
 	 * 设置单位
 	*/
-	setUnit(unit) {
-		if (!unit) return;
-		for (let i = 0; i < this.measureObjArr.length; i++) {
-			const item = this.measureObjArr[i];
-			item.setUnit(unit);
-		}
-
+	setMeasureObjUnit(item, unit) {
+		if (!item || !unit) return;
+		item.setUnit(unit);
 	}
 
 	/**

@@ -63,7 +63,7 @@ class MeasureLnglat extends BaseMeasure {
     }
 
     startEdit() {
-        if (!((this.state == "endCrerate" || this.state == "endEdit") && this.point)) return;
+        if (!((this.state == "endCreate" || this.state == "endEdit") && this.point)) return;
         this.state = "startEdit";;
         if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.modifyHandler.setInputAction(function (evt) {

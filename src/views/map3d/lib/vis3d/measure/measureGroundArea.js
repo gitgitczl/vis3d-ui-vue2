@@ -15,6 +15,7 @@ class MeasureSpaceArea extends BaseMeasure {
 		super(viewer, opt);
 		if (!opt) opt = {};
 		this.unitType = "area";
+		this.unit = opt.unit || "平方米";
 		this.style = opt.style || {};
 		this.viewer = viewer;
 		this.polyline = null;
@@ -80,7 +81,6 @@ class MeasureSpaceArea extends BaseMeasure {
 				if (that.polygon) {
 					that.getGroundAreaAndCenter(that.positions, (area, center) => {
 						let text = that.formateArea(area, that.unit);
-						console.log("res==>", text, area, center)
 						that.floatLabel.label.text = "面积：" + text;
 						that.floatLabel.area = area;
 						if (center) that.floatLabel.position.setValue(center);
@@ -185,7 +185,7 @@ class MeasureSpaceArea extends BaseMeasure {
 	}
 
 	startEdit(callback) {
-		if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polygon)) return;
+		if (!((this.state == "endCreate" || this.state == "endEdit") && this.polygon)) return;
 		this.state = "startEdit";;
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		let that = this;

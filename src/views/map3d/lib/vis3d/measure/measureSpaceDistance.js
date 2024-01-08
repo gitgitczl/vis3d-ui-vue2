@@ -15,7 +15,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 		super(viewer, opt);
 		this.unitType = "length";
 		this.type = "spaceDistance";
-
+		this.unit = opt.unit || "米";
 		/**
 		 * @property {Number} allDistance 总长度
 		 */
@@ -91,6 +91,7 @@ class MeasureSpaceDistance extends BaseMeasure {
 				if (!that.lastCartesian) return;
 				let distance = that.getLength(cartesian, that.lastCartesian);
 				that.floatLable.show = true;
+				debugger
 				that.floatLable.label.text = that.formateLength(distance, that.unit);
 				that.floatLable.distance = distance;
 				that.floatLable.position.setValue(cartesian);
@@ -185,8 +186,8 @@ class MeasureSpaceDistance extends BaseMeasure {
 
 	// 开始编辑
 	startEdit(callback) {
-		if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polyline)) return;
-		this.state = "startEdit";;
+		if (!(this.state == "endCreate" || this.state == "endEdit")) return;
+		this.state = "startEdit";
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		let that = this;
 		for (let i = 0; i < that.controlPoints.length; i++) {

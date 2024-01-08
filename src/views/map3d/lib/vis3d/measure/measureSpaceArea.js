@@ -13,7 +13,9 @@ class MeasureSpaceArea extends BaseMeasure {
 	constructor(viewer, opt) {
 		super(viewer, opt);
 		if (!opt) opt = {};
+
 		this.unitType = "area";
+		this.unit = opt.unit || "平方米";
 		this.style = opt.style || {};
 		this.viewer = viewer;
 		this.polyline = null;
@@ -27,11 +29,11 @@ class MeasureSpaceArea extends BaseMeasure {
 	//开始测量
 	start(callback) {
 		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
-		var that = this;
+		let that = this;
 		this.state = "startCreate";
 		this.handler.setInputAction(function (evt) {
 			that.state = "creating";
-			var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
+			let cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
 			if (!cartesian) return;
 			if (that.movePush) {
 				that.positions.pop();
@@ -50,7 +52,7 @@ class MeasureSpaceArea extends BaseMeasure {
 				return;
 			}
 			that.prompt.update(evt.endPosition, "双击结束，右键取消上一步");
-			var cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
+			let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);
 			if (that.positions.length >= 1) {
 				if (!that.movePush) {
 					that.positions.push(cartesian);
@@ -77,10 +79,9 @@ class MeasureSpaceArea extends BaseMeasure {
 				}
 				if (that.polygon) {
 					let areaCenter = that.getAreaAndCenter(that.positions)
-					var area = areaCenter.area;
-					var center = areaCenter.center;
-
-					var text = that.formateArea(area, that.unit);
+					let area = areaCenter.area;
+					let center = areaCenter.center;
+					let text = that.formateArea(area, that.unit);
 					that.floatLabel.label.text = "面积：" + text;
 					that.floatLabel.area = area;
 					if (center) that.floatLabel.position.setValue(center);
@@ -114,10 +115,10 @@ class MeasureSpaceArea extends BaseMeasure {
 			}
 
 			if (that.positions.length > 2) {
-				var areaCenter = that.getAreaAndCenter(that.positions);
-				var area = areaCenter.area;
-				var center = areaCenter.center;
-				var text = that.formateArea(area, that.unit);
+				let areaCenter = that.getAreaAndCenter(that.positions);
+				let area = areaCenter.area;
+				let center = areaCenter.center;
+				let text = that.formateArea(area, that.unit);
 				that.floatLabel.label.text = "面积：" + text;
 				if (center) that.floatLabel.position.setValue(center);
 				that.floatLabel.area = area;
@@ -183,7 +184,7 @@ class MeasureSpaceArea extends BaseMeasure {
 	}
 
 	startEdit(callback) {
-		if (!((this.state == "endCrerate" || this.state == "endEdit") && this.polygon)) return;
+		if (!((this.state == "endCreate" || this.state == "endEdit") && this.polygon)) return;
 		this.state = "startEdit";;
 		if (!this.modifyHandler) this.modifyHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 		let that = this;
@@ -210,10 +211,10 @@ class MeasureSpaceArea extends BaseMeasure {
 			let wz = that.modifyPoint.wz;
 			that.positions[wz] = cartesian.clone();
 
-			var areaCenter = that.getAreaAndCenter(that.positions);
-			var area = areaCenter.area;
-			var center = areaCenter.center;
-			var text = that.formateArea(area, that.unit);
+			let areaCenter = that.getAreaAndCenter(that.positions);
+			let area = areaCenter.area;
+			let center = areaCenter.center;
+			let text = that.formateArea(area, that.unit);
 			that.floatLabel.label.text = "面积：" + text;
 			that.floatLabel.area = area;
 			if (center) that.floatLabel.position.setValue(center);
@@ -271,8 +272,8 @@ class MeasureSpaceArea extends BaseMeasure {
 	}
 
 	createPolyline() {
-		var that = this;
-		var polyline = this.viewer.entities.add({
+		let that = this;
+		let polyline = this.viewer.entities.add({
 			polyline: {
 				positions: new Cesium.CallbackProperty(function () {
 					let linePositions = that.positions.concat([that.positions[0]]);
@@ -286,8 +287,8 @@ class MeasureSpaceArea extends BaseMeasure {
 		return polyline;
 	}
 	createPolygon() {
-		var that = this;
-		var polygon = this.viewer.entities.add({
+		let that = this;
+		let polygon = this.viewer.entities.add({
 			polygon: new Cesium.PolygonGraphics({
 				hierarchy: new Cesium.CallbackProperty(function () {
 					return new Cesium.PolygonHierarchy(that.positions);
@@ -300,7 +301,7 @@ class MeasureSpaceArea extends BaseMeasure {
 	}
 	setUnit(unit) {
 		this.unit = unit;
-		var text = this.formateArea(this.floatLabel.area, unit);
+		let text = this.formateArea(this.floatLabel.area, unit);
 		this.floatLabel.label.text = "面积：" + text;
 	}
 }
