@@ -57,16 +57,7 @@ export default {
     return {
       height: 0, // 压平高度
       tilesetName: "", // 点选模型名称
-      modelFlatList: [
-        /*  {
-           id: 1,
-           flatName: "测试压平",
-         },
-         {
-           id: 2,
-           flatName: "测试压平1",
-         }, */
-      ],
+      modelFlatList: [],
     };
   },
 
@@ -83,18 +74,30 @@ export default {
           flatName: this.tilesetName + randomid,
           id: randomid
         })
-        const positions = entObj.getPositions();
-        debugger
-        
-        if(flat){
+
+        let positions = [];
+        if (entObj.type == "rectangle") {
+          const lnglats = entObj.getPositions(true);
+          const p1 = lnglats[0];
+          const p2 = lnglats[1];
+          positions = [
+            Cesium.Cartesian3.fromDegrees(p1[0], p1[1]),
+            Cesium.Cartesian3.fromDegrees(p1[0], p2[1]),
+            Cesium.Cartesian3.fromDegrees(p2[0], p2[1]),
+            Cesium.Cartesian3.fromDegrees(p2[0], p1[1])
+          ]
+        } else {
+          positions = entObj.getPositions();
+        }
+        if (flat) {
           flat.addRegion(positions)
         }
-        flatDrawTool.remove(entObj);        
+        flatDrawTool.remove(entObj);
       })
     }
 
     if (!flat) {
-      flat = new Cesium.TilesetFlat(tileset,{
+      flat = new Cesium.TilesetFlat(tileset, {
         flatHeight: -30
       });
     }
