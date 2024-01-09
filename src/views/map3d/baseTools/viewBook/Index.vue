@@ -20,8 +20,8 @@
 
 export default {
   name: "viewBook",
-
   props: {
+    title: "",
     position: {},
     size: {},
     iconfont: {
