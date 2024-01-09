@@ -9,9 +9,10 @@ import BasePlot from './basePlot';
  * @alias BasePlot.CreateBillboard
  */
 class CreateBillboard extends BasePlot {
-	constructor(viewer, style) {
-		super(viewer, style);
-
+	constructor(viewer, opt) {
+		super(viewer, opt);
+		this.opt = opt || {};
+		this.style = this.opt.style;
 		this.type = "billboard";
 		this.viewer = viewer;
 		let defaultStyle = {

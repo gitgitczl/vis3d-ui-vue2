@@ -10,8 +10,9 @@ import util from "../util";
  * @alias BasePlot.CreatePoint
  */
 class CreatePoint extends BasePlot {
-	constructor(viewer, style) {
-		super(viewer, style);
+	constructor(viewer, opt) {
+		super(viewer, opt);
+		this.opt = opt || {};
 		this.type = "point";
 		this.viewer = viewer;
 		let defaultStyle = {

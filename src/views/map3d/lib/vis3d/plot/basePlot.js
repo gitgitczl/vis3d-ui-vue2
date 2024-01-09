@@ -11,13 +11,13 @@ class BasePlot {
      * @param {Cesium.Viewer} viewer 地图viewer对象 
      * @param {Object} style 样式属性 
      */
-    constructor(viewer, style) {
+    constructor(viewer, opt) {
         this.viewer = viewer;
-
+        this.opt = opt || {};
         /**
          * @property {Object} style 样式
          */
-        this.style = style || {};
+        this.style = this.opt.style || {};
 
         /**
          * @property {String | Number} objId 唯一id
@@ -64,7 +64,7 @@ class BasePlot {
         this.properties = {};
 
         // 缩放分辨率比例
-        this.clientScale = 1;
+        this.scale = this.opt.scale || [1, 1];
     }
 
     /**
@@ -73,7 +73,9 @@ class BasePlot {
      * @returns {Cesium.Cartesian3} 世界坐标
      */
     getCatesian3FromPX(px) {
-        px = this.transpx(px); // 此处单独解决了地图采点的偏移  prompt的偏移暂未处理
+        if (!px) return;
+        px.x = px.x / this.scale[0];
+        px.y = px.y / this.scale[1];
         let picks = this.viewer.scene.drillPick(px);
         this.viewer.scene.render();
         let cartesian;
@@ -94,21 +96,6 @@ class BasePlot {
         return cartesian;
     }
 
-    /**
-     *  此方法用于 地图界面缩放问题（transform:translate(2)）
-     * @param {Number} scale 缩放比例 
-     */
-    setClientScale(scale) {
-        scale = scale || 1;
-        this.clientScale = scale;
-    }
-
-    transpx(px) {
-        return {
-            x: px.x / (this.clientScale || 1),
-            y: px.y / (this.clientScale || 1)
-        }
-    }
 
     /**
      * 
@@ -370,7 +357,7 @@ class BasePlot {
         this.properties.attr = attr || {};
     }
 
-    getAttr(){
+    getAttr() {
         return this.properties.attr;
     }
 

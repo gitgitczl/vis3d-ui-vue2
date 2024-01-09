@@ -9,8 +9,9 @@ import BasePlot from './basePlot';
  * @alias BasePlot.CreateCircle
  */
 class CreateCircle extends BasePlot {
-  constructor(viewer, style) {
-    super(viewer, style);
+  constructor(viewer, opt) {
+    super(viewer, opt);
+    this.opt = opt || {};
     this.type = "circle";
     this.objId = Number(
       new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)

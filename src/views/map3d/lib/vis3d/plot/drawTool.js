@@ -744,41 +744,41 @@ class DrawTool {
     let name = "";
     opt = opt || {};
     if (opt.type == "polyline") {
-      entityObj = new CreatePolyline(this.viewer, opt.style);
+      entityObj = new CreatePolyline(this.viewer, opt);
       name = "折线_";
     }
 
     if (opt.type == "polygon") {
-      entityObj = new CreatePolygon(this.viewer, opt.style);
+      entityObj = new CreatePolygon(this.viewer, opt);
       name = "面_";
     }
 
     if (opt.type == "billboard") {
-      entityObj = new CreateBillboard(this.viewer, opt.style);
+      entityObj = new CreateBillboard(this.viewer, opt);
       name = "图标_";
     }
 
     if (opt.type == "circle") {
-      entityObj = new CreateCircle(this.viewer, opt.style);
+      entityObj = new CreateCircle(this.viewer, opt);
       name = "圆_";
     }
 
     if (opt.type == "rectangle") {
-      entityObj = new CreateRectangle(this.viewer, opt.style);
+      entityObj = new CreateRectangle(this.viewer, opt);
       name = "矩形_";
     }
 
     if (opt.type == "gltfModel") {
-      entityObj = new CreateGltfModel(this.viewer, opt.style);
+      entityObj = new CreateGltfModel(this.viewer, opt);
       name = "模型_";
     }
 
     if (opt.type == "point") {
-      entityObj = new CreatePoint(this.viewer, opt.style);
+      entityObj = new CreatePoint(this.viewer, opt);
       name = "点_";
     }
     if (opt.type == "label") {
-      entityObj = new CreateLabel(this.viewer, opt.style);
+      entityObj = new CreateLabel(this.viewer, opt);
       name = "文字_";
     }
 
@@ -794,7 +794,7 @@ class DrawTool {
         console.log("缺少军事标绘类型");
         return;
       }
-      entityObj = new CreateArrow(this.viewer, opt.arrowType, opt.style);
+      entityObj = new CreateArrow(this.viewer, opt);
     }
 
     if (entityObj) entityObj.name = name + new Date().getTime();

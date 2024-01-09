@@ -9,9 +9,10 @@ import BasePlot from './basePlot'
  * @alias BasePlot.CreateArrow
  */
 class CreateArrow extends BasePlot {
-	constructor(viewer, situationType, style) {
-		super(viewer, style);
-
+	constructor(viewer, opt) {
+		super(viewer, opt);
+		this.opt = opt || {};
+		let { situationType, style } = this.opt || {};
 		/**
 		 * @property {String} type 标绘类型
 		 */
@@ -91,18 +92,18 @@ class CreateArrow extends BasePlot {
 		this.handler.setInputAction(function (evt) { //移动时绘制面
 
 			if (that.positions.length < 1) {
-				if(that.prompt) that.prompt.update(evt.endPosition, "单击开始绘制");
+				if (that.prompt) that.prompt.update(evt.endPosition, "单击开始绘制");
 				that.state = "startCreate";
 				return;
 			}
 			if (that.positions.length == that.maxPointNum) {
-				if(that.prompt) that.prompt.update(evt.endPosition, "双击结束");
+				if (that.prompt) that.prompt.update(evt.endPosition, "双击结束");
 			} else if (that.positions.length > that.maxPointNum) {
 				that.endCreate();
 				if (callback) callback(that.entity);
 				return;
 			} else {
-				if(that.prompt) that.prompt.update(evt.endPosition, "单击新增，不少于" + that.minPointNum + "个点</br>" + "双击结束");
+				if (that.prompt) that.prompt.update(evt.endPosition, "单击新增，不少于" + that.minPointNum + "个点</br>" + "双击结束");
 			}
 			that.state = "creating"
 			let cartesian = that.getCatesian3FromPX(evt.endPosition, that.viewer);

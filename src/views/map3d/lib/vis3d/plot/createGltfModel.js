@@ -10,8 +10,9 @@ import util from '../util';
  * @alias BasePlot.CreateGltfModel
  */
 class CreateGltfModel extends BasePlot {
-  constructor(viewer, style) {
-    super(viewer, style);
+  constructor(viewer, opt) {
+    super(viewer, opt);
+    this.opt = opt || {};
     this.type = "gltfModel";
     style = style || {};
     this.viewer = viewer;

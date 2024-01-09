@@ -11,10 +11,14 @@ class LnglatTool {
      */
     constructor(viewer, opt) {
         this.viewer = viewer;
+        this.opt = opt || {};
         this.moveHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
         this.initHtml();
         this.bindMouseMoveHandler();
         this.ellipsoid = this.viewer.scene.globe.ellipsoid;
+
+        this.scale = this.opt.scale || [1,1] ;
+
     }
 
     bindMouseMoveHandler() {
@@ -80,8 +84,12 @@ class LnglatTool {
         mapDom.appendChild(ele);
     }
     getCatesian3FromPX(px) {
+        if(!px) return ;
+        px.x = px.x / this.scale[0];
+        px.y = px.y / this.scale[1];
         let pick = this.viewer.scene.pick(px);
-        let cartesian ;
+        let cartesian = undefined;
+
         if (pick && pick.primitive instanceof Cesium.Cesium3DTileset) {
             cartesian = this.viewer.scene.pickPosition(px);
         } else {

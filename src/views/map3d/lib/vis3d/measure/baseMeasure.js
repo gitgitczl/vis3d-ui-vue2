@@ -47,6 +47,8 @@ class BaseMeasure {
                 y: 20
             }
         }
+
+        this.scale = this.opt.scale || [1,1];
     }
 
     endCreate() { }
@@ -167,6 +169,9 @@ class BaseMeasure {
 
     //兼容模型和地形上坐标拾取
     getCatesian3FromPX(px, viewer) {
+        if(!px) return undefined;
+        px.x = px.x / this.scale[0];
+        px.y = px.y / this.scale[1];
         var picks = viewer.scene.drillPick(px);
         viewer.scene.render();
         var cartesian;

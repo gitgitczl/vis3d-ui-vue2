@@ -3,8 +3,9 @@ import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot'
 import util from '../util';
 class CreateRectgon extends BasePlot {
-	constructor(viewer, style) {
-		super(viewer, style);
+	constructor(viewer, opt) {
+		super(viewer, opt);
+		this.opt = opt || {};
 		this.type = "polygon";
 		this.viewer = viewer;
 		this.entity = null;

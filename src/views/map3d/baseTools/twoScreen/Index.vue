@@ -108,7 +108,12 @@ export default {
     let oldViewerContainer = window.viewer.container;
     oldViewerContainer.style.width = "100%";
     oldViewerContainer.style.left = "0";
-    debugger
+
+    if(screenLayerTool){
+      screenLayerTool.destroy();
+      screenLayerTool = undefined;
+    }
+
     if (window.mapViewer2) {
       window.mapViewer2.destroy();
       delete window.mapViewer2;

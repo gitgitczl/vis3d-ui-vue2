@@ -1,6 +1,6 @@
 // 根据坡度 构建坡度面
 var MeasureSlopePolygon = function (viewer, opt) {
-	if(!opt) opt = {};
+	if (!opt) opt = {};
 	this.style = opt.style || {};
 	this.objId = Number(
 		new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)
@@ -13,11 +13,12 @@ var MeasureSlopePolygon = function (viewer, opt) {
 	this.movePush = false;
 	this.prompt;
 	this.mtx_inverse = null;
+	this.scale = this.opt.scale || [1,1];
 };
 MeasureSlopePolygon.prototype = {
 	//开始测量
 	start: function () {
-		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer,this.promptStyle);
+		if (!this.prompt && this.promptStyle.show) this.prompt = new Prompt(this.viewer, this.promptStyle);
 		var that = this;
 		this.handler.setInputAction(function (evt) {
 			var cartesian = that.getCatesian3FromPX(evt.position, that.viewer);
@@ -109,7 +110,7 @@ MeasureSlopePolygon.prototype = {
 		}, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 	},
 	//清除测量结果
-	destroy () {
+	destroy() {
 		if (this.polyline) {
 			this.viewer.entities.remove(this.polyline);
 			this.polyline = null;
@@ -233,15 +234,15 @@ MeasureSlopePolygon.prototype = {
 
 		for (var step_i = minLng; step_i <= maxLng; step_i += random) {
 			var nowMinLng = step_i;
-			var nowMaxLng = step_i+random;
+			var nowMaxLng = step_i + random;
 			for (var step_j = minLat; step_j <= maxLat; step_j += random) {
 				var nowMinLat = step_j;
 				var nowMaxLat = step_j + random;
 			}
 		}
 	},
-	isInPolygon:function(){
-		
+	isInPolygon: function () {
+
 	},
 	lerpPositions1: function (positions) {
 		if (!positions || positions.length < 1) return;
@@ -312,24 +313,26 @@ MeasureSlopePolygon.prototype = {
 		return color;
 
 	},
-  getCatesian3FromPX: function (px, viewer) {
-    var picks = viewer.scene.drillPick(px);
-      viewer.scene.render();
-    var cartesian;
-    var isOn3dtiles = false;
-    for (var i = 0; i < picks.length; i++) {
-      if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
-        isOn3dtiles = true;
-        break;
-      }
-    }
-    if (isOn3dtiles) {
-      cartesian = viewer.scene.pickPosition(px);
-    } else {
-      var ray = viewer.camera.getPickRay(px);
-      if (!ray) return null;
-      cartesian = viewer.scene.globe.pick(ray, viewer.scene);
-    }
-    return cartesian;
-  }
+	getCatesian3FromPX: function (px, viewer) {
+		px.x = px.x / this.scale[0];
+        px.y = px.y / this.scale[1];
+		var picks = viewer.scene.drillPick(px);
+		viewer.scene.render();
+		var cartesian;
+		var isOn3dtiles = false;
+		for (var i = 0; i < picks.length; i++) {
+			if ((picks[i] && picks[i].primitive) && picks[i].primitive instanceof Cesium.Cesium3DTileset) { //模型上拾取
+				isOn3dtiles = true;
+				break;
+			}
+		}
+		if (isOn3dtiles) {
+			cartesian = viewer.scene.pickPosition(px);
+		} else {
+			var ray = viewer.camera.getPickRay(px);
+			if (!ray) return null;
+			cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+		}
+		return cartesian;
+	}
 };

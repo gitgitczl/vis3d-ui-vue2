@@ -9,11 +9,11 @@ import util from "../util";
  * @alias BasePlot.CreateLabel
  */
 class CreateLabel extends BasePlot {
-  constructor(viewer, style) {
-    super(viewer, style);
+  constructor(viewer, opt) {
+    super(viewer, opt);
+    this.opt = opt || {};
     this.type = "label";
     this.viewer = viewer;
-    this.style = style;
     /**
      * @property {Cesium.Cartesian3} 坐标
      */

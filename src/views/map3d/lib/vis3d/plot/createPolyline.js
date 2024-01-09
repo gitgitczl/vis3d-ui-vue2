@@ -11,9 +11,9 @@ import animate from "../material/animate"
  * @alias BasePlot.CreatePolyline
  */
 class CreatePolyline extends BasePlot {
-    constructor(viewer, style) {
-        super(viewer, style);
-        style = style || {};
+    constructor(viewer, opt) {
+        super(viewer, opt);
+        this.opt = opt || {};
         this.movePush = false;
         this.type = "polyline";
         /**

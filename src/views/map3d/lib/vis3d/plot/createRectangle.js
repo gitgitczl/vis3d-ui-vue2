@@ -10,8 +10,9 @@ import util from '../util'
  * @alias BasePlot.BasePlot
  */
 class CreateRectangle extends BasePlot {
-  constructor(viewer, style) {
-    super(viewer, style);
+  constructor(viewer, opt) {
+    super(viewer, opt);
+    this.opt = opt || {};
     this.type = "rectangle";
     this.viewer = viewer;
     this.style = style;
