@@ -1,4 +1,3 @@
-import $ from "jquery";
 import "./rightTool.css"
 class RightTool {
     constructor(viewer, opt) {
@@ -31,6 +30,10 @@ class RightTool {
         })
         this.mapContainer.appendChild(tooEle);
 
+        const toolContainer = document.getElementById(`vis3d-right-tool-${this.randomId}`);
+        this.toolMenu = toolContainer.querySelector("ul");
+
+
         // 点击其它地方 关闭面板
         document.addEventListener("click", () => {
             const tool = document.getElementsByClassName('vis3d-right-tool');
@@ -53,6 +56,7 @@ class RightTool {
         this.bindHandler();
 
         this._clickPX = null;
+        this.scale = this.opt.scale || [1, 1];
     }
 
     createElement(eleType, opt) {
@@ -72,13 +76,10 @@ class RightTool {
             class: `right-tool-lnglat`,
             html: `<span style="font-weight:bold;">当前坐标</span>`
         })
-        const toolContainer = document.getElementById(`vis3d-right-tool-${this.randomId}`);
-        const ul = toolContainer.querySelector("ul");
-        ul.appendChild(dom);
+        this.toolMenu.appendChild(dom);
 
         let rightToolLnglat = document.getElementById(`right-tool-lnglat-${this.randomId}`);
-        rightToolLnglat.addEventListener('click',evt => {
-            rightToolLnglat.style.display = 'none';
+        rightToolLnglat.addEventListener('click', evt => {
             if (!that._clickPX) return;
             const picks = that.viewer.scene.drillPick(that._clickPX);
             that.viewer.scene.render();
@@ -123,21 +124,23 @@ class RightTool {
     }
     createCameraViewTool() {
         let that = this;
-        const html = `
-          <li class="right-tool-view" id="right-tool-view-${this.randomId}">
-                <span>相机视角</span>
-          </li>
-      `;
-        $(`#vis3d-right-tool-${this.randomId} ul`).append(html);
-        $(`#right-tool-view-${this.randomId}`).on("click", function () {
-            $(`#vis3d-right-tool-${that.randomId}`).hide();
 
-            var camera = that.viewer.camera;
-            var position = camera.position;
-            var heading = camera.heading;
-            var pitch = camera.pitch;
-            var roll = camera.roll;
-            var lnglat = Cesium.Cartographic.fromCartesian(position);
+        const dom = this.createElement('li', {
+            class: `right-tool-view`,
+            id: `right-tool-view-${this.randomId}`,
+            html: `<span>相机视角</span>`
+        })
+        this.toolMenu.appendChild(dom);
+
+        const rightToolView = document.getElementById(`right-tool-view-${this.randomId}`);
+        rightToolView.addEventListener('click', function () {
+
+            let camera = that.viewer.camera;
+            let position = camera.position;
+            let heading = camera.heading;
+            let pitch = camera.pitch;
+            let roll = camera.roll;
+            let lnglat = Cesium.Cartographic.fromCartesian(position);
             let str = `
                 <div>{</div>
                 <ul style="margin-left:10px;">
@@ -176,42 +179,52 @@ class RightTool {
             `;
             const title = "当前相机视角";
             that.crerateResultHtml(title, str);
-        });
+        })
+
     }
     crateDepthTool() {
         let that = this;
         const oldDepth = this.viewer.scene.globe.depthTestAgainstTerrain;
         let depthVal = !oldDepth ? "深度检测（开）" : "深度检测（关）";
-        const html = `
-          <li>
-            <span class="right-tool-depth" id="right-tool-depth-${this.randomId}">
-              ${depthVal}
-            </span>
-          </li>
-      `;
-        $(`#vis3d-right-tool-${this.randomId} ul`).append(html);
-        $(`#right-tool-depth-${this.randomId}`).on("click", function () {
-            $(`#vis3d-right-tool-${that.randomId}`).hide();
-            const text = $(this).text();
+
+        const dom = this.createElement('li', {
+            class: `right-tool-view`,
+            id: `right-tool-view-${this.randomId}`,
+            html: ` <span class="right-tool-depth" id="right-tool-depth-${this.randomId}">
+                        ${depthVal}
+                    </span>`
+        })
+        this.toolMenu.appendChild(dom);
+
+        const depthDom = document.getElementById(`right-tool-depth-${this.randomId}`);
+        depthDom.addEventListener('click', function (evt, res) {
+            const tool = document.getElementsByClassName('vis3d-right-tool');
+            if (tool[0]) tool[0].style.display = "none";
+
+            const text = depthDom.innerText;
             if (text.indexOf("开") != -1) { // 表示当前是开启状态
-                $(this).text("深度检测（关）");
+                depthDom.innerText = "深度检测（关）";
                 that.viewer.scene.globe.depthTestAgainstTerrain = true;
             } else {
-                $(this).text("深度检测（开）");
+                depthDom.innerText = "深度检测（开）";
                 that.viewer.scene.globe.depthTestAgainstTerrain = false;
             }
-        });
+        })
+
     }
 
     refreshDepthVal() {
         const oldDepth = this.viewer.scene.globe.depthTestAgainstTerrain;
         let depthVal = !oldDepth ? "深度检测（开）" : "深度检测（关）";
-        $(`#right-tool-depth-${this.randomId}`).html(depthVal);
+        document.getElementById(`right-tool-depth-${this.randomId}`).innerHTML = depthVal;
     }
 
     bindHandler() {
         let that = this;
         this.rightClickHandler.setInputAction(function (evt) {
+            evt.position.x = evt.position.x / that.scale[0];
+            evt.position.y = evt.position.y / that.scale[1];
+
             const pick = that.viewer.scene.pick(evt.position);
             let ent;
             if (pick && pick.primitive && !(pick.primitive instanceof Cesium.Cesium3DTileset)) { // 拾取图元
@@ -223,17 +236,13 @@ class RightTool {
             if (ent) return; // 控制不能在已绘制的地方进行右键弹出面板
 
             that.refreshDepthVal();
-            const px = evt.position;
             that._clickPX = evt.position;
-
             // 获取其相对于屏幕左上角的位置
             const bcr = that.mapContainer.getBoundingClientRect()
-
-            $(`#vis3d-right-tool-${that.randomId}`).css({
-                left: Number(px.x + 10) + bcr.left + "px",
-                top: Number(px.y + 10) + bcr.top + "px",
-                display: "block"
-            });
+            const dom = document.getElementById(`vis3d-right-tool-${that.randomId}`);
+            dom.style.left = Number(evt.position.x + 10) + bcr.left + "px";
+            dom.style.top = Number(evt.position.y + 10) + bcr.top + "px";
+            dom.style.display = "block";
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
     }
     destroy() {
@@ -241,60 +250,57 @@ class RightTool {
             this.rightClickHandler.destroy();
             this.rightClickHandler = null;
         }
-        $(`vis3d-right-tool-${this.randomId}`).remove();
+        const dom = document.getElementById(`vis3d-right-tool-${this.randomId}`);
+        dom.parentNode.removeChild(dom);
+
+        const dom2 = document.getElementById(`vis3d-right-content-${this.randomId}`);
+        dom2.parentNode.removeChild(dom2);
+
     }
 
     // 构建结果面板
     crerateResultHtml(title, result) {
-        const that = this;
-        let rightContent = document.getElementById(`vis3d-right-content-${this.randomId}`);
-        rightContent.parentNode.removeChild(rightContent);
+        // 关闭菜单栏
+        const tool = document.getElementsByClassName('vis3d-right-tool');
+        if (tool[0]) tool[0].style.display = "none";
 
-        this.createShadow();
-        const html = `
-            <div class="vis3d-right-content" class="vis3d-right-content-${this.randomId}">
-                <span class="right-content-close" id="right-content-close-${this.randomId}" alt="" title="点击关闭">x</span>
-                <div class="right-content-result scrollbar">
+        const resele = this.createElement('div', {
+            class: `vis3d-right-content`,
+            id: `vis3d-right-content-${this.randomId}`,
+            html: `
+            <span class="right-content-close" id="right-content-close-${this.randomId}" alt="" title="点击关闭">x</span>
+            <div class="right-content-result scrollbar">
                 <div class="content-result-title" style="font-weight:bold;">${title}：</div>
                 <div class="content-result-line"></div>
                 <div class="content-result-info">${result}</div>
-                </div>
             </div>
-        `;
-        $("body").append(html);
-        // 点击关闭
-        $(`#right-content-close-${this.randomId}`).off("click").on("click", function () {
-            $(this).parent().remove();
-            $(`#vis3d-right-tool-shadow-${that.randomId}`).remove();
+            `
         })
+
+        const body = document.getElementsByTagName('body')[0];
+        body.appendChild(resele);
+
+        let rightContentClose = document.getElementById(`right-content-close-${this.randomId}`);
+        let rightContent = document.getElementById(`vis3d-right-content-${this.randomId}`);
+        rightContentClose.addEventListener('click', function () {
+            if (rightContent) rightContent.parentNode.removeChild(rightContent);
+        })
+
     }
 
-    //  创建遮罩
-    createShadow() {
-        let rightToolShadow = document.getElementById(`vis3d-right-tool-shadow-${this.randomId}`);
-        rightToolShadow.parentNode.removeChild(rightToolShadow);
-
-        const ele = this.createElement({
-            id : `vis3d-right-tool-shadow-${this.randomId}`,
-            class : `vis3d-right-tool-shadow`
-        })
-        document.getElementsByTagName('body').appendChild(ele);
-    }
-
-    // 自主创建
-    append(opt) {
+    // 扩展右键菜单
+    extend(opt) {
         let id = opt.id || new Date().getTime();
-        let html = `
-            <li id="right-tool-${id}">
-                ${opt.content}
-            </li>
-        `;
-        $(`#vis3d-right-tool-${this.randomId} ul`).append(html);
-        $(`#right-tool-${id}`).on("click", function () {
-            if (opt.click) opt.click($(this));
-        });
-
-
+        const customId = opt.id || `right-tool-extend-${id}`
+        const dom = this.createElement('li',{
+            id : customId,
+            class : opt.class || 'right-tool-extend',
+            html : opt.content
+        })
+        this.toolMenu.appendChild(dom);
+        document.getElementById(customId).addEventListener('click',function(){
+            if (opt.click) opt.click();
+        })
     }
 }
 
