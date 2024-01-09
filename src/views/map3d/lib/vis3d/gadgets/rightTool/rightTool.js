@@ -16,29 +16,29 @@ class RightTool {
             return;
         }
         this.viewer = viewer;
-        this.mapContainer = this.viewer.container;
+        const id = this.viewer.container.id;
+        this.mapContainer = document.getElementById(id);
 
 
         this.rightClickHandler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
 
         this.randomId = new Date().getTime() + "" + Math.ceil(Math.random() * 10000);
-        let toolHtml = `
-            <div class="vis3d-right-tool" id="vis3d-right-tool-${this.randomId}">
-                <ul>
-                </ul>
-            </div>
-        `;
-        $(this.mapContainer).append(toolHtml);
 
+        let tooEle = this.createElement('div', {
+            class: 'vis3d-right-tool',
+            id: `vis3d-right-tool-${this.randomId}`,
+            html: `<ul></ul>`
+        })
+        this.mapContainer.appendChild(tooEle);
 
         // 点击其它地方 关闭面板
-        $(document).off("click").on("click", function () {
-            $(".vis3d-right-tool").hide();
-        });
-
-        $(".vis3d-right-tool").click(function (event) {
+        document.addEventListener("click", () => {
+            const tool = document.getElementsByClassName('vis3d-right-tool');
+            if (tool[0]) tool[0].style.display = "none";
+        })
+        document.getElementById(`vis3d-right-tool-${this.randomId}`).addEventListener("click", (event) => {
             event.stopPropagation();    //  阻止事件冒泡
-        });
+        })
 
         if (this.opt.lnglat) {
             this.crateLnglatTool();
@@ -55,16 +55,30 @@ class RightTool {
         this._clickPX = null;
     }
 
+    createElement(eleType, opt) {
+        opt = opt || {};
+        let ele = document.createElement(eleType);
+        if (opt.class) ele.className = opt.class;
+        if (opt.id) ele.setAttribute("id", opt.id);
+        ele.innerHTML = opt.html;
+        return ele;
+    }
+
     crateLnglatTool() {
         let that = this;
-        const html = `
-          <li class="right-tool-lnglat" id="right-tool-lnglat-${this.randomId}">
-            <span style="font-weight:bold;">当前坐标</span>
-          </li>
-        `;
-        $(`#vis3d-right-tool-${this.randomId} ul`).append(html);
-        $(`#right-tool-lnglat-${this.randomId}`).on("click", function () {
-            $(`#vis3d-right-tool-${that.randomId}`).hide();
+
+        const dom = this.createElement('li', {
+            id: `right-tool-lnglat-${this.randomId}`,
+            class: `right-tool-lnglat`,
+            html: `<span style="font-weight:bold;">当前坐标</span>`
+        })
+        const toolContainer = document.getElementById(`vis3d-right-tool-${this.randomId}`);
+        const ul = toolContainer.querySelector("ul");
+        ul.appendChild(dom);
+
+        let rightToolLnglat = document.getElementById(`right-tool-lnglat-${this.randomId}`);
+        rightToolLnglat.addEventListener('click',evt => {
+            rightToolLnglat.style.display = 'none';
             if (!that._clickPX) return;
             const picks = that.viewer.scene.drillPick(that._clickPX);
             that.viewer.scene.render();
@@ -233,7 +247,9 @@ class RightTool {
     // 构建结果面板
     crerateResultHtml(title, result) {
         const that = this;
-        $(`#vis3d-right-content-${this.randomId}`).remove();
+        let rightContent = document.getElementById(`vis3d-right-content-${this.randomId}`);
+        rightContent.parentNode.removeChild(rightContent);
+
         this.createShadow();
         const html = `
             <div class="vis3d-right-content" class="vis3d-right-content-${this.randomId}">
@@ -255,12 +271,14 @@ class RightTool {
 
     //  创建遮罩
     createShadow() {
-        $(`#vis3d-right-tool-shadow-${this.randomId}`).remove();
-        const html = `
-            <div class="vis3d-right-tool-shadow" id="vis3d-right-tool-shadow-${this.randomId}"></div>
-        `;
-        $("body").append(html);
-        $(`#vis3d-right-tool-shadow-${this.randomId}`).show();
+        let rightToolShadow = document.getElementById(`vis3d-right-tool-shadow-${this.randomId}`);
+        rightToolShadow.parentNode.removeChild(rightToolShadow);
+
+        const ele = this.createElement({
+            id : `vis3d-right-tool-shadow-${this.randomId}`,
+            class : `vis3d-right-tool-shadow`
+        })
+        document.getElementsByTagName('body').appendChild(ele);
     }
 
     // 自主创建

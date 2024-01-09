@@ -16,9 +16,7 @@ class LnglatTool {
         this.initHtml();
         this.bindMouseMoveHandler();
         this.ellipsoid = this.viewer.scene.globe.ellipsoid;
-
-        this.scale = this.opt.scale || [1,1] ;
-
+        this.scale = this.opt.scale || [1, 1];
     }
 
     bindMouseMoveHandler() {
@@ -79,7 +77,7 @@ class LnglatTool {
         mapDom.appendChild(ele);
     }
     getCatesian3FromPX(px) {
-        if(!px) return ;
+        if (!px) return;
         px.x = px.x / this.scale[0];
         px.y = px.y / this.scale[1];
         let pick = this.viewer.scene.pick(px);
