@@ -33,15 +33,15 @@ class GaodeRoute {
         this._key = key;
     }
 
-     /**
-     * 驾车路线规划
-     * @param {Object} options  参数，可参考高德官网配置
-     * @param {Array} options.origin  起点经纬度坐标
-     * @param {Array} options.destination  终点经纬度坐标
-     * @param {Array} options.avoidpolygons  避让区域坐标
-     * @param {Function} success 成功后的回调函数 
-     */
-    queryDriving(options, success) {
+    /**
+    * 驾车路线规划
+    * @param {Object} options  参数，可参考高德官网配置
+    * @param {Array} options.origin  起点经纬度坐标
+    * @param {Array} options.destination  终点经纬度坐标
+    * @param {Array} options.avoidpolygons  避让区域坐标
+    * @param {Function} success 成功后的回调函数 
+    */
+    queryDriving(options, success, error) {
         options = options || {};
         if (!options.origin) {
             alert("缺少起点坐标！");
@@ -62,7 +62,7 @@ class GaodeRoute {
         gcj_destination = gcj_destination[0] + "," + gcj_destination[1];
         delete options.destination;
 
-        let avoidpolygons = undefined; // 避让区域
+        let avoidpolygons = ''; // 避让区域
         if (options.avoidpolygons) {
             for (let i = 0; i < options.avoidpolygons.length; i++) {
                 const avoidpolygon = options.avoidpolygons[i];
@@ -71,22 +71,30 @@ class GaodeRoute {
                 for (let j = 0; j < avoidpolygon.length; j++) {
                     let lnglat = avoidpolygon[j];
                     lnglat = this.wgs2gcj(lnglat);
-                    polygonstr += lnglat[0] + ',' + lnglat[1] + ';'
+                    polygonstr += lnglat[0] + ',' + lnglat[1] + ','
                     if (j == 0) firstLnglat = lnglat[0] + ',' + lnglat[1]
                 }
                 polygonstr = polygonstr + firstLnglat;
-                avoidpolygons += polygonstr + '|';
+
+                if (i == options.avoidpolygons.length - 1) {
+                    avoidpolygons += polygonstr;
+                } else {
+                    avoidpolygons += polygonstr + '|';
+                }
+
+
             }
         }
         delete options.avoidpolygons;
 
-        let url = "https://restapi.amap.com/v3/direction/driving";
+        let url = "https://restapi.amap.com/v5/direction/driving";
         let params = {
             key: this._key,
             origin: gcj_origin,
             destination: gcj_destination,
             strategy: 0, // 默认距离优先
-            avoidpolygons: avoidpolygons
+            avoidpolygons: avoidpolygons,// 避让区不可超过81平方公里 避让去顶点不可超过16个
+            show_fields: "polyline"
         }
         params = Object.assign(params, options || {});
         let that = this;
@@ -96,6 +104,7 @@ class GaodeRoute {
         }).then((res) => {
             if (res.status != 200 || res.data.infocode != '10000') {
                 console.log("查询失败！");
+                if (error) error(res.data);
                 return;
             }
             const allroute = that.transformData(origin, destination, res.data.route);
@@ -103,7 +112,7 @@ class GaodeRoute {
         })
     }
 
-    queryUndriving(url, options, success) {
+    queryUndriving(url, options, success, error) {
         options = options || {};
         if (!options.origin) {
             alert("缺少起点坐标！");
@@ -127,15 +136,17 @@ class GaodeRoute {
         let params = {
             key: this._key,
             origin: gcj_origin,
-            destination: gcj_destination
+            destination: gcj_destination,
+            show_fields: "polyline"
         }
         params = Object.assign(params, options || {});
         let that = this;
         axios.get(url, {
             params: params
         }).then((res) => {
-            if (res.status != 200 ) {
+            if (res.status != 200) {
                 console.log("查询失败！");
+                if (error) error(res.data);
                 return;
             }
             const allroute = that.transformData(origin, destination, res.data.data || res.data.route);
@@ -151,17 +162,17 @@ class GaodeRoute {
      * @param {Object} params 搜索参数
      * @param {Function} success 成功后的回调函数
      */
-    query(type, params, success) {
+    query(type, params, success, error) {
         type = Number(type || 1);
         let url = '';
         if (type == 1) { // 驾车
-            this.queryDriving(params, success)
+            this.queryDriving(params, success, error)
         } else if (type == 2) { // 骑行
             url = 'https://restapi.amap.com/v4/direction/bicycling';
-            this.queryUndriving(url, params, success)
+            this.queryUndriving(url, params, success, error)
         } else if (type == 3) { // 步行
             url = 'https://restapi.amap.com/v3/direction/walking';
-            this.queryUndriving(url, params, success)
+            this.queryUndriving(url, params, success, error)
         } else {
             alert("路径查询类型有误");
             return;

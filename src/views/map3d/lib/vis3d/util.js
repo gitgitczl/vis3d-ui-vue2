@@ -63,7 +63,7 @@ util.lnglatsToCartesians = function (lnglats) {
     if (!lnglats || lnglats.length < 1) return;
     let arr = [];
     for (let i = 0; i < lnglats.length; i++) {
-        let c3 = Cesium.Cartesian3.fromDegrees(lnglats[i][0], lnglats[i][1], lnglats[i][2] || 0);
+        let c3 = Cesium.Cartesian3.fromDegrees(Number(lnglats[i][0]), Number(lnglats[i][1]), Number(lnglats[i][2] || 0));
         arr.push(c3);
     }
     return arr;

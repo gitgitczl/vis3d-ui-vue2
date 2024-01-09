@@ -1,11 +1,5 @@
 <template>
-  <Card
-    @close="close"
-    :title="title"
-    :size="size"
-    :position="position"
-    :iconfont="iconfont"
-  >
+  <Card @close="close" :title="title" :size="size" :position="position" :iconfont="iconfont">
     <ul class="pathPlan-change basic-text-input">
       <li>
         <label>起点：</label>
@@ -19,12 +13,8 @@
       </li>
       <li>
         <label>避让区：</label>
-        <el-input
-          v-model="avoid"
-          placeholder="请绘制避让区"
-          disabled
-        ></el-input>
-        <span class="basic-btn">图上绘制</span>
+        <el-input v-model="avoid" placeholder="请绘制避让区" disabled></el-input>
+        <span class="basic-btn" @click="drawAvoidArea">图上绘制</span>
       </li>
     </ul>
     <div class="path-compute">
@@ -32,24 +22,18 @@
       <span class="basic-btn basic-reset" @click="reset">取消</span>
     </div>
     <div class="reset-table pathPlan-table">
-      <el-table
-        ref="singleTable"
-        :data="pathPlanList"
-        :border="true"
-        style="width: 100%"
-        max-height="300"
-      >
+      <el-table ref="singleTable" :data="pathPlanList" :border="true" style="width: 100%" max-height="300">
         <el-table-column property="id" align="center" label="序号" width="50">
         </el-table-column>
 
         <el-table-column property="content" label="推荐线路">
           <template slot-scope="scope">
-            <div class="pathPlan-operate-box basic-checkbox">
+            <!-- <div class="pathPlan-operate-box basic-checkbox">
               <p>方案一</p>
               <i class="basic-btn" @click="startRoam()">开始导航</i>
               <i class="basic-btn">查看线路</i>
-              <!-- <el-checkbox v-model="scope.row.isChecked">备选项</el-checkbox> -->
-            </div>
+              <el-checkbox v-model="scope.row.isChecked">备选项</el-checkbox>
+            </div> -->
             <div class="pathPlan-detail">
               <span>{{ scope.row.content }}</span>
             </div>
@@ -61,13 +45,21 @@
 </template>
 <script>
 /* 路径规划 */
-
-let drawTool = null;
-let gaodeRoute = null;
-let startMarkerObj = null;
-let endMarkerObj = null;
+import startImg from "../../images/pathPlan/start.png"
+import endImg from "../../images/pathPlan/end.png"
+let routeDrawTool = undefined;
+let gaodeRoute = undefined;
+let startMarkerObj = undefined;
+let endMarkerObj = undefined;
+let avoidAreaObj = undefined;
 let routes = [];
-let colors = [];
+let colors = [
+  window.Cesium.Color.AQUA,
+  window.Cesium.Color.SPRINGGREEN,
+  window.Cesium.Color.YELLOW,
+  window.Cesium.Color.DODGERBLUE,
+];
+let avoidpolygons = []; // 避让区范围坐标
 export default {
   name: "pathPlan",
 
@@ -82,7 +74,7 @@ export default {
   },
 
   components: {
-    
+
   },
 
   data() {
@@ -95,17 +87,11 @@ export default {
   },
 
   mounted() {
-    colors = [
-      window.Cesium.Color.AQUA,
-      window.Cesium.Color.SPRINGGREEN,
-      window.Cesium.Color.YELLOW,
-      window.Cesium.Color.DODGERBLUE,
-    ];
-    if (!drawTool) {
-      drawTool = new this.vis3d.plot.Tool(window.viewer,{
-        canEdit : false
+    if (!routeDrawTool) {
+      routeDrawTool = new this.vis3d.plot.Tool(window.viewer, {
+        canEdit: false
       });
-      drawTool.on("endEdit", function (entObj, ent) {
+      routeDrawTool.on("endEdit", function (entObj, ent) {
         if (!ent) return;
         if (ent.type == "start") {
         }
@@ -115,15 +101,17 @@ export default {
         }
       });
     }
-    if (!gaodeRoute) gaodeRoute = new this.vis3d.gadgets.GaodeRoute({
-      keys : ["a73e387f642573295b498d7fd6b4c537"]
+    if (!gaodeRoute) gaodeRoute = new this.vis3d.query.GaodeRoute({
+      keys: ["a73e387f642573295b498d7fd6b4c537"]
     });
   },
-  
+
   destroyed() {
-    if (window.drawTool) {
-      window.drawTool.destroy();
-      window.drawTool = undefined;
+    this.clearRoutes();
+    this.pathPlanList = [];
+    if (window.routeDrawTool) {
+      window.routeDrawTool.destroy();
+      window.routeDrawTool = undefined;
     }
   },
 
@@ -135,13 +123,13 @@ export default {
     drawStrart() {
       if (startMarkerObj) {
         startMarkerObj.destroy();
-        startMarkerObj = null;
+        startMarkerObj = undefined;
       }
       let that = this;
-      drawTool.start({
+      routeDrawTool.start({
         type: "billboard",
         style: {
-          image: "./map3d/images/pathPlan/start.png",
+          image: startImg,
         },
         success: function (entObj, ent) {
           startMarkerObj = entObj;
@@ -150,21 +138,18 @@ export default {
           that.startPlot =
             Number(lnglat[0]).toFixed(6) + "," + Number(lnglat[1]).toFixed(6);
         },
-        error: function () {
-          that.$message.error("线路计算失败，请重试!");
-        },
       });
     },
     drawEnd() {
       if (endMarkerObj) {
         endMarkerObj.destroy();
-        endMarkerObj = null;
+        endMarkerObj = undefined;
       }
       let that = this;
-      drawTool.start({
+      routeDrawTool.start({
         type: "billboard",
         style: {
-          image: "./map3d/images/pathPlan/end.png",
+          image: endImg,
         },
         success: function (entObj, ent) {
           endMarkerObj = entObj;
@@ -175,9 +160,29 @@ export default {
         },
       });
     },
+    drawAvoidArea() {
+      if (avoidAreaObj) {
+        avoidAreaObj.destroy();
+        avoidAreaObj = undefined;
+      }
+      routeDrawTool.start({
+        type: "polygon",
+        style: {
+          heightReference: 1,
+          color: "#ffff00",
+          colorAlpha: .5,
+          outline: true,
+          outlineColor: "#ff0000"
+        },
+        success: function (entObj, ent) {
+          const lnglats = entObj.getPositions(true);
+          avoidpolygons.push(lnglats);
+        },
+      });
+    },
     startCompute() {
-      this.pathPlanList = [];
       this.clearRoutes();
+      this.pathPlanList = [];
       if (!this.startPlot || !this.endPlot) {
         this.$message.error("缺少点位数据！");
         return;
@@ -185,60 +190,57 @@ export default {
       let startPoint = this.startPlot.split(",");
       let endPoint = this.endPlot.split(",");
       let that = this;
-      gaodeRoute.query({
-        points: [startPoint, endPoint],
-        type: 3,
-        success: function (data) {
-          if (!data) return;
-          let { origin, destination, paths } = data;
-          paths.forEach(function (path, index) {
-            let pathInd = index % 4;
-            let color = colors[pathInd];
-            let { points, steps } = path;
-            let route = that.createPath(points, color);
-            if (route) {
-              route.color = color;
-              route.pathInd;
-              routes.push(route);
-            }
 
-            let content = "";
-            for (let i = 0; i < steps.length; i++) {
-              let fh = i == steps.length - 1 ? "。" : ",";
-              content += steps[i].instruction + fh;
-            }
-            that.pathPlanList.push({
-              id: index + 1,
-              content: content,
-            });
+      // 驾车路线规划
+      gaodeRoute.query(1, {
+        origin: startPoint,
+        destination: endPoint,
+        avoidpolygons: avoidpolygons
+      }, function (list) {
+        if (!list || list.length < 1) return;
+
+        for (let ind = 0; ind < list.length; ind++) {
+          const item = list[ind];
+          const positions = window.vis3d.util.lnglatsToCartesians(item.lnglats, viewer);
+          let route = that.createPath(positions, colors[ind]);
+          route.tooltip = `方案${ind + 1}`
+          if (route) {
+            route.color = colors[ind];
+            route.pathInd = ind;
+            routes.push(route);
+
+          }
+          let content = "";
+          const inslength = item.instructions.length;
+          for (let i = 0; i < inslength; i++) {
+            let fh = i == inslength - 1 ? "。" : ",";
+            content += item.instructions[i] + fh;
+          }
+          that.pathPlanList.push({
+            id: ind + 1,
+            content: content,
           });
-        },
-      });
+        }
+
+      }, function () {
+        that.$message({
+          message: '查询路线失败，请重试！',
+          type: 'warning'
+        })
+      })
     },
     reset() {
-      if (startMarkerObj) {
-        startMarkerObj.destroy();
-        startMarkerObj = null;
-      }
-      if (endMarkerObj) {
-        endMarkerObj.destroy();
-        endMarkerObj = null;
-      }
-
+      this.clearRoutes(); // 清除原来路线
+      this.pathPlanList = [];
+      routeDrawTool.removeAll();
+      this.pathPlanList = [];
       this.startPlot = "";
       this.endPlot = "";
     },
     // 构建路线
-    createPath(lnglats, color) {
-      let positions = [];
-      for (let i = 0; i < lnglats.length; i++) {
-        let item = lnglats[i];
-        if (item && item[0] && item[1]) {
-          positions.push(
-            window.Cesium.Cartesian3.fromDegrees(item[0], item[1])
-          );
-        }
-      }
+    createPath(positions, color) {
+      if (!positions || positions.length < 1) return;
+      color = color || Cesium.Color.BLUE;
       let lowColor = color.withAlpha(0.6);
       let route = window.viewer.entities.add({
         polyline: {
@@ -253,12 +255,9 @@ export default {
     // 清除所有路线
     clearRoutes() {
       routes.forEach(function (route) {
-        if (route) {
-          window.viewer.entites.remove(route);
-        }
+        if (route) window.viewer.entities.remove(route);
       });
       routes = [];
-      this.pathPlanList = [];
     },
   },
 };
@@ -270,18 +269,22 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
     &:last-child {
       margin-bottom: 0;
     }
+
     .el-input {
       width: 150px;
       margin: 0 20px;
     }
+
     label {
       width: 80px;
       display: flex;
       justify-content: flex-end;
     }
+
     span {
       height: 40px;
       padding: 0 10px;
@@ -293,11 +296,13 @@ export default {
     }
   }
 }
+
 .path-compute {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 15px;
+
   .basic-btn {
     height: 40px;
     line-height: 40px;
@@ -317,12 +322,14 @@ export default {
 .pathPlan-table {
   margin-top: 15px;
 }
+
 .pathPlan-operate-box {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+
   i {
     height: 30px;
     padding: 0 5px;

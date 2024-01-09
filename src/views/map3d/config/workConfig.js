@@ -133,6 +133,14 @@ export default {
         {
             "name": "图层对比",
             "show": false,
+            "size": {
+                "width": 350,
+                "height": 180
+            },
+            "position": {
+                "top": 40,
+                "right": 80
+            },
             "toolName": "twoScreen",
             "closeDisableSelf": true,
             "openDisableAnothers": false

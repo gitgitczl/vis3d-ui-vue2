@@ -503,6 +503,7 @@ class MapViewer {
             this.lnglatNavigation.destroy();
             this.lnglatNavigation = null;
         }
+
         if (this._viewer) {
             this._viewer.destroy();
             this._viewer = null;

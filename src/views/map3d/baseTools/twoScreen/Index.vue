@@ -1,56 +1,28 @@
 <template>
   <div style="height: 100%">
-    <div id="mapContainer2"></div>
+    <!-- <div id="mapContainer2"></div> -->
     <!-- 图层选择 -->
-    <Card
-      :size="size"
-      @close="close"
-      :title="title"
-      :position="position"
-      iconfont="icon-cengshu"
-    >
-      <div class="tree-body basic-tree basic-tree">
-        <el-tree
-          show-checkbox
-          :props="defaultProps"
-          :data="operateLayers"
-          :expand-on-click-node="false"
-          :default-expanded-keys="expandedKeys"
-          :default-checked-keys="checkedKeys"
-          node-key="id"
-          @check="checkLayer"
-        >
-          <div class="custom-tree-node" slot-scope="{ data }">
-            <span>{{ data.name }}</span>
-            <div class="custom-tree-node-slider">
-              <el-slider
-                v-show="checkedKeys.indexOf(data.id) != -1"
-                v-if="data.type !== '3dtiles' && data.type !== 'group'"
-                show-input
-                :show-input-controls="false"
-                :show-tooltip="false"
-                v-model="data.alpha"
-                :max="1"
-                :step="0.1"
-                @change="setLayeralpha(data)"
-                @input="setLayeralpha(data)"
-              >
-              </el-slider>
-            </div>
-          </div>
-        </el-tree>
+    <Card :size="size" @close="close" :title="title" :position="position" iconfont="icon-cengshu">
+      <div class="basic-tooltip">
+        提示：左侧图层可由“图层树”设置，右侧图层由此处设置。
       </div>
+      <label for="">图层：</label>
+      <el-select v-model="selectLayerIds" multiple placeholder="请选择" @change="setLayerVisible">
+        <el-option v-for="item in allLayers" :key="item.id" :label="item.name" :value="item.id">
+        </el-option>
+      </el-select>
     </Card>
     <!-- 底图选择 -->
   </div>
 </template>
 <script>
 /* 分屏对比 */
-
+import { mapConfig } from "../../config/export"
+let screenLayerTool = undefined;
 export default {
   name: "twoScreen",
   props: {
-   title: "",
+    title: "",
     position: {},
     size: {},
     iconfont: {
@@ -59,20 +31,14 @@ export default {
     },
   },
   components: {
-    
+
   },
   data() {
     return {
-      defaultProps: {
-        isLeaf: (node, data) => {
-          if (!node.children || !node.children.length) {
-            return true;
-          }
-        },
-      },
-      operateLayers: [],
-      expandedKeys: [], // 默认打开节点
-      checkedKeys: [], // 默认选中节点
+      selectLayerIds: [], // 当前选择的图层id
+      lastSelectLayerIds: [],
+      allLayers: []
+
     };
   },
 
@@ -81,47 +47,29 @@ export default {
     let oldViewerContainer = window.viewer.container;
     oldViewerContainer.style.width = "50%";
     oldViewerContainer.style.left = "50%";
+    // 构建地图容器
+    let mapContainer2 = document.createElement("div");
+    mapContainer2.setAttribute('id', 'mapContainer2');
+    mapContainer2.style.width = "50%";
+    mapContainer2.style.height = "100%";
+    mapContainer2.style.position = "absolute";
+    mapContainer2.style.top = "0";
+    mapContainer2.style.right = "0";
+    mapContainer2.style.borderLeftStyle = "solid";
+    mapContainer2.style.borderLeftWidth = "2px";
+    mapContainer2.style.borderLeftColor = "#9d9a9a";
 
-    let newMapConfig = JSON.parse(JSON.stringify(window.mapConfig));
-    let { operateLayers } = newMapConfig;
-    operateLayers = JSON.parse(JSON.stringify(operateLayers));
-    function dg(layers) {
-      for (let i = layers.length - 1; i >= 0; i--) {
-        let layer = layers[i];
-        if (layer.children && layer.children.length > 1) {
-          dg(layer.children);
-        } else {
-          if (!layer.compare) layers.splice(i, 1);
-        }
-      }
-    }
-    dg(operateLayers);
-    newMapConfig.operateLayers = operateLayers;
-    this.$set(this, "operateLayers", operateLayers);
+    const app = document.getElementById('app');
+    app.appendChild(mapContainer2);
 
-    // 构建底图
-    window.mapViewer2 = new this.vis3d.MapViewer(
+    let newMapConfig = JSON.parse(JSON.stringify(mapConfig));
+    newMapConfig.operateLayers = []; // 只放置底图
+    // 构建新的三维地图并绑定事件联动
+    window.mapViewer2 = new window.vis3d.MapViewer(
       "mapContainer2",
       newMapConfig
     );
     window.viewer2 = window.mapViewer2._viewer;
-
-    // 构建图层树
-    let operateLayerTool = window.mapViewer2.operateLayerTool;
-    operateLayerTool._layerObjs.forEach((element) => {
-      if (element.open) this.expandedKeys.push(element.id);
-    });
-    operateLayers.forEach((element) => {
-      if (element.open && element.type == "group") {
-        this.expandedKeys.push(element.id);
-      }
-    });
-    let showslayer = operateLayerTool.getAllshow();
-    showslayer.forEach((lyr) => {
-      this.checkedKeys.push(lyr.id);
-    });
-
-    // 绑定联动事件
     window.viewer.camera.changed.addEventListener(
       this.viewerChangeHandler,
       this
@@ -135,15 +83,40 @@ export default {
     window.viewer2.camera.percentageChanged = 0.01;
 
     this.viewerChangeHandler();
+
+    // 设置下拉框选项
+    this.allLayers = this.allLayers.concat(newMapConfig.baseLayers);
+    const layerList = JSON.parse(JSON.stringify(mapConfig.operateLayers));
+    for (let i = 0; i < layerList.length; i++) {
+      const item = layerList[i];
+      if (item.type == 'group') {
+        for (let j = 0; j < item.children.length; j++) {
+          const lyrattr = item.children[j];
+          this.allLayers.push(lyrattr);
+        }
+      } else {
+        this.allLayers.push(item);
+      }
+    }
+
+    if (!screenLayerTool) {
+      screenLayerTool = new window.vis3d.layer.Tool(viewer2);
+    }
   },
+
   destroyed() {
     let oldViewerContainer = window.viewer.container;
     oldViewerContainer.style.width = "100%";
     oldViewerContainer.style.left = "0";
+    debugger
     if (window.mapViewer2) {
       window.mapViewer2.destroy();
       delete window.mapViewer2;
     }
+
+    const mapContainer2 = document.getElementById("mapContainer2");
+    if (mapContainer2) mapContainer2.parentNode.removeChild(mapContainer2);
+
   },
 
   methods: {
@@ -177,30 +150,32 @@ export default {
     close() {
       this.$emit("close", "twoScreen");
     },
-    setLayeralpha(data) {
-      let layerOpt = window.mapViewer2.operateLayerTool.getLayerObjById(
-        data.id
-      );
-      if (layerOpt && layerOpt.layerObj) layerOpt.layerObj.setAlpha(data.alpha);
-    },
-    checkLayer(data, state) {
-      this.checkedKeys = state.checkedKeys;
-      let allshowLayers = window.mapViewer2.operateLayerTool.getAllshow();
-      let allhideLayers = window.mapViewer2.operateLayerTool.getAllhide();
-      for (let i = 0; i < allshowLayers.length; i++) {
-        let layer = allshowLayers[i].layer;
-        if (state.checkedKeys.indexOf(layer.attr.id) == -1) {
-          window.mapViewer2.operateLayerTool.setVisible(layer.attr.id, false);
+    // 设置图层显示隐藏
+    setLayerVisible() {
+      console.log('selectLayerIds===>', this.selectLayerIds)
+      for (let i = 0; i < this.selectLayerIds.length; i++) {
+        const nowId = this.selectLayerIds[i];
+        if (this.lastSelectLayerIds.indexOf(nowId) == -1) { // 新增的图层
+          const attr = this.getLayerAttrById(nowId);
+          attr.show = true;
+          screenLayerTool.add(attr);
         }
       }
 
-      for (let j = 0; j < allhideLayers.length; j++) {
-        let layer = allhideLayers[j].layer;
-        if (state.checkedKeys.indexOf(layer.attr.id) != -1) {
-          window.mapViewer2.operateLayerTool.setVisible(layer.attr.id, true);
+      for (let ind = 0; ind < this.lastSelectLayerIds.length; ind++) {
+        const lastId = this.lastSelectLayerIds[ind];
+        if (this.selectLayerIds.indexOf(lastId) == -1) { // 移出的图层
+          screenLayerTool.setVisible(lastId,false);
         }
       }
+      this.lastSelectLayerIds = JSON.parse(JSON.stringify(this.selectLayerIds));
     },
+    getLayerAttrById(id) {
+      const list = this.allLayers.filter(res => {
+        return res.id == id;
+      });
+      return list[0];
+    }
   },
 };
 </script>
