@@ -33,6 +33,7 @@ class TilesetClip {
         this.downHandler = undefined;
         this.upHandler = undefined;;
         this.moveHandler = undefined;
+        this.scale = this.opt.scale || [1,1];
     }
 
     /**
@@ -191,6 +192,13 @@ class TilesetClip {
 
     computeDis(movement) {
         let that = this;
+
+        movement.startPosition.x = movement.startPosition.x / this.scale[0];
+        movement.startPosition.y = movement.startPosition.y / this.scale[1];
+
+        movement.endPosition.x = movement.endPosition.x / this.scale[0];
+        movement.endPosition.y = movement.endPosition.y / this.scale[1];
+
         let ray1 = that.viewer.camera.getPickRay(movement.startPosition);
         let startP = that.viewer.scene.globe.pick(ray1, that.viewer.scene);
         let ray2 = that.viewer.camera.getPickRay(movement.endPosition);

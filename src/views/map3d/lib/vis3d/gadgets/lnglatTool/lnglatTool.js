@@ -44,11 +44,6 @@ class LnglatTool {
             this.moveHandler = null;
         }
 
-        if (this.scale) {
-            this.scale.remove();
-            this.scale = undefined;
-        }
-
         let doms = document.getElementsByClassName("vis3d-lnglatNavigation");
         doms[0].parentNode.removeChild(doms[0])
     }
