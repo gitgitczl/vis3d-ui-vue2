@@ -125,12 +125,17 @@ const weather = {
 import material from "./material/animate";
 
 /* 通用方法 */
+import Navigation from "./common/navgation/CesiumNavigation"
+import ZoomTool from "./common/zoomTool/zoomTool";
+import RightTool from "./common/rightTool/rightTool";
+import LnglatTool from "./common/lnglatTool/lnglatTool";
 import Cluster from "./common/cluster/cluster"
 import Prompt from "./prompt/prompt";
 import SkyboxGround from "./common/skyboxGround"
 import OverviewMap from "./common/overviewMap/overviewMap";
 import selectModel from "./common/selectModel"
 const common = {
+  Navigation, ZoomTool, RightTool, LnglatTool,
   Cluster, Prompt, SkyboxGround, OverviewMap, selectModel
 }
 
@@ -156,15 +161,6 @@ import LimitHeight from "./analysis/limitHeight/limitHeight";
 const analysis = {
   Sunshine: Sunshine,
   LimitHeight: LimitHeight
-}
-
-/* 小工具 */
-import Navigation from "./gadgets/navgation/CesiumNavigation"
-import ZoomTool from "./gadgets/zoomTool/zoomTool";
-import RightTool from "./gadgets/rightTool/rightTool";
-import LnglatTool from "./gadgets/lnglatTool/lnglatTool";
-const gadgets = {
-  Navigation, ZoomTool, RightTool, LnglatTool
 }
 
 /* 查询工具 */
@@ -193,5 +189,5 @@ import MapViewer from "./mapViewer"
 export default {
   MapViewer, sensor, layer, material, layerload,
   util, tool, plot, draw, measure, roam, primitive, graphic,
-  weather, common, view, tileset, analysis, gadgets, query, cover
+  weather, common, view, tileset, analysis, query, cover
 };

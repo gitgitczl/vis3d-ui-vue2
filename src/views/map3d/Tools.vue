@@ -233,12 +233,12 @@ export default {
       }
 
       if (item.type == "scaleBig") { // 放大
-        if (!zoomTool) zoomTool = new this.vis3d.gadgets.ZoomTool(window.viewer);
+        if (!zoomTool) zoomTool = new this.vis3d.common.ZoomTool(window.viewer);
         zoomTool.forward();
       }
 
       if (item.type == "scaleSmall") { // 缩小
-        if (!zoomTool) zoomTool = new this.vis3d.gadgets.ZoomTool(window.viewer);
+        if (!zoomTool) zoomTool = new this.vis3d.common.ZoomTool(window.viewer);
         zoomTool.backward();
       }
 
