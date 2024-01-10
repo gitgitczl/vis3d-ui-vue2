@@ -74,8 +74,8 @@ export default {
             "show": false,
             "toolName": "help",
             "position": {
-                "top": 60,
-                "left": 10
+                "top": 50,
+                "right": 160
             },
             "size": {
                 "width": 350,
