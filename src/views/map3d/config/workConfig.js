@@ -131,7 +131,7 @@ export default {
             "openDisableAnothers": false
         },
         {
-            "name": "图层对比",
+            "name": "分屏对比",
             "show": false,
             "size": {
                 "width": 350,
@@ -223,7 +223,7 @@ export default {
             },
             "size": {
                 "width": 350,
-                "height": 400
+                "height": 180
             }
         },
         {

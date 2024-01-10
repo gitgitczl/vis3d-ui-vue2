@@ -41,7 +41,7 @@ export default {
 
   methods: {
     close() {
-      this.$emit("close", "help");
+      window.workControl.closeToolByName("help")
     },
   },
 };

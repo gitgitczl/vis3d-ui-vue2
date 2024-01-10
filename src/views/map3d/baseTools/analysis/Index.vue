@@ -169,7 +169,7 @@ export default {
   destroyed() { },
   methods: {
     close() {
-      this.$emit("close", "analysis");
+      window.workControl.closeToolByName("analysis");
     },
 
     tomain() {

@@ -166,7 +166,7 @@ export default {
     },
 
     close() {
-      this.$emit("close", "plot");
+      window.workControl.closeToolByName("plot");
     },
 
     btnClick(item) {

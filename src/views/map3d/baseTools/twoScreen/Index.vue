@@ -4,9 +4,9 @@
     <!-- 图层选择 -->
     <Card :size="size" @close="close" :title="title" :position="position" iconfont="icon-cengshu">
       <div class="basic-tooltip">
-        提示：左侧图层可由“图层树”设置，右侧图层由此处设置。
+        提示：左侧图层可由“图层树”或“底图”设置，右侧图层由此处设置。
       </div>
-      <label for="">图层：</label>
+      <label for="">对比图层：</label>
       <el-select v-model="selectLayerIds" multiple placeholder="请选择" @change="setLayerVisible">
         <el-option v-for="item in allLayers" :key="item.id" :label="item.name" :value="item.id">
         </el-option>
@@ -153,7 +153,7 @@ export default {
       this.vis3d.util.setCameraView(cameraView, viewer2);
     },
     close() {
-      this.$emit("close", "twoScreen");
+      window.workControl.closeToolByName("twoScreen");
     },
     // 设置图层显示隐藏
     setLayerVisible() {
