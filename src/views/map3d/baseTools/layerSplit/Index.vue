@@ -37,35 +37,29 @@ export default {
   },
 
   mounted() {
-    let operateLayers = this.$store.state.vis3d.operateLayers;
-    let res = this.getAllLayers(operateLayers);
+    const baseLayerObjs = window.mapViewer.baseLayerTool.layerObjs;
+    const operateLayerObjs = window.mapViewer.operateLayerTool.layerObjs;
 
-    let allLayers = res.layers;
-    for (let i = 0; i < allLayers.length; i++) {
-      let item = allLayers[i];
-      item = JSON.parse(JSON.stringify(item));
-      item.initState = item.show; // 记录原始状态
-      if (item.layerSplit == true) {
-        // 是否用来做分屏对比
-        this.layerList.push(item);
-      }
+    for (let i = 0; i < baseLayerObjs.length; i++) {
+      const item = baseLayerObjs[i];
+      this.layerList.push(JSON.parse(JSON.stringify(item.attr)));
     }
 
-    // 默认选中第一个展示
+    for (let j = 0; j < operateLayerObjs.length; j++) {
+      const item = operateLayerObjs[j];
+      this.layerList.push(JSON.parse(JSON.stringify(item.attr)));
+    }
+
     this.nowSelectId = this.layerList[0].id;
-
-    let lyrObj = window.mapViewer.operateLayerTool.getLayerObjById(
-      this.nowSelectId
-    ).layerObj;
-    lyrObj.setVisible(true);
-
-    lastLayerAttr = this.layerList[0];
-
+    // 默认选中第一个
+    const layer = baseLayerObjs[0].layer;
     if (!layerSplit) {
       layerSplit = new this.vis3d.common.LayerSplit(window.viewer, {
-        layer: lyrObj._layer,
+        layer: layer,
       });
     }
+
+
   },
   destroyed() {
     if (layerSplit) {
