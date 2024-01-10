@@ -1,5 +1,5 @@
 /* 箭头算法 */
-import ArrowUtil from "./ArrowUtil";
+import ArrowUtil from "./arrowUtil";
 class AttackArrow {
     constructor(opt) {
         this.type = "AttackArrow";

@@ -87,7 +87,7 @@ export default {
           positions = entObj.getPositions();
         }
         if (!flat) {
-          flat = new widnow.vis3d.tileset.Flat(tileset, {
+          flat = new window.vis3d.tileset.Flat(tileset, {
             flatHeight: -30,
           });
         }

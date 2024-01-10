@@ -1,6 +1,6 @@
-import VisualField from "./VisualField";
-import Prompt from "../Prompt/Prompt";
-import "../Prompt/Prompt.css";
+import VisualField from "./visualField";
+import Prompt from "../../prompt/prompt";
+import "../../prompt/prompt.css";
 
 /**
  * 可视域控制类

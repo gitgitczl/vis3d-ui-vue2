@@ -1,7 +1,7 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot'
-import ArrowAlgorithm from './ArrowAlgorithm'
+import ArrowAlgorithm from './arrowAlgorithm'
 /* 构建军事标绘 */
 /**
  * 军事标绘类

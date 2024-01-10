@@ -78,7 +78,7 @@ export default {
           positions = entObj.getPositions();
         }
         if (!cut) {
-          cut = new widnow.vis3d.tileset.Cut(tileset);
+          cut = new window.vis3d.tileset.Cut(tileset);
         }
         cut.addRegion({
           positions: positions,
