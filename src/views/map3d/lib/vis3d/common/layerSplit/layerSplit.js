@@ -22,7 +22,7 @@ class LayerSplit {
          */
         this.layer = this.opt.layer;
         /*   if (!this.layer) return; */
-        if (this.layer) this.layer.splitDirection = window.Cesium.ImagerySplitDirection.RIGHT;
+        if (this.layer) this.layer.splitDirection = window.Cesium.SplitDirection.RIGHT; // 默认右侧分割
         this.mapContainer = this.viewer.container;
         this.init();
     }
@@ -40,7 +40,7 @@ class LayerSplit {
         this.mapContainer.appendChild(this.slider);
         this.handler = new window.Cesium.ScreenSpaceEventHandler(this.slider);
 
-        this.viewer.scene.imagerySplitPosition = 0.5;
+        this.viewer.scene.splitPosition = 0.5;
 
         this.handler.setInputAction(function () {
             that.moveActive = true;
@@ -71,7 +71,7 @@ class LayerSplit {
         var relativeOffset = movement.endPosition.x;
         var splitPosition = (this.slider.offsetLeft + relativeOffset) / this.slider.parentElement.offsetWidth;
         this.slider.style.left = 100.0 * splitPosition + '%';
-        this.viewer.scene.imagerySplitPosition = splitPosition;
+        this.viewer.scene.splitPosition = splitPosition;
     }
 
     /**
@@ -79,14 +79,14 @@ class LayerSplit {
      */
     destroy() {
         if (this.slider) {
-            this.mapContainer.removeChild(this.slider);
+            this.slider.parentNode.removeChild(this.slider);
             this.slider = null;
         }
         if (this.handler) {
             this.handler.destroy();
             this.handler = null;
         }
-        this.layer.splitDirection = window.Cesium.ImagerySplitDirection.NONE;
+        this.layer.splitDirection = window.Cesium.SplitDirection.NONE;
     }
 
     /**
@@ -95,9 +95,9 @@ class LayerSplit {
      */
     setLayer(layer) {
         if (!layer) return;
-        this.layer.splitDirection = window.Cesium.ImagerySplitDirection.NONE;
+        this.layer.splitDirection = window.Cesium.SplitDirection.NONE;
         this.layer = layer;
-        this.layer.splitDirection = window.Cesium.ImagerySplitDirection.LEFT;
+        this.layer.splitDirection = window.Cesium.SplitDirection.LEFT;
     }
 }
 
