@@ -62,7 +62,7 @@ export default {
     // 默认选中第一个
     splitLayerTool.setVisible(this.nowSelectId, true);
     if (!layerSplit) {
-      layerSplit = new this.vis3d.common.LayerSplit(window.viewer, {
+      layerSplit = new window.vis3d.common.LayerSplit(window.viewer, {
         layer: lbj.layer,
       });
     }

@@ -64,7 +64,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.modelDrawTool) {
-      window.modelDrawTool = new this.vis3d.plot.Tool(window.viewer, {
+      window.modelDrawTool = new window.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
       window.modelDrawTool.on("endCreate", function (entObj, ent) {

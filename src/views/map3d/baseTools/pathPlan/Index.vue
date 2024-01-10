@@ -88,7 +88,7 @@ export default {
 
   mounted() {
     if (!routeDrawTool) {
-      routeDrawTool = new this.vis3d.plot.Tool(window.viewer, {
+      routeDrawTool = new window.vis3d.plot.Tool(window.viewer, {
         canEdit: false
       });
       routeDrawTool.on("endEdit", function (entObj, ent) {
@@ -101,7 +101,7 @@ export default {
         }
       });
     }
-    if (!gaodeRoute) gaodeRoute = new this.vis3d.query.GaodeRoute({
+    if (!gaodeRoute) gaodeRoute = new window.vis3d.query.GaodeRoute({
       keys: ["a73e387f642573295b498d7fd6b4c537"]
     });
   },

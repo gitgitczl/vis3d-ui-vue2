@@ -109,7 +109,7 @@ export default {
 
     let that = this;
     if (!window.plotDrawTool) {
-      window.plotDrawTool = new this.vis3d.plot.Tool(window.viewer, {
+      window.plotDrawTool = new window.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
       window.plotDrawTool.on("endCreate", function (entObj, ent) {
@@ -178,7 +178,7 @@ export default {
       if (item.type == "saveFile") {
         let jsondata = window.plotDrawTool.toGeojson();
         if (!jsondata) return;
-        this.vis3d.tool.downloadFile(
+        window.vis3d.tool.downloadFile(
           "图上标绘.json",
           JSON.stringify(jsondata)
         );

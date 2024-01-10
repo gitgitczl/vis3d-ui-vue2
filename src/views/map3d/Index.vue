@@ -43,7 +43,7 @@ export default {
     setThemeStyle(this.toolStyle.themeType);
     this.toolsType = this.toolStyle.toolsType;
     // 构建基础地图
-    let mapViewer = (window.mapViewer = new this.vis3d.MapViewer(
+    let mapViewer = (window.mapViewer = new window.vis3d.MapViewer(
       "mapContainer",
       mapConfig
     ));

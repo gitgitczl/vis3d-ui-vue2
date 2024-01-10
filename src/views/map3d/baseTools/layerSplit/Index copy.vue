@@ -40,7 +40,7 @@ export default {
     
 
     if (!layerSplit) {
-      layerSplit = new this.vis3d.common.LayerSplit(window.viewer, {
+      layerSplit = new window.vis3d.common.LayerSplit(window.viewer, {
         layer: lyrObj._layer,
       });
     }

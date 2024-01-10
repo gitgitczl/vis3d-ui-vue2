@@ -53,7 +53,7 @@ export default {
   mounted() {
     let that = this;
     if (!drawTool) {
-      drawTool = new this.vis3d.plot.Tool(window.viewer);
+      drawTool = new window.vis3d.plot.Tool(window.viewer);
       drawTool.on("endCreate", function (entObj, ent) {
         const lnglat = entObj.getPositions(1);
         if (!lnglat) return;

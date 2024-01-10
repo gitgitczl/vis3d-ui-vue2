@@ -148,9 +148,9 @@ export default {
       );
     },
     updateView: function (viewer, viewer2) {
-      let cameraView = this.vis3d.util.getCameraView(viewer);
+      let cameraView = window.vis3d.util.getCameraView(viewer);
       cameraView.duration = 0;
-      this.vis3d.util.setCameraView(cameraView, viewer2);
+      window.vis3d.util.setCameraView(cameraView, viewer2);
     },
     close() {
       window.workControl.closeToolByName("twoScreen");

@@ -109,7 +109,7 @@ export default {
   mounted() {
     let that = this;
     if (!measureTool) {
-      measureTool = new this.vis3d.measure.Tool(window.viewer);
+      measureTool = new window.vis3d.measure.Tool(window.viewer);
       measureTool.on("endCreate", function (ms) {
         that.isShowRes = ms.unitType ? true : false;
         that.isMeasureActive = -1;

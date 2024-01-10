@@ -64,7 +64,7 @@ export default {
   mounted() {
     let that = this;
     if (!window.floodDrawTool)
-      window.floodDrawTool = new this.vis3d.plot.Tool(window.viewer, {
+      window.floodDrawTool = new window.vis3d.plot.Tool(window.viewer, {
         canEdit: true,
       });
 

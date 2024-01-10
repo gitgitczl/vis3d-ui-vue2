@@ -144,12 +144,12 @@ export default {
             }
 
             if (item.type == "scaleBig") { // 放大
-                if (!zoomTool) zoomTool = new this.vis3d.common.ZoomTool(window.viewer);
+                if (!zoomTool) zoomTool = new window.vis3d.common.ZoomTool(window.viewer);
                 zoomTool.forward();
             }
 
             if (item.type == "scaleSmall") { // 缩小
-                if (!zoomTool) zoomTool = new this.vis3d.common.ZoomTool(window.viewer);
+                if (!zoomTool) zoomTool = new window.vis3d.common.ZoomTool(window.viewer);
                 zoomTool.backward();
             }
 
@@ -164,7 +164,7 @@ export default {
             if (item.type === "overviewMap") { // 鹰眼图
                 this.isOpenOverviewMap = !this.isOpenOverviewMap;
                 if (this.isOpenOverviewMap && !overviewMap) {
-                    overviewMap = new this.vis3d.common.OverviewMap(window.viewer);
+                    overviewMap = new window.vis3d.common.OverviewMap(window.viewer);
                 } else {
                     overviewMap.destroy();
                     overviewMap = undefined;

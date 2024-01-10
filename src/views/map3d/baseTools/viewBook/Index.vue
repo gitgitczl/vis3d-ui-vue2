@@ -61,7 +61,7 @@ export default {
       }
 
       window.viewer.scene.render();
-      let view = this.vis3d.util.getCameraView(window.viewer);
+      let view = window.vis3d.util.getCameraView(window.viewer);
       this.viewerList.unshift({
         name: this.viewerTitle,
         imgSrc: window.viewer.canvas.toDataURL("image/png"),
@@ -80,7 +80,7 @@ export default {
     },
     setCameraView(attr) {
       if (!attr || !attr.view) return;
-      this.vis3d.util.setCameraView(attr.view);
+      window.vis3d.util.setCameraView(attr.view);
     },
   },
 };

@@ -197,6 +197,49 @@ export default {
   },
 
   methods: {
+
+    // 打开具体工具模块
+    open(item) {
+      if (item.toolName) {
+        workControl.openToolByName(item.toolName)
+      }
+
+      if (item.type == "scaleBig") { // 放大
+        if (!zoomTool) zoomTool = new window.vis3d.common.ZoomTool(window.viewer);
+        zoomTool.forward();
+      }
+
+      if (item.type == "scaleSmall") { // 缩小
+        if (!zoomTool) zoomTool = new window.vis3d.common.ZoomTool(window.viewer);
+        zoomTool.backward();
+      }
+
+      if (item.type == "update") { // 页面刷新
+        window.location.reload();
+      }
+
+      if (item.type === "fullScreen") {  // 全屏
+        this.screen();
+      }
+
+      if (item.type === "overviewMap") { // 鹰眼图
+        this.isOpenOverviewMap = !this.isOpenOverviewMap;
+        if (this.isOpenOverviewMap && !overviewMap) {
+          overviewMap = new window.vis3d.common.OverviewMap(window.viewer);
+        } else {
+          overviewMap.destroy();
+          overviewMap = undefined;
+        }
+      }
+
+      if (item.type === "print") { // 地图打印
+        this.printMap();
+      }
+    },
+    close(item) {
+      workControl.closeToolByName(item.toolName);
+    },
+
     /**
      * 全屏
      */
@@ -226,49 +269,10 @@ export default {
       screenfull.toggle();
     },
 
-    // 打开具体工具模块
-    open(item) {
-      if (item.toolName) {
-        workControl.openToolByName(item.toolName)
-      }
 
-      if (item.type == "scaleBig") { // 放大
-        if (!zoomTool) zoomTool = new this.vis3d.common.ZoomTool(window.viewer);
-        zoomTool.forward();
-      }
-
-      if (item.type == "scaleSmall") { // 缩小
-        if (!zoomTool) zoomTool = new this.vis3d.common.ZoomTool(window.viewer);
-        zoomTool.backward();
-      }
-
-      if (item.type == "update") { // 页面刷新
-        window.location.reload();
-      }
-
-      if (item.type === "fullScreen") {  // 全屏
-        this.screen();
-      }
-
-      if (item.type === "overviewMap") { // 鹰眼图
-        this.isOpenOverviewMap = !this.isOpenOverviewMap;
-        if (this.isOpenOverviewMap && !overviewMap) {
-          overviewMap = new this.vis3d.common.OverviewMap(window.viewer);
-        } else {
-          overviewMap.destroy();
-          overviewMap = undefined;
-        }
-      }
-
-      if (item.type === "print") { // 地图打印
-        this.printMap();
-      }
-    },
-    close(item) {
-      workControl.closeToolByName(item.toolName);
-    },
-
-    // 地图打印
+    /**
+     * 地图打印
+     */
     printMap() {
       window.viewer.scene.render();
       let container = document.getElementById(window.viewer._container.id);
@@ -286,7 +290,10 @@ export default {
       });
     },
 
-    // 触发组件的方法
+    /**
+     * 触发组件的方法
+     * @param {Object} opt 
+     */ 
     fire(opt) {
       let { toolName, methond, arg } = opt
       if (!this.$refs[toolName] || !this.$refs[toolName][0]) return;

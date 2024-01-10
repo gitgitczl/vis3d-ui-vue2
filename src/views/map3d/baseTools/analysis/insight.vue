@@ -35,7 +35,7 @@ export default {
     };
   },
   mounted() {
-    drawTool = new this.vis3d.plot.Tool(window.viewer, {
+    drawTool = new window.vis3d.plot.Tool(window.viewer, {
       canEdit: false,
     });
   },
