@@ -7,12 +7,13 @@
     iconfont="icon-tushangcehui"
     @close="close"
   >
+  <div style="color: red;font-weight: bold;font-size: 24px;"> vis3d-ui-vue2,自定义工具面板! </div>
   </Card>
 </template>
 <script>
 
 export default {
-  name: "Map3dPlatformIndex",
+  name: "modules", // 此处必须设置
   components: {
     
   },
@@ -27,6 +28,10 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    close() {
+      window.workControl.closeToolByName(this.$options.name)
+    },
+  },
 };
 </script>
