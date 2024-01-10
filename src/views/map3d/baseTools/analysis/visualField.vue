@@ -117,7 +117,7 @@ export default {
       this.clear();
       let that = this;
       if (!visualFieldTool) {
-        visualFieldTool = new Cesium.VisualFieldTool(
+        visualFieldTool = new window.vis3d.analysis.analysis.VisualFieldTool(
           window.viewer
         );
       }

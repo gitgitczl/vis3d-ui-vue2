@@ -159,9 +159,11 @@ const tileset = {
 /* 分析相关 */
 import Sunshine from "./analysis/sunshine/sunshine";
 import LimitHeight from "./analysis/limitHeight/limitHeight";
+import VisualFieldTool from "./analysis/visualField/visualFieldTool"
 const analysis = {
   Sunshine: Sunshine,
-  LimitHeight: LimitHeight
+  LimitHeight: LimitHeight,
+  VisualFieldTool: VisualFieldTool
 }
 
 /* 查询工具 */

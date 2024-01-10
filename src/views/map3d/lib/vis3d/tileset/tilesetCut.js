@@ -1,9 +1,9 @@
 // 三维模型裁剪
 class TilesetCut {
     constructor(tileset, opt) {
-        if(!tileset){
+        if (!tileset) {
             console.log("缺少模型");
-            return ;
+            return;
         }
         this.tileset = tileset;
         this.opt = opt || {};
@@ -17,7 +17,7 @@ class TilesetCut {
         // 建立模型中心点坐标系
         const center = this.tileset.boundingSphere.center;
         const enuMtx4 = Cesium.Transforms.eastNorthUpToFixedFrame(center);
-        this.modelMatrix = Cesium.Matrix4.inverse(enuMtx4,new Cesium.Matrix4());
+        this.modelMatrix = Cesium.Matrix4.inverse(enuMtx4, new Cesium.Matrix4());
         this.canvas = undefined;
     }
 
@@ -31,14 +31,18 @@ class TilesetCut {
     }
 
     /**
-     * 添加或修改裁剪面
+     * 添加裁剪面
+     * @param {Object} attr 参数
+     * @param {Cesium.Cartesian3[]} attr.positions 压平面坐标
+     * @param {Number} attr.id 唯一标识
      */
-    addRegion(positions, id) {
+    addRegion(attr) {
+        let { positions, id } = attr || {};
+        if (!id) id = (new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0);
         if (!positions || positions.length < 3) {
             console.log("缺少裁剪面坐标");
             return;
         }
-        id = id || Math.ceil(Math.random() * 100000) + '_' + Math.ceil(Math.random() * 100000)
         const index = this.cutRegions.findIndex(item => item.id === id)
         if (index == -1) {
             this.cutRegions.push({
@@ -46,7 +50,7 @@ class TilesetCut {
                 positions: positions
             })
         } else {
-            this.cutRegions[index] = positions;
+            this.cutRegions[index].positions = positions;
         }
         this.updateShader()
     }
@@ -54,7 +58,7 @@ class TilesetCut {
      * 移除裁剪面
      * @param {String} id 
      */
-    removeRegion(id) {
+    removeRegionById(id) {
         if (id) { // 表示移除所有的裁剪面
             const index = this.cutRegions.findIndex(item => item.id === id)
             if (index != -1) this.cutRegions.splice(index, 1)
@@ -75,6 +79,7 @@ class TilesetCut {
      * 修改模型着色器
      */
     updateShader() {
+        debugger
         // 定义着色器中裁剪函数
         const fs_textureMapRect = `
             vec4 textureMapRect(vec4 rect, sampler2D map, vec2 xy) {

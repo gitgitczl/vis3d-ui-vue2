@@ -22,24 +22,27 @@ class Flat {
         this.localMatrix = Cesium.Matrix4.inverse(this.matrix, new Cesium.Matrix4());
 
         // 多面的坐标数组
-        this.polygonArr = [];
+        this.regionList = [];
         // 多个面坐标转为局部模型坐标
         this.localPositionsArr = [];
     }
 
     /**
      * 添加压平面
-     * @param {Array[Cesium.Cartesian3]} positions 压平面坐标
-     * @param {Number} height 压平高度，暂时不支持各地区分别设置压平高度,若想支持可以设置uniforms参数
+     * @param {Object} attr 参数
+     * @param {Cesium.Cartesian3[]} attr.positions 压平面坐标
+     * @param {Number} attr.height 压平深度，当前不支持单独设置
+     * @param {Number} attr.id 唯一标识
      */
-    addRegion(positions, height) {
+    addRegion(attr) {
+        let { positions, height, id } = attr || {};
         // this.flatHeight = height;
-
-        this.polygonArr.push(positions);
-        for (let i = 0; i < this.polygonArr.length; i++) {
-            let item = this.polygonArr[i];
-            // 将面的世界坐标转为模型局部坐标
-            let localCoor = this.cartesiansToLocal(item);
+        if (!id) id = (new Date()).getTime() + "" + Number(Math.random() * 1000).toFixed(0);
+        this.regionList.push(attr);
+        for (let i = 0; i < this.regionList.length; i++) {
+            let item = this.regionList[i];
+            const positions = item.positions;
+            let localCoor = this.cartesiansToLocal(positions);
             this.localPositionsArr.push(localCoor);
         }
 
@@ -64,6 +67,49 @@ class Flat {
 
         }
 
+        this.updateShader(funstr, str);
+    }
+
+    /**
+     * 根据id删除压平的面
+     * @param {String} id 唯一标识
+     */
+    removeRegionById(id) {
+        debugger
+        if (!id) return;
+
+        this.regionList = this.regionList.filter((attr) => {
+            return attr.id != id;
+        })
+
+        this.localPositionsArr = [];
+        for (let i = 0; i < this.regionList.length; i++) {
+            let item = this.regionList[i];
+            const positions = item.positions;
+            let localCoor = this.cartesiansToLocal(positions);
+            this.localPositionsArr.push(localCoor);
+        }
+
+        const funstr = this.getIsinPolygonFun(this.localPositionsArr);
+        let str = ``;
+        for (let i = 0; i < this.localPositionsArr.length; i++) {
+            const coors = this.localPositionsArr[i];
+            const n = coors.length;
+            let instr = ``;
+            coors.forEach((coordinate, index) => {
+                instr += `points_${n}[${index}] = vec2(${coordinate[0]}, ${coordinate[1]});\n`;
+            })
+            str += `
+                ${instr}
+                if(isPointInPolygon_${n}(position2D)){
+                    vec4 tileset_local_position_transformed = vec4(tileset_local_position.x, tileset_local_position.y, ground_z, 1.0);
+                    vec4 model_local_position_transformed = czm_inverseModel * u_tileset_localToWorldMatrix * tileset_local_position_transformed;
+                    vsOutput.positionMC.xy = model_local_position_transformed.xy;
+                    vsOutput.positionMC.z = model_local_position_transformed.z+ modelMC.z*0.002;
+                    return;
+                }`;
+
+        }
         this.updateShader(funstr, str);
     }
 

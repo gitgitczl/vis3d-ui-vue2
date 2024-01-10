@@ -1,6 +1,7 @@
 import '../prompt/prompt.css'
 import Prompt from '../prompt/prompt.js'
 import BasePlot from './basePlot'
+import ArrowAlgorithm from './ArrowAlgorithm'
 /* 构建军事标绘 */
 /**
  * 军事标绘类
@@ -407,7 +408,7 @@ function getSituationByType(type) {
 	playObj.canPlay = false; // 是否可以自动播放
 	switch (type) {
 		case 1:
-			arrowPlot = new Cesium.ArrowAlgorithm.AttackArrow(); // 攻击箭头
+			arrowPlot = new ArrowAlgorithm.AttackArrow(); // 攻击箭头
 			minPointNum = 3;
 			maxPointNum = 999;
 			playObj.canPlay = true;
@@ -415,7 +416,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 2:
-			arrowPlot = new Cesium.ArrowAlgorithm.AttackArrowPW(); //攻击箭头平尾
+			arrowPlot = new ArrowAlgorithm.AttackArrowPW(); //攻击箭头平尾
 			minPointNum = 3;
 			maxPointNum = 999;
 			playObj.canPlay = true;
@@ -423,7 +424,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 3:
-			arrowPlot = new Cesium.ArrowAlgorithm.AttackArrowYW(); //攻击箭头燕尾
+			arrowPlot = new ArrowAlgorithm.AttackArrowYW(); //攻击箭头燕尾
 			minPointNum = 3;
 			maxPointNum = 999;
 			playObj.canPlay = true;
@@ -431,7 +432,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 4:
-			arrowPlot = new Cesium.ArrowAlgorithm.CloseCurve(); //闭合曲面
+			arrowPlot = new ArrowAlgorithm.CloseCurve(); //闭合曲面
 			minPointNum = 3;
 			maxPointNum = 999;
 			playObj.canPlay = true;
@@ -439,7 +440,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 5:
-			arrowPlot = new Cesium.ArrowAlgorithm.DoubleArrow(); //钳击箭头
+			arrowPlot = new ArrowAlgorithm.DoubleArrow(); //钳击箭头
 			minPointNum = 3;  // 最小可为三个点 为做动画效果 故写死为5个点
 			maxPointNum = 5;
 			playObj.canPlay = true;
@@ -447,7 +448,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [2, 3];
 			break;
 		case 6:
-			arrowPlot = new Cesium.ArrowAlgorithm.FineArrow(); //单尖直箭头
+			arrowPlot = new ArrowAlgorithm.FineArrow(); //单尖直箭头
 			minPointNum = 2;
 			maxPointNum = 2;
 			playObj.canPlay = true;
@@ -455,7 +456,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 7:
-			arrowPlot = new Cesium.ArrowAlgorithm.FineArrowYW(); //粗单尖直箭头(带燕尾)
+			arrowPlot = new ArrowAlgorithm.FineArrowYW(); //粗单尖直箭头(带燕尾)
 			minPointNum = 2;
 			maxPointNum = 2;
 			playObj.canPlay = true;
@@ -463,7 +464,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 8:
-			arrowPlot = new Cesium.ArrowAlgorithm.GatheringPlace(); //集结地
+			arrowPlot = new ArrowAlgorithm.GatheringPlace(); //集结地
 			minPointNum = 3;
 			maxPointNum = 3;
 			playObj.canPlay = true;
@@ -471,7 +472,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 9:
-			arrowPlot = new Cesium.ArrowAlgorithm.Lune(); //弓形面
+			arrowPlot = new ArrowAlgorithm.Lune(); //弓形面
 			minPointNum = 3;
 			playObj.canPlay = true;
 			maxPointNum = 3;
@@ -480,7 +481,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 10:
-			arrowPlot = new Cesium.ArrowAlgorithm.StraightArrow(); //粗直箭头
+			arrowPlot = new ArrowAlgorithm.StraightArrow(); //粗直箭头
 			minPointNum = 2;
 			maxPointNum = 2;
 			playObj.canPlay = true;
@@ -488,7 +489,7 @@ function getSituationByType(type) {
 			playObj.pointWZ = [maxPointNum];
 			break;
 		case 11:
-			arrowPlot = new Cesium.ArrowAlgorithm.RectFlag(); //矩形旗
+			arrowPlot = new ArrowAlgorithm.RectFlag(); //矩形旗
 			minPointNum = 2;
 			maxPointNum = 2;
 			arrowPlot.hasLine = true;
@@ -497,13 +498,13 @@ function getSituationByType(type) {
 			playObj.canPlay = false;
 			break;
 		case 12:
-			arrowPlot = new Cesium.ArrowAlgorithm.Sector(); //扇形
+			arrowPlot = new ArrowAlgorithm.Sector(); //扇形
 			minPointNum = 3;
 			maxPointNum = 3;
 			playObj.canPlay = false;
 			break;
 		case 13:
-			arrowPlot = new Cesium.ArrowAlgorithm.TrangleFlag(); //三角旗
+			arrowPlot = new ArrowAlgorithm.TrangleFlag(); //三角旗
 			minPointNum = 2;
 			maxPointNum = 2;
 			arrowPlot.hasLine = true;
@@ -512,7 +513,7 @@ function getSituationByType(type) {
 			playObj.canPlay = false;
 			break;
 		case 14:
-			arrowPlot = new Cesium.ArrowAlgorithm.CurveFlag(); //曲线旗
+			arrowPlot = new ArrowAlgorithm.CurveFlag(); //曲线旗
 			minPointNum = 2;
 			maxPointNum = 2;
 			arrowPlot.hasLine = true;
@@ -521,14 +522,14 @@ function getSituationByType(type) {
 			playObj.canPlay = false;
 			break;
 		case 15:
-			arrowPlot = new Cesium.ArrowAlgorithm.Curve(); //曲线
+			arrowPlot = new ArrowAlgorithm.Curve(); //曲线
 			minPointNum = 2;
 			maxPointNum = 999;
 			arrowPlot.onlyLine = true;
 			playObj.canPlay = true;
 			break;
 		case 16:
-			arrowPlot = new Cesium.ArrowAlgorithm.LineStraightArrow(); //单线箭头
+			arrowPlot = new ArrowAlgorithm.LineStraightArrow(); //单线箭头
 			minPointNum = 2;
 			maxPointNum = 2;
 			arrowPlot.onlyLine = true;
