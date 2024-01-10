@@ -20,7 +20,7 @@ class CreatePoint extends BasePlot {
 			pixelSize: 10,
 			outlineWidth: 1
 		}
-		this.style = Object.assign(defaultStyle, style || {});
+		this.style = Object.assign(defaultStyle, this.style || {});
 
 		/**
 		 * @property {Cesium.Cartesian3} 坐标

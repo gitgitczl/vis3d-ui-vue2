@@ -21,7 +21,7 @@ class CreatePolygon extends BasePlot {
 			outlineColor: "#000000",
 			outlineWidth: 2
 		}
-		this.style = Object.assign(defaultStyle, style || {});
+		this.style = Object.assign(defaultStyle, this.style || {});
 	}
 
 	start(callback) {

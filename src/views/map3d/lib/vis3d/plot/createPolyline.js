@@ -13,13 +13,12 @@ import animate from "../material/animate"
 class CreatePolyline extends BasePlot {
     constructor(viewer, opt) {
         super(viewer, opt);
-        this.opt = opt || {};
         this.movePush = false;
         this.type = "polyline";
         /**
          * @property {Number} [maxPointNum=Number.MAX_VALUE] 线的最大点位数量
         */
-        this.maxPointNum = style.maxPointNum || Number.MAX_VALUE; // 最多点数
+        this.maxPointNum = this.style.maxPointNum || Number.MAX_VALUE; // 最多点数
     }
 
     /**

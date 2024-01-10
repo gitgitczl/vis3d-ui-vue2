@@ -19,7 +19,7 @@ class CreateBillboard extends BasePlot {
 			verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
 			scale: 1
 		}
-		this.style = Object.assign({}, defaultStyle, style || {});
+		this.style = Object.assign({}, defaultStyle, this.style || {});
 
 		this.entity = null;
 		if (!this.style.hasOwnProperty("image")) {

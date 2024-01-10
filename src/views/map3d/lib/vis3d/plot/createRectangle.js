@@ -15,8 +15,6 @@ class CreateRectangle extends BasePlot {
     this.opt = opt || {};
     this.type = "rectangle";
     this.viewer = viewer;
-    this.style = style;
-
     /**
      * @property {Cesium.Entity} rightdownPoint 右下角实体点
      */

@@ -14,7 +14,6 @@ class CreateGltfModel extends BasePlot {
     super(viewer, opt);
     this.opt = opt || {};
     this.type = "gltfModel";
-    style = style || {};
     this.viewer = viewer;
     if (!style.uri) {
       console.warn("请输入模型地址！");

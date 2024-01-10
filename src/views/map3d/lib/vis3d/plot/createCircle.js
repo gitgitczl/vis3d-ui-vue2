@@ -17,7 +17,6 @@ class CreateCircle extends BasePlot {
       new Date().getTime() + "" + Number(Math.random() * 1000).toFixed(0)
     );
     this.viewer = viewer;
-    this.style = style;
     this.floatPoint = null;
 
     /**
