@@ -13,22 +13,22 @@ class CreateArrow extends BasePlot {
 	constructor(viewer, opt) {
 		super(viewer, opt);
 		this.opt = opt || {};
-		let { situationType, style } = this.opt || {};
+		let { arrowType, style } = this.opt || {};
 		/**
 		 * @property {String} type 标绘类型
 		 */
 		this.type = "arrow";
-		if (!situationType) {
+		if (!arrowType) {
 			console.log("缺少箭头类型")
 			return;
 		}
 		/**
-		 * @property {String} situationType 箭头类型（1~攻击箭头/2~攻击箭头平尾/3~攻击箭头燕尾/4~闭合曲面/5~钳击箭头/6~单尖直箭头/7~粗单尖直箭头/8~集结地/9~弓形面/10~粗直箭头/11~矩形棋/12~扇形/13~三角旗/14~曲线旗/15~曲线/16~单线箭头）
+		 * @property {String} arrowType 箭头类型（1~攻击箭头/2~攻击箭头平尾/3~攻击箭头燕尾/4~闭合曲面/5~钳击箭头/6~单尖直箭头/7~粗单尖直箭头/8~集结地/9~弓形面/10~粗直箭头/11~矩形棋/12~扇形/13~三角旗/14~曲线旗/15~曲线/16~单线箭头）
 		 */
-		this.situationType = situationType;
+		this.arrowType = arrowType;
 
 
-		this.arrowObj = getSituationByType(situationType);
+		this.arrowObj = getSituationByType(arrowType);
 
 		if (!this.arrowObj) return;
 		this.minPointNum = this.arrowObj.minPointNum;
