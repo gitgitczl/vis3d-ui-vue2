@@ -85,7 +85,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName("roamStyle");
+      window.workControl.closeToolByName(this.$options.name)
     },
     stopRoam() {
       if (window.nowRoam) window.nowRoam.stop();

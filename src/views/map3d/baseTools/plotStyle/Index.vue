@@ -96,7 +96,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName('plotStyle')
+      window.workControl.closeToolByName(this.$options.name)
     },
     setAttr(id) {
       /* 根据当前编辑的对象的样式类型 构建样式面板 */

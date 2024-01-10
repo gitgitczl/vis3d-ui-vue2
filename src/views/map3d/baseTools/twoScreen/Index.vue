@@ -153,7 +153,7 @@ export default {
       window.vis3d.util.setCameraView(cameraView, viewer2);
     },
     close() {
-      window.workControl.closeToolByName("twoScreen");
+      window.workControl.closeToolByName(this.$options.name)
     },
     // 设置图层显示隐藏
     setLayerVisible() {

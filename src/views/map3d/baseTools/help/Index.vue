@@ -41,7 +41,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName("help")
+      window.workControl.closeToolByName(this.$options.name)
     },
   },
 };

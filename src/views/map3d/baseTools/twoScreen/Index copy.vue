@@ -175,7 +175,7 @@ export default {
       window.vis3d.util.setCameraView(cameraView, viewer2);
     },
     close() {
-      window.workControl.closeToolByName("twoScreen");
+      window.workControl.closeToolByName(this.$options.name)
     },
     setLayeralpha(data) {
       let layerOpt = window.mapViewer2.operateLayerTool.getLayerObjById(

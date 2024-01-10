@@ -226,7 +226,7 @@ export default {
     },
 
     close() {
-      window.workControl.closeToolByName("monomer")
+      window.workControl.closeToolByName(this.$options.name)
     },
   },
 };

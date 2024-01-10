@@ -71,7 +71,7 @@ export default {
       lastLayerAttr = null;
     },
     close() {
-      window.workControl.closeToolByName("layerSplit");
+      window.workControl.closeToolByName(this.$options.name)
     }
   },
 };

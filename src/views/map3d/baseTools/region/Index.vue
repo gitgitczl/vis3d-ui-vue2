@@ -40,7 +40,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName('region')
+      window.workControl.closeToolByName(this.$options.name)
     },
     setRegion(data) {
       if (regionPolygon) {

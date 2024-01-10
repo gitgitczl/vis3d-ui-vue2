@@ -331,7 +331,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName('roam');
+      window.workControl.closeToolByName(this.$options.name)
       window.workControl.closeToolByName("roamStyle");
     },
     startDraw() {

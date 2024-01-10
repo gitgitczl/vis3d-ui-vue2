@@ -117,7 +117,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName("pathPlan")
+      window.workControl.closeToolByName(this.$options.name)
     },
 
     drawStrart() {

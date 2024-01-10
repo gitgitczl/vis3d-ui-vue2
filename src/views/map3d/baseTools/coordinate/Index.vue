@@ -86,7 +86,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName('coordinate');
+      window.workControl.closeToolByName(this.$options.name)
     },
     showMarker() {
       if (!this.lng || !this.lat) {

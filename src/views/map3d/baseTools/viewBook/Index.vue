@@ -43,7 +43,7 @@ export default {
 
   methods: {
     close() {
-      window.workControl.closeToolByName("viewBook");
+      window.workControl.closeToolByName(this.$options.name)
     },
 
     /**

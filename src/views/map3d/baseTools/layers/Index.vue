@@ -84,7 +84,7 @@ export default {
   destroyed() { },
   methods: {
     close() {
-      window.workControl.closeToolByName('layers');
+      window.workControl.closeToolByName(this.$options.name)
     },
     setLayeralpha(data) {
       let layerOpt = window.mapViewer.operateLayerTool.getLayerObjById(data.id);

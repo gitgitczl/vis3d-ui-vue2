@@ -66,7 +66,7 @@ export default {
   destroyed() {},
   methods: {
     close() {
-      window.workControl.closeToolByName('baseMap');
+      window.workControl.closeToolByName(this.$options.name)
     },
 
     // 选中底图

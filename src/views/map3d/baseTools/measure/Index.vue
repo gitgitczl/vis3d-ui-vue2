@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     close() {
-      window.workControl.closeToolByName("measure")
+      window.workControl.closeToolByName(this.$options.name)
     },
 
     /**

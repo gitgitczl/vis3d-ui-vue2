@@ -6,6 +6,22 @@ export default {
     }, // 是否创建面板
     "tools": [
         {
+            "name": "自定义面板",
+            "show": false,
+            "toolName": "custom",
+            "position": {
+                "top": 60,
+                "left": 10
+            },
+            "size": {
+                "width": 380,
+                "height": 480
+            },
+            "closeDisableSelf": false,
+            "closeDisableExcept": [],
+            "openDisableAnothers": true
+        },
+        {
             "name": "图上标绘",
             "show": false,
             "toolName": "plot",

@@ -82,11 +82,19 @@ export default {
             case "help":
                 this.components.push(import("@/views/map3d/baseTools/help/Index.vue"));
                 break;
+            // 此处新增工具菜单
+            case "custom":
+                this.components.push(import("@/views/map3d/baseTools/custom/Index.vue"));
+                break;
             default: ;
         }
     },
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {
+        if(!name){
+            console.log("缺少菜单名称===>",name);
+            return ;
+        }
         console.log("closeTool===>", name, dutoName);
         let toolAttr = this.getComponentByName(name);
         /*  if(!toolAttr) return ; */

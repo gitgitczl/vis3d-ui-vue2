@@ -97,6 +97,12 @@ export default {
       ],
       mapOperate: [
         {
+          icon: "icon-logozhanweibiao",
+          type: "",
+          name: "自定义面板",
+          toolName: "custom",
+        },
+        {
           icon: "icon-tushangcehui",
           type: "",
           name: "图上标绘",

@@ -166,7 +166,7 @@ export default {
     },
 
     close() {
-      window.workControl.closeToolByName("plot");
+      window.workControl.closeToolByName(this.$options.name)
     },
 
     btnClick(item) {

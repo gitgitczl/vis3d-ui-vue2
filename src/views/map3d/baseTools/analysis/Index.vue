@@ -169,7 +169,7 @@ export default {
   destroyed() { },
   methods: {
     close() {
-      window.workControl.closeToolByName("analysis");
+      window.workControl.closeToolByName(this.$options.name)
     },
 
     tomain() {

@@ -88,7 +88,7 @@ export default {
       if (layerSplit) layerSplit.setLayer(layer);
     },
     close() {
-      window.workControl.closeToolByName("layerSplit")
+      window.workControl.closeToolByName(this.$options.name)
     }
   },
 };
