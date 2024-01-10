@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import TilesetCut from "./Tileset/TilesetCut"
 /* 模型裁剪 */
 let cut = undefined;
 let tileset = undefined;
@@ -79,7 +78,7 @@ export default {
           positions = entObj.getPositions();
         }
         if (!cut) {
-          cut = new TilesetCut(tileset);
+          cut = new widnow.vis3d.tileset.Cut(tileset);
         }
         cut.addRegion({
           positions: positions,

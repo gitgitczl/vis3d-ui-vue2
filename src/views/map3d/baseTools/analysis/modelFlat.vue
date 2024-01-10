@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import TilesetFlat from "./Tileset/TilesetFlat"
 /* 模型压平 */
 let flat = undefined;
 let tileset = undefined;
@@ -88,7 +87,7 @@ export default {
           positions = entObj.getPositions();
         }
         if (!flat) {
-          flat = new TilesetFlat(tileset, {
+          flat = new widnow.vis3d.tileset.Flat(tileset, {
             flatHeight: -30,
           });
         }

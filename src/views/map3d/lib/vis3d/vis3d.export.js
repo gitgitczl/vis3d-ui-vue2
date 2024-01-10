@@ -152,8 +152,10 @@ const view = {
 import Clip from "./tileset/tilesetClip"
 import Edit from "./tileset/tilesetEdit"
 import PointLight from "./tileset/pointLight"
+import Cut from "./tileset/tilesetCut"
+import Flat from "./tileset/tilesetFlat"
 const tileset = {
-  Clip, Edit, PointLight
+  Clip, Edit, PointLight, Cut, Flat
 }
 
 /* 分析相关 */
@@ -185,7 +187,6 @@ const cover = {
 
 /* 雷达传感器 */
 import * as sensor from "./sensor/radar";
-
 import MapViewer from "./mapViewer"
 
 
