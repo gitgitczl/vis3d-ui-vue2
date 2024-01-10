@@ -13,8 +13,8 @@
 </template>
 <script>
 
-let layerSplit = null;
-let lastLayerAttr = {}; // 当前操作的图层
+let layerSplit = undefined;
+let splitLayerTool = undefined;
 export default {
   name: "layerSplit",
   components: {
@@ -40,25 +40,32 @@ export default {
     const baseLayerObjs = window.mapViewer.baseLayerTool.layerObjs;
     const operateLayerObjs = window.mapViewer.operateLayerTool.layerObjs;
 
+    if (!splitLayerTool) splitLayerTool = new window.vis3d.layer.Tool(window.viewer);
     for (let i = 0; i < baseLayerObjs.length; i++) {
       const item = baseLayerObjs[i];
-      this.layerList.push(JSON.parse(JSON.stringify(item.attr)));
+      const attr = JSON.parse(JSON.stringify(item.attr));
+      attr.show = false;
+      this.layerList.push(attr);
+      splitLayerTool.add(attr);
     }
 
     for (let j = 0; j < operateLayerObjs.length; j++) {
       const item = operateLayerObjs[j];
-      this.layerList.push(JSON.parse(JSON.stringify(item.attr)));
+      const attr = JSON.parse(JSON.stringify(item.attr));
+      attr.show = false;
+      this.layerList.push(attr);
+      splitLayerTool.add(attr);
     }
 
     this.nowSelectId = this.layerList[0].id;
+    const lbj = splitLayerTool.getLayerObjById(this.nowSelectId).layerObj;
     // 默认选中第一个
-    const layer = baseLayerObjs[0].layer;
+    splitLayerTool.setVisible(this.nowSelectId, true);
     if (!layerSplit) {
       layerSplit = new this.vis3d.common.LayerSplit(window.viewer, {
-        layer: layer,
+        layer: lbj.layer,
       });
     }
-
 
   },
   destroyed() {
@@ -66,58 +73,23 @@ export default {
       layerSplit.destroy();
       layerSplit = null;
     }
-    this.resetLastlyr();
+    if (splitLayerTool) {
+      splitLayerTool.destroy();
+      splitLayerTool = undefined;
+    }
+    layerSplit = undefined;
+    splitLayerTool = undefined;
   },
   methods: {
-    changeLayer(attr) {
-      // 还原上一个选中的对象
-      this.resetLastlyr();
-      let lyr = this.getLayerObjById(attr.id);
-      if (!lyr || !layerSplit) return;
-      lastLayerAttr = attr;
-    },
-    // 还原上一个操作
-    resetLastlyr() {
-      if (!lastLayerAttr) return;
-      let initState = lastLayerAttr.initState;
-      let lyrObj = window.mapViewer.operateLayerTool.getLayerObjById(
-        lastLayerAttr.id
-      ).layerObj;
-      if (lyrObj) lyrObj.setVisible(initState);
-      lastLayerAttr = null;
+    changeLayer(id) {
+      splitLayerTool.hideAll();
+      const layer = splitLayerTool.getLayerObjById(id).layerObj.layer;
+      splitLayerTool.setVisible(id, true);
+      if (layerSplit) layerSplit.setLayer(layer);
     },
     close() {
       window.workControl.closeToolByName("layerSplit")
-    },
-    // childeren转为线性
-    getAllLayers(lys) {
-      lys = lys || {};
-      lys = JSON.parse(JSON.stringify(lys));
-      let layers = [];
-      let groups = [];
-      function query(attr) {
-        if (!attr.children) {
-          layers.push(attr);
-        } else {
-          let newAttr = JSON.parse(JSON.stringify(attr));
-          delete newAttr.children;
-          groups.push(newAttr);
-
-          attr.children.forEach(function (item) {
-            query(item);
-          });
-        }
-      }
-
-      lys.forEach((element) => {
-        query(element);
-      });
-
-      return {
-        layers,
-        groups,
-      };
-    },
+    }
   },
 };
 </script>

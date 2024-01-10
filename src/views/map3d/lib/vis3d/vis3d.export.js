@@ -129,13 +129,14 @@ import Navigation from "./common/navgation/CesiumNavigation"
 import ZoomTool from "./common/zoomTool/zoomTool";
 import RightTool from "./common/rightTool/rightTool";
 import LnglatTool from "./common/lnglatTool/lnglatTool";
+import LayerSplit from "./common/layerSplit/layerSplit"
 import Cluster from "./common/cluster/cluster"
 import Prompt from "./prompt/prompt";
 import SkyboxGround from "./common/skyboxGround"
 import OverviewMap from "./common/overviewMap/overviewMap";
 import selectModel from "./common/selectModel"
 const common = {
-  Navigation, ZoomTool, RightTool, LnglatTool,
+  Navigation, ZoomTool, RightTool, LnglatTool, LayerSplit,
   Cluster, Prompt, SkyboxGround, OverviewMap, selectModel
 }
 

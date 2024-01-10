@@ -6,14 +6,14 @@ import DrawTool from "./plot/drawTool";
 import LayerTool from "./layer/layerTool";
 import PopupTooltipTool from "./common/popupTooltip/popupTooltip"
 
-import "./gadgets/rightTool/rightTool.css";
-import RightTool from "./gadgets/rightTool/rightTool";
+import "./common/rightTool/rightTool.css";
+import RightTool from "./common/rightTool/rightTool";
 
-import "./gadgets/lnglatTool/lnglatTool.css"
-import LatlngNavigation from "./gadgets/lnglatTool/lnglatTool";
+import "./common/lnglatTool/lnglatTool.css"
+import LatlngNavigation from "./common/lnglatTool/lnglatTool";
 
-import "./gadgets/navgation/styles/cesium-navigation.css"
-import Navigation from "./gadgets/navgation/CesiumNavigation";
+import "./common/navgation/styles/cesium-navigation.css"
+import Navigation from "./common/navgation/CesiumNavigation";
 
 /**
  * 定义mapViewer.opt参数

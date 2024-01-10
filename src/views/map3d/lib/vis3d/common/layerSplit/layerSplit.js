@@ -17,12 +17,13 @@ class LayerSplit {
         this.handler = null;
         this.moveActive = false;
         this.opt = opt || {};
-         /**
-         * @property {Cesium.Layer} layer 对比的图层
-         */
+        /**
+        * @property {Cesium.Layer} layer 对比的图层
+        */
         this.layer = this.opt.layer;
         /*   if (!this.layer) return; */
-        if (this.layer) this.layer.splitDirection = window.Cesium.SplitDirection.RIGHT; // 默认右侧分割
+        this.splitDirection = this.opt.splitDirection == undefined ? 1 : this.opt.splitDirection;
+        if (this.layer) this.layer.splitDirection = this.splitDirection; // 默认右侧分割
         this.mapContainer = this.viewer.container;
         this.init();
     }
@@ -34,7 +35,7 @@ class LayerSplit {
         this.slider.style.width = "5px";
         this.slider.style.position = "absolute";
         this.slider.style.left = "50%";
-       /*  this.slider.style.zIndex = "999"; */
+        /*  this.slider.style.zIndex = "999"; */
         this.slider.style.top = "0px";
         this.slider.style.background = "rgba(255,255,255,0.5)";
         this.mapContainer.appendChild(this.slider);
@@ -49,10 +50,10 @@ class LayerSplit {
             that.moveActive = true;
         }, Cesium.ScreenSpaceEventType.PINCH_START);
 
-        this.handler.setInputAction(function(movement){
+        this.handler.setInputAction(function (movement) {
             that.move(movement)
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-        this.handler.setInputAction(function(movement){
+        this.handler.setInputAction(function (movement) {
             that.move(movement)
         }, Cesium.ScreenSpaceEventType.PINCH_MOVE);
 
@@ -97,7 +98,7 @@ class LayerSplit {
         if (!layer) return;
         this.layer.splitDirection = window.Cesium.SplitDirection.NONE;
         this.layer = layer;
-        this.layer.splitDirection = window.Cesium.SplitDirection.LEFT;
+        this.layer.splitDirection = this.splitDirection;
     }
 }
 
