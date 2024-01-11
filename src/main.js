@@ -7,10 +7,10 @@ Vue.use(ElementUI);
 // 1、引入字体库
 import '@/assets/font/iconfont.css'
 // 2、引入核心类库vis3d.js
-/* import vis3d from "@/views/map3d/lib/vis3d/vis3d.export.js"
-import "@/views/map3d/lib/vis3d/vis3d.css" */
-import "vis3d/vis3d.css"
-import vis3d from "vis3d/vis3d.min.js"
+import vis3d from "@/views/map3d/lib/vis3d/vis3d.export.js"
+import "@/views/map3d/lib/vis3d/vis3d.css"
+/* import "vis3d/vis3d.css"
+import vis3d from "vis3d/vis3d.min.js" */
 Vue.prototype.vis3d = window.vis3d = vis3d;
 Vue.config.productionTip = false
 // 3、全局引入自定义拖拽组件

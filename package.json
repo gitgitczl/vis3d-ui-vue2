@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "jsdoc": "jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "@turf/turf": "^6.5.0",

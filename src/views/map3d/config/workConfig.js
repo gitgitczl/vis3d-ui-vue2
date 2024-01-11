@@ -6,7 +6,7 @@ export default {
     }, // 是否创建面板
     "tools": [
         {
-            "name": "自定义面板",
+            "title": "自定义面板",
             "show": false,
             "toolName": "custom",
             "position": {
@@ -19,10 +19,11 @@ export default {
             },
             "closeDisableSelf": false,
             "closeDisableExcept": [],
-            "openDisableAnothers": true
+            "openDisableAnothers": true,
+            "component" : import("@/views/map3d/baseTools/custom/Index.vue")
         },
         {
-            "name": "图上标绘",
+            "title": "图上标绘",
             "show": false,
             "toolName": "plot",
             "position": {
@@ -37,10 +38,11 @@ export default {
             "closeDisableExcept": [
                 "plotStyle"
             ],
-            "openDisableAnothers": true
+            "openDisableAnothers": true,
+            "component" : import("@/views/map3d/baseTools/plot/Index.vue")
         },
         {
-            "name": "标绘属性",
+            "title": "标绘属性",
             "show": false,
             "toolName": "plotStyle",
             "position": {
@@ -53,10 +55,11 @@ export default {
             },
             "closeDisableSelf": true,
             "closeDisableExcept": [],
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/plotStyle/Index.vue")
         },
         {
-            "name": "图上量算",
+            "title": "图上量算",
             "show": false,
             "toolName": "measure",
             "position": {
@@ -68,10 +71,11 @@ export default {
                 "height": 380
             },
             "closeDisableSelf": true,
-            "openDisableAnothers": true
+            "openDisableAnothers": true,
+            "component" : import("@/views/map3d/baseTools/measure/Index.vue")
         },
         {
-            "name": "底图设置",
+            "title": "底图设置",
             "show": false,
             "toolName": "baseMap",
             "position": {
@@ -83,10 +87,11 @@ export default {
                 "height": 300
             },
             "closeDisableSelf": false,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/baseMap/Index.vue")
         },
         {
-            "name": "帮助说明",
+            "title": "帮助说明",
             "show": false,
             "toolName": "help",
             "position": {
@@ -98,10 +103,11 @@ export default {
                 "height": 200
             },
             "closeDisableSelf": false,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/help/Index.vue")
         },
         {
-            "name": "图层管理",
+            "title": "图层管理",
             "show": false,
             "toolName": "layers",
             "position": {
@@ -114,10 +120,11 @@ export default {
             },
             "closeDisableSelf": false,
             "openDisableAnothers": false,
-            "disableByOthers": false
+            "disableByOthers": false,
+            "component" : import("@/views/map3d/baseTools/layers/Index.vue")
         },
         {
-            "name": "空间分析",
+            "title": "空间分析",
             "show": false,
             "toolName": "analysis",
             "position": {
@@ -129,10 +136,11 @@ export default {
                 "height": 400
             },
             "closeDisableSelf": false,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/analysis/Index.vue")
         },
         {
-            "name": "坐标定位",
+            "title": "坐标定位",
             "show": false,
             "toolName": "coordinate",
             "position": {
@@ -144,10 +152,11 @@ export default {
                 "height": 300
             },
             "closeDisableSelf": true,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/coordinate/Index.vue")
         },
         {
-            "name": "分屏对比",
+            "title": "分屏对比",
             "show": false,
             "size": {
                 "width": 350,
@@ -159,10 +168,11 @@ export default {
             },
             "toolName": "twoScreen",
             "closeDisableSelf": true,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/twoScreen/Index.vue")
         },
         {
-            "name": "区域导航",
+            "title": "区域导航",
             "show": false,
             "toolName": "region",
             "closeDisableSelf": true,
@@ -175,9 +185,10 @@ export default {
                 "top": 60,
                 "left": 10
             },
+            "component" : import("@/views/map3d/baseTools/region/Index.vue")
         },
         {
-            "name": "路径规划",
+            "title": "路径规划",
             "show": false,
             "toolName": "pathPlan",
             "position": {
@@ -185,10 +196,11 @@ export default {
                 "left": 10
             },
             "closeDisableSelf": true,
-            "openDisableAnothers": false
+            "openDisableAnothers": false,
+            "component" : import("@/views/map3d/baseTools/pathPlan/Index.vue")
         },
         {
-            "name": "视角书签",
+            "title": "视角书签",
             "show": false,
             "toolName": "viewBook",
             "closeDisableSelf": true,
@@ -196,10 +208,11 @@ export default {
             "position": {
                 "top": 60,
                 "left": 10
-            }
+            },
+            "component" : import("@/views/map3d/baseTools/viewBook/Index.vue")
         },
         {
-            "name": "飞行漫游",
+            "title": "飞行漫游",
             "show": false,
             "toolName": "roam",
             "closeDisableSelf": true,
@@ -210,10 +223,11 @@ export default {
             "position": {
                 "top": 60,
                 "left": 10
-            }
+            },
+            "component" : import("@/views/map3d/baseTools/roam/Index.vue")
         },
         {
-            "name": "漫游属性",
+            "title": "漫游属性",
             "show": false,
             "toolName": "roamStyle",
             "closeDisableSelf": false,
@@ -225,10 +239,11 @@ export default {
             "size": {
                 "width": 350,
                 "height": 400
-            }
+            },
+            "component" : import("@/views/map3d/baseTools/roamStyle/Index.vue")
         },
         {
-            "name": "卷帘对比",
+            "title": "卷帘对比",
             "show": false,
             "toolName": "layerSplit",
             "closeDisableSelf": true,
@@ -240,10 +255,11 @@ export default {
             "size": {
                 "width": 350,
                 "height": 180
-            }
+            },
+            "component" : import("@/views/map3d/baseTools/layerSplit/Index.vue")
         },
         {
-            "name": "单体化",
+            "title": "单体化",
             "show": false,
             "toolName": "monomer",
             "closeDisableSelf": true,
@@ -255,7 +271,8 @@ export default {
             "position": {
                 "top": 60,
                 "left": 10
-            }
+            },
+            "component" : import("@/views/map3d/baseTools/monomer/Index.vue")
         }
     ]
 }

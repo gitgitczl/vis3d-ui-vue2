@@ -26,7 +26,7 @@
 
     <!-- 动态创建地图组件 -->
     <div v-for="(item, index) in mapComphonets" :key="index">
-      <component :ref="item.toolName" :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.name"
+      <component :ref="item.toolName" :is="item.module" v-if="item.show" v-show="item.domShow" :title="item.title"
         @fire="fire" :position="item.position" :size="item.size" :attr="item.attr" :iconfont="item.iconfont"
         @close="close(item)">
       </component>
@@ -41,8 +41,7 @@ import html2canvas from "html2canvas";
 import printJS from "print-js";
 import { workConfig } from "../map3d/config/export"
 /* 模块控制器 */
-import workControl from "./workControl.js";
-
+import workControl from "./config/toolControl";
 window.workControl = workControl; // 绑定到全局
 
 let zoomTool = undefined; // 缩放工具
