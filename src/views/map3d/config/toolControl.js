@@ -1,123 +1,354 @@
-
-const buildTime = "2024-01-11 10:00"
-const setConsoleLog = () => {
-    console.group('平台说明（🗺 三维地图开发平台）：');
-    console.log(`%c 公司官网 ：http://mapgl.com`, `color: red; font-weight: bold`);
-    console.log(`%c 编译日期 ：${buildTime}`, `color: red; font-weight: bold`);
-    console.log(`%c 版本信息 ：Cesium：${Cesium.VERSION}; vis3d：${window.vis3d?.VERSION || "--"}`, `color: #03A9F4; font-weight: bold`);
-    console.log(`%c 其    它 ：
-        1、如当前版本出现问题，请联系：15156540451（微信同号）
-        2、当前控制台禁止清除，如需清除请联系开发者`, `color: #03A9F4; font-weight: bold`);
-    console.groupEnd();
-
-    window.console.clear = function () {
-        alert("无版权，禁止清除控制台！");
-    }
+function _0x4e2a() {
+    const _0x1eeaa1 = [
+        'nOrKR',
+        'then',
+        'U4QyVFNSVB',
+        '%c\x20版本信息\x20：C',
+        'xuoeT',
+        'VBRCVBMiVF',
+        'VCMCVFNyVB',
+        'NCVFRiVCQy',
+        '%c\x20编译日期\x20：',
+        'VERSION',
+        '缺少菜单名称===>',
+        'VBQyVFNSU4',
+        'RCU5MyVFNS',
+        'mLCRc',
+        'JUJDJTg5\x20',
+        'NvbQ==',
+        'ExJUU1JTkw',
+        'g5JUU3JUJC',
+        'kxJUU1JUI5',
+        'NiU4RSVBNy',
+        'JUU0JUI4JT',
+        'A9F4;\x20font',
+        'log',
+        'getCompone',
+        '471Gcgrsq',
+        'color:\x20#03',
+        '禁止清除控制台！',
+        'kwCph',
+        'leSelf',
+        'U5QyU4MCVF',
+        '3349836kqCObb',
+        'component',
+        'JUIzJUU1JT',
+        'JUU1JTg1JU',
+        'FXScd',
+        'OAEWG',
+        'NyVCQSVFNy',
+        'U4OSU4RCVF',
+        'ght:\x20bold',
+        'QwNDUxJUVG',
+        'all',
+        'openDisabl',
+        'vis3d',
+        'VGJUJDJTg4',
+        'tools',
+        'VFRiVCQyU5',
+        'NCVFOCVBRi',
+        'JUI0JUU1JT',
+        'JUIwJUU4JU',
+        'toolsState',
+        'domShow',
+        'ntByName',
+        'MiVFMyU4MC',
+        'attr',
+        'VFNSU4RiU5',
+        'oBhlU',
+        'TtFEr',
+        'components',
+        'esium：',
+        '当前模块配置有误，缺',
+        '210144kaDtrM',
+        't:\x20bold',
+        'NiVFNSU4Ri',
+        'NiU4MSVFNi',
+        'push',
+        'font-weigh',
+        '%c\x20',
+        'JTlBaHR0cC',
+        '==>',
+        'CusPh',
+        'JTlCJUJFJU',
+        'JUU1JUI5JU',
+        'length',
+        'JThDJUU1JT',
+        '：\x0a\x20\x20\x20\x20\x20\x20\x20\x20',
+        'U4MSU5NCVF',
+        'color:\x20red',
+        'IuQAI',
+        ';\x20vis3d：',
+        'OCVFNiU5Qy',
+        'disableByO',
+        'JUJDJTg4JU',
+        '少toolName',
+        '%c\x20其\x20\x20\x20\x20它\x20',
+        'jVyMG',
+        '7782QwkVFr',
+        '11666389mpbKWI',
+        'btoNZ',
+        'RiVCNyVFOC',
+        'U4NSk=\x20',
+        'UzQSUyRiUy',
+        'closeDisab',
+        'NiU4MiVFNS',
+        'JUU0JUJGJU',
+        'JUYwJTlGJT',
+        '36879435XxkICv',
+        '\x2010:00',
+        'U4MSVFNSVC',
+        'default',
+        'NSU4OSU4RC',
+        'indexOf',
+        'U4QyVFOCVB',
+        'eAnothers',
+        '-weight:\x20b',
+        'JUU1JThGJT',
+        'U1JUJFJUFF',
+        'k3JUJBJTIw',
+        'module',
+        'MSVFOCU4MC',
+        'name',
+        '2024-01-11',
+        'NiVCOCU4NS',
+        'old',
+        'clear',
+        'console',
+        'VFNSU4OCVC',
+        'MSU5NCVFNy',
+        'mkHOb',
+        'groupEnd',
+        'JUI4JUU1JU',
+        'IwJUVGJUJD',
+        'leExcept',
+        'hGJUIwJUVG',
+        'VCNyVFOCU4',
+        'NyVCMyVCQi',
+        'lzcbn',
+        'IzJUU1JThG',
+        'JUJEJTkxJT',
+        'VFNyU4OSU4',
+        'kJKCh',
+        'thers',
+        'group',
+        '220prxjwZ',
+        'HnuPD',
+        'Arr',
+        '\x0a\x20\x20\x20\x20\x20\x20\x20\x20',
+        'OCVFRiVCQy',
+        'JTk4JThFJU',
+        'VYfSi',
+        'hGJUI3JUVG',
+        'OSU5NyVBRS',
+        'yName',
+        'FFJTk4JUU3',
+        'NiU4MiVFOS',
+        'JVTYO',
+        '6234440pFDCpf',
+        'VFOSU5OSVB',
+        'U1JUJDJTgw',
+        '6400700gTpAyP',
+        'closeToolB',
+        'lDJUIwJUU1',
+        'VUTSH',
+        'lwvZB',
+        'OgGlL',
+        'toolName',
+        'U4MSVFNSVB',
+        'MSVFMyU4MC',
+        'QTE1MTU2NT',
+        'NSVCQyU4MC',
+        'VCMyVCQiVF',
+        'tjwhv',
+        'FGJUI0JUU2',
+        'VCRCU5MyVF',
+        'show',
+        'Rm1hcGdsLm',
+        'closeTool=',
+        'U4RSVCMCVF',
+        ';\x20font-wei',
+        'FDJUU1JThG',
+        'VFOSVBMiU5'
+    ];
+    _0x4e2a = function () {
+        return _0x1eeaa1;
+    };
+    return _0x4e2a();
 }
-setConsoleLog();
-
-// 模块控制器
+const _0x4dfa25 = _0x43ed;
+(function (_0x918af8, _0x41eac9) {
+    const _0x29e261 = _0x43ed, _0x388c63 = _0x918af8();
+    while (!![]) {
+        try {
+            const _0x464a67 = -parseInt(_0x29e261(0xc3)) / (0x1dc9 + -0x2b3 * 0xc + 0x29c) * (parseInt(_0x29e261(0x100)) / (0x134f + 0x1 * 0x243e + -0x378b)) + parseInt(_0x29e261(0xc9)) / (0x259a + 0x5 * -0x41b + -0x1110) + parseInt(_0x29e261(0x95)) / (-0x1f59 + 0x2351 + -0x5c * 0xb) + parseInt(_0x29e261(0x85)) / (-0x15e9 * -0x1 + -0x21b5 + 0xbd1) * (-parseInt(_0x29e261(0xe7)) / (-0x1a7e + 0x12b4 * -0x1 + 0x2d38)) + -parseInt(_0x29e261(0x101)) / (-0x21a * -0x11 + -0x5 * 0x7cf + 0x358) + -parseInt(_0x29e261(0x92)) / (-0x9cb + -0x1eb * -0x6 + 0x1af * -0x1) + parseInt(_0x29e261(0x10a)) / (-0x26d3 + 0xf9 * -0x7 + 0x1b * 0x1b1);
+            if (_0x464a67 === _0x41eac9)
+                break;
+            else
+                _0x388c63['push'](_0x388c63['shift']());
+        } catch (_0x53f14c) {
+            _0x388c63['push'](_0x388c63['shift']());
+        }
+    }
+}(_0x4e2a, -0x236b2 + -0x8a6a5 + 0x1a0b7c));
+const buildTime = _0x4dfa25(0x119) + _0x4dfa25(0x10b), setConsoleLog = () => {
+        const _0x38b82 = _0x4dfa25, _0x3f69a9 = {
+                'HnuPD': _0x38b82(0xc5),
+                'oBhlU': function (_0x26fd55) {
+                    return _0x26fd55();
+                },
+                'OAEWG': function (_0x45d49e, _0x6f39db) {
+                    return _0x45d49e(_0x6f39db);
+                },
+                'nOrKR': function (_0x1d2447, _0x17a2ee) {
+                    return _0x1d2447(_0x17a2ee);
+                },
+                'tjwhv': function (_0x25d7fa, _0x50c45f) {
+                    return _0x25d7fa(_0x50c45f);
+                },
+                'IuQAI': function (_0xb63195, _0x32451c) {
+                    return _0xb63195(_0x32451c);
+                },
+                'kwCph': function (_0x21887a, _0xf68578) {
+                    return _0x21887a(_0xf68578);
+                }
+            };
+        let _0x280751 = _0x38b82(0xf2) + _0x38b82(0x7f) + _0x38b82(0xdb) + _0x38b82(0xa2) + _0x38b82(0x8a) + _0x38b82(0xd6) + _0x38b82(0x109) + _0x38b82(0x115) + _0x38b82(0xbf) + _0x38b82(0xbc) + _0x38b82(0xda) + _0x38b82(0x97) + _0x38b82(0xf1) + _0x38b82(0x94) + _0x38b82(0x113) + _0x38b82(0xbd) + _0x38b82(0xcb) + _0x38b82(0x7b) + _0x38b82(0xb9), _0x44bf36 = _0x38b82(0xcc) + _0x38b82(0xa9) + _0x38b82(0x78) + _0x38b82(0x8f) + _0x38b82(0x80) + _0x38b82(0x79) + _0x38b82(0xee) + _0x38b82(0x105) + _0x38b82(0xa5) + _0x38b82(0xba), _0x4f6bd1 = _0x38b82(0x9d) + _0x38b82(0x9c) + _0x38b82(0x107) + _0x38b82(0xa3) + _0x38b82(0x10e) + _0x38b82(0x81) + _0x38b82(0xfa) + _0x38b82(0xb6) + _0x38b82(0xcf) + _0x38b82(0xa7) + _0x38b82(0x8d) + _0x38b82(0xaa) + _0x38b82(0x89) + _0x38b82(0x110) + _0x38b82(0x103) + _0x38b82(0xf6) + _0x38b82(0x7d) + _0x38b82(0xd8) + _0x38b82(0x9e) + _0x38b82(0xd2) + _0x38b82(0xfc) + _0x38b82(0x114) + _0x38b82(0x108) + _0x38b82(0xbb) + _0x38b82(0xf4) + _0x38b82(0x8c) + _0x38b82(0xb9), _0x5e2806 = _0x38b82(0xdf) + _0x38b82(0x10c) + _0x38b82(0xb7) + _0x38b82(0xd0) + _0x38b82(0xbe) + _0x38b82(0x11e) + _0x38b82(0xe9) + _0x38b82(0xb1) + _0x38b82(0xea) + _0x38b82(0xb0) + _0x38b82(0x11a) + _0x38b82(0x93) + _0x38b82(0xb2) + _0x38b82(0xad) + _0x38b82(0x90) + _0x38b82(0xc8) + _0x38b82(0x11a) + _0x38b82(0x93) + _0x38b82(0xd9) + _0x38b82(0x7c) + _0x38b82(0x75) + _0x38b82(0xa0) + _0x38b82(0x9f) + _0x38b82(0xe1) + _0x38b82(0x117) + _0x38b82(0x104);
+        return _0x280751 = _0x3f69a9[_0x38b82(0xce)](decodeURIComponent, _0x3f69a9[_0x38b82(0xab)](atob, _0x280751)), _0x44bf36 = _0x3f69a9[_0x38b82(0xab)](decodeURIComponent, _0x3f69a9[_0x38b82(0xa1)](atob, _0x44bf36)), _0x4f6bd1 = _0x3f69a9[_0x38b82(0xa1)](decodeURIComponent, _0x3f69a9[_0x38b82(0xf8)](atob, _0x4f6bd1)), _0x5e2806 = _0x3f69a9[_0x38b82(0xc6)](decodeURIComponent, _0x3f69a9[_0x38b82(0xc6)](atob, _0x5e2806)), console[_0x38b82(0x84)]('%c' + _0x280751 + '：', _0x38b82(0xec) + _0x38b82(0xe8)), console[_0x38b82(0xc1)](_0x38b82(0xed) + _0x44bf36, _0x38b82(0xf7) + _0x38b82(0xa8) + _0x38b82(0xd1)), console[_0x38b82(0xc1)](_0x38b82(0xb3) + buildTime, _0x38b82(0xf7) + _0x38b82(0xa8) + _0x38b82(0xd1)), console[_0x38b82(0xc1)](_0x38b82(0xae) + _0x38b82(0xe5) + Cesium[_0x38b82(0xb4)] + _0x38b82(0xf9) + (window[_0x38b82(0xd5)]?.[_0x38b82(0xb4)] || '--'), _0x38b82(0xc4) + _0x38b82(0xc0) + _0x38b82(0x112) + _0x38b82(0x11b)), console[_0x38b82(0xc1)](_0x38b82(0xfe) + _0x38b82(0xf5) + _0x4f6bd1 + _0x38b82(0x88) + _0x5e2806, _0x38b82(0xc4) + _0x38b82(0xc0) + _0x38b82(0x112) + _0x38b82(0x11b)), console[_0x38b82(0x77)](), window[_0x38b82(0x11d)][_0x38b82(0x11c)] = function () {
+            const _0x2847b8 = _0x38b82;
+            console[_0x2847b8(0xc1)](_0x3f69a9[_0x2847b8(0x86)]), _0x3f69a9[_0x2847b8(0xe2)](setConsoleLog);
+        }, !![];
+    };
+function _0x43ed(_0xdb963b, _0x31f065) {
+    const _0x380c2f = _0x4e2a();
+    return _0x43ed = function (_0x4f9291, _0x3c0564) {
+        _0x4f9291 = _0x4f9291 - (0x1c * -0xe3 + 0x1349 * -0x1 + 0x2c92);
+        let _0x31012c = _0x380c2f[_0x4f9291];
+        return _0x31012c;
+    }, _0x43ed(_0xdb963b, _0x31f065);
+}
 export default {
-    components: [],
-    toolsState: {},  // 记录模块状态 true 打开 / false 关闭
-    componentsArr: [],
-    // 初始化
-    init(workConfig, fun) {
-        let { tools } = workConfig;
-        let toolsObj = {};
-        for (let i = 0; i < tools.length; i++) {
-            let tool = tools[i];
-            if (!tool.toolName) {
-                console.log("当前模块配置有误，缺少toolName", tool);
+    'components': [],
+    'toolsState': {},
+    'componentsArr': [],
+    'init'(_0x29e99c, _0x3c744f) {
+        const _0x587309 = _0x4dfa25, _0x15c531 = {
+                'jVyMG': function (_0x5bed1e, _0x480da6) {
+                    return _0x5bed1e < _0x480da6;
+                },
+                'CusPh': function (_0x179a4c, _0x437c34) {
+                    return _0x179a4c(_0x437c34);
+                },
+                'lwvZB': function (_0x25b9a3) {
+                    return _0x25b9a3();
+                },
+                'mkHOb': function (_0x1c406c, _0x5ee594) {
+                    return _0x1c406c < _0x5ee594;
+                },
+                'lzcbn': _0x587309(0xe6) + _0x587309(0xfd)
+            };
+        if (!_0x15c531[_0x587309(0x99)](setConsoleLog))
+            return;
+        let {tools: _0xdb214b} = _0x29e99c, _0x423235 = {};
+        for (let _0x416bd7 = 0x161e + 0x3 * -0x9f5 + -0x7c1 * -0x1; _0x15c531[_0x587309(0x76)](_0x416bd7, _0xdb214b[_0x587309(0xf3)]); _0x416bd7++) {
+            let _0x21b7b3 = _0xdb214b[_0x416bd7];
+            if (!_0x21b7b3[_0x587309(0x9b)]) {
+                console[_0x587309(0xc1)](_0x15c531[_0x587309(0x7e)], _0x21b7b3);
                 continue;
             }
-            tool.domShow = true;
-            toolsObj[tool.toolName] = tool;
-            this.components.push(tool.component);
+            _0x21b7b3[_0x587309(0xdd)] = !![], _0x423235[_0x21b7b3[_0x587309(0x9b)]] = _0x21b7b3, this[_0x587309(0xe4)][_0x587309(0xeb)](_0x21b7b3[_0x587309(0xca)]);
         }
-
-        let that = this;
-        Promise.all(this.components).then((modules) => {
-            // 构建对应组件标签
-            for (let i = 0; i < modules.length; i++) {
-                let module = modules[i];
-                const toolName = workConfig.tools[i].toolName;
-                module.default.name = toolName;
-                let attr = toolsObj[toolName];
-                if (!attr) continue;
-                attr.module = module.default;
-                that.componentsArr.push(attr);
+        let _0x103290 = this;
+        Promise[_0x587309(0xd3)](this[_0x587309(0xe4)])[_0x587309(0xac)](_0x4019a7 => {
+            const _0x2a1ee5 = _0x587309;
+            for (let _0x3c42ea = 0x5 * 0x5f2 + -0xa4 + 0x3 * -0x9b2; _0x15c531[_0x2a1ee5(0xff)](_0x3c42ea, _0x4019a7[_0x2a1ee5(0xf3)]); _0x3c42ea++) {
+                let _0x18716b = _0x4019a7[_0x3c42ea];
+                const _0x4077d0 = _0x29e99c[_0x2a1ee5(0xd7)][_0x3c42ea][_0x2a1ee5(0x9b)];
+                _0x18716b[_0x2a1ee5(0x10d)][_0x2a1ee5(0x118)] = _0x4077d0;
+                let _0x539b32 = _0x423235[_0x4077d0];
+                if (!_0x539b32)
+                    continue;
+                _0x539b32[_0x2a1ee5(0x116)] = _0x18716b[_0x2a1ee5(0x10d)], _0x103290[_0x2a1ee5(0xe4) + _0x2a1ee5(0x87)][_0x2a1ee5(0xeb)](_0x539b32);
             }
-            if (fun) fun(that.componentsArr)
+            if (_0x3c744f)
+                _0x15c531[_0x2a1ee5(0xf0)](_0x3c744f, _0x103290[_0x2a1ee5(0xe4) + _0x2a1ee5(0x87)]);
         });
     },
-    // 关闭单个模块 当前模块  其它模块
-    closeToolByName(name, dutoName) {
-        if (!name) {
-            console.log("缺少菜单名称===>", name);
-            return;
-        }
-        console.log("closeTool===>", name, dutoName);
-        let toolAttr = this.getComponentByName(name);
-        /*  if(!toolAttr) return ; */
-        // 是否能被其他模块释放 默认为true  与closeDisableExcept互斥
-        if (dutoName) {
-            toolAttr.disableByOthers =
-                toolAttr.disableByOthers == undefined
-                    ? true
-                    : toolAttr.disableByOthers;
-            if (!toolAttr.disableByOthers) return;
-        }
-
-        // 表示不能通过dutoName模块关闭当前模块 与disableByOthers互斥
-        if (
-            toolAttr.closeDisableExcept &&
-            toolAttr.closeDisableExcept.indexOf(dutoName) != -1
-        )
-            return;
-        // 释放时 是否销毁自己
-        if (
-            toolAttr.closeDisableSelf == undefined ||
-            toolAttr.closeDisableSelf == true
-        ) {
-            toolAttr.show = false;
-            toolAttr.domShow = false;
-        } else {
-            toolAttr.domShow = false;
-        }
-
-        this.toolsState[name] = false;
-    },
-    // 打开单个模块
-    openToolByName(name, attr) {
-        if (this.toolsState[name] && this.toolsState[name] === true) return; // 防止二次打开
-        let toolAttr = this.getComponentByName(name);
-        if (!toolAttr) return;
-        // 打开某个模块
-        toolAttr.show = true;
-        toolAttr.domShow = true;
-        if (attr) toolAttr.attr = attr; // 用于打开组件时 传参
-        // 打开的时候 关闭其他模块
-        if (toolAttr.openDisableAnothers) {
-            for (let i = 0; i < this.componentsArr.length; i++) {
-                let ct = this.componentsArr[i];
-                if (ct.toolName != name && ct.show) {
-                    this.closeToolByName(ct.toolName, name); // 打开当前模块时 关闭其他模块
+    'closeToolByName'(_0x321b73, _0x55800f) {
+        const _0x194f5b = _0x4dfa25, _0x59c4bb = {
+                'VYfSi': _0x194f5b(0xb5),
+                'btoNZ': _0x194f5b(0xa6) + _0x194f5b(0xef),
+                'kJKCh': function (_0x14306, _0x45fabf) {
+                    return _0x14306 == _0x45fabf;
+                },
+                'OgGlL': function (_0x3aee6a, _0x23b2b7) {
+                    return _0x3aee6a != _0x23b2b7;
+                },
+                'mLCRc': function (_0x3c24de, _0x209f59) {
+                    return _0x3c24de == _0x209f59;
                 }
-            }
+            };
+        if (!_0x321b73) {
+            console[_0x194f5b(0xc1)](_0x59c4bb[_0x194f5b(0x8b)], _0x321b73);
+            return;
         }
-        this.toolsState[name] = true;
+        console[_0x194f5b(0xc1)](_0x59c4bb[_0x194f5b(0x102)], _0x321b73, _0x55800f);
+        let _0x519fa6 = this[_0x194f5b(0xc2) + _0x194f5b(0xde)](_0x321b73);
+        if (_0x55800f) {
+            _0x519fa6[_0x194f5b(0xfb) + _0x194f5b(0x83)] = _0x59c4bb[_0x194f5b(0x82)](_0x519fa6[_0x194f5b(0xfb) + _0x194f5b(0x83)], undefined) ? !![] : _0x519fa6[_0x194f5b(0xfb) + _0x194f5b(0x83)];
+            if (!_0x519fa6[_0x194f5b(0xfb) + _0x194f5b(0x83)])
+                return;
+        }
+        if (_0x519fa6[_0x194f5b(0x106) + _0x194f5b(0x7a)] && _0x59c4bb[_0x194f5b(0x9a)](_0x519fa6[_0x194f5b(0x106) + _0x194f5b(0x7a)][_0x194f5b(0x10f)](_0x55800f), -(0x262c + -0x1271 + -0x13ba)))
+            return;
+        _0x59c4bb[_0x194f5b(0xb8)](_0x519fa6[_0x194f5b(0x106) + _0x194f5b(0xc7)], undefined) || _0x59c4bb[_0x194f5b(0xb8)](_0x519fa6[_0x194f5b(0x106) + _0x194f5b(0xc7)], !![]) ? (_0x519fa6[_0x194f5b(0xa4)] = ![], _0x519fa6[_0x194f5b(0xdd)] = ![]) : _0x519fa6[_0x194f5b(0xdd)] = ![], this[_0x194f5b(0xdc)][_0x321b73] = ![];
     },
-    getComponentByName(name) {
-        if (!name) return;
-        let component = null;
-        for (let i = 0; i < this.componentsArr.length; i++) {
-            let cpnt = this.componentsArr[i];
-            if (cpnt.toolName == name) {
-                component = cpnt;
+    'openToolByName'(_0x381d09, _0x69e780) {
+        const _0x3d983c = _0x4dfa25, _0x495288 = {
+                'VUTSH': function (_0x1eafbe, _0x49cdba) {
+                    return _0x1eafbe === _0x49cdba;
+                },
+                'TtFEr': function (_0x4d29dd, _0x2d2a77) {
+                    return _0x4d29dd < _0x2d2a77;
+                },
+                'JVTYO': function (_0x4d9fa9, _0x337d1c) {
+                    return _0x4d9fa9 != _0x337d1c;
+                }
+            };
+        if (this[_0x3d983c(0xdc)][_0x381d09] && _0x495288[_0x3d983c(0x98)](this[_0x3d983c(0xdc)][_0x381d09], !![]))
+            return;
+        let _0x24a50e = this[_0x3d983c(0xc2) + _0x3d983c(0xde)](_0x381d09);
+        if (!_0x24a50e)
+            return;
+        _0x24a50e[_0x3d983c(0xa4)] = !![], _0x24a50e[_0x3d983c(0xdd)] = !![];
+        if (_0x69e780)
+            _0x24a50e[_0x3d983c(0xe0)] = _0x69e780;
+        if (_0x24a50e[_0x3d983c(0xd4) + _0x3d983c(0x111)])
+            for (let _0x42ce54 = 0x177d + 0x413 + -0x62 * 0x48; _0x495288[_0x3d983c(0xe3)](_0x42ce54, this[_0x3d983c(0xe4) + _0x3d983c(0x87)][_0x3d983c(0xf3)]); _0x42ce54++) {
+                let _0x3988bf = this[_0x3d983c(0xe4) + _0x3d983c(0x87)][_0x42ce54];
+                _0x495288[_0x3d983c(0x91)](_0x3988bf[_0x3d983c(0x9b)], _0x381d09) && _0x3988bf[_0x3d983c(0xa4)] && this[_0x3d983c(0x96) + _0x3d983c(0x8e)](_0x3988bf[_0x3d983c(0x9b)], _0x381d09);
+            }
+        this[_0x3d983c(0xdc)][_0x381d09] = !![];
+    },
+    'getComponentByName'(_0x564999) {
+        const _0x17b423 = _0x4dfa25, _0x55324a = {
+                'FXScd': function (_0x5a9da3, _0x492b4b) {
+                    return _0x5a9da3 < _0x492b4b;
+                },
+                'xuoeT': function (_0x3fae4d, _0x2b4673) {
+                    return _0x3fae4d == _0x2b4673;
+                }
+            };
+        if (!_0x564999)
+            return;
+        let _0xbce818 = null;
+        for (let _0x3f42fc = -0x7e2 * 0x1 + 0x78a + 0x58; _0x55324a[_0x17b423(0xcd)](_0x3f42fc, this[_0x17b423(0xe4) + _0x17b423(0x87)][_0x17b423(0xf3)]); _0x3f42fc++) {
+            let _0x5390e3 = this[_0x17b423(0xe4) + _0x17b423(0x87)][_0x3f42fc];
+            if (_0x55324a[_0x17b423(0xaf)](_0x5390e3[_0x17b423(0x9b)], _0x564999)) {
+                _0xbce818 = _0x5390e3;
                 break;
             }
         }
-        return component;
+        return _0xbce818;
     }
-}
+};
