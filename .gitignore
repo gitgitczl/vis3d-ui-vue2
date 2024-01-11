@@ -2,6 +2,7 @@
 node_modules
 /dist
 vis3d
+toolControl-unmix.js
 # CesiumUnminified
 
 # local env files
