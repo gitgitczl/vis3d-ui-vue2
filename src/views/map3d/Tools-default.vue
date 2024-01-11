@@ -39,7 +39,7 @@
 import screenfull from "screenfull";
 import html2canvas from "html2canvas";
 import printJS from "print-js";
-import { workConfig } from "../map3d/config/export"
+import workConfig from "./config/workConfig"
 /* 模块控制器 */
 import workControl from "./config/toolControl";
 window.workControl = workControl; // 绑定到全局

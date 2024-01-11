@@ -24,7 +24,7 @@
 </template>
 <script>
 /* 工具栏风格三 淡入淡出 */
-import { workConfig } from "../map3d/config/export"
+import workConfig from "./config/workConfig"
 /* 模块控制器 */
 import workControl from "./config/toolControl";
 window.workControl = workControl; // 绑定到全局

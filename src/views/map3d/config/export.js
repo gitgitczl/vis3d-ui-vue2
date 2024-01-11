@@ -1,6 +1,5 @@
 // 配置文件预处理 会读取window下的配置 
 import defaulte_mapConfig from "./mapConfig"
-import defaulte_workConfig from "./workConfig"
 // 深度合并对象
 function deepAssign(obj1, obj2) {
     let _this = this
@@ -11,8 +10,7 @@ function deepAssign(obj1, obj2) {
 }
 
 const mapConfig = deepAssign(defaulte_mapConfig, window.mapConfig || {});
-const workConfig = deepAssign(defaulte_workConfig, window.workConfig || {});
 
 export {
-    mapConfig, workConfig
+    mapConfig
 }

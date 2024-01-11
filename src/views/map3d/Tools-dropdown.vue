@@ -40,7 +40,7 @@
 </template>
 <script>
 /* 工具栏风格二 下拉菜单效果 */
-import { workConfig } from "../map3d/config/export"
+import workConfig from "./config/workConfig"
 /* 模块控制器 */
 import workControl from "./config/toolControl";
 window.workControl = workControl; // 绑定到全局
