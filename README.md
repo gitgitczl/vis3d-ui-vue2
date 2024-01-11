@@ -17,6 +17,10 @@ vis3d-ui是一套基于Cesium的全开源的快速开发平台，毫无保留给
 
 [在线体验：http://mapgl.com/3d/](http://mapgl.com/3d/)
 
+[开发文档：http://mapgl.com/vis3d/](http://mapgl.com/vis3d/)
+
+[官网地址：http://mapgl.com/](http://mapgl.com/)
+
 ## 平台技术栈
 vis3d-ui-vue2，是基于vue/cli + vue2搭建的一套纯前端三维地图框架。
 
