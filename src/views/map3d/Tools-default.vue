@@ -43,7 +43,6 @@ import { workConfig } from "../map3d/config/export"
 /* 模块控制器 */
 import workControl from "./config/toolControl";
 window.workControl = workControl; // 绑定到全局
-
 let zoomTool = undefined; // 缩放工具
 let overviewMap = undefined; // 鹰眼图
 export default {

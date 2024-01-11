@@ -12,8 +12,8 @@
 
 // 引入配置文件 
 import { mapConfig } from "./config/export"
-import Tools from "@/views/map3d/Tools.vue";
-import ToolsDP from "@/views/map3d/Tools-dp.vue";
+import Tools from "@/views/map3d/Tools-default.vue";
+import ToolsDP from "@/views/map3d/Tools-dropdown.vue";
 import ToolsFade from "@/views/map3d/Tools-fade.vue";
 import "./css/basic.less"
 import setThemeStyle from "./css/theme";
