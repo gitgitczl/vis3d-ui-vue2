@@ -15,7 +15,7 @@ export default {
             }
             tool.domShow = true;
             toolsObj[tool.toolName] = tool;
-            this.importTool(tool.toolName);
+            this.components.push(tool.component);
         }
 
         let that = this;
@@ -23,7 +23,8 @@ export default {
             // 构建对应组件标签
             for (let i = 0; i < modules.length; i++) {
                 let module = modules[i];
-                const toolName = module.default.name;
+                const toolName = workConfig.tools[i].toolName;
+                module.default.name = toolName;
                 let attr = toolsObj[toolName];
                 if (!attr) continue;
                 attr.module = module.default;
@@ -31,63 +32,6 @@ export default {
             }
             if (fun) fun(that.componentsArr)
         });
-    },
-    importTool(name) {
-        switch (name) {
-            case "plot":
-                this.components.push(import("@/views/map3d/baseTools/plot/Index.vue"));
-                break;
-            case "plotStyle":
-                this.components.push(import("@/views/map3d/baseTools/plotStyle/Index.vue"));
-                break;
-            case "layers":
-                this.components.push(import("@/views/map3d/baseTools/layers/Index.vue"));
-                break;
-            case "measure":
-                this.components.push(import("@/views/map3d/baseTools/measure/Index.vue"));
-                break;
-            case "analysis":
-                this.components.push(import("@/views/map3d/baseTools/analysis/Index.vue"));
-                break;
-            case "baseMap":
-                this.components.push(import("@/views/map3d/baseTools/baseMap/Index.vue"));
-                break;
-            case "coordinate":
-                this.components.push(import("@/views/map3d/baseTools/coordinate/Index.vue"));
-                break;
-            case "twoScreen":
-                this.components.push(import("@/views/map3d/baseTools/twoScreen/Index.vue"));
-                break;
-            case "region":
-                this.components.push(import("@/views/map3d/baseTools/region/Index.vue"));
-                break;
-            case "viewBook":
-                this.components.push(import("@/views/map3d/baseTools/viewBook/Index.vue"));
-                break;
-            case "pathPlan":
-                this.components.push(import("@/views/map3d/baseTools/pathPlan/Index.vue"));
-                break;
-            case "roam":
-                this.components.push(import("@/views/map3d/baseTools/roam/Index.vue"));
-                break;
-            case "roamStyle":
-                this.components.push(import("@/views/map3d/baseTools/roamStyle/Index.vue"));
-                break;
-            case "layerSplit":
-                this.components.push(import("@/views/map3d/baseTools/layerSplit/Index.vue"));
-                break;
-            case "monomer":
-                this.components.push(import("@/views/map3d/baseTools/monomer/Index.vue"));
-                break;
-            case "help":
-                this.components.push(import("@/views/map3d/baseTools/help/Index.vue"));
-                break;
-            // 此处新增工具菜单
-            case "custom":
-                this.components.push(import("@/views/map3d/baseTools/custom/Index.vue"));
-                break;
-            default: ;
-        }
     },
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {

@@ -29,7 +29,6 @@
 <script>
 import { mapConfig } from "../../config/export"
 export default {
-  name: "baseMap",
   components: {
     
   },
