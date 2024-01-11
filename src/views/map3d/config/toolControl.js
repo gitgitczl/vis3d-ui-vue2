@@ -1,3 +1,21 @@
+
+const buildTime = "2024-01-11 10:00"
+const setConsoleLog = () => {
+    console.group('平台说明（🗺 三维地图开发平台）：');
+    console.log(`%c 公司官网 ：http://mapgl.com`, `color: red; font-weight: bold`);
+    console.log(`%c 编译日期 ：${buildTime}`, `color: red; font-weight: bold`);
+    console.log(`%c 版本信息 ：Cesium：${Cesium.VERSION}; vis3d：${window.vis3d?.VERSION || "--"}`, `color: #03A9F4; font-weight: bold`);
+    console.log(`%c 其    它 ：
+        1、如当前版本出现问题，请联系：15156540451（微信同号）
+        2、当前控制台禁止清除，如需清除请联系开发者`, `color: #03A9F4; font-weight: bold`);
+    console.groupEnd();
+
+    window.console.clear = function () {
+        alert("无版权，禁止清除控制台！");
+    }
+}
+setConsoleLog();
+
 // 模块控制器
 export default {
     components: [],
@@ -9,8 +27,8 @@ export default {
         let toolsObj = {};
         for (let i = 0; i < tools.length; i++) {
             let tool = tools[i];
-            if(!tool.toolName){
-                console.log("当前模块配置有误，缺少toolName",tool);
+            if (!tool.toolName) {
+                console.log("当前模块配置有误，缺少toolName", tool);
                 continue;
             }
             tool.domShow = true;
@@ -35,9 +53,9 @@ export default {
     },
     // 关闭单个模块 当前模块  其它模块
     closeToolByName(name, dutoName) {
-        if(!name){
-            console.log("缺少菜单名称===>",name);
-            return ;
+        if (!name) {
+            console.log("缺少菜单名称===>", name);
+            return;
         }
         console.log("closeTool===>", name, dutoName);
         let toolAttr = this.getComponentByName(name);
@@ -74,7 +92,7 @@ export default {
     openToolByName(name, attr) {
         if (this.toolsState[name] && this.toolsState[name] === true) return; // 防止二次打开
         let toolAttr = this.getComponentByName(name);
-        if(!toolAttr) return ;
+        if (!toolAttr) return;
         // 打开某个模块
         toolAttr.show = true;
         toolAttr.domShow = true;
